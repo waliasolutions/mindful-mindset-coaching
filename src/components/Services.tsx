@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from 'react';
 import { Check } from 'lucide-react';
 
@@ -94,8 +93,8 @@ const Services = () => {
           <div className={`transition-all duration-1000 ease-out delay-300 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'}`}>
             <div className="aspect-[4/5] rounded-2xl overflow-hidden shadow-xl">
               <img 
-                src="/lovable-uploads/7b4f0db6-80ea-4da6-b817-0f33ba7562b5.png" 
-                alt="Martina Domeniconi" 
+                src="/lovable-uploads/photo-1535268647677-300dbf3d78d1.jpg" 
+                alt="Coaching Session" 
                 className="w-full h-full object-cover"
                 loading="lazy"
               />
