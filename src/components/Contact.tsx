@@ -135,12 +135,12 @@ const Contact = () => {
             }`}
           >
             <div className="grid grid-cols-1 gap-8 h-full">
-              <div className="aspect-[16/9] overflow-hidden shadow-xl">
+              <div className="aspect-[16/9] overflow-hidden shadow-xl rounded-lg">
                 <div className="image-reveal reveal w-full h-full">
                   <img 
                     src="/lovable-uploads/c3990bed-42a6-44c3-94fd-186347006165.png" 
                     alt="Martina Domeniconi - Kontakt" 
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover object-center"
                     loading="lazy"
                   />
                 </div>

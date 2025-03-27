@@ -67,7 +67,7 @@ const Hero = () => {
           </div>
           
           <div className="relative w-full max-w-md lg:max-w-lg xl:max-w-xl">
-            <div className="aspect-[3/4] overflow-hidden shadow-xl transition-all duration-500 hover:shadow-2xl">
+            <div className="aspect-[3/4] overflow-hidden shadow-xl transition-all duration-500 hover:shadow-2xl rounded-lg">
               <div className="image-reveal reveal w-full h-full">
                 <img 
                   src="/lovable-uploads/7b4f0db6-80ea-4da6-b817-0f33ba7562b5.png" 
@@ -75,10 +75,10 @@ const Hero = () => {
                   className="w-full h-full object-cover object-center"
                   loading="lazy"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-40"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-40 rounded-lg"></div>
               </div>
             </div>
-            <div className="absolute -bottom-6 -left-6 p-4 bg-white shadow-lg max-w-xs">
+            <div className="absolute -bottom-6 -left-6 p-4 bg-white shadow-lg max-w-xs rounded-lg">
               <p className="text-sm font-medium text-petrol">Martina Domeniconi</p>
               <p className="text-xs text-foreground/70">Zertifizierter Mindset Coach</p>
             </div>

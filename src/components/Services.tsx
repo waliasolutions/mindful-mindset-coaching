@@ -144,7 +144,7 @@ const Services = () => {
           </div>
           
           <div className={`reveal-right ${isVisible ? 'revealed' : ''}`}>
-            <div className="aspect-[4/5] overflow-hidden shadow-xl">
+            <div className="aspect-[4/5] overflow-hidden shadow-xl rounded-lg">
               <div className="image-reveal reveal w-full h-full">
                 <img 
                   src="/lovable-uploads/7b4f0db6-80ea-4da6-b817-0f33ba7562b5.png" 

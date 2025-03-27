@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from 'react';
 import { Award, BookOpen, Users } from 'lucide-react';
 
@@ -49,17 +48,17 @@ const About = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
           <div className={`relative reveal-left ${isVisible ? 'revealed' : ''}`}>
-            <div className="aspect-square relative z-10 overflow-hidden shadow-lg">
+            <div className="aspect-[4/5] relative z-10 overflow-hidden shadow-lg rounded-lg">
               <div className="image-reveal reveal w-full h-full">
                 <img 
                   src="/lovable-uploads/053f601c-1228-481c-9aca-d078fb3d7d8a.png" 
                   alt="Martina Domeniconi - Mindset Coach" 
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover object-center"
                   loading="lazy"
                 />
               </div>
             </div>
-            <div className="absolute w-full h-full top-4 left-4 border-2 border-sage -z-10"></div>
+            <div className="absolute w-full h-full top-4 left-4 border-2 border-sage -z-10 rounded-lg"></div>
           </div>
           
           <div className={`reveal-right ${isVisible ? 'revealed' : ''}`}>
@@ -87,7 +86,6 @@ const About = () => {
           </div>
         </div>
         
-        {/* Additional credentials section */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16">
           <div className="reveal-element">
             <div className="bg-white p-6 shadow-md h-full flex flex-col items-center text-center">
