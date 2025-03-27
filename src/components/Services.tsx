@@ -94,7 +94,7 @@ const Services = () => {
           <div className={`transition-all duration-1000 ease-out delay-300 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'}`}>
             <div className="aspect-[4/5] rounded-2xl overflow-hidden shadow-xl">
               <img 
-                src="/lovable-uploads/abb0bc70-ae8b-43ce-867f-d7beece5a8a2.png" 
+                src="/lovable-uploads/c3990bed-42a6-44c3-94fd-186347006165.png" 
                 alt="Martina Domeniconi" 
                 className="w-full h-full object-cover"
                 loading="lazy"
