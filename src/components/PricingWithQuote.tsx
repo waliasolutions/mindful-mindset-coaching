@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from 'react';
 import { AspectRatio } from './ui/aspect-ratio';
 import { MessageSquareQuote, Check, Calendar, Clock, Users } from 'lucide-react';
@@ -82,7 +81,6 @@ const PricingWithQuote = () => {
               <div className="bg-white/90 backdrop-blur-sm p-8 md:p-10 shadow-xl border border-white/20 h-full">
                 <div className="flex items-center mb-6">
                   <MessageSquareQuote size={32} className="text-petrol/70 mr-3" />
-                  <div className="text-3xl text-petrol/70 font-serif">"</div>
                 </div>
                 <p className="text-xl md:text-2xl text-petrol font-serif mb-6 leading-relaxed">
                   Unsere wichtigste Entscheidung ist, ob wir das Universum für einen freundlichen oder feindlichen Ort halten.
