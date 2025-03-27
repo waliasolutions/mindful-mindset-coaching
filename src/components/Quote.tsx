@@ -61,17 +61,17 @@ const Quote = () => {
           }`}
         >
           {/* Quote content */}
-          <div className="bg-white/10 backdrop-blur-sm p-8 md:p-12 rounded-2xl shadow-xl border border-white/20">
-            <div className="text-6xl text-white/50 font-serif mb-4">"</div>
-            <p className="text-xl md:text-2xl lg:text-3xl text-white font-serif mb-6 leading-relaxed">
+          <div className="bg-white/90 backdrop-blur-sm p-8 md:p-12 rounded-2xl shadow-xl border border-white/20">
+            <div className="text-6xl text-petrol/70 font-serif mb-4">"</div>
+            <p className="text-xl md:text-2xl lg:text-3xl text-petrol font-serif mb-6 leading-relaxed">
               Unsere wichtigste Entscheidung ist, ob wir das Universum für einen freundlichen oder feindlichen Ort halten.
             </p>
-            <p className="text-white/80 font-medium mb-8">― Albert Einstein</p>
+            <p className="text-petrol/80 font-medium mb-8">― Albert Einstein</p>
             
             <div className="flex justify-center mt-8">
               <a 
                 href="#contact" 
-                className="inline-flex items-center justify-center px-8 py-3 rounded-md bg-white text-petrol hover:bg-white/90 transition-colors shadow-lg font-medium"
+                className="inline-flex items-center justify-center px-8 py-3 rounded-md bg-petrol text-white hover:bg-petrol/90 transition-colors shadow-lg font-medium"
               >
                 Starte jetzt deine persönliche Reise
               </a>
