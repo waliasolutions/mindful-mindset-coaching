@@ -32,7 +32,14 @@ const Quote = () => {
       ref={sectionRef}
       className="py-20 md:py-32 relative overflow-hidden"
     >
-      <div className="absolute inset-0 bg-petrol/90 -z-10"></div>
+      <div className="absolute inset-0 -z-10">
+        <img 
+          src="/lovable-uploads/abb0bc70-ae8b-43ce-867f-d7beece5a8a2.png" 
+          alt="Inspiration" 
+          className="w-full h-full object-cover opacity-20"
+        />
+        <div className="absolute inset-0 bg-petrol/90"></div>
+      </div>
       
       {/* Background pattern */}
       <div className="absolute inset-0 opacity-10 -z-10">
@@ -52,7 +59,14 @@ const Quote = () => {
           <p className="text-xl md:text-2xl lg:text-3xl text-white font-serif mb-8 leading-relaxed">
             Unsere wichtigste Entscheidung ist, ob wir das Universum für einen freundlichen oder feindlichen Ort halten.
           </p>
-          <p className="text-white/80 font-medium">Albert Einstein</p>
+          <p className="text-white/80 font-medium mb-10">Albert Einstein</p>
+          
+          <a 
+            href="#contact" 
+            className="inline-flex items-center justify-center px-8 py-3 rounded-md bg-white text-petrol hover:bg-white/90 transition-colors focus-ring shadow-lg font-medium text-center"
+          >
+            Starte jetzt deine Transformation
+          </a>
         </div>
       </div>
     </section>

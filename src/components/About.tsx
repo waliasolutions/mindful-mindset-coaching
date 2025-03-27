@@ -51,21 +51,12 @@ const About = () => {
             <div className="aspect-square relative z-10 rounded-2xl overflow-hidden shadow-lg">
               <img 
                 src="/lovable-uploads/053f601c-1228-481c-9aca-d078fb3d7d8a.png" 
-                alt="Martina mit Blumen" 
+                alt="Martina Domeniconi - Mindset Coach" 
                 className="w-full h-full object-cover"
                 loading="lazy"
               />
             </div>
             <div className="absolute w-full h-full top-4 left-4 border-2 border-sage rounded-2xl -z-10"></div>
-            
-            <div className="hidden md:block absolute -bottom-12 -right-12 w-48 h-48 rounded-xl overflow-hidden shadow-lg">
-              <img 
-                src="/lovable-uploads/c3990bed-42a6-44c3-94fd-186347006165.png" 
-                alt="Martina mit Hund" 
-                className="w-full h-full object-cover"
-                loading="lazy"
-              />
-            </div>
           </div>
           
           <div className={`transition-all duration-1000 ease-out delay-300 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'}`}>
@@ -74,21 +65,30 @@ const About = () => {
             </p>
             
             <p className="text-lg text-foreground/80 mb-6">
-              Ich bin fasziniert davon, was mit dem richtigen Mindset alles möglich ist. Denn ich glaube fest daran: Alles im Leben geschieht dir aus einem bestimmten Grund.
+              Ich bin fasziniert davon, was mit dem richtigen Mindset alles möglich ist. Denn ich glaube fest daran: <span className="italic font-medium">Alles im Leben geschieht dir aus einem bestimmten Grund.</span>
             </p>
             
             <p className="text-lg text-foreground/80 mb-6">
-              Mein Ziel ist es, das Wissen, das ich in dieser Ausbildung erlernt habe, weiterzugeben, damit auch andere ihr wahres Potenzial entfalten und ihren Herzensweg mit Freude und Gelassenheit gehen können.
+              Mein Ziel ist es, das Wissen, das ich in dieser Ausbildung erlernt habe, weiterzugeben, damit auch <span className="text-petrol font-medium">du dein wahres Potenzial entfalten und deinen Herzensweg mit Freude und Gelassenheit gehen kannst</span>.
             </p>
             
             <p className="text-lg text-foreground/80 mb-8">
-              Seit 2019 bin ich als Ordnungs-Coach tätig (www.organize-my-space.ch). Beim Ordnungs-Coaching geht es vorrangig um die äußere Ordnung – darum, Dinge loszulassen, die man nicht mehr braucht oder die keinen Mehrwert mehr bieten. Durch diese Tätigkeit wurde mir zunehmend bewusst, dass Unordnung nicht nur im Außen existiert – sondern auch im Innern nämlich in unseren Gedanken.
+              Seit 2019 bin ich als Ordnungs-Coach tätig. Beim Ordnungs-Coaching geht es vorrangig um die äußere Ordnung – darum, Dinge loszulassen, die keinen Mehrwert mehr bieten. Durch diese Tätigkeit wurde mir zunehmend bewusst, dass Unordnung nicht nur im Außen existiert – sondern auch im Innern: in unseren Gedanken.
             </p>
             
             <div className="p-5 bg-white/80 backdrop-blur-sm rounded-lg shadow-sm border border-sage/30">
               <p className="text-petrol font-medium">
                 "Was ist Mindset: Mindset ist die Art und Weise wie Du denkst. Deine Gedanken beeinflussen Deine Entscheidungen, Handlungen und somit Dein ganzes Leben. Willst Du etwas in Deinem Leben verändern, so musst Du als erstes lernen Deine Gedanken bewusst zu steuern."
               </p>
+            </div>
+            
+            <div className="mt-8">
+              <a 
+                href="#services" 
+                className="inline-flex items-center justify-center px-6 py-3 rounded-md bg-petrol text-white hover:bg-petrol/90 transition-colors focus-ring"
+              >
+                Entdecke meine Coaching-Angebote
+              </a>
             </div>
           </div>
         </div>

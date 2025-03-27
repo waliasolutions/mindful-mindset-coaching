@@ -44,7 +44,7 @@ const Hero = () => {
                 ref={subtitleRef}
                 className="text-lg md:text-xl text-foreground/90 mb-8 max-w-xl transition-all duration-700 ease-out opacity-0 translate-y-10 delay-100"
               >
-                Du hast das Potenzial dein Traumleben zu erschaffen und zu leben. Du selbst bist der Experte für dein Leben. Ich als Coach unterstütze dich im Prozess.
+                Entfalte dein volles Potenzial und erschaffe das Leben, von dem du träumst. Mit dem richtigen Mindset sind deinen Möglichkeiten keine Grenzen gesetzt.
               </p>
               <div 
                 ref={ctaRef}
@@ -52,9 +52,9 @@ const Hero = () => {
               >
                 <a 
                   href="#contact" 
-                  className="inline-flex items-center justify-center px-6 py-3 rounded-md bg-petrol text-white hover:bg-petrol/90 transition-colors focus-ring text-center"
+                  className="inline-flex items-center justify-center px-6 py-3 rounded-md bg-petrol text-white hover:bg-petrol/90 transition-colors focus-ring text-center font-medium"
                 >
-                  Kostenloses Erstgespräch
+                  Kostenloses Erstgespräch vereinbaren
                 </a>
                 <a 
                   href="#services" 

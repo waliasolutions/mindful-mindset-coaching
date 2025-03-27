@@ -1,6 +1,6 @@
 
 import { useState, useEffect, useRef } from 'react';
-import { Phone, Mail, MapPin, Clock } from 'lucide-react';
+import { Phone, Mail, MapPin, Clock, ArrowRight } from 'lucide-react';
 
 const Contact = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -46,11 +46,11 @@ const Contact = () => {
             </span>
           </div>
           <h2 className="text-3xl md:text-4xl font-serif font-semibold text-center mb-4">
-            Beginne deine Mindset-Reise
+            Beginne deine Mindset-Reise heute
           </h2>
           <div className="w-16 h-1 bg-mauve mx-auto mb-8"></div>
           <p className="text-lg text-center text-foreground/80 max-w-2xl mx-auto">
-            Ich bin gerne hier, um dir zu helfen. Ruf mich für ein kostenloses Beratungsgespräch an, in dem wir dein Mindset-Coaching vorab besprechen können.
+            Der erste Schritt zu einem erfüllteren Leben beginnt mit einem Gespräch. Kontaktiere mich für ein <span className="font-medium text-petrol">kostenloses Erstgespräch</span>, in dem wir über deine Ziele sprechen und herausfinden, wie ich dich am besten unterstützen kann.
           </p>
         </div>
 
@@ -106,6 +106,16 @@ const Contact = () => {
                   </div>
                 </div>
               </div>
+
+              <div className="mt-8 pt-8 border-t border-sage/20">
+                <a 
+                  href="tel:+41788400481" 
+                  className="flex items-center justify-center w-full py-3 rounded-md bg-petrol text-white hover:bg-petrol/90 transition-colors focus-ring text-center gap-2 font-medium"
+                >
+                  <span>Jetzt anrufen</span>
+                  <ArrowRight size={16} />
+                </a>
+              </div>
             </div>
           </div>
           
@@ -116,7 +126,7 @@ const Contact = () => {
           >
             <div className="aspect-square rounded-2xl overflow-hidden shadow-xl">
               <img 
-                src="/lovable-uploads/5ffe71dc-5b50-4709-af7a-73c5424b6a05.png" 
+                src="/lovable-uploads/c3990bed-42a6-44c3-94fd-186347006165.png" 
                 alt="Martina Domeniconi - Kontakt" 
                 className="w-full h-full object-cover"
                 loading="lazy"
