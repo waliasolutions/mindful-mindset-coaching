@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -24,15 +23,20 @@ export default {
 		},
 		extend: {
 			colors: {
-				// Main colors - updated with a more Apple-like palette
+				// Incorporate some vibrant but sophisticated colors
+				"soft-purple": "#E5DEFF",
+				"vivid-purple": "#8B5CF6",
+				"ocean-blue": "#0EA5E9",
+				"bright-blue": "#1EAEDB",
+				"soft-gray": "#F1F0FB",
+				"charcoal-gray": "#403E43",
+				
+				// Keep the existing color palette with some tweaks
 				"beige": "#F5F5F7",
 				"sage": "#86868B",
 				"mauve": "#A2AAAD",
 				"petrol": "#1D1D1F",
-				// Accent colors - updated with Apple-inspired colors
-				"mustard": "#F5DF4D",
-				"coral": "#FC5C65",
-				"lavender": "#A7B8F9",
+				
 				// Original shadcn colors
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
@@ -86,6 +90,11 @@ export default {
 				lg: '0',
 				md: '0',
 				sm: '0'
+			},
+			boxShadow: {
+				// More subtle, Apple-like shadows
+				'soft': '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+				'medium': '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)'
 			},
 			keyframes: {
 				'accordion-down': {
