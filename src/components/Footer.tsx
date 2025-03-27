@@ -1,5 +1,5 @@
 
-import { Heart, MapPin, Mail, Phone } from 'lucide-react';
+import { MapPin, Mail, Phone } from 'lucide-react';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -81,9 +81,6 @@ const Footer = () => {
         <div className="border-t border-sage/20 pt-8 text-center">
           <p className="text-foreground/60 text-sm">
             © {currentYear} Martina Domeniconi. Alle Rechte vorbehalten.
-          </p>
-          <p className="text-foreground/60 text-sm mt-2 flex items-center justify-center">
-            Made with <Heart size={12} className="text-mauve mx-1" /> for mindful mothers
           </p>
         </div>
       </div>
