@@ -10,8 +10,29 @@ import Footer from '../components/Footer';
 
 const Index = () => {
   useEffect(() => {
+    // Smooth scrolling for anchor links
+    const handleAnchorClick = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (target.tagName === 'A' && target.getAttribute('href')?.startsWith('#')) {
+        e.preventDefault();
+        const id = target.getAttribute('href')?.slice(1);
+        const element = document.getElementById(id as string);
+        if (element) {
+          const navbarHeight = 80; // approximate navbar height
+          const top = element.getBoundingClientRect().top + window.scrollY - navbarHeight;
+          window.scrollTo({
+            top,
+            behavior: 'smooth'
+          });
+        }
+      }
+    };
+    
+    document.addEventListener('click', handleAnchorClick);
+    
+    // Reveal animation on scroll
     const handleReveal = () => {
-      const reveals = document.querySelectorAll('.image-reveal');
+      const reveals = document.querySelectorAll('.reveal-element');
       
       reveals.forEach((el) => {
         const windowHeight = window.innerHeight;
@@ -19,7 +40,7 @@ const Index = () => {
         const elementVisible = 150;
         
         if (elementTop < windowHeight - elementVisible) {
-          el.classList.add('reveal');
+          el.classList.add('revealed');
         }
       });
     };
@@ -27,17 +48,22 @@ const Index = () => {
     window.addEventListener('scroll', handleReveal);
     handleReveal(); // Trigger on initial load
     
-    return () => window.removeEventListener('scroll', handleReveal);
+    return () => {
+      document.removeEventListener('click', handleAnchorClick);
+      window.removeEventListener('scroll', handleReveal);
+    };
   }, []);
   
   return (
     <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
       <Navbar />
-      <Hero />
-      <About />
-      <Services />
-      <PricingWithQuote />
-      <Contact />
+      <main>
+        <Hero />
+        <Services />
+        <About />
+        <PricingWithQuote />
+        <Contact />
+      </main>
       <Footer />
     </div>
   );

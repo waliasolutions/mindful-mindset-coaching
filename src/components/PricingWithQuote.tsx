@@ -1,7 +1,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { AspectRatio } from './ui/aspect-ratio';
-import { MessageSquareQuote } from 'lucide-react';
+import { MessageSquareQuote, Check, Calendar, Clock, Users } from 'lucide-react';
 
 const PricingWithQuote = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -56,7 +56,7 @@ const PricingWithQuote = () => {
       </div>
 
       <div className="container mx-auto px-4 md:px-6">
-        <div className="max-w-4xl mx-auto mb-16">
+        <div className="max-w-4xl mx-auto mb-16 reveal-element">
           <div className="flex justify-center mb-2">
             <span className="px-3 py-1 text-xs font-medium text-white bg-white/10 rounded-full">
               Investition
@@ -71,15 +71,15 @@ const PricingWithQuote = () => {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-8 lg:gap-12 max-w-5xl mx-auto">
+        <div className="grid md:grid-cols-3 gap-8 lg:gap-12 max-w-6xl mx-auto">
           {/* Quote */}
           <div 
-            className={`transition-all duration-1000 ease-out ${
+            className={`md:col-span-1 transition-all duration-1000 ease-out ${
               isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
             }`}
           >
             <div className="h-full flex items-center">
-              <div className="bg-white/90 backdrop-blur-sm p-8 md:p-10 shadow-xl border border-white/20">
+              <div className="bg-white/90 backdrop-blur-sm p-8 md:p-10 shadow-xl border border-white/20 h-full">
                 <div className="flex items-center mb-6">
                   <MessageSquareQuote size={32} className="text-petrol/70 mr-3" />
                   <div className="text-3xl text-petrol/70 font-serif">"</div>
@@ -94,40 +94,71 @@ const PricingWithQuote = () => {
 
           {/* Pricing */}
           <div 
-            className={`transition-all duration-1000 ease-out ${
+            className={`md:col-span-2 transition-all duration-1000 ease-out ${
               isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
             }`}
           >
-            <div className="bg-white rounded-none shadow-xl overflow-hidden border border-sage/20 h-full">
-              <div className="bg-petrol/90 p-8 text-white text-center">
+            <div className="bg-white shadow-xl overflow-hidden border border-sage/20 h-full">
+              <div className="bg-petrol/90 p-8 text-white">
                 <h3 className="text-2xl font-serif font-medium mb-2">Coaching Einzelsitzung</h3>
                 <p className="text-white/80 mb-4">Individuelle Betreuung für deine Bedürfnisse</p>
-                <div className="flex items-baseline justify-center">
+                <div className="flex items-baseline">
                   <span className="text-4xl font-bold">CHF 90</span>
                   <span className="text-white/80 ml-2">pro Sitzung</span>
                 </div>
               </div>
               
               <div className="p-8">
-                <ul className="space-y-4">
-                  <li className="flex items-center justify-between pb-4 border-b border-sage/20">
-                    <span className="font-medium">Dauer</span>
-                    <span>45 Min – 1 Std.</span>
-                  </li>
-                  <li className="flex items-center justify-between pb-4 border-b border-sage/20">
-                    <span className="font-medium">Format</span>
-                    <span>Online oder vor Ort</span>
-                  </li>
-                  <li className="flex items-center justify-between pb-4 border-b border-sage/20">
-                    <span className="font-medium">Erstgespräch</span>
-                    <span className="text-coral">Kostenlos</span>
-                  </li>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                  <div className="flex items-start gap-4">
+                    <div className="flex-shrink-0 w-10 h-10 bg-sage/20 flex items-center justify-center">
+                      <Clock size={20} className="text-petrol" />
+                    </div>
+                    <div>
+                      <p className="font-medium mb-1">Dauer</p>
+                      <p className="text-foreground/70">45 Min – 1 Std.</p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-start gap-4">
+                    <div className="flex-shrink-0 w-10 h-10 bg-sage/20 flex items-center justify-center">
+                      <Users size={20} className="text-petrol" />
+                    </div>
+                    <div>
+                      <p className="font-medium mb-1">Format</p>
+                      <p className="text-foreground/70">Online oder vor Ort</p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-start gap-4">
+                    <div className="flex-shrink-0 w-10 h-10 bg-sage/20 flex items-center justify-center">
+                      <Calendar size={20} className="text-petrol" />
+                    </div>
+                    <div>
+                      <p className="font-medium mb-1">Erstgespräch</p>
+                      <p className="text-coral font-medium">Kostenlos</p>
+                    </div>
+                  </div>
+                </div>
+                
+                <ul className="space-y-3 mb-8">
+                  {[
+                    "Individuelle Betreuung auf deine Bedürfnisse zugeschnitten",
+                    "Praktische Übungen und Techniken für den Alltag",
+                    "Fokus auf deine persönlichen Ziele und Herausforderungen",
+                    "Flexible Terminvereinbarung"
+                  ].map((feature, index) => (
+                    <li key={index} className="flex items-start gap-3">
+                      <Check size={18} className="text-petrol flex-shrink-0 mt-0.5" />
+                      <span className="text-foreground/80">{feature}</span>
+                    </li>
+                  ))}
                 </ul>
                 
-                <div className="mt-8">
+                <div>
                   <a 
                     href="#contact" 
-                    className="inline-flex items-center justify-center w-full px-6 py-3 bg-petrol text-white hover:bg-petrol/90 transition-colors focus-ring text-center"
+                    className="btn-primary w-full flex justify-center"
                   >
                     Jetzt buchen
                   </a>

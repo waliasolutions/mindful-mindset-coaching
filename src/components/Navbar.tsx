@@ -5,6 +5,7 @@ import { Menu, X } from 'lucide-react';
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [activeSection, setActiveSection] = useState('home');
 
   useEffect(() => {
     const handleScroll = () => {
@@ -12,6 +13,23 @@ const Navbar = () => {
         setIsScrolled(true);
       } else {
         setIsScrolled(false);
+      }
+      
+      // Determine which section is in view
+      const sections = ['home', 'services', 'about', 'pricing', 'contact'];
+      const scrollPosition = window.scrollY + 100; // Add offset for navbar
+      
+      for (const section of sections) {
+        const element = document.getElementById(section);
+        if (element) {
+          const offsetTop = element.offsetTop;
+          const offsetHeight = element.offsetHeight;
+          
+          if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
+            setActiveSection(section);
+            break;
+          }
+        }
       }
     };
 
@@ -29,8 +47,8 @@ const Navbar = () => {
 
   const navLinks = [
     { name: 'Home', href: '#home' },
+    { name: 'Mindset Coaching', href: '#services' },
     { name: 'Über mich', href: '#about' },
-    { name: 'Angebot', href: '#services' },
     { name: 'Preise', href: '#pricing' },
     { name: 'Kontakt', href: '#contact' },
   ];
@@ -38,7 +56,7 @@ const Navbar = () => {
   return (
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled ? 'bg-white/90 shadow-md backdrop-blur-sm py-2' : 'bg-transparent py-4'
+        isScrolled ? 'bg-white/95 shadow-md backdrop-blur-sm py-3' : 'bg-transparent py-5'
       }`}
     >
       <div className="container mx-auto px-4 md:px-6">
@@ -48,12 +66,16 @@ const Navbar = () => {
           </a>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex space-x-8">
+          <div className="hidden md:flex space-x-6 lg:space-x-8">
             {navLinks.map((link) => (
               <a
                 key={link.name}
                 href={link.href}
-                className="text-foreground hover:text-petrol transition-colors link-hover focus-ring"
+                className={`${
+                  activeSection === link.href.slice(1) 
+                    ? 'text-petrol font-medium' 
+                    : 'text-foreground hover:text-petrol'
+                } transition-colors link-hover focus-ring text-sm lg:text-base`}
               >
                 {link.name}
               </a>
@@ -79,7 +101,11 @@ const Navbar = () => {
               <a
                 key={link.name}
                 href={link.href}
-                className="text-foreground hover:text-petrol py-2 transition-colors focus-ring"
+                className={`${
+                  activeSection === link.href.slice(1) 
+                    ? 'text-petrol font-medium' 
+                    : 'text-foreground hover:text-petrol'
+                } py-2 transition-colors focus-ring`}
                 onClick={closeMenu}
               >
                 {link.name}

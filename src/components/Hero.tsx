@@ -52,13 +52,13 @@ const Hero = () => {
               >
                 <a 
                   href="#contact" 
-                  className="inline-flex items-center justify-center px-6 py-3 rounded-md bg-petrol text-white hover:bg-petrol/90 transition-colors focus-ring text-center font-medium"
+                  className="btn-primary"
                 >
                   Kostenloses Erstgespräch vereinbaren
                 </a>
                 <a 
                   href="#services" 
-                  className="inline-flex items-center justify-center px-6 py-3 rounded-md bg-sage/20 hover:bg-sage/30 text-foreground transition-colors focus-ring text-center"
+                  className="inline-flex items-center justify-center px-6 py-3 bg-sage/20 hover:bg-sage/30 text-foreground transition-colors focus-ring text-center"
                 >
                   Mehr erfahren
                 </a>
@@ -67,16 +67,18 @@ const Hero = () => {
           </div>
           
           <div className="relative w-full max-w-md lg:max-w-lg xl:max-w-xl">
-            <div className="aspect-[3/4] rounded-2xl overflow-hidden shadow-xl transition-all duration-500 hover:shadow-2xl">
-              <img 
-                src="/lovable-uploads/7b4f0db6-80ea-4da6-b817-0f33ba7562b5.png" 
-                alt="Martina Domeniconi - Mindset Coach" 
-                className="w-full h-full object-cover object-center"
-                loading="lazy"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-40"></div>
+            <div className="aspect-[3/4] overflow-hidden shadow-xl transition-all duration-500 hover:shadow-2xl">
+              <div className="image-reveal reveal w-full h-full">
+                <img 
+                  src="/lovable-uploads/7b4f0db6-80ea-4da6-b817-0f33ba7562b5.png" 
+                  alt="Martina Domeniconi - Mindset Coach" 
+                  className="w-full h-full object-cover object-center"
+                  loading="lazy"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-40"></div>
+              </div>
             </div>
-            <div className="absolute -bottom-6 -left-6 p-4 bg-white rounded-lg shadow-lg max-w-xs">
+            <div className="absolute -bottom-6 -left-6 p-4 bg-white shadow-lg max-w-xs">
               <p className="text-sm font-medium text-petrol">Martina Domeniconi</p>
               <p className="text-xs text-foreground/70">Zertifizierter Mindset Coach</p>
             </div>
@@ -86,7 +88,7 @@ const Hero = () => {
       
       {/* Scroll indicator */}
       <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-        <a href="#about" className="flex flex-col items-center text-petrol/70 hover:text-petrol transition-colors">
+        <a href="#services" className="flex flex-col items-center text-petrol/70 hover:text-petrol transition-colors">
           <span className="text-sm mb-2">Mehr</span>
           <ArrowDown size={20} />
         </a>
