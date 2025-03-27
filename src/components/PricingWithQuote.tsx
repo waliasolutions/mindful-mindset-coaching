@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useRef } from 'react';
 import { AspectRatio } from './ui/aspect-ratio';
 import { MessageSquareQuote, Check, Calendar, Clock, Users } from 'lucide-react';
@@ -42,7 +43,7 @@ const PricingWithQuote = () => {
             alt="Mindset Inspiration" 
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-petrol/90 to-petrol/80"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-petrol/95 to-petrol/80"></div>
         </AspectRatio>
       </div>
       
@@ -57,32 +58,32 @@ const PricingWithQuote = () => {
       <div className="container mx-auto px-4 md:px-6">
         <div className="max-w-4xl mx-auto mb-16 reveal-element">
           <div className="flex justify-center mb-2">
-            <span className="px-3 py-1 text-xs font-medium text-white bg-white/10 rounded-full">
+            <span className="px-3 py-1 text-xs font-medium bg-white/20 rounded-full backdrop-blur-sm text-white">
               Investition
             </span>
           </div>
-          <h2 className="text-3xl md:text-4xl font-serif font-semibold text-center mb-4 text-white">
+          <h2 className="text-3xl md:text-4xl font-serif font-semibold text-center mb-4 text-white drop-shadow-lg">
             Investiere in dein Wohlbefinden
           </h2>
           <div className="w-16 h-1 bg-mauve mx-auto mb-8"></div>
-          <p className="text-lg text-center text-white/80 max-w-2xl mx-auto">
+          <p className="text-lg text-center text-white/90 max-w-2xl mx-auto drop-shadow">
             Vor jedem 1:1 Coaching machen wir zuerst ein kostenloses Kennenlerngespräch online oder per Telefon.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-8 lg:gap-12 max-w-6xl mx-auto">
+        <div className="grid md:grid-cols-5 gap-8 lg:gap-12 max-w-6xl mx-auto">
           {/* Quote */}
           <div 
-            className={`md:col-span-1 transition-all duration-1000 ease-out ${
-              isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
+            className={`md:col-span-2 transition-all duration-1000 ease-out ${
+              isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
             }`}
           >
             <div className="h-full flex items-center">
-              <div className="bg-white/90 backdrop-blur-sm p-8 md:p-10 shadow-xl border border-white/20 h-full">
+              <div className="bg-white/95 backdrop-blur-sm p-6 md:p-8 shadow-xl border border-white/20 rounded-lg h-full">
                 <div className="flex items-center mb-6">
-                  <MessageSquareQuote size={32} className="text-petrol/70 mr-3" />
+                  <MessageSquareQuote size={32} className="text-petrol/80 mr-3" />
                 </div>
-                <p className="text-xl md:text-2xl text-petrol font-serif mb-6 leading-relaxed">
+                <p className="text-xl text-petrol font-serif mb-6 leading-relaxed">
                   Unsere wichtigste Entscheidung ist, ob wir das Universum für einen freundlichen oder feindlichen Ort halten.
                 </p>
                 <p className="text-petrol/80 font-medium">― Albert Einstein</p>
@@ -92,24 +93,24 @@ const PricingWithQuote = () => {
 
           {/* Pricing */}
           <div 
-            className={`md:col-span-2 transition-all duration-1000 ease-out ${
-              isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
+            className={`md:col-span-3 transition-all duration-1000 ease-out ${
+              isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
             }`}
           >
-            <div className="bg-white shadow-xl overflow-hidden border border-sage/20 h-full">
-              <div className="bg-petrol/90 p-8 text-white">
+            <div className="bg-white shadow-xl overflow-hidden border border-sage/20 rounded-lg h-full">
+              <div className="bg-gradient-to-r from-petrol to-petrol/80 p-6 md:p-8 text-white">
                 <h3 className="text-2xl font-serif font-medium mb-2">Coaching Einzelsitzung</h3>
-                <p className="text-white/80 mb-4">Individuelle Betreuung für deine Bedürfnisse</p>
+                <p className="text-white/90 mb-4">Individuelle Betreuung für deine Bedürfnisse</p>
                 <div className="flex items-baseline">
                   <span className="text-4xl font-bold">CHF 90</span>
-                  <span className="text-white/80 ml-2">pro Sitzung</span>
+                  <span className="text-white/90 ml-2">pro Sitzung</span>
                 </div>
               </div>
               
-              <div className="p-8">
+              <div className="p-6 md:p-8">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                   <div className="flex items-start gap-4">
-                    <div className="flex-shrink-0 w-10 h-10 bg-sage/20 flex items-center justify-center">
+                    <div className="flex-shrink-0 w-10 h-10 bg-sage/20 rounded-full flex items-center justify-center">
                       <Clock size={20} className="text-petrol" />
                     </div>
                     <div>
@@ -119,7 +120,7 @@ const PricingWithQuote = () => {
                   </div>
                   
                   <div className="flex items-start gap-4">
-                    <div className="flex-shrink-0 w-10 h-10 bg-sage/20 flex items-center justify-center">
+                    <div className="flex-shrink-0 w-10 h-10 bg-sage/20 rounded-full flex items-center justify-center">
                       <Users size={20} className="text-petrol" />
                     </div>
                     <div>
@@ -129,7 +130,7 @@ const PricingWithQuote = () => {
                   </div>
                   
                   <div className="flex items-start gap-4">
-                    <div className="flex-shrink-0 w-10 h-10 bg-sage/20 flex items-center justify-center">
+                    <div className="flex-shrink-0 w-10 h-10 bg-sage/20 rounded-full flex items-center justify-center">
                       <Calendar size={20} className="text-petrol" />
                     </div>
                     <div>
@@ -156,7 +157,7 @@ const PricingWithQuote = () => {
                 <div>
                   <a 
                     href="#contact" 
-                    className="btn-primary w-full flex justify-center"
+                    className="btn-primary w-full flex justify-center rounded-md"
                   >
                     Jetzt buchen
                   </a>
@@ -169,7 +170,7 @@ const PricingWithQuote = () => {
         <div className="flex justify-center mt-12">
           <a 
             href="#contact" 
-            className="inline-flex items-center justify-center px-8 py-3 bg-white text-petrol hover:bg-white/90 transition-colors shadow-lg font-medium"
+            className="inline-flex items-center justify-center px-8 py-3 bg-white/95 text-petrol hover:bg-white transition-colors shadow-lg font-medium rounded-md backdrop-blur-sm"
           >
             Starte jetzt deine persönliche Reise
           </a>
