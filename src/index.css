@@ -1,38 +1,167 @@
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
+  :root {
+    --background: 30 33% 98%;
+    --foreground: 20 50% 15%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 20 50% 15%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 20 50% 15%;
+
+    --primary: 183 28% 35%;
+    --primary-foreground: 30 33% 98%;
+
+    --secondary: 90 10% 67%;
+    --secondary-foreground: 20 50% 15%;
+
+    --muted: 30 25% 90%;
+    --muted-foreground: 220 10% 45%;
+
+    --accent: 347 40% 74%;
+    --accent-foreground: 20 50% 15%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 30 33% 98%;
+
+    --border: 30 25% 90%;
+    --input: 30 25% 90%;
+    --ring: 183 28% 35%;
+
+    --radius: 0.5rem;
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --background: 20 50% 5%;
+    --foreground: 30 33% 98%;
+
+    --card: 20 50% 5%;
+    --card-foreground: 30 33% 98%;
+
+    --popover: 20 50% 5%;
+    --popover-foreground: 30 33% 98%;
+
+    --primary: 183 28% 35%;
+    --primary-foreground: 30 33% 98%;
+
+    --secondary: 90 10% 37%;
+    --secondary-foreground: 30 33% 98%;
+
+    --muted: 20 40% 15%;
+    --muted-foreground: 30 20% 70%;
+
+    --accent: 347 40% 74%;
+    --accent-foreground: 20 50% 5%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 30 33% 98%;
+
+    --border: 20 40% 15%;
+    --input: 20 40% 15%;
+    --ring: 183 28% 35%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
   body {
-    @apply bg-background text-foreground font-sans antialiased selection:bg-vivid-purple/20 selection:text-petrol;
+    @apply bg-background text-foreground font-sans antialiased;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply font-sans font-semibold tracking-tight text-petrol;
+    @apply font-serif;
   }
 }
 
 @layer utilities {
   .section-padding {
-    @apply py-16 md:py-24 lg:py-32;
+    @apply py-16 md:py-24;
   }
   
   .hero-text-gradient {
-    @apply bg-gradient-to-r from-petrol via-sage to-ocean-blue bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-petrol via-mauve to-sage bg-clip-text text-transparent;
   }
   
   .card-hover {
-    @apply transition-all duration-300 hover:shadow-medium hover:scale-[1.02];
+    @apply transition-all duration-300 hover:shadow-lg hover:-translate-y-1;
   }
   
   .focus-ring {
-    @apply focus:outline-none focus:ring-2 focus:ring-vivid-purple focus:ring-opacity-50;
+    @apply focus:outline-none focus:ring-2 focus:ring-petrol focus:ring-opacity-50;
   }
-  
-  .apple-button {
-    @apply inline-flex items-center justify-center px-6 py-2 bg-petrol text-white transition-colors focus-ring;
-  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #A8B5A2;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #3F6C72;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Image reveal animations */
+.image-reveal {
+  clip-path: inset(0 0 0 0);
+  transition: clip-path 1s cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+.image-reveal.reveal {
+  clip-path: inset(0 0 0 0);
+}
+
+/* Link hover effect */
+.link-hover {
+  position: relative;
+}
+
+.link-hover::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  transform: scaleX(0);
+  height: 2px;
+  bottom: -2px;
+  left: 0;
+  background-color: #3F6C72;
+  transform-origin: bottom right;
+  transition: transform 0.3s ease-out;
+}
+
+.link-hover:hover::after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
 }

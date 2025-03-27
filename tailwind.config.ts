@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -23,20 +24,15 @@ export default {
 		},
 		extend: {
 			colors: {
-				// Incorporate some vibrant but sophisticated colors
-				"soft-purple": "#E5DEFF",
-				"vivid-purple": "#8B5CF6",
-				"ocean-blue": "#0EA5E9",
-				"bright-blue": "#1EAEDB",
-				"soft-gray": "#F1F0FB",
-				"charcoal-gray": "#403E43",
-				
-				// Keep the existing color palette with some tweaks
-				"beige": "#F5F5F7",
-				"sage": "#86868B",
-				"mauve": "#A2AAAD",
-				"petrol": "#1D1D1F",
-				
+				// Main colors
+				"beige": "#E6D5C5",
+				"sage": "#A8B5A2",
+				"mauve": "#D6A5B3",
+				"petrol": "#3F6C72",
+				// Accent colors
+				"mustard": "#E3A63F",
+				"coral": "#E65C4F",
+				"lavender": "#C5B4E3",
 				// Original shadcn colors
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
@@ -83,18 +79,13 @@ export default {
 				}
 			},
 			fontFamily: {
-				'sans': ['SF Pro Display', 'Helvetica Neue', 'Helvetica', 'Arial', 'sans-serif'],
-				'serif': ['New York', 'Georgia', 'serif'],
+				'sans': ['Montserrat', 'sans-serif'],
+				'serif': ['Playfair Display', 'serif'],
 			},
 			borderRadius: {
-				lg: '0',
-				md: '0',
-				sm: '0'
-			},
-			boxShadow: {
-				// More subtle, Apple-like shadows
-				'soft': '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
-				'medium': '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)'
+				lg: 'var(--radius)',
+				md: 'calc(var(--radius) - 2px)',
+				sm: 'calc(var(--radius) - 4px)'
 			},
 			keyframes: {
 				'accordion-down': {
