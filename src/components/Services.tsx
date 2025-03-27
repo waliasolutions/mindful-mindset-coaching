@@ -32,32 +32,32 @@ const Services = () => {
     {
       icon: <Brain size={20} className="text-white" />,
       title: "Persönliches Wachstum",
-      description: "ein erfülltes und selbstbestimmtes Leben führen möchtest"
+      description: "Du möchtest ein erfülltes und selbstbestimmtes Leben führen"
     },
     {
       icon: <Star size={20} className="text-white" />,
       title: "Potenzialentfaltung",
-      description: "endlich deine Ziele erreichen und dein volles Potenzial entfalten willst"
+      description: "Du willst endlich deine Ziele erreichen und dein volles Potenzial entfalten"
     },
     {
       icon: <Heart size={20} className="text-white" />,
       title: "Selbstbewusstsein",
-      description: "mehr Selbstbewusstsein und Vertrauen aufbauen möchtest"
+      description: "Du möchtest mehr Selbstbewusstsein und Vertrauen aufbauen"
     },
     {
       icon: <Lightbulb size={20} className="text-white" />,
       title: "Klarheit & Gelassenheit",
-      description: "dich nach mehr Klarheit, Gelassenheit und Lebensfreude sehnst"
+      description: "Du sehnst dich nach mehr Klarheit, Gelassenheit und Lebensfreude"
     },
     {
       icon: <Heart size={20} className="text-white" />,
       title: "Beziehungen",
-      description: "eine liebevolle Beziehung führen willst"
+      description: "Du willst eine liebevolle Beziehung führen"
     },
     {
       icon: <Sun size={20} className="text-white" />,
       title: "Gesunde Routinen",
-      description: "gesunde Routinen und Gewohnheiten entwickeln möchtest"
+      description: "Du möchtest gesunde Routinen und Gewohnheiten entwickeln"
     },
   ];
 
@@ -122,3 +122,4 @@ const Services = () => {
 };
 
 export default Services;
+
