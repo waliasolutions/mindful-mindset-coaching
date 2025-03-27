@@ -108,53 +108,13 @@ const Services = () => {
           ))}
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          <div className={`reveal-left ${isVisible ? 'revealed' : ''}`}>
-            <div className="bg-white shadow-lg p-8 border-l-2 border-petrol">
-              <h3 className="text-2xl font-serif font-medium mb-6 text-petrol">Mindset Coaching ist etwas für Dich, wenn Du:</h3>
-              
-              <ul className="space-y-4">
-                {[
-                  "ein erfülltes und selbstbestimmtes Leben führen möchtest",
-                  "endlich deine Ziele erreichen und dein volles Potenzial entfalten willst",
-                  "mehr Selbstbewusstsein und Vertrauen aufbauen möchtest",
-                  "dich nach mehr Klarheit, Gelassenheit und Lebensfreude sehnst",
-                  "eine liebevolle Beziehung führen willst",
-                  "gesunde Routinen und Gewohnheiten entwickeln möchtest",
-                  "bereit bist, alte Ängste und Zweifel hinter dir zu lassen",
-                ].map((benefit, index) => (
-                  <li key={index} className="flex items-start gap-3">
-                    <div className="flex-shrink-0 w-6 h-6 rounded-full bg-sage/20 flex items-center justify-center mt-0.5">
-                      <Check size={14} className="text-petrol" />
-                    </div>
-                    <span className="text-foreground/80">{benefit}</span>
-                  </li>
-                ))}
-              </ul>
-              
-              <div className="mt-8">
-                <a 
-                  href="#contact" 
-                  className="btn-primary w-full flex justify-center"
-                >
-                  Kontaktiere mich
-                </a>
-              </div>
-            </div>
-          </div>
-          
-          <div className={`reveal-right ${isVisible ? 'revealed' : ''}`}>
-            <div className="aspect-[4/5] overflow-hidden shadow-xl rounded-lg">
-              <div className="image-reveal reveal w-full h-full">
-                <img 
-                  src="/lovable-uploads/7b4f0db6-80ea-4da6-b817-0f33ba7562b5.png" 
-                  alt="Martina Domeniconi" 
-                  className="w-full h-full object-cover"
-                  loading="lazy"
-                />
-              </div>
-            </div>
-          </div>
+        <div className="flex justify-center mt-8">
+          <a 
+            href="#contact" 
+            className="btn-primary inline-flex justify-center"
+          >
+            Kontaktiere mich
+          </a>
         </div>
       </div>
     </section>
