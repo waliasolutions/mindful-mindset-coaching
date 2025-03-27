@@ -38,13 +38,13 @@ const Navbar = () => {
   return (
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled ? 'bg-white/90 shadow-md backdrop-blur-sm py-2' : 'bg-transparent py-4'
+        isScrolled ? 'bg-white/95 backdrop-blur-md border-b border-sage/10 py-2' : 'bg-transparent py-4'
       }`}
     >
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex items-center justify-between">
-          <a href="#home" className="text-petrol font-serif text-2xl md:text-3xl font-medium">
-            Mindful <span className="text-mauve">Mindset</span>
+          <a href="#home" className="text-petrol font-sans text-xl md:text-2xl font-semibold tracking-tight">
+            Mindful <span className="text-sage">Mindset</span>
           </a>
 
           {/* Desktop Navigation */}
@@ -53,7 +53,7 @@ const Navbar = () => {
               <a
                 key={link.name}
                 href={link.href}
-                className="text-foreground hover:text-petrol transition-colors link-hover focus-ring"
+                className="text-foreground hover:text-petrol transition-colors text-sm font-medium focus-ring"
               >
                 {link.name}
               </a>
@@ -62,7 +62,7 @@ const Navbar = () => {
 
           {/* Mobile Navigation Toggle */}
           <button
-            className="md:hidden text-foreground focus:outline-none focus-ring rounded-md p-2"
+            className="md:hidden text-foreground focus:outline-none focus-ring p-2"
             onClick={toggleMenu}
             aria-label="Toggle menu"
           >
@@ -73,13 +73,13 @@ const Navbar = () => {
 
       {/* Mobile Navigation Menu */}
       {isMenuOpen && (
-        <div className="md:hidden absolute top-full left-0 right-0 bg-white/95 backdrop-blur-sm shadow-lg animate-fade-in">
-          <div className="container mx-auto px-4 py-4 flex flex-col space-y-4">
+        <div className="md:hidden absolute top-full left-0 right-0 bg-white/95 backdrop-blur-md border-b border-sage/10">
+          <div className="container mx-auto px-4 py-4 flex flex-col">
             {navLinks.map((link) => (
               <a
                 key={link.name}
                 href={link.href}
-                className="text-foreground hover:text-petrol py-2 transition-colors focus-ring"
+                className="text-foreground hover:text-petrol py-3 text-sm font-medium border-b border-sage/10 transition-colors focus-ring"
                 onClick={closeMenu}
               >
                 {link.name}

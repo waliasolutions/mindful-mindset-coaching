@@ -24,15 +24,15 @@ export default {
 		},
 		extend: {
 			colors: {
-				// Main colors
-				"beige": "#E6D5C5",
-				"sage": "#A8B5A2",
-				"mauve": "#D6A5B3",
-				"petrol": "#3F6C72",
-				// Accent colors
-				"mustard": "#E3A63F",
-				"coral": "#E65C4F",
-				"lavender": "#C5B4E3",
+				// Main colors - updated with a more Apple-like palette
+				"beige": "#F5F5F7",
+				"sage": "#86868B",
+				"mauve": "#A2AAAD",
+				"petrol": "#1D1D1F",
+				// Accent colors - updated with Apple-inspired colors
+				"mustard": "#F5DF4D",
+				"coral": "#FC5C65",
+				"lavender": "#A7B8F9",
 				// Original shadcn colors
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
@@ -79,13 +79,13 @@ export default {
 				}
 			},
 			fontFamily: {
-				'sans': ['Montserrat', 'sans-serif'],
-				'serif': ['Playfair Display', 'serif'],
+				'sans': ['SF Pro Display', 'Helvetica Neue', 'Helvetica', 'Arial', 'sans-serif'],
+				'serif': ['New York', 'Georgia', 'serif'],
 			},
 			borderRadius: {
-				lg: 'var(--radius)',
-				md: 'calc(var(--radius) - 2px)',
-				sm: 'calc(var(--radius) - 4px)'
+				lg: '0',
+				md: '0',
+				sm: '0'
 			},
 			keyframes: {
 				'accordion-down': {
