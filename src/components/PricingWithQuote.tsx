@@ -33,7 +33,7 @@ const PricingWithQuote = () => {
     <section 
       id="pricing" 
       ref={sectionRef}
-      className="section-padding relative overflow-hidden"
+      className="section-padding relative overflow-hidden bg-secondary/10"
     >
       {/* Background with overlay */}
       <div className="absolute inset-0 -z-10">
@@ -41,9 +41,9 @@ const PricingWithQuote = () => {
           <img 
             src="/lovable-uploads/5ffe71dc-5b50-4709-af7a-73c5424b6a05.png" 
             alt="Mindset Inspiration" 
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover opacity-30"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-petrol/95 to-petrol/80"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-secondary/40 to-secondary/30"></div>
         </AspectRatio>
       </div>
       
@@ -58,15 +58,15 @@ const PricingWithQuote = () => {
       <div className="container mx-auto px-4 md:px-6">
         <div className="max-w-4xl mx-auto mb-16 reveal-element">
           <div className="flex justify-center mb-2">
-            <span className="px-3 py-1 text-xs font-medium bg-white/20 rounded-full backdrop-blur-sm text-white">
+            <span className="px-3 py-1 text-xs font-medium bg-secondary/20 rounded-full backdrop-blur-sm text-foreground">
               Investition
             </span>
           </div>
-          <h2 className="text-3xl md:text-4xl font-serif font-semibold text-center mb-4 text-white drop-shadow-lg">
+          <h2 className="text-3xl md:text-4xl font-serif font-semibold text-center mb-4 text-foreground">
             Investiere in dein Wohlbefinden
           </h2>
           <div className="w-16 h-1 bg-mauve mx-auto mb-8"></div>
-          <p className="text-lg text-center text-white/90 max-w-2xl mx-auto drop-shadow">
+          <p className="text-lg text-center text-foreground/90 max-w-2xl mx-auto">
             Vor jedem 1:1 Coaching machen wir zuerst ein kostenloses Kennenlerngespräch online oder per Telefon.
           </p>
         </div>
