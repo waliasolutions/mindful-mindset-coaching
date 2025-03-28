@@ -72,21 +72,21 @@ const PricingWithQuote = () => {
         </div>
 
         <div className="grid md:grid-cols-5 gap-8 lg:gap-12 max-w-6xl mx-auto">
-          {/* Quote - Revised to reduce white space */}
+          {/* Quote */}
           <div 
             className={`md:col-span-2 transition-all duration-1000 ease-out ${
               isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
             }`}
           >
             <div className="h-full flex items-center">
-              <div className="bg-petrol/20 backdrop-blur-sm p-6 md:p-8 border border-petrol/20 rounded-lg h-full">
-                <div className="flex items-center mb-4">
-                  <MessageSquareQuote size={28} className="text-petrol/80 mr-2" />
+              <div className="bg-white/95 backdrop-blur-sm p-6 md:p-8 shadow-xl border border-white/20 rounded-lg h-full">
+                <div className="flex items-center mb-6">
+                  <MessageSquareQuote size={32} className="text-petrol/80 mr-3" />
                 </div>
-                <p className="text-xl text-petrol font-serif mb-4 leading-relaxed">
+                <p className="text-xl text-petrol font-serif mb-6 leading-relaxed">
                   Unsere wichtigste Entscheidung ist, ob wir das Universum für einen freundlichen oder feindlichen Ort halten.
                 </p>
-                <p className="text-petrol/80 font-medium text-sm">― Albert Einstein</p>
+                <p className="text-petrol/80 font-medium">― Albert Einstein</p>
               </div>
             </div>
           </div>
@@ -97,7 +97,7 @@ const PricingWithQuote = () => {
               isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
             }`}
           >
-            <div className="bg-white/10 backdrop-blur-sm border border-sage/20 rounded-lg h-full">
+            <div className="bg-white shadow-xl overflow-hidden border border-sage/20 rounded-lg h-full">
               <div className="bg-gradient-to-r from-petrol to-petrol/80 p-6 md:p-8 text-white">
                 <h3 className="text-2xl font-serif font-medium mb-2">Coaching Einzelsitzung</h3>
                 <p className="text-white/90 mb-4">Individuelle Betreuung für deine Bedürfnisse</p>
@@ -170,7 +170,7 @@ const PricingWithQuote = () => {
         <div className="flex justify-center mt-12">
           <a 
             href="#contact" 
-            className="inline-flex items-center justify-center px-8 py-3 bg-petrol/20 text-petrol hover:bg-petrol/30 transition-colors font-medium rounded-md backdrop-blur-sm"
+            className="inline-flex items-center justify-center px-8 py-3 bg-white/95 text-petrol hover:bg-white transition-colors shadow-lg font-medium rounded-md backdrop-blur-sm"
           >
             Starte jetzt deine persönliche Reise
           </a>
