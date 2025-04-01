@@ -79,11 +79,11 @@ const PricingWithQuote = () => {
             }`}
           >
             <div className="h-full flex items-center">
-              <div className="bg-sage/10 backdrop-blur-sm p-5 md:p-6 border border-sage/30 rounded-lg h-full">
-                <div className="flex items-center mb-4">
-                  <MessageSquareQuote size={28} className="text-sage mr-2" />
+              <div className="bg-sage/20 backdrop-blur-sm p-4 md:p-5 border border-sage/30 rounded-lg h-full">
+                <div className="flex items-center mb-3">
+                  <MessageSquareQuote size={24} className="text-sage mr-2" />
                 </div>
-                <p className="text-xl text-foreground font-serif mb-4 leading-relaxed">
+                <p className="text-xl text-foreground font-serif mb-3 leading-relaxed">
                   Unsere wichtigste Entscheidung ist, ob wir das Universum für einen freundlichen oder feindlichen Ort halten.
                 </p>
                 <p className="text-sage font-medium">― Albert Einstein</p>

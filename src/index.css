@@ -16,7 +16,7 @@
     --popover: 0 0% 100%;
     --popover-foreground: 20 50% 15%;
 
-    --primary: 183 28% 35%;
+    --primary: 106 17% 67%;
     --primary-foreground: 30 33% 98%;
 
     --secondary: 90 10% 67%;
@@ -33,7 +33,7 @@
 
     --border: 30 25% 90%;
     --input: 30 25% 90%;
-    --ring: 183 28% 35%;
+    --ring: 106 17% 67%;
 
     --radius: 0.5rem;
 
@@ -57,7 +57,7 @@
     --popover: 20 50% 5%;
     --popover-foreground: 30 33% 98%;
 
-    --primary: 183 28% 35%;
+    --primary: 106 17% 67%;
     --primary-foreground: 30 33% 98%;
 
     --secondary: 90 10% 37%;
@@ -74,7 +74,7 @@
 
     --border: 20 40% 15%;
     --input: 20 40% 15%;
-    --ring: 183 28% 35%;
+    --ring: 106 17% 67%;
   }
 }
 
@@ -98,7 +98,7 @@
   }
   
   .hero-text-gradient {
-    @apply bg-gradient-to-r from-petrol via-mauve to-sage bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-sage via-mauve to-sage bg-clip-text text-transparent;
   }
   
   .card-hover {
@@ -106,7 +106,7 @@
   }
   
   .focus-ring {
-    @apply focus:outline-none focus:ring-2 focus:ring-petrol focus:ring-opacity-50;
+    @apply focus:outline-none focus:ring-2 focus:ring-sage focus:ring-opacity-50;
   }
 
   .reveal-element {
@@ -149,7 +149,7 @@
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #3F6C72;
+  background: #8a9784;
 }
 
 /* Smooth scrolling */
@@ -181,7 +181,7 @@ html {
   height: 2px;
   bottom: -2px;
   left: 0;
-  background-color: #3F6C72;
+  background-color: #A8B5A2;
   transform-origin: bottom right;
   transition: transform 0.3s ease-out;
 }
@@ -207,13 +207,13 @@ html {
   transform: translate(-50%, -50%);
   width: 12px;
   height: 12px;
-  background-color: #3F6C72;
+  background-color: #A8B5A2;
   border-radius: 50%;
 }
 
 /* Button animation */
 .btn-primary {
-  @apply bg-petrol text-white px-6 py-3 inline-flex items-center justify-center transition-all duration-300;
+  @apply bg-sage text-white px-6 py-3 inline-flex items-center justify-center transition-all duration-300;
   position: relative;
   overflow: hidden;
 }
