@@ -26,11 +26,11 @@ const Hero = () => {
   return (
     <section id="home" className="relative min-h-screen flex items-center pt-20 pb-12 overflow-hidden">
       {/* Background pattern and gradient */}
-      <div className="absolute inset-0 bg-beige/30 leaf-pattern -z-10"></div>
+      <div className="absolute inset-0 bg-beige/60 leaf-pattern -z-10"></div>
       
       {/* Decorative elements */}
-      <div className="absolute top-40 right-10 w-64 h-64 bg-sage/10 rounded-full blur-3xl -z-10"></div>
-      <div className="absolute bottom-20 left-10 w-72 h-72 bg-mauve/5 rounded-full blur-3xl -z-10"></div>
+      <div className="absolute top-40 right-10 w-64 h-64 bg-sage/20 rounded-full blur-3xl -z-10"></div>
+      <div className="absolute bottom-20 left-10 w-72 h-72 bg-mauve/20 rounded-full blur-3xl -z-10"></div>
       
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex flex-col lg:flex-row items-center justify-between gap-12">
@@ -40,7 +40,7 @@ const Hero = () => {
                 ref={headingRef}
                 className="font-serif text-4xl md:text-5xl lg:text-6xl font-semibold leading-tight mb-6 transition-all duration-700 ease-out opacity-0 translate-y-10"
               >
-                <span className="bg-gradient-to-r from-moss via-forest to-petrol bg-clip-text text-transparent">Mindset Coaching</span> für ein glückliches und erfülltes Leben
+                <span className="bg-gradient-to-r from-moss via-petrol to-forest bg-clip-text text-transparent">Mindset Coaching</span> für ein glückliches und erfülltes Leben
               </h1>
               <p 
                 ref={subtitleRef}
@@ -60,7 +60,7 @@ const Hero = () => {
                 </a>
                 <a 
                   href="#services" 
-                  className="inline-flex items-center justify-center px-6 py-3 bg-sage/20 hover:bg-sage/30 text-forest transition-colors focus-ring text-center"
+                  className="inline-flex items-center justify-center px-6 py-3 bg-sage/30 hover:bg-sage/40 text-forest transition-colors focus-ring text-center"
                 >
                   Mehr erfahren
                 </a>
@@ -80,9 +80,9 @@ const Hero = () => {
                 <div className="absolute inset-0 bg-gradient-to-t from-forest/40 to-transparent opacity-40 rounded-lg"></div>
               </div>
             </div>
-            <div className="absolute -bottom-6 -left-6 p-4 bg-white shadow-lg max-w-xs rounded-lg border-l-2 border-sage">
+            <div className="absolute -bottom-6 -left-6 p-4 bg-white shadow-lg max-w-xs rounded-lg border-l-2 border-petrol">
               <div className="flex items-center gap-2">
-                <div className="w-6 h-6 rounded-full bg-sage/20 flex items-center justify-center">
+                <div className="w-6 h-6 rounded-full bg-sage/30 flex items-center justify-center">
                   <Leaf size={14} className="text-forest" />
                 </div>
                 <p className="text-sm font-medium text-forest">Martina Domeniconi</p>

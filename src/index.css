@@ -1,4 +1,3 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap');
 
 @tailwind base;
@@ -7,8 +6,8 @@
 
 @layer base {
   :root {
-    --background: 100 35% 95%;
-    --foreground: 135 50% 15%;
+    --background: 30 32% 90%;  /* Lighter version of beige */
+    --foreground: 135 50% 15%; /* Forest green for text */
 
     --card: 0 0% 100%;
     --card-foreground: 135 50% 15%;
@@ -16,24 +15,24 @@
     --popover: 0 0% 100%;
     --popover-foreground: 135 50% 15%;
 
-    --primary: 135 30% 35%;
-    --primary-foreground: 100 35% 95%;
+    --primary: 186 29% 35%; /* Petrol blue */
+    --primary-foreground: 30 32% 90%;
 
-    --secondary: 120 15% 67%;
+    --secondary: 120 15% 67%; /* Sage green */
     --secondary-foreground: 135 50% 15%;
 
     --muted: 100 25% 90%;
     --muted-foreground: 135 10% 45%;
 
-    --accent: 347 40% 74%;
+    --accent: 337 41% 74%; /* Mauve */
     --accent-foreground: 135 50% 15%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 100 35% 95%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 30 32% 90%;
 
-    --border: 100 25% 90%;
+    --border: 120 15% 67%; /* Sage for borders */
     --input: 100 25% 90%;
-    --ring: 135 30% 35%;
+    --ring: 186 29% 35%; /* Petrol blue */
 
     --radius: 0.5rem;
 
@@ -49,32 +48,32 @@
 
   .dark {
     --background: 135 50% 5%;
-    --foreground: 100 35% 95%;
+    --foreground: 30 32% 90%; /* Beige */
 
     --card: 135 50% 5%;
-    --card-foreground: 100 35% 95%;
+    --card-foreground: 30 32% 90%;
 
     --popover: 135 50% 5%;
-    --popover-foreground: 100 35% 95%;
+    --popover-foreground: 30 32% 90%;
 
-    --primary: 135 30% 35%;
-    --primary-foreground: 100 35% 95%;
+    --primary: 186 29% 35%; /* Petrol blue */
+    --primary-foreground: 30 32% 90%;
 
-    --secondary: 120 10% 37%;
-    --secondary-foreground: 100 35% 95%;
+    --secondary: 120 10% 37%; /* Darker sage */
+    --secondary-foreground: 30 32% 90%;
 
     --muted: 135 40% 15%;
-    --muted-foreground: 100 20% 70%;
+    --muted-foreground: 30 20% 70%;
 
-    --accent: 347 40% 74%;
+    --accent: 337 41% 74%; /* Mauve */
     --accent-foreground: 135 50% 5%;
 
     --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 100 35% 95%;
+    --destructive-foreground: 30 32% 90%;
 
     --border: 135 40% 15%;
     --input: 135 40% 15%;
-    --ring: 135 30% 35%;
+    --ring: 186 29% 35%; /* Petrol blue */
   }
 }
 
@@ -98,7 +97,7 @@
   }
   
   .hero-text-gradient {
-    @apply bg-gradient-to-r from-sage via-mauve to-sage bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-sage via-petrol to-moss bg-clip-text text-transparent;
   }
   
   .card-hover {
@@ -144,7 +143,7 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #41773A;
+  background: #3F6C72; /* Changed to petrol */
   border-radius: 4px;
 }
 
@@ -235,11 +234,11 @@ html {
 
 /* Updated utility classes */
 .nature-card {
-  @apply bg-white/90 backdrop-blur-sm border-l-2 border-moss shadow-md hover:shadow-lg transition-all duration-300;
+  @apply bg-white/90 backdrop-blur-sm border-l-2 border-sage shadow-md hover:shadow-lg transition-all duration-300;
 }
 
 .section-fade {
-  @apply bg-gradient-to-b from-mint to-white/80;
+  @apply bg-gradient-to-b from-beige/50 to-white/80;
 }
 
 /* Background patterns */
