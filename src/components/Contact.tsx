@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from 'react';
 import { Phone, Mail, MapPin, Clock, ArrowRight, MessageSquare, Leaf } from 'lucide-react';
 
@@ -144,8 +143,8 @@ const Contact = () => {
               <div className="aspect-[16/9] overflow-hidden shadow-xl rounded-lg">
                 <div className="image-reveal reveal w-full h-full">
                   <img 
-                    src="/lovable-uploads/d9981b42-405f-4f3f-b970-cdffcb451223.png" 
-                    alt="Peaceful forest scene" 
+                    src="/lovable-uploads/053f601c-1228-481c-9aca-d078fb3d7d8a.png" 
+                    alt="Peaceful nature scene" 
                     className="w-full h-full object-cover object-center"
                     loading="lazy"
                   />
