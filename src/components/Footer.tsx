@@ -1,5 +1,4 @@
-
-import { MapPin, Mail, Phone, Leaf, Facebook, Instagram, Linkedin } from 'lucide-react';
+import { MapPin, Mail, Phone, Leaf, Facebook, Instagram } from 'lucide-react';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -25,15 +24,6 @@ const Footer = () => {
               Mit dem richtigen Mindset sind deinen Möglichkeiten keine Grenzen gesetzt. Entfalte dein volles Potenzial und erschaffe das Leben, von dem du träumst.
             </p>
             <div className="flex items-center space-x-4">
-              <a href="#contact" className="w-10 h-10 flex items-center justify-center bg-white/10 text-white hover:bg-white/20 transition-colors rounded-full">
-                <Mail size={18} />
-              </a>
-              <a href="tel:+41788400481" className="w-10 h-10 flex items-center justify-center bg-white/10 text-white hover:bg-white/20 transition-colors rounded-full">
-                <Phone size={18} />
-              </a>
-              <a href="#contact" className="w-10 h-10 flex items-center justify-center bg-white/10 text-white hover:bg-white/20 transition-colors rounded-full">
-                <MapPin size={18} />
-              </a>
               <a href="#" className="w-10 h-10 flex items-center justify-center bg-white/10 text-white hover:bg-white/20 transition-colors rounded-full">
                 <Facebook size={18} />
               </a>
