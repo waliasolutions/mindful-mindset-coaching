@@ -1,6 +1,6 @@
 
 import { useState } from 'react';
-import { MapPin, Mail, Phone, Leaf, Facebook, Instagram, FileText, Shield } from 'lucide-react';
+import { MapPin, Mail, Phone, Leaf, Facebook, Instagram, FileText, Shield, ScrollText } from 'lucide-react';
 import Terms from './Terms';
 import LegalInfo from './LegalInfo';
 
@@ -94,12 +94,13 @@ const Footer = () => {
         </div>
         
         <div className="border-t border-white/20 pt-8">
-          <div className="flex flex-col md:flex-row justify-center items-center gap-4 md:gap-8 text-center">
+          <div className="flex justify-center items-center gap-8 text-center">
             <button 
               onClick={openTerms} 
-              className="text-white/60 text-sm hover:text-mint transition-colors"
+              className="text-white/60 text-sm hover:text-mint transition-colors flex items-center gap-1"
             >
-              AGB
+              <ScrollText size={14} />
+              <span>AGB</span>
             </button>
             <button 
               onClick={() => openLegalInfo("impressum")} 
@@ -115,9 +116,6 @@ const Footer = () => {
               <Shield size={14} />
               <span>Datenschutz</span>
             </button>
-            <p className="text-white/60 text-sm">
-              © {currentYear} Martina Domeniconi. Alle Rechte vorbehalten.
-            </p>
           </div>
         </div>
       </div>
