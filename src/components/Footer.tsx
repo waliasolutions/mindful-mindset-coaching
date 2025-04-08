@@ -5,7 +5,6 @@ import Terms from './Terms';
 import LegalInfo from './LegalInfo';
 
 const Footer = () => {
-  const currentYear = new Date().getFullYear();
   const [isTermsOpen, setIsTermsOpen] = useState(false);
   const [isLegalInfoOpen, setIsLegalInfoOpen] = useState(false);
   const [legalInfoTab, setLegalInfoTab] = useState<string>("impressum");
@@ -122,7 +121,11 @@ const Footer = () => {
       
       {/* Legal popups */}
       <Terms isOpen={isTermsOpen} onClose={closeTerms} />
-      <LegalInfo isOpen={isLegalInfoOpen} onClose={closeLegalInfo} defaultTab={legalInfoTab} />
+      <LegalInfo 
+        isOpen={isLegalInfoOpen} 
+        onClose={closeLegalInfo} 
+        defaultTab={legalInfoTab} 
+      />
     </footer>
   );
 };

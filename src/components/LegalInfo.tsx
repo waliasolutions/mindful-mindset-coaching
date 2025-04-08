@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Dialog,
   DialogContent,
@@ -17,6 +17,11 @@ interface LegalInfoProps {
 
 const LegalInfo = ({ isOpen, onClose, defaultTab = "impressum" }: LegalInfoProps) => {
   const [activeTab, setActiveTab] = useState(defaultTab);
+  
+  // Update activeTab when defaultTab prop changes
+  useEffect(() => {
+    setActiveTab(defaultTab);
+  }, [defaultTab]);
   
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
