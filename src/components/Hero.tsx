@@ -1,11 +1,13 @@
 
 import { ArrowDown, Leaf } from 'lucide-react';
 import { useEffect, useRef } from 'react';
+import { useIsMobile } from '../hooks/use-mobile';
 
 const Hero = () => {
   const headingRef = useRef<HTMLHeadingElement>(null);
   const subtitleRef = useRef<HTMLParagraphElement>(null);
   const ctaRef = useRef<HTMLDivElement>(null);
+  const isMobile = useIsMobile();
   
   useEffect(() => {
     // Staggered reveal animation
@@ -91,13 +93,15 @@ const Hero = () => {
         </div>
       </div>
       
-      {/* Scroll indicator */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-        <a href="#services" className="flex flex-col items-center text-forest/70 hover:text-forest transition-colors">
-          <span className="text-sm mb-2">Mehr</span>
-          <ArrowDown size={20} />
-        </a>
-      </div>
+      {/* Scroll indicator - hidden on mobile */}
+      {!isMobile && (
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+          <a href="#services" className="flex flex-col items-center text-forest/70 hover:text-forest transition-colors">
+            <span className="text-sm mb-2">Mehr</span>
+            <ArrowDown size={20} />
+          </a>
+        </div>
+      )}
     </section>
   );
 };
