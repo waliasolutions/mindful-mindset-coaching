@@ -1,7 +1,14 @@
+
+import { useState } from 'react';
 import { MapPin, Mail, Phone, Leaf, Facebook, Instagram } from 'lucide-react';
+import Terms from './Terms';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
+  const [isTermsOpen, setIsTermsOpen] = useState(false);
+  
+  const openTerms = () => setIsTermsOpen(true);
+  const closeTerms = () => setIsTermsOpen(false);
   
   return (
     <footer className="py-16 bg-forest text-white relative overflow-hidden">
@@ -37,7 +44,12 @@ const Footer = () => {
             <h4 className="font-serif text-lg font-medium mb-4 text-mint">Navigation</h4>
             <ul className="space-y-3">
               <li>
-                <a href="#home" className="text-white/70 hover:text-mint transition-colors">Home</a>
+                <button 
+                  onClick={openTerms}
+                  className="text-white/70 hover:text-mint transition-colors cursor-pointer text-left"
+                >
+                  AGB
+                </button>
               </li>
               <li>
                 <a href="#services" className="text-white/70 hover:text-mint transition-colors">Mindset Coaching</a>
@@ -86,6 +98,9 @@ const Footer = () => {
           </p>
         </div>
       </div>
+      
+      {/* Terms and Conditions Dialog */}
+      <Terms isOpen={isTermsOpen} onClose={closeTerms} />
     </footer>
   );
 };
