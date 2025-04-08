@@ -5,7 +5,7 @@ import { Menu, X, Leaf } from 'lucide-react';
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [activeSection, setActiveSection] = useState('home');
+  const [activeSection, setActiveSection] = useState('services');
 
   useEffect(() => {
     const handleScroll = () => {
@@ -16,7 +16,7 @@ const Navbar = () => {
       }
       
       // Determine which section is in view
-      const sections = ['home', 'services', 'about', 'pricing', 'contact'];
+      const sections = ['services', 'about', 'pricing', 'contact'];
       const scrollPosition = window.scrollY + 100; // Add offset for navbar
       
       for (const section of sections) {
@@ -46,7 +46,6 @@ const Navbar = () => {
   };
 
   const navLinks = [
-    { name: 'Home', href: '#home' },
     { name: 'Mindset Coaching', href: '#services' },
     { name: 'Über mich', href: '#about' },
     { name: 'Preise', href: '#pricing' },
@@ -61,7 +60,7 @@ const Navbar = () => {
     >
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex items-center justify-between">
-          <a href="#home" className="flex items-center gap-2">
+          <a href="#services" className="flex items-center gap-2">
             <Leaf size={24} className="text-petrol" />
             <span className="text-forest font-serif text-2xl md:text-3xl font-medium">
               Mindful <span className="text-petrol">Mindset</span>
