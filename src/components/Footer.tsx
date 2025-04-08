@@ -1,14 +1,23 @@
 
 import { useState } from 'react';
-import { MapPin, Mail, Phone, Leaf, Facebook, Instagram } from 'lucide-react';
+import { MapPin, Mail, Phone, Leaf, Facebook, Instagram, FileText, Shield } from 'lucide-react';
 import Terms from './Terms';
+import LegalInfo from './LegalInfo';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
   const [isTermsOpen, setIsTermsOpen] = useState(false);
+  const [isLegalInfoOpen, setIsLegalInfoOpen] = useState(false);
+  const [legalInfoTab, setLegalInfoTab] = useState<string>("impressum");
   
   const openTerms = () => setIsTermsOpen(true);
   const closeTerms = () => setIsTermsOpen(false);
+  
+  const openLegalInfo = (tab: string) => {
+    setLegalInfoTab(tab);
+    setIsLegalInfoOpen(true);
+  };
+  const closeLegalInfo = () => setIsLegalInfoOpen(false);
   
   return (
     <footer className="py-16 bg-forest text-white relative overflow-hidden">
@@ -43,14 +52,6 @@ const Footer = () => {
           <div className="md:col-span-3">
             <h4 className="font-serif text-lg font-medium mb-4 text-mint">Navigation</h4>
             <ul className="space-y-3">
-              <li>
-                <button 
-                  onClick={openTerms}
-                  className="text-white/70 hover:text-mint transition-colors cursor-pointer text-left"
-                >
-                  AGB
-                </button>
-              </li>
               <li>
                 <a href="#services" className="text-white/70 hover:text-mint transition-colors">Mindset Coaching</a>
               </li>
@@ -92,15 +93,38 @@ const Footer = () => {
           </div>
         </div>
         
-        <div className="border-t border-white/20 pt-8 text-center">
-          <p className="text-white/60 text-sm">
-            © {currentYear} Martina Domeniconi. Alle Rechte vorbehalten.
-          </p>
+        <div className="border-t border-white/20 pt-8">
+          <div className="flex flex-col md:flex-row justify-center items-center gap-4 md:gap-8 text-center">
+            <button 
+              onClick={openTerms} 
+              className="text-white/60 text-sm hover:text-mint transition-colors"
+            >
+              AGB
+            </button>
+            <button 
+              onClick={() => openLegalInfo("impressum")} 
+              className="text-white/60 text-sm hover:text-mint transition-colors flex items-center gap-1"
+            >
+              <FileText size={14} />
+              <span>Impressum</span>
+            </button>
+            <button 
+              onClick={() => openLegalInfo("datenschutz")} 
+              className="text-white/60 text-sm hover:text-mint transition-colors flex items-center gap-1"
+            >
+              <Shield size={14} />
+              <span>Datenschutz</span>
+            </button>
+            <p className="text-white/60 text-sm">
+              © {currentYear} Martina Domeniconi. Alle Rechte vorbehalten.
+            </p>
+          </div>
         </div>
       </div>
       
-      {/* Terms and Conditions Dialog */}
+      {/* Legal popups */}
       <Terms isOpen={isTermsOpen} onClose={closeTerms} />
+      <LegalInfo isOpen={isLegalInfoOpen} onClose={closeLegalInfo} defaultTab={legalInfoTab} />
     </footer>
   );
 };
