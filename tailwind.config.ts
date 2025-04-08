@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -24,21 +23,17 @@ export default {
 		},
 		extend: {
 			colors: {
-				// Updated color palette based on uploaded designs
 				"beige": "#E6D5C5",
-				"mint": "#E8F1E8", // Light mint background
-				"leaf": "#0D5D1E", // Deep forest green
-				"sage": "#A8B5A2", // Original sage green
-				"forest": "#274B2A", // Dark forest green
-				"moss": "#41773A", // Medium moss green
-				"highlight": "#E3F0D4", // Light green highlight
-				"mauve": "#D6A5B3", // Keeping original accent
+				"mint": "#E8F1E8",
+				"sage": "#A8B5A2",
+				"forest": "#274B2A",
+				"moss": "#41773A",
+				"highlight": "#E3F0D4",
+				"mauve": "#D6A5B3",
 				"petrol": "#3F6C72",
-				// Accent colors
 				"mustard": "#E3A63F",
 				"coral": "#E65C4F",
 				"lavender": "#C5B4E3",
-				// Original shadcn colors
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
 				ring: 'hsl(var(--ring))',
