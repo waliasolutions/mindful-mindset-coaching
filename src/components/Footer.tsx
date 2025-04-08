@@ -1,76 +1,88 @@
 
-import { MapPin, Mail, Phone } from 'lucide-react';
+import { MapPin, Mail, Phone, Leaf, Facebook, Instagram, Linkedin } from 'lucide-react';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
   
   return (
-    <footer className="py-16 bg-beige/30 relative overflow-hidden">
+    <footer className="py-16 bg-forest text-white relative overflow-hidden">
+      {/* Decorative leaf pattern */}
+      <div className="absolute inset-0 opacity-5 bg-[url('data:image/svg+xml,%3Csvg width=\"52\" height=\"26\" viewBox=\"0 0 52 26\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cg fill=\"none\" fill-rule=\"evenodd\"%3E%3Cg fill=\"%23ffffff\" fill-opacity=\"1\"%3E%3Cpath d=\"M10 10c0-2.21-1.79-4-4-4-3.314 0-6-2.686-6-6h2c0 2.21 1.79 4 4 4 3.314 0 6 2.686 6 6 0 2.21 1.79 4 4 4 3.314 0 6 2.686 6 6 0 2.21 1.79 4 4 4v2c-3.314 0-6-2.686-6-6 0-2.21-1.79-4-4-4-3.314 0-6-2.686-6-6zm25.464-1.95l8.486 8.486-1.414 1.414-8.486-8.486 1.414-1.414z\" /%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] -z-10"></div>
+      
       {/* Decorative elements */}
-      <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-sage/40 to-transparent"></div>
+      <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-white/30 to-transparent"></div>
       
       <div className="container mx-auto px-4 md:px-6">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8 mb-12">
           <div className="md:col-span-5">
-            <a href="#home" className="text-sage font-serif text-2xl font-medium inline-block mb-4">
-              Mindful <span className="text-mauve">Mindset</span>
+            <a href="#home" className="flex items-center gap-2 mb-4 text-white">
+              <Leaf size={24} className="text-mint" />
+              <span className="font-serif text-2xl font-medium inline-block">
+                Mindful <span className="text-mint">Mindset</span>
+              </span>
             </a>
-            <p className="text-foreground/70 max-w-md mb-6">
+            <p className="text-white/80 max-w-md mb-6">
               Mit dem richtigen Mindset sind deinen Möglichkeiten keine Grenzen gesetzt. Entfalte dein volles Potenzial und erschaffe das Leben, von dem du träumst.
             </p>
             <div className="flex items-center space-x-4">
-              <a href="#contact" className="w-10 h-10 flex items-center justify-center bg-sage/10 text-sage hover:bg-sage/20 transition-colors">
+              <a href="#contact" className="w-10 h-10 flex items-center justify-center bg-white/10 text-white hover:bg-white/20 transition-colors rounded-full">
                 <Mail size={18} />
               </a>
-              <a href="tel:+41788400481" className="w-10 h-10 flex items-center justify-center bg-sage/10 text-sage hover:bg-sage/20 transition-colors">
+              <a href="tel:+41788400481" className="w-10 h-10 flex items-center justify-center bg-white/10 text-white hover:bg-white/20 transition-colors rounded-full">
                 <Phone size={18} />
               </a>
-              <a href="#contact" className="w-10 h-10 flex items-center justify-center bg-sage/10 text-sage hover:bg-sage/20 transition-colors">
+              <a href="#contact" className="w-10 h-10 flex items-center justify-center bg-white/10 text-white hover:bg-white/20 transition-colors rounded-full">
                 <MapPin size={18} />
+              </a>
+              <a href="#" className="w-10 h-10 flex items-center justify-center bg-white/10 text-white hover:bg-white/20 transition-colors rounded-full">
+                <Facebook size={18} />
+              </a>
+              <a href="#" className="w-10 h-10 flex items-center justify-center bg-white/10 text-white hover:bg-white/20 transition-colors rounded-full">
+                <Instagram size={18} />
               </a>
             </div>
           </div>
           
           <div className="md:col-span-3">
-            <h4 className="font-serif text-lg font-medium mb-4">Navigation</h4>
+            <h4 className="font-serif text-lg font-medium mb-4 text-mint">Navigation</h4>
             <ul className="space-y-3">
               <li>
-                <a href="#home" className="text-foreground/70 hover:text-sage transition-colors">Home</a>
+                <a href="#home" className="text-white/70 hover:text-mint transition-colors">Home</a>
               </li>
               <li>
-                <a href="#services" className="text-foreground/70 hover:text-sage transition-colors">Mindset Coaching</a>
+                <a href="#services" className="text-white/70 hover:text-mint transition-colors">Mindset Coaching</a>
               </li>
               <li>
-                <a href="#about" className="text-foreground/70 hover:text-sage transition-colors">Über mich</a>
+                <a href="#about" className="text-white/70 hover:text-mint transition-colors">Über mich</a>
               </li>
               <li>
-                <a href="#pricing" className="text-foreground/70 hover:text-sage transition-colors">Preise</a>
+                <a href="#pricing" className="text-white/70 hover:text-mint transition-colors">Preise</a>
               </li>
               <li>
-                <a href="#contact" className="text-foreground/70 hover:text-sage transition-colors">Kontakt</a>
+                <a href="#contact" className="text-white/70 hover:text-mint transition-colors">Kontakt</a>
               </li>
             </ul>
           </div>
           
           <div className="md:col-span-4">
-            <h4 className="font-serif text-lg font-medium mb-4">Kontakt</h4>
+            <h4 className="font-serif text-lg font-medium mb-4 text-mint">Kontakt</h4>
             <ul className="space-y-3">
               <li className="flex items-start gap-3">
-                <MapPin size={18} className="text-sage flex-shrink-0 mt-0.5" />
-                <span className="text-foreground/70">
+                <MapPin size={18} className="text-mint flex-shrink-0 mt-0.5" />
+                <span className="text-white/70">
                   Ruedi-Walter-strasse 4<br />
                   8050 Zürich
                 </span>
               </li>
               <li className="flex items-center gap-3">
-                <Mail size={18} className="text-sage flex-shrink-0" />
-                <a href="mailto:info@martinadomeniconi.ch" className="text-foreground/70 hover:text-sage transition-colors">
+                <Mail size={18} className="text-mint flex-shrink-0" />
+                <a href="mailto:info@martinadomeniconi.ch" className="text-white/70 hover:text-mint transition-colors">
                   info@martinadomeniconi.ch
                 </a>
               </li>
               <li className="flex items-center gap-3">
-                <Phone size={18} className="text-sage flex-shrink-0" />
-                <a href="tel:+41788400481" className="text-foreground/70 hover:text-sage transition-colors">
+                <Phone size={18} className="text-mint flex-shrink-0" />
+                <a href="tel:+41788400481" className="text-white/70 hover:text-mint transition-colors">
                   078 840 04 81
                 </a>
               </li>
@@ -78,8 +90,8 @@ const Footer = () => {
           </div>
         </div>
         
-        <div className="border-t border-sage/20 pt-8 text-center">
-          <p className="text-foreground/60 text-sm">
+        <div className="border-t border-white/20 pt-8 text-center">
+          <p className="text-white/60 text-sm">
             © {currentYear} Martina Domeniconi. Alle Rechte vorbehalten.
           </p>
         </div>

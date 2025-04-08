@@ -33,40 +33,40 @@ const PricingWithQuote = () => {
     <section 
       id="pricing" 
       ref={sectionRef}
-      className="section-padding relative overflow-hidden bg-sage/20"
+      className="section-padding relative overflow-hidden bg-forest text-white"
     >
       {/* Background with overlay */}
-      <div className="absolute inset-0 -z-10">
+      <div className="absolute inset-0 -z-10 opacity-30">
         <AspectRatio ratio={16/9} className="h-full">
           <img 
-            src="/lovable-uploads/5ffe71dc-5b50-4709-af7a-73c5424b6a05.png" 
-            alt="Mindset Inspiration" 
-            className="w-full h-full object-cover opacity-30"
+            src="/lovable-uploads/bfcdd5e2-5796-4cc9-b81c-3651711c0440.png" 
+            alt="Forest background" 
+            className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-sage/40 to-sage/30"></div>
+          <div className="absolute inset-0 bg-forest/80"></div>
         </AspectRatio>
       </div>
       
       {/* Decorative elements */}
       <div className="absolute inset-0 opacity-10 -z-10">
-        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-sage to-transparent"></div>
-        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-sage to-transparent"></div>
-        <div className="absolute top-0 bottom-0 left-0 w-px bg-gradient-to-b from-transparent via-sage to-transparent"></div>
-        <div className="absolute top-0 bottom-0 right-0 w-px bg-gradient-to-b from-transparent via-sage to-transparent"></div>
+        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white to-transparent"></div>
+        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white to-transparent"></div>
+        <div className="absolute top-0 bottom-0 left-0 w-px bg-gradient-to-b from-transparent via-white to-transparent"></div>
+        <div className="absolute top-0 bottom-0 right-0 w-px bg-gradient-to-b from-transparent via-white to-transparent"></div>
       </div>
 
       <div className="container mx-auto px-4 md:px-6">
         <div className="max-w-4xl mx-auto mb-16 reveal-element">
           <div className="flex justify-center mb-2">
-            <span className="px-3 py-1 text-xs font-medium bg-sage/30 rounded-full backdrop-blur-sm text-foreground">
+            <span className="px-3 py-1 text-xs font-medium bg-white/20 rounded-full backdrop-blur-sm text-white">
               Investition
             </span>
           </div>
-          <h2 className="text-3xl md:text-4xl font-serif font-semibold text-center mb-4 text-foreground">
+          <h2 className="text-3xl md:text-4xl font-serif font-semibold text-center mb-4 text-white">
             Investiere in dein Wohlbefinden
           </h2>
-          <div className="w-16 h-1 bg-sage mx-auto mb-8"></div>
-          <p className="text-lg text-center text-foreground/90 max-w-2xl mx-auto">
+          <div className="w-16 h-1 bg-moss mx-auto mb-8"></div>
+          <p className="text-lg text-center text-white/90 max-w-2xl mx-auto">
             Vor jedem 1:1 Coaching machen wir zuerst ein kostenloses Kennenlerngespräch online oder per Telefon.
           </p>
         </div>
@@ -79,14 +79,14 @@ const PricingWithQuote = () => {
             }`}
           >
             <div className="h-full flex items-center">
-              <div className="bg-sage/20 backdrop-blur-sm p-4 md:p-5 border border-sage/30 rounded-lg h-full">
+              <div className="bg-white/10 backdrop-blur-sm p-5 border border-white/20 rounded-lg h-full">
                 <div className="flex items-center mb-3">
-                  <MessageSquareQuote size={24} className="text-sage mr-2" />
+                  <MessageSquareQuote size={24} className="text-moss mr-2" />
                 </div>
-                <p className="text-xl text-foreground font-serif mb-3 leading-relaxed">
+                <p className="text-xl text-white font-serif mb-3 leading-relaxed">
                   Unsere wichtigste Entscheidung ist, ob wir das Universum für einen freundlichen oder feindlichen Ort halten.
                 </p>
-                <p className="text-sage font-medium">― Albert Einstein</p>
+                <p className="text-highlight font-medium">― Albert Einstein</p>
               </div>
             </div>
           </div>
@@ -97,8 +97,8 @@ const PricingWithQuote = () => {
               isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
             }`}
           >
-            <div className="bg-white shadow-xl overflow-hidden border border-sage/30 rounded-lg h-full">
-              <div className="bg-gradient-to-r from-sage to-sage/80 p-6 md:p-8 text-white">
+            <div className="bg-white shadow-xl overflow-hidden border border-white/20 rounded-lg h-full">
+              <div className="bg-gradient-to-r from-forest to-moss p-6 md:p-8 text-white">
                 <h3 className="text-2xl font-serif font-medium mb-2">Coaching Einzelsitzung</h3>
                 <p className="text-white/90 mb-4">Individuelle Betreuung für deine Bedürfnisse</p>
                 <div className="flex items-baseline">
@@ -107,11 +107,11 @@ const PricingWithQuote = () => {
                 </div>
               </div>
               
-              <div className="p-6 md:p-8">
+              <div className="p-6 md:p-8 text-foreground">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                   <div className="flex items-start gap-4">
-                    <div className="flex-shrink-0 w-10 h-10 bg-sage/20 rounded-full flex items-center justify-center">
-                      <Clock size={20} className="text-sage" />
+                    <div className="flex-shrink-0 w-10 h-10 bg-highlight rounded-full flex items-center justify-center">
+                      <Clock size={20} className="text-forest" />
                     </div>
                     <div>
                       <p className="font-medium mb-1">Dauer</p>
@@ -120,8 +120,8 @@ const PricingWithQuote = () => {
                   </div>
                   
                   <div className="flex items-start gap-4">
-                    <div className="flex-shrink-0 w-10 h-10 bg-sage/20 rounded-full flex items-center justify-center">
-                      <Users size={20} className="text-sage" />
+                    <div className="flex-shrink-0 w-10 h-10 bg-highlight rounded-full flex items-center justify-center">
+                      <Users size={20} className="text-forest" />
                     </div>
                     <div>
                       <p className="font-medium mb-1">Format</p>
@@ -130,8 +130,8 @@ const PricingWithQuote = () => {
                   </div>
                   
                   <div className="flex items-start gap-4">
-                    <div className="flex-shrink-0 w-10 h-10 bg-sage/20 rounded-full flex items-center justify-center">
-                      <Calendar size={20} className="text-sage" />
+                    <div className="flex-shrink-0 w-10 h-10 bg-highlight rounded-full flex items-center justify-center">
+                      <Calendar size={20} className="text-forest" />
                     </div>
                     <div>
                       <p className="font-medium mb-1">Erstgespräch</p>
@@ -148,7 +148,7 @@ const PricingWithQuote = () => {
                     "Flexible Terminvereinbarung"
                   ].map((feature, index) => (
                     <li key={index} className="flex items-start gap-3">
-                      <Check size={18} className="text-sage flex-shrink-0 mt-0.5" />
+                      <Check size={18} className="text-moss flex-shrink-0 mt-0.5" />
                       <span className="text-foreground/80">{feature}</span>
                     </li>
                   ))}
@@ -157,7 +157,7 @@ const PricingWithQuote = () => {
                 <div>
                   <a 
                     href="#contact" 
-                    className="bg-sage hover:bg-sage/90 text-white w-full flex justify-center py-3 px-4 rounded-md transition-all"
+                    className="bg-forest hover:bg-forest/90 text-white w-full flex justify-center py-3 px-4 rounded-md transition-all"
                   >
                     Jetzt buchen
                   </a>
@@ -170,7 +170,7 @@ const PricingWithQuote = () => {
         <div className="flex justify-center mt-12">
           <a 
             href="#contact" 
-            className="inline-flex items-center justify-center px-8 py-3 bg-sage/95 text-white hover:bg-sage transition-colors shadow-lg font-medium rounded-md backdrop-blur-sm"
+            className="inline-flex items-center justify-center px-8 py-3 bg-white/10 text-white hover:bg-white/20 transition-colors shadow-lg font-medium rounded-md backdrop-blur-sm border border-white/20"
           >
             Starte jetzt deine persönliche Reise
           </a>

@@ -24,10 +24,15 @@ export default {
 		},
 		extend: {
 			colors: {
-				// Main colors
+				// Updated color palette based on uploaded designs
 				"beige": "#E6D5C5",
-				"sage": "#A8B5A2",
-				"mauve": "#D6A5B3",
+				"mint": "#E8F1E8", // Light mint background
+				"leaf": "#0D5D1E", // Deep forest green
+				"sage": "#A8B5A2", // Original sage green
+				"forest": "#274B2A", // Dark forest green
+				"moss": "#41773A", // Medium moss green
+				"highlight": "#E3F0D4", // Light green highlight
+				"mauve": "#D6A5B3", // Keeping original accent
 				"petrol": "#3F6C72",
 				// Accent colors
 				"mustard": "#E3A63F",

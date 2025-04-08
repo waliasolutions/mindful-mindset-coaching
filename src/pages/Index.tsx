@@ -33,6 +33,7 @@ const Index = () => {
     // Reveal animation on scroll
     const handleReveal = () => {
       const reveals = document.querySelectorAll('.reveal-element');
+      const images = document.querySelectorAll('.image-reveal');
       
       reveals.forEach((el) => {
         const windowHeight = window.innerHeight;
@@ -41,6 +42,16 @@ const Index = () => {
         
         if (elementTop < windowHeight - elementVisible) {
           el.classList.add('revealed');
+        }
+      });
+      
+      images.forEach((el) => {
+        const windowHeight = window.innerHeight;
+        const elementTop = el.getBoundingClientRect().top;
+        const elementVisible = 150;
+        
+        if (elementTop < windowHeight - elementVisible) {
+          el.classList.add('reveal');
         }
       });
     };

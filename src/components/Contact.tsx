@@ -1,6 +1,6 @@
 
 import { useState, useEffect, useRef } from 'react';
-import { Phone, Mail, MapPin, Clock, ArrowRight, MessageSquare } from 'lucide-react';
+import { Phone, Mail, MapPin, Clock, ArrowRight, MessageSquare, Leaf } from 'lucide-react';
 
 const Contact = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -32,25 +32,28 @@ const Contact = () => {
     <section 
       id="contact" 
       ref={sectionRef}
-      className="section-padding relative overflow-hidden"
+      className="section-padding relative overflow-hidden bg-mint/30"
     >
+      {/* Decorative leaf pattern */}
+      <div className="absolute inset-0 leaf-pattern -z-10"></div>
+      
       {/* Decorative elements */}
-      <div className="absolute top-1/3 right-0 w-80 h-80 bg-sage/10 rounded-full blur-3xl -z-10"></div>
-      <div className="absolute bottom-1/4 left-0 w-96 h-96 bg-sage/10 rounded-full blur-3xl -z-10"></div>
+      <div className="absolute top-1/3 right-0 w-80 h-80 bg-forest/5 rounded-full blur-3xl -z-10"></div>
+      <div className="absolute bottom-1/4 left-0 w-96 h-96 bg-moss/5 rounded-full blur-3xl -z-10"></div>
       
       <div className="container mx-auto px-4 md:px-6">
         <div className="max-w-4xl mx-auto mb-16 reveal-element">
           <div className="flex justify-center mb-2">
-            <span className="px-3 py-1 text-xs font-medium text-sage bg-sage/10">
+            <span className="px-3 py-1 text-xs font-medium text-forest bg-highlight rounded-full">
               Kontakt
             </span>
           </div>
-          <h2 className="text-3xl md:text-4xl font-serif font-semibold text-center mb-4">
+          <h2 className="text-3xl md:text-4xl font-serif font-semibold text-center mb-4 text-forest">
             Beginne deine Mindset-Reise heute
           </h2>
-          <div className="w-16 h-1 bg-sage mx-auto mb-8"></div>
+          <div className="w-16 h-1 bg-moss mx-auto mb-8"></div>
           <p className="text-lg text-center text-foreground/80 max-w-2xl mx-auto">
-            Der erste Schritt zu einem erfüllteren Leben beginnt mit einem Gespräch. Kontaktiere mich für ein <span className="font-medium text-sage">kostenloses Erstgespräch</span>, in dem wir über deine Ziele sprechen und herausfinden, wie ich dich am besten unterstützen kann.
+            Der erste Schritt zu einem erfüllteren Leben beginnt mit einem Gespräch. Kontaktiere mich für ein <span className="font-medium text-forest">kostenloses Erstgespräch</span>, in dem wir über deine Ziele sprechen und herausfinden, wie ich dich am besten unterstützen kann.
           </p>
         </div>
 
@@ -61,33 +64,36 @@ const Contact = () => {
               isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'
             }`}
           >
-            <div className="bg-white shadow-lg p-8 border-t-2 border-sage h-full">
-              <h3 className="text-2xl font-serif font-medium mb-8 text-sage">Kontaktinformationen</h3>
+            <div className="bg-white shadow-lg p-8 border-t-2 border-moss h-full rounded-md">
+              <div className="flex items-center gap-2 mb-6">
+                <Leaf size={20} className="text-forest" />
+                <h3 className="text-2xl font-serif font-medium text-forest">Kontaktinformationen</h3>
+              </div>
               
               <div className="space-y-6">
                 <div className="flex items-start gap-4">
-                  <div className="flex-shrink-0 w-10 h-10 rounded-full bg-sage/20 flex items-center justify-center">
-                    <Phone size={18} className="text-sage" />
+                  <div className="flex-shrink-0 w-10 h-10 rounded-full bg-highlight flex items-center justify-center">
+                    <Phone size={18} className="text-forest" />
                   </div>
                   <div>
                     <p className="font-medium mb-1">Telefon</p>
-                    <a href="tel:+41788400481" className="text-foreground/70 hover:text-sage transition-colors">078 840 04 81</a>
+                    <a href="tel:+41788400481" className="text-foreground/70 hover:text-forest transition-colors">078 840 04 81</a>
                   </div>
                 </div>
                 
                 <div className="flex items-start gap-4">
-                  <div className="flex-shrink-0 w-10 h-10 rounded-full bg-sage/20 flex items-center justify-center">
-                    <Mail size={18} className="text-sage" />
+                  <div className="flex-shrink-0 w-10 h-10 rounded-full bg-highlight flex items-center justify-center">
+                    <Mail size={18} className="text-forest" />
                   </div>
                   <div>
                     <p className="font-medium mb-1">E-Mail</p>
-                    <a href="mailto:info@martinadomeniconi.ch" className="text-foreground/70 hover:text-sage transition-colors">info@martinadomeniconi.ch</a>
+                    <a href="mailto:info@martinadomeniconi.ch" className="text-foreground/70 hover:text-forest transition-colors">info@martinadomeniconi.ch</a>
                   </div>
                 </div>
                 
                 <div className="flex items-start gap-4">
-                  <div className="flex-shrink-0 w-10 h-10 rounded-full bg-sage/20 flex items-center justify-center">
-                    <MapPin size={18} className="text-sage" />
+                  <div className="flex-shrink-0 w-10 h-10 rounded-full bg-highlight flex items-center justify-center">
+                    <MapPin size={18} className="text-forest" />
                   </div>
                   <div>
                     <p className="font-medium mb-1">Adresse</p>
@@ -98,8 +104,8 @@ const Contact = () => {
                 </div>
                 
                 <div className="flex items-start gap-4">
-                  <div className="flex-shrink-0 w-10 h-10 rounded-full bg-sage/20 flex items-center justify-center">
-                    <Clock size={18} className="text-sage" />
+                  <div className="flex-shrink-0 w-10 h-10 rounded-full bg-highlight flex items-center justify-center">
+                    <Clock size={18} className="text-forest" />
                   </div>
                   <div>
                     <p className="font-medium mb-1">Telefonische Erreichbarkeit</p>
@@ -108,10 +114,10 @@ const Contact = () => {
                 </div>
               </div>
 
-              <div className="mt-8 pt-8 border-t border-sage/20 flex flex-col sm:flex-row gap-4">
+              <div className="mt-8 pt-8 border-t border-moss/20 flex flex-col sm:flex-row gap-4">
                 <a 
                   href="tel:+41788400481" 
-                  className="flex items-center justify-center py-3 bg-sage text-white hover:bg-sage/90 transition-colors focus-ring text-center gap-2 font-medium flex-1"
+                  className="flex items-center justify-center py-3 bg-forest text-white hover:bg-forest/90 transition-colors focus-ring text-center gap-2 font-medium flex-1 rounded-md"
                 >
                   <span>Jetzt anrufen</span>
                   <Phone size={16} />
@@ -119,7 +125,7 @@ const Contact = () => {
                 
                 <a 
                   href="mailto:info@martinadomeniconi.ch" 
-                  className="flex items-center justify-center py-3 bg-sage/20 hover:bg-sage/30 text-foreground transition-colors focus-ring text-center gap-2 font-medium flex-1"
+                  className="flex items-center justify-center py-3 bg-moss/20 hover:bg-moss/30 text-forest transition-colors focus-ring text-center gap-2 font-medium flex-1 rounded-md"
                 >
                   <span>E-Mail senden</span>
                   <Mail size={16} />
@@ -138,15 +144,16 @@ const Contact = () => {
               <div className="aspect-[16/9] overflow-hidden shadow-xl rounded-lg">
                 <div className="image-reveal reveal w-full h-full">
                   <img 
-                    src="/lovable-uploads/c3990bed-42a6-44c3-94fd-186347006165.png" 
-                    alt="Martina Domeniconi - Kontakt" 
+                    src="/lovable-uploads/d9981b42-405f-4f3f-b970-cdffcb451223.png" 
+                    alt="Peaceful forest scene" 
                     className="w-full h-full object-cover object-center"
                     loading="lazy"
                   />
+                  <div className="absolute inset-0 bg-gradient-to-t from-forest/30 to-transparent"></div>
                 </div>
               </div>
               
-              <div className="bg-sage p-8 text-white shadow-lg">
+              <div className="bg-forest p-8 text-white shadow-lg rounded-md">
                 <div className="flex items-center gap-4 mb-4">
                   <div className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center">
                     <MessageSquare size={24} className="text-white" />
@@ -160,7 +167,7 @@ const Contact = () => {
                 
                 <a 
                   href="mailto:info@martinadomeniconi.ch?subject=Erstgespräch%20Mindset%20Coaching" 
-                  className="flex items-center justify-center w-full py-3 bg-white text-sage hover:bg-white/90 transition-colors shadow-md text-center gap-2 font-medium"
+                  className="flex items-center justify-center w-full py-3 bg-white text-forest hover:bg-white/90 transition-colors shadow-md text-center gap-2 font-medium rounded-md"
                 >
                   <span>Jetzt Termin vereinbaren</span>
                   <ArrowRight size={16} />

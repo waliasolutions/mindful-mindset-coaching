@@ -1,6 +1,6 @@
 
 import { useState, useEffect, useRef } from 'react';
-import { Award, BookOpen, Users } from 'lucide-react';
+import { Award, BookOpen, Users, Leaf } from 'lucide-react';
 
 const About = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -32,19 +32,22 @@ const About = () => {
     <section 
       id="about" 
       ref={sectionRef}
-      className="section-padding relative overflow-hidden bg-gradient-to-b from-white to-sage/10"
+      className="section-padding relative overflow-hidden bg-mint/30"
     >
+      {/* Background texture */}
+      <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width=\"60\" height=\"60\" viewBox=\"0 0 60 60\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cpath d=\"M30 30c0-9.94-8.06-30-30-30v60c21.94 0 30-20.06 30-30z\" fill=\"%23274B2A\" fill-opacity=\"0.03\" fill-rule=\"evenodd\"%3E%3C/path%3E%3C/svg%3E')] -z-10"></div>
+      
       <div className="container mx-auto px-4 md:px-6">
         <div className="max-w-4xl mx-auto mb-16 reveal-element">
           <div className="flex justify-center mb-2">
-            <span className="px-3 py-1 text-xs font-medium text-sage bg-sage/10">
+            <span className="px-3 py-1 text-xs font-medium text-forest bg-highlight rounded-full">
               Über mich
             </span>
           </div>
-          <h2 className="text-3xl md:text-4xl font-serif font-semibold text-center mb-4">
+          <h2 className="text-3xl md:text-4xl font-serif font-semibold text-center mb-4 text-forest">
             Martina Domeniconi – zertifizierter Mindset Coach
           </h2>
-          <div className="w-16 h-1 bg-sage mx-auto mb-8"></div>
+          <div className="w-16 h-1 bg-moss mx-auto mb-8"></div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
@@ -57,10 +60,10 @@ const About = () => {
                   className="w-full h-full object-cover object-center"
                   loading="lazy"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-sage/10 to-transparent opacity-40"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-forest/20 to-transparent"></div>
               </div>
             </div>
-            <div className="absolute w-full h-full top-4 left-4 border-2 border-sage -z-10 rounded-lg"></div>
+            <div className="absolute w-full h-full top-4 left-4 border-2 border-moss -z-10 rounded-lg"></div>
           </div>
           
           <div className={`reveal-right ${isVisible ? 'revealed' : ''}`}>
@@ -73,41 +76,44 @@ const About = () => {
             </p>
             
             <p className="text-lg text-foreground/80 mb-6">
-              Mein Ziel ist es, das Wissen, das ich in dieser Ausbildung erlernt habe, weiterzugeben, damit auch <span className="text-sage font-medium">du dein wahres Potenzial entfalten und deinen Herzensweg mit Freude und Gelassenheit gehen kannst</span>.
+              Mein Ziel ist es, das Wissen, das ich in dieser Ausbildung erlernt habe, weiterzugeben, damit auch <span className="text-forest font-medium">du dein wahres Potenzial entfalten und deinen Herzensweg mit Freude und Gelassenheit gehen kannst</span>.
             </p>
             
             <p className="text-lg text-foreground/80 mb-8">
               Seit 2019 bin ich als Ordnungs-Coach tätig. Beim Ordnungs-Coaching geht es vorrangig um die äußere Ordnung – darum, Dinge loszulassen, die keinen Mehrwert mehr bieten. Durch diese Tätigkeit wurde mir zunehmend bewusst, dass Unordnung nicht nur im Außen existiert – sondern auch im Innern: in unseren Gedanken.
             </p>
             
-            <div className="p-5 bg-white/80 backdrop-blur-sm shadow-sm border-l-2 border-sage">
-              <p className="text-sage font-medium">
-                "Was ist Mindset: Mindset ist die Art und Weise wie Du denkst. Deine Gedanken beeinflussen Deine Entscheidungen, Handlungen und somit Dein ganzes Leben. Willst Du etwas in Deinem Leben verändern, so musst Du als erstes lernen Deine Gedanken bewusst zu steuern."
-              </p>
+            <div className="p-5 bg-white backdrop-blur-sm shadow-sm border-l-2 border-moss rounded-r-md">
+              <div className="flex items-start gap-3">
+                <Leaf size={20} className="text-forest flex-shrink-0 mt-1" />
+                <p className="text-forest font-medium">
+                  "Was ist Mindset: Mindset ist die Art und Weise wie Du denkst. Deine Gedanken beeinflussen Deine Entscheidungen, Handlungen und somit Dein ganzes Leben. Willst Du etwas in Deinem Leben verändern, so musst Du als erstes lernen Deine Gedanken bewusst zu steuern."
+                </p>
+              </div>
             </div>
           </div>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16">
           <div className="reveal-element">
-            <div className="bg-white p-6 shadow-md h-full flex flex-col items-center text-center">
-              <Award size={32} className="text-sage mb-4" />
+            <div className="bg-white p-6 shadow-md h-full flex flex-col items-center text-center rounded-md border-b-2 border-moss">
+              <Award size={32} className="text-forest mb-4" />
               <h3 className="text-xl font-serif font-medium mb-2">Zertifizierte Ausbildung</h3>
               <p className="text-foreground/70">20-monatige Mindset Coach Ausbildung nach Christian Bischoff</p>
             </div>
           </div>
           
           <div className="reveal-element delay-100">
-            <div className="bg-white p-6 shadow-md h-full flex flex-col items-center text-center">
-              <BookOpen size={32} className="text-sage mb-4" />
+            <div className="bg-white p-6 shadow-md h-full flex flex-col items-center text-center rounded-md border-b-2 border-moss">
+              <BookOpen size={32} className="text-forest mb-4" />
               <h3 className="text-xl font-serif font-medium mb-2">Erfahrung</h3>
               <p className="text-foreground/70">Seit 2019 als Ordnungs-Coach tätig mit Fokus auf ganzheitliches Wohlbefinden</p>
             </div>
           </div>
           
           <div className="reveal-element delay-200">
-            <div className="bg-white p-6 shadow-md h-full flex flex-col items-center text-center">
-              <Users size={32} className="text-sage mb-4" />
+            <div className="bg-white p-6 shadow-md h-full flex flex-col items-center text-center rounded-md border-b-2 border-moss">
+              <Users size={32} className="text-forest mb-4" />
               <h3 className="text-xl font-serif font-medium mb-2">Persönliche Betreuung</h3>
               <p className="text-foreground/70">Individuelles Coaching für deine einzigartigen Bedürfnisse und Ziele</p>
             </div>
@@ -117,7 +123,7 @@ const About = () => {
         <div className="mt-12 text-center">
           <a 
             href="#services" 
-            className="inline-flex items-center justify-center px-6 py-3 bg-sage text-white hover:bg-sage/90 transition-colors shadow-lg font-medium rounded-md"
+            className="inline-flex items-center justify-center px-6 py-3 bg-forest text-white hover:bg-forest/90 transition-colors shadow-lg font-medium rounded-md"
           >
             Entdecke meine Coaching-Angebote
           </a>

@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from 'react';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Leaf } from 'lucide-react';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -56,13 +56,16 @@ const Navbar = () => {
   return (
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled ? 'bg-white/95 shadow-md backdrop-blur-sm py-3' : 'bg-transparent py-5'
+        isScrolled ? 'bg-mint/95 shadow-md backdrop-blur-sm py-3' : 'bg-transparent py-5'
       }`}
     >
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex items-center justify-between">
-          <a href="#home" className="text-petrol font-serif text-2xl md:text-3xl font-medium">
-            Mindful <span className="text-mauve">Mindset</span>
+          <a href="#home" className="flex items-center gap-2">
+            <Leaf size={24} className="text-forest" />
+            <span className="text-forest font-serif text-2xl md:text-3xl font-medium">
+              Mindful <span className="text-moss">Mindset</span>
+            </span>
           </a>
 
           {/* Desktop Navigation */}
@@ -73,8 +76,8 @@ const Navbar = () => {
                 href={link.href}
                 className={`${
                   activeSection === link.href.slice(1) 
-                    ? 'text-petrol font-medium' 
-                    : 'text-foreground hover:text-petrol'
+                    ? 'text-forest font-medium' 
+                    : 'text-foreground hover:text-moss'
                 } transition-colors link-hover focus-ring text-sm lg:text-base`}
               >
                 {link.name}
@@ -84,7 +87,7 @@ const Navbar = () => {
 
           {/* Mobile Navigation Toggle */}
           <button
-            className="md:hidden text-foreground focus:outline-none focus-ring rounded-md p-2"
+            className="md:hidden text-forest focus:outline-none focus-ring rounded-md p-2"
             onClick={toggleMenu}
             aria-label="Toggle menu"
           >
@@ -95,7 +98,7 @@ const Navbar = () => {
 
       {/* Mobile Navigation Menu */}
       {isMenuOpen && (
-        <div className="md:hidden absolute top-full left-0 right-0 bg-white/95 backdrop-blur-sm shadow-lg animate-fade-in">
+        <div className="md:hidden absolute top-full left-0 right-0 bg-mint/95 backdrop-blur-sm shadow-lg animate-fade-in">
           <div className="container mx-auto px-4 py-4 flex flex-col space-y-4">
             {navLinks.map((link) => (
               <a
@@ -103,8 +106,8 @@ const Navbar = () => {
                 href={link.href}
                 className={`${
                   activeSection === link.href.slice(1) 
-                    ? 'text-petrol font-medium' 
-                    : 'text-foreground hover:text-petrol'
+                    ? 'text-forest font-medium' 
+                    : 'text-foreground hover:text-moss'
                 } py-2 transition-colors focus-ring`}
                 onClick={closeMenu}
               >

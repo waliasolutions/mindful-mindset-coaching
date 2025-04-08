@@ -65,23 +65,26 @@ const Services = () => {
     <section 
       id="services" 
       ref={sectionRef}
-      className="section-padding relative overflow-hidden"
+      className="section-padding relative overflow-hidden bg-white"
     >
+      {/* Background pattern */}
+      <div className="absolute inset-0 bg-gradient-to-b from-mint to-white/30 -z-10"></div>
+      
       {/* Decorative elements */}
-      <div className="absolute top-1/4 left-0 w-80 h-80 bg-lavender/10 rounded-full blur-3xl -z-10"></div>
-      <div className="absolute bottom-1/4 right-0 w-96 h-96 bg-sage/10 rounded-full blur-3xl -z-10"></div>
+      <div className="absolute top-1/4 left-0 w-80 h-80 bg-forest/5 rounded-full blur-3xl -z-10"></div>
+      <div className="absolute bottom-1/4 right-0 w-96 h-96 bg-moss/5 rounded-full blur-3xl -z-10"></div>
       
       <div className="container mx-auto px-4 md:px-6">
         <div className="max-w-4xl mx-auto mb-16 reveal-element">
           <div className="flex justify-center mb-2">
-            <span className="px-3 py-1 text-xs font-medium text-sage bg-sage/10">
+            <span className="px-3 py-1 text-xs font-medium text-forest bg-highlight rounded-full">
               Mindset Coaching
             </span>
           </div>
-          <h2 className="text-3xl md:text-4xl font-serif font-semibold text-center mb-4">
+          <h2 className="text-3xl md:text-4xl font-serif font-semibold text-center mb-4 text-forest">
             Transformiere dein Leben durch Mindset Coaching
           </h2>
-          <div className="w-16 h-1 bg-sage mx-auto mb-8"></div>
+          <div className="w-16 h-1 bg-moss mx-auto mb-8"></div>
           <p className="text-lg text-center text-foreground/80 max-w-2xl mx-auto">
             In einem 1:1 Coaching lösen wir Blockaden, bringen Klarheit in dein Gedanken-Karussell und richten deinen Fokus auf das, was wirklich zählt: Deine Träume, Deine Lebenszufriedenheit und Deine innere Ruhe und Gelassenheit.
           </p>
@@ -93,11 +96,11 @@ const Services = () => {
               key={index} 
               className={`reveal-element transition-all duration-500 ease-out delay-${index * 100}`}
             >
-              <div className="bg-white shadow-lg p-6 h-full flex flex-col hover:shadow-xl transition-all duration-300 border-t-2 border-sage">
-                <div className="w-10 h-10 rounded-full bg-sage flex items-center justify-center mb-4">
+              <div className="bg-white shadow-lg p-6 h-full flex flex-col hover:shadow-xl transition-all duration-300 border-t-2 border-moss rounded-md">
+                <div className="w-10 h-10 rounded-full bg-forest flex items-center justify-center mb-4">
                   {benefit.icon}
                 </div>
-                <h3 className="text-xl font-serif font-medium mb-3 text-sage">
+                <h3 className="text-xl font-serif font-medium mb-3 text-forest">
                   {benefit.title}
                 </h3>
                 <p className="text-foreground/80">
@@ -111,7 +114,7 @@ const Services = () => {
         <div className="flex justify-center mt-8">
           <a 
             href="#contact" 
-            className="inline-flex items-center justify-center px-6 py-3 bg-sage text-white hover:bg-sage/90 transition-colors shadow-lg font-medium rounded-md"
+            className="inline-flex items-center justify-center px-6 py-3 bg-forest text-white hover:bg-forest/90 transition-colors shadow-lg font-medium rounded-md"
           >
             Kontaktiere mich
           </a>
