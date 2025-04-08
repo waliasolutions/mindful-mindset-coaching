@@ -35,7 +35,7 @@ const About = () => {
       className="section-padding relative overflow-hidden bg-mint/30"
     >
       {/* Background texture */}
-      <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width=\"60\" height=\"60\" viewBox=\"0 0 60 60\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cpath d=\"M30 30c0-9.94-8.06-30-30-30v60c21.94 0 30-20.06 30-30z\" fill=\"%23274B2A\" fill-opacity=\"0.03\" fill-rule=\"evenodd\"%3E%3C/path%3E%3C/svg%3E')] -z-10"></div>
+      <div className="absolute inset-0 bg-pattern-light -z-10"></div>
       
       <div className="container mx-auto px-4 md:px-6">
         <div className="max-w-4xl mx-auto mb-16 reveal-element">
