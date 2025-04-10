@@ -1,5 +1,5 @@
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Navbar from '../components/Navbar';
 import Hero from '../components/Hero';
 import About from '../components/About';
@@ -8,8 +8,45 @@ import PricingWithQuote from '../components/PricingWithQuote';
 import Contact from '../components/Contact';
 import Footer from '../components/Footer';
 
+// Define the section type
+interface Section {
+  id: string;
+  name: string;
+  component: string;
+  visible: boolean;
+  order: number;
+}
+
+// Map from component name to the actual component
+const componentMap: Record<string, React.ComponentType<any>> = {
+  Hero,
+  About,
+  Services,
+  PricingWithQuote,
+  Contact
+};
+
+// Default section order if not found in localStorage
+const defaultSections: Section[] = [
+  { id: 'hero', name: 'Hero', component: 'Hero', visible: true, order: 0 },
+  { id: 'services', name: 'Services', component: 'Services', visible: true, order: 1 },
+  { id: 'about', name: 'About', component: 'About', visible: true, order: 2 },
+  { id: 'pricing', name: 'Pricing', component: 'PricingWithQuote', visible: true, order: 3 },
+  { id: 'contact', name: 'Contact', component: 'Contact', visible: true, order: 4 },
+];
+
 const Index = () => {
+  const [sections, setSections] = useState<Section[]>([]);
+  
   useEffect(() => {
+    // Load section order from localStorage or use default
+    const storedSections = localStorage.getItem('sectionOrder');
+    if (storedSections) {
+      setSections(JSON.parse(storedSections));
+    } else {
+      setSections(defaultSections);
+    }
+    
     // Smooth scrolling for anchor links
     const handleAnchorClick = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
@@ -65,15 +102,22 @@ const Index = () => {
     };
   }, []);
   
+  // Render each section according to the order and visibility
+  const renderSections = () => {
+    return sections
+      .sort((a, b) => a.order - b.order)
+      .filter(section => section.visible)
+      .map(section => {
+        const Component = componentMap[section.component];
+        return Component ? <Component key={section.id} /> : null;
+      });
+  };
+  
   return (
     <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
       <Navbar />
       <main>
-        <Hero />
-        <Services />
-        <About />
-        <PricingWithQuote />
-        <Contact />
+        {renderSections()}
       </main>
       <Footer />
     </div>
