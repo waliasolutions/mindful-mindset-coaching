@@ -16,7 +16,19 @@ const MediaLibrary = () => {
     // Load saved images from localStorage
     const savedImages = localStorage.getItem('mediaLibrary');
     if (savedImages) {
-      setImages(JSON.parse(savedImages));
+      try {
+        const parsedImages = JSON.parse(savedImages);
+        setImages(Array.isArray(parsedImages) ? parsedImages : []);
+        console.log('Loaded images from storage:', parsedImages.length);
+      } catch (error) {
+        console.error('Error parsing media library data:', error);
+        // Initialize with empty array if parsing fails
+        localStorage.setItem('mediaLibrary', JSON.stringify([]));
+      }
+    } else {
+      // Initialize media library in localStorage if it doesn't exist
+      localStorage.setItem('mediaLibrary', JSON.stringify([]));
+      console.log('Initialized empty media library');
     }
   }, []);
 
@@ -127,7 +139,10 @@ const MediaLibrary = () => {
                   variant="ghost"
                   size="icon"
                   className="text-white hover:bg-white/20 h-8 w-8"
-                  onClick={() => copyImagePath(image)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    copyImagePath(image);
+                  }}
                 >
                   <Copy className="h-4 w-4" />
                 </Button>
@@ -135,20 +150,23 @@ const MediaLibrary = () => {
                   variant="ghost"
                   size="icon"
                   className="text-white hover:bg-white/20 h-8 w-8 mt-1"
-                  onClick={() => handleDelete(image)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleDelete(image);
+                  }}
                 >
                   <Trash2 className="h-4 w-4" />
                 </Button>
               </div>
             </div>
           ))}
-        </div>
 
-        {images.length === 0 && (
-          <div className="text-center py-8 text-gray-500">
-            <p>No images uploaded yet</p>
-          </div>
-        )}
+          {images.length === 0 && (
+            <div className="col-span-full text-center py-8 text-gray-500">
+              <p>No images uploaded yet</p>
+            </div>
+          )}
+        </div>
 
         {selectedImage && (
           <div className="mt-6 p-4 border rounded-md">
