@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Menu, X, Leaf } from 'lucide-react';
 
@@ -63,7 +62,7 @@ const Navbar = () => {
           <a href="#services" className="flex items-center gap-2">
             <Leaf size={24} className="text-petrol" />
             <span className="text-forest font-serif text-2xl md:text-3xl font-medium">
-              Mindful <span className="text-petrol">Mindset</span>
+              Mindest <span className="text-petrol">Coach Martina</span>
             </span>
           </a>
 

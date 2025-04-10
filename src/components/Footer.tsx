@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { MapPin, Mail, Phone, Leaf, Facebook, Instagram, FileText, Shield, ScrollText } from 'lucide-react';
 import Terms from './Terms';
@@ -20,10 +19,8 @@ const Footer = () => {
   
   return (
     <footer className="py-16 bg-[#E8F1E8] text-forest relative overflow-hidden">
-      {/* Decorative leaf pattern */}
       <div className="absolute inset-0 opacity-5 leaf-pattern -z-10"></div>
       
-      {/* Decorative elements */}
       <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-forest/30 to-transparent"></div>
       
       <div className="container mx-auto px-4 md:px-6">
@@ -32,7 +29,7 @@ const Footer = () => {
             <a href="#home" className="flex items-center gap-2 mb-4 text-forest">
               <Leaf size={24} className="text-moss" />
               <span className="font-serif text-2xl font-medium inline-block">
-                Mindful <span className="text-moss">Mindset</span>
+                Mindest <span className="text-moss">Coach Martina</span>
               </span>
             </a>
             <p className="text-forest/80 max-w-md mb-6">
@@ -119,7 +116,6 @@ const Footer = () => {
         </div>
       </div>
       
-      {/* Legal popups */}
       <Terms isOpen={isTermsOpen} onClose={closeTerms} />
       <LegalInfo 
         isOpen={isLegalInfoOpen} 
