@@ -32,7 +32,7 @@ const Footer = () => {
                 Mindset <span className="text-moss">Coach Martina</span>
               </span>
             </a>
-            <p className="text-forest/80 max-w-md mb-6">
+            <p className="text-forest/90 max-w-md mb-6">
               Mit dem richtigen Mindset sind deinen Möglichkeiten keine Grenzen gesetzt. Entfalte dein volles Potenzial und erschaffe das Leben, von dem du träumst.
             </p>
             <div className="flex items-center space-x-4">
@@ -49,16 +49,16 @@ const Footer = () => {
             <h4 className="font-serif text-lg font-medium mb-4 text-moss">Navigation</h4>
             <ul className="space-y-3">
               <li>
-                <a href="#services" className="text-forest/70 hover:text-moss transition-colors">Mindset Coaching</a>
+                <a href="#services" className="text-forest/80 hover:text-moss transition-colors">Mindset Coaching</a>
               </li>
               <li>
-                <a href="#about" className="text-forest/70 hover:text-moss transition-colors">Über mich</a>
+                <a href="#about" className="text-forest/80 hover:text-moss transition-colors">Über mich</a>
               </li>
               <li>
-                <a href="#pricing" className="text-forest/70 hover:text-moss transition-colors">Preise</a>
+                <a href="#pricing" className="text-forest/80 hover:text-moss transition-colors">Preise</a>
               </li>
               <li>
-                <a href="#contact" className="text-forest/70 hover:text-moss transition-colors">Kontakt</a>
+                <a href="#contact" className="text-forest/80 hover:text-moss transition-colors">Kontakt</a>
               </li>
             </ul>
           </div>
@@ -68,20 +68,20 @@ const Footer = () => {
             <ul className="space-y-3">
               <li className="flex items-start gap-3">
                 <MapPin size={18} className="text-moss flex-shrink-0 mt-0.5" />
-                <span className="text-forest/70">
+                <span className="text-forest/80">
                   Ruedi-Walter-strasse 4<br />
                   8050 Zürich
                 </span>
               </li>
               <li className="flex items-center gap-3">
                 <Mail size={18} className="text-moss flex-shrink-0" />
-                <a href="mailto:info@martinadomeniconi.ch" className="text-forest/70 hover:text-moss transition-colors">
+                <a href="mailto:info@martinadomeniconi.ch" className="text-forest/80 hover:text-moss transition-colors">
                   info@martinadomeniconi.ch
                 </a>
               </li>
               <li className="flex items-center gap-3">
                 <Phone size={18} className="text-moss flex-shrink-0" />
-                <a href="tel:+41788400481" className="text-forest/70 hover:text-moss transition-colors">
+                <a href="tel:+41788400481" className="text-forest/80 hover:text-moss transition-colors">
                   078 840 04 81
                 </a>
               </li>
@@ -93,21 +93,21 @@ const Footer = () => {
           <div className="flex justify-center items-center gap-8 text-center">
             <button 
               onClick={openTerms} 
-              className="text-forest/60 text-sm hover:text-moss transition-colors flex items-center gap-1"
+              className="text-forest/70 text-sm hover:text-moss transition-colors flex items-center gap-1"
             >
               <ScrollText size={14} />
               <span>AGB</span>
             </button>
             <button 
               onClick={() => openLegalInfo("impressum")} 
-              className="text-forest/60 text-sm hover:text-moss transition-colors flex items-center gap-1"
+              className="text-forest/70 text-sm hover:text-moss transition-colors flex items-center gap-1"
             >
               <FileText size={14} />
               <span>Impressum</span>
             </button>
             <button 
               onClick={() => openLegalInfo("datenschutz")} 
-              className="text-forest/60 text-sm hover:text-moss transition-colors flex items-center gap-1"
+              className="text-forest/70 text-sm hover:text-moss transition-colors flex items-center gap-1"
             >
               <Shield size={14} />
               <span>Datenschutz</span>
