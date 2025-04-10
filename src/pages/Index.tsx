@@ -233,19 +233,13 @@ const Index = () => {
   
   return (
     <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
-      <Navbar navigation={globalSettings?.navigation} />
+      {/* Don't pass navigation prop to Navbar since it doesn't accept it */}
+      <Navbar />
       <main>
         {renderSections()}
       </main>
-      <Footer 
-        contactText={globalSettings?.footer?.contactText}
-        contactEmail={globalSettings?.contactEmail}
-        contactPhone={globalSettings?.contactPhone}
-        address={globalSettings?.address}
-        socialLinks={globalSettings?.footer?.socialLinks}
-        legalLinks={globalSettings?.footer?.legalLinks}
-        copyrightText={globalSettings?.footer?.copyrightText}
-      />
+      {/* Don't pass props to Footer since it doesn't accept them */}
+      <Footer />
     </div>
   );
 };
