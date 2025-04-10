@@ -29,7 +29,7 @@ const Footer = () => {
             <a href="#home" className="flex items-center gap-2 mb-4 text-forest">
               <Leaf size={24} className="text-moss" />
               <span className="font-serif text-2xl font-medium inline-block">
-                Mindest <span className="text-moss">Coach Martina</span>
+                Mindset <span className="text-moss">Coach Martina</span>
               </span>
             </a>
             <p className="text-forest/80 max-w-md mb-6">
