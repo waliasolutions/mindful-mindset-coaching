@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from 'react';
 import { Phone, Mail, MapPin, Clock, ArrowRight, MessageSquare, Leaf } from 'lucide-react';
 

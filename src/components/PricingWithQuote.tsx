@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from 'react';
 import { AspectRatio } from './ui/aspect-ratio';
 import { MessageSquareQuote, Check, Calendar, Clock, Users } from 'lucide-react';
@@ -68,7 +67,7 @@ const PricingWithQuote = () => {
           </h2>
           <div className="w-16 h-1 bg-highlight mx-auto mb-8"></div>
           <p className="text-lg text-center text-forest/90 max-w-2xl mx-auto">
-            Vor jedem Coaching machen wir zuerst ein kostenloses Kennenlerngespräch online oder per Telefon.
+            Vor jedem Coaching machen wir zuerst ein kostenloses Kennenlerngespraech online oder per Telefon.
           </p>
         </div>
 
@@ -145,7 +144,7 @@ const PricingWithQuote = () => {
                       <Calendar size={20} className="text-forest" />
                     </div>
                     <div>
-                      <p className="font-medium mb-1">Erstgespräch</p>
+                      <p className="font-medium mb-1">Erstgespraech</p>
                       <p className="text-coral font-medium">Kostenlos</p>
                     </div>
                   </div>
@@ -183,4 +182,3 @@ const PricingWithQuote = () => {
 };
 
 export default PricingWithQuote;
-
