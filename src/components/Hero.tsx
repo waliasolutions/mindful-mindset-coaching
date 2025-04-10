@@ -1,7 +1,8 @@
 
-import { ArrowDown, Leaf } from 'lucide-react';
+import { ArrowDown, Leaf, Shield } from 'lucide-react';
 import { useEffect, useRef } from 'react';
 import { useIsMobile } from '../hooks/use-mobile';
+import { Badge } from '@/components/ui/badge';
 
 const Hero = () => {
   const headingRef = useRef<HTMLHeadingElement>(null);
@@ -70,7 +71,7 @@ const Hero = () => {
           
           <div className="relative w-full max-w-md lg:max-w-lg xl:max-w-xl">
             <div className="aspect-[3/4] overflow-hidden shadow-xl transition-all duration-500 hover:shadow-2xl rounded-lg">
-              <div className="image-reveal reveal w-full h-full">
+              <div className="image-reveal reveal w-full h-full relative">
                 <img 
                   src="/lovable-uploads/7b4f0db6-80ea-4da6-b817-0f33ba7562b5.png" 
                   alt="Martina Domeniconi - Mindset Coach" 
@@ -78,6 +79,14 @@ const Hero = () => {
                   loading="lazy"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-forest/40 to-transparent opacity-40 rounded-lg"></div>
+                
+                {/* Add badge overlay */}
+                <div className="absolute bottom-4 left-4 z-10">
+                  <Badge variant="default" className="bg-white text-forest flex items-center gap-2 py-2 px-3 shadow-lg">
+                    <Shield size={16} className="text-forest" />
+                    Zertifizierter Mindset Coach
+                  </Badge>
+                </div>
               </div>
             </div>
           </div>
@@ -98,4 +107,3 @@ const Hero = () => {
 };
 
 export default Hero;
-
