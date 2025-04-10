@@ -76,8 +76,8 @@ const Footer = () => {
               </li>
               <li className="flex items-center gap-3">
                 <Mail size={18} className="text-moss flex-shrink-0" />
-                <a href="mailto:info@martinadomeniconi.ch" className="text-forest/80 hover:text-moss transition-colors">
-                  info@martinadomeniconi.ch
+                <a href="mailto:info@mindset-coach-martina.ch" className="text-forest/80 hover:text-moss transition-colors">
+                  info@mindset-coach-martina.ch
                 </a>
               </li>
               <li className="flex items-center gap-3">

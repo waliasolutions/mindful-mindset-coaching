@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { X, Save, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -43,7 +42,6 @@ interface SectionEditorProps {
   onClose: () => void;
 }
 
-// Mock section content that would typically come from a database
 const getSectionContent = (sectionId: string) => {
   const savedContent = localStorage.getItem(`section_${sectionId}`);
   if (savedContent) return JSON.parse(savedContent);
@@ -99,8 +97,8 @@ const getSectionContent = (sectionId: string) => {
         title: "Kontakt",
         subtitle: "Lass uns gemeinsam an deinem Mindset arbeiten",
         description: "Ich freue mich darauf, von dir zu hören und gemeinsam den ersten Schritt zu gehen.",
-        email: "kontakt@example.com",
-        phone: "+41 123 456 789",
+        email: "info@mindset-coach-martina.ch",
+        phone: "+41 788 400 481",
         address: "Ruedi-Walter-strasse 4, 8050 Zürich"
       };
     default:

@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useRef } from 'react';
 import { Phone, Mail, MapPin, Clock, ArrowRight, MessageSquare, Leaf } from 'lucide-react';
 
@@ -86,7 +87,7 @@ const Contact = () => {
                   </div>
                   <div>
                     <p className="font-medium mb-1">E-Mail</p>
-                    <a href="mailto:info@martinadomeniconi.ch" className="text-foreground/70 hover:text-forest transition-colors">info@martinadomeniconi.ch</a>
+                    <a href="mailto:info@mindset-coach-martina.ch" className="text-foreground/70 hover:text-forest transition-colors">info@mindset-coach-martina.ch</a>
                   </div>
                 </div>
                 
@@ -123,7 +124,7 @@ const Contact = () => {
                 </a>
                 
                 <a 
-                  href="mailto:info@martinadomeniconi.ch" 
+                  href="mailto:info@mindset-coach-martina.ch" 
                   className="flex items-center justify-center py-3 bg-moss/20 hover:bg-moss/30 text-forest transition-colors focus-ring text-center gap-2 font-medium flex-1 rounded-md"
                 >
                   <span>E-Mail senden</span>
@@ -165,7 +166,7 @@ const Contact = () => {
                 </p>
                 
                 <a 
-                  href="mailto:info@martinadomeniconi.ch?subject=Erstgespräch%20Mindset%20Coaching" 
+                  href="mailto:info@mindset-coach-martina.ch?subject=Erstgespräch%20Mindset%20Coaching" 
                   className="flex items-center justify-center w-full py-3 bg-white text-forest hover:bg-white/90 transition-colors shadow-md text-center gap-2 font-medium rounded-md"
                 >
                   <span>Jetzt Termin vereinbaren</span>
