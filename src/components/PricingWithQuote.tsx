@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useRef } from 'react';
 import { AspectRatio } from './ui/aspect-ratio';
 import { MessageSquareQuote, Check, Calendar, Clock, Users } from 'lucide-react';
@@ -108,6 +109,7 @@ const PricingWithQuote = () => {
             }`}
           >
             <div className="bg-white shadow-xl overflow-hidden border border-sage/20 rounded-lg h-full">
+              <div className="h-1 bg-forest"></div> {/* Added dark green line on top */}
               <div className="bg-gradient-to-r from-highlight/50 to-highlight p-6 md:p-8 text-forest">
                 <h3 className="text-2xl font-serif font-medium mb-2">Coaching Einzelsitzung</h3>
                 <p className="text-forest/90 mb-4">Individuelle Betreuung für deine Bedürfnisse</p>
