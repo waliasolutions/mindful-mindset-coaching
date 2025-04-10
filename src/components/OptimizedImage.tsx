@@ -12,6 +12,7 @@ interface OptimizedImageProps {
   priority?: 'high' | 'medium' | 'low';
   objectFit?: 'cover' | 'contain' | 'fill' | 'none' | 'scale-down';
   onClick?: () => void;
+  onLoad?: () => void;  // Added the onLoad prop
   sizes?: string;
 }
 
@@ -24,6 +25,7 @@ const OptimizedImage = ({
   priority = 'medium',
   objectFit = 'cover',
   onClick,
+  onLoad,  // Added the onLoad prop to the component props
   sizes = '100vw',
 }: OptimizedImageProps) => {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -50,6 +52,15 @@ const OptimizedImage = ({
     console.warn(`Failed to load optimized image: ${webpSrc}, falling back to original: ${src}`);
   };
   
+  // Handle image load success
+  const handleLoad = () => {
+    setIsLoaded(true);
+    // Call the onLoad prop if it exists
+    if (onLoad) {
+      onLoad();
+    }
+  };
+  
   // Basic styling based on objectFit
   const objectFitClass = `object-${objectFit}`;
   
@@ -73,7 +84,7 @@ const OptimizedImage = ({
         height={height}
         loading={loading}
         className={`transition-opacity duration-300 ${objectFitClass} ${className} ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
-        onLoad={() => setIsLoaded(true)}
+        onLoad={handleLoad}
         onError={handleError}
         onClick={onClick}
         decoding="async"
