@@ -30,6 +30,7 @@ const AdminSections = () => {
   );
   const [editingSection, setEditingSection] = useState<Section | null>(null);
   const [syncedWithPage, setSyncedWithPage] = useState(true);
+  const [previewLoaded, setPreviewLoaded] = useState(false);
 
   useEffect(() => {
     // Check if the page has been updated outside of admin
@@ -41,6 +42,19 @@ const AdminSections = () => {
         setSyncedWithPage(false);
       }
     }
+    
+    // Check if the preview iframe is loaded
+    const checkPreviewLoaded = () => {
+      const previewFrame = document.querySelector('iframe');
+      if (previewFrame && previewFrame.contentDocument) {
+        setPreviewLoaded(true);
+      } else {
+        // Check again in a moment
+        setTimeout(checkPreviewLoaded, 500);
+      }
+    };
+    
+    checkPreviewLoaded();
   }, [sections]);
 
   useEffect(() => {
@@ -182,6 +196,16 @@ const AdminSections = () => {
   };
 
   const handleEditSection = (section: Section) => {
+    // Ensure the preview iframe is loaded before opening editor
+    // so we can extract content from it
+    if (!previewLoaded) {
+      toast.error("Preview not fully loaded yet. Please wait a moment before editing.");
+      setTimeout(() => {
+        handleSyncChanges();
+      }, 500);
+      return;
+    }
+    
     setEditingSection(section);
   };
 
@@ -218,6 +242,11 @@ const AdminSections = () => {
       
       <p className="text-gray-600">
         Drag and drop sections to reorder them on the page. Toggle visibility or edit content for each section.
+        {!previewLoaded && (
+          <span className="block mt-2 text-amber-600 font-medium">
+            Loading preview... Content editing will be available shortly.
+          </span>
+        )}
         {!syncedWithPage && (
           <span className="block mt-2 text-amber-600 font-medium">
             Changes are pending. Click "Apply Changes" to update the page.
@@ -291,6 +320,7 @@ const AdminSections = () => {
                                 variant="ghost"
                                 size="icon"
                                 onClick={() => handleEditSection(section)}
+                                disabled={!previewLoaded}
                               >
                                 <Edit className="h-4 w-4" />
                               </Button>

@@ -46,7 +46,15 @@ const getSectionContent = (sectionId: string) => {
   const savedContent = localStorage.getItem(`section_${sectionId}`);
   if (savedContent) return JSON.parse(savedContent);
   
-  // Default content by section type
+  try {
+    const pageContent = extractContentFromPage(sectionId);
+    if (pageContent && Object.keys(pageContent).length > 0) {
+      return pageContent;
+    }
+  } catch (error) {
+    console.error('Error extracting content from page:', error);
+  }
+  
   switch (sectionId) {
     case 'hero':
       return {
@@ -106,6 +114,136 @@ const getSectionContent = (sectionId: string) => {
   }
 };
 
+const extractContentFromPage = (sectionId: string) => {
+  const previewFrame = document.querySelector('iframe');
+  if (!previewFrame || !previewFrame.contentDocument) {
+    return null;
+  }
+  
+  const previewDocument = previewFrame.contentDocument;
+  
+  const sectionElement = previewDocument.getElementById(sectionId);
+  if (!sectionElement) {
+    return null;
+  }
+  
+  switch (sectionId) {
+    case 'hero': {
+      const title = sectionElement.querySelector('h1')?.textContent || '';
+      const subtitle = sectionElement.querySelector('p')?.textContent || '';
+      const buttonText = sectionElement.querySelector('a')?.textContent?.trim() || '';
+      const backgroundImage = sectionElement.querySelector('img')?.src || '';
+      
+      return {
+        title,
+        subtitle,
+        backgroundImage,
+        buttonText
+      };
+    }
+    
+    case 'services': {
+      const title = sectionElement.querySelector('h2')?.textContent || '';
+      const description = sectionElement.querySelector('p')?.textContent || '';
+      
+      const benefitElements = sectionElement.querySelectorAll('.grid > div');
+      const benefits = Array.from(benefitElements).map(el => {
+        const title = el.querySelector('h3')?.textContent || '';
+        const description = el.querySelector('p')?.textContent || '';
+        const iconEl = el.querySelector('.rounded-full');
+        const iconName = iconEl?.querySelector('svg')?.classList.value || 'Star';
+        
+        return { title, description, icon: iconName };
+      });
+      
+      return {
+        title,
+        description,
+        benefits: benefits.length > 0 ? benefits : undefined
+      };
+    }
+    
+    case 'pricing': {
+      const title = sectionElement.querySelector('h2')?.textContent || '';
+      const description = sectionElement.querySelector('.max-w-2xl p')?.textContent || '';
+      
+      const quote = sectionElement.querySelector('.text-xl')?.textContent || '';
+      const quoteAuthor = sectionElement.querySelector('.text-forest\\/70')?.textContent || '';
+      
+      const packageTitle = sectionElement.querySelector('.bg-gradient-to-r h3')?.textContent || '';
+      const packageDescription = sectionElement.querySelector('.bg-gradient-to-r p')?.textContent || '';
+      const price = sectionElement.querySelector('.text-4xl')?.textContent || '';
+      const pricePeriod = sectionElement.querySelector('.text-forest\\/90')?.textContent || '';
+      
+      const featureElements = sectionElement.querySelectorAll('.space-y-3 li');
+      const features = Array.from(featureElements).map(el => 
+        el.textContent?.replace(/✓/g, '').trim() || ''
+      );
+      
+      return {
+        title,
+        description,
+        quote,
+        quoteAuthor,
+        packageTitle,
+        packageDescription,
+        price,
+        pricePeriod,
+        features: features.length > 0 ? features : undefined
+      };
+    }
+    
+    case 'about': {
+      const title = sectionElement.querySelector('h2')?.textContent || '';
+      const subtitle = sectionElement.querySelector('.rounded-full + h2 + .w-16 + p')?.textContent || '';
+      const description = sectionElement.querySelector('.reveal-right p')?.textContent || '';
+      
+      const paragraphs = sectionElement.querySelectorAll('.reveal-right p');
+      let backgroundStory = '';
+      if (paragraphs.length > 1) {
+        backgroundStory = Array.from(paragraphs).slice(1, -1).map(p => p.textContent).join('\n\n');
+      }
+      
+      return {
+        title,
+        subtitle,
+        description,
+        backgroundStory
+      };
+    }
+    
+    case 'contact': {
+      const title = sectionElement.querySelector('h2')?.textContent || '';
+      const subtitle = sectionElement.querySelector('.w-16 + p')?.textContent || '';
+      const description = sectionElement.querySelector('.max-w-2xl')?.textContent || '';
+      
+      const emailElement = sectionElement.querySelector('a[href^="mailto:"]');
+      const email = emailElement?.getAttribute('href')?.replace('mailto:', '') || '';
+      
+      const phoneElement = sectionElement.querySelector('a[href^="tel:"]');
+      const phone = phoneElement?.textContent?.trim() || '';
+      
+      const addressElements = sectionElement.querySelectorAll('.text-foreground\\/70');
+      let address = '';
+      if (addressElements.length > 2) {
+        address = Array.from(addressElements).slice(-3).map(el => el.textContent).join(', ');
+      }
+      
+      return {
+        title,
+        subtitle,
+        description,
+        email,
+        phone,
+        address
+      };
+    }
+    
+    default:
+      return null;
+  }
+};
+
 const SectionEditor = ({ section, onClose }: SectionEditorProps) => {
   const [content, setContent] = useState(getSectionContent(section.id));
   const [isOpen, setIsOpen] = useState(true);
@@ -120,7 +258,7 @@ const SectionEditor = ({ section, onClose }: SectionEditorProps) => {
 
   const handleClose = () => {
     setIsOpen(false);
-    setTimeout(onClose, 300); // Allow animation to complete
+    setTimeout(onClose, 300);
   };
 
   const handleSave = () => {
@@ -213,7 +351,7 @@ const SectionEditor = ({ section, onClose }: SectionEditorProps) => {
                 <FormItem>
                   <FormLabel>Section Description</FormLabel>
                   <FormControl>
-                    <Textarea {...field} className="min-h-[100px]" />
+                    <Textarea {...field} className="min-h-[80px]" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

@@ -5,12 +5,13 @@ import AdminLayout from '../components/admin/AdminLayout';
 import AdminSections from '../components/admin/AdminSections';
 import { Search, Layers } from 'lucide-react';
 
-// Import new SEO component
+// Import SEO component
 import SeoSettings from '../components/admin/SeoSettings';
 
 const Admin = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [previewLoaded, setPreviewLoaded] = useState(false);
   const navigate = useNavigate();
   
   // Simple password protection for demo purposes
@@ -35,6 +36,40 @@ const Admin = () => {
     
     checkAuth();
   }, [navigate]);
+
+  // Add a side effect to load the preview iframe with home page content
+  useEffect(() => {
+    if (isAuthenticated) {
+      // Create a hidden iframe to load the homepage content for extraction
+      const existingFrame = document.getElementById('preview-frame');
+      
+      if (!existingFrame) {
+        const previewFrame = document.createElement('iframe');
+        previewFrame.id = 'preview-frame';
+        previewFrame.src = '/';
+        previewFrame.style.width = '1px';
+        previewFrame.style.height = '1px';
+        previewFrame.style.position = 'absolute';
+        previewFrame.style.top = '-9999px';
+        previewFrame.style.left = '-9999px';
+        previewFrame.style.opacity = '0.01';
+        previewFrame.style.pointerEvents = 'none';
+        
+        previewFrame.onload = () => {
+          setPreviewLoaded(true);
+          console.log('Preview iframe loaded successfully');
+        };
+        
+        document.body.appendChild(previewFrame);
+        
+        return () => {
+          if (document.body.contains(previewFrame)) {
+            document.body.removeChild(previewFrame);
+          }
+        };
+      }
+    }
+  }, [isAuthenticated]);
 
   // Load SEO settings on admin panel load
   useEffect(() => {
