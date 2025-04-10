@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { Edit, Trash2, ChevronDown, ChevronUp, Grip, Eye, EyeOff, RefreshCw } from 'lucide-react';
@@ -15,10 +16,6 @@ interface Section {
   order: number;
 }
 
-interface AdminSectionsProps {
-  isEditMode?: boolean;
-}
-
 const defaultSections: Section[] = [
   { id: 'hero', name: 'Hero', component: 'Hero', visible: true, order: 0 },
   { id: 'services', name: 'Services', component: 'Services', visible: true, order: 1 },
@@ -27,7 +24,7 @@ const defaultSections: Section[] = [
   { id: 'contact', name: 'Contact', component: 'Contact', visible: true, order: 4 },
 ];
 
-const AdminSections = ({ isEditMode = false }: AdminSectionsProps) => {
+const AdminSections = () => {
   const [sections, setSections] = useState<Section[]>(
     JSON.parse(localStorage.getItem('sectionOrder') || JSON.stringify(defaultSections))
   );
@@ -223,135 +220,122 @@ const AdminSections = ({ isEditMode = false }: AdminSectionsProps) => {
 
   return (
     <div className="space-y-6">
-      {isEditMode ? (
-        <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-4">
-          <h2 className="text-lg font-medium text-green-800 mb-2">WYSIWYG Editing Mode Active</h2>
-          <p className="text-green-700">
-            Visit your website in a new tab to edit content directly on the page. Hover over text to see edit buttons.
-          </p>
-        </div>
-      ) : (
-        <div className="flex justify-between items-center">
-          <h1 className="text-2xl font-bold text-forest">Website Sections</h1>
-          <div className="space-x-2">
-            {!syncedWithPage && (
-              <Button variant="outline" onClick={handleSyncChanges} className="mr-2">
-                <RefreshCw className="mr-2 h-4 w-4" />
-                Apply Changes
-              </Button>
-            )}
-            <Button variant="default" onClick={() => {
-              localStorage.removeItem('sectionOrder');
-              setSections(defaultSections);
-              toast.success('Section order reset to default');
-              setSyncedWithPage(false);
-            }}>
-              Reset Order
+      <div className="flex justify-between items-center">
+        <h1 className="text-2xl font-bold text-forest">Website Sections</h1>
+        <div className="space-x-2">
+          {!syncedWithPage && (
+            <Button variant="outline" onClick={handleSyncChanges} className="mr-2">
+              <RefreshCw className="mr-2 h-4 w-4" />
+              Apply Changes
             </Button>
-          </div>
+          )}
+          <Button variant="default" onClick={() => {
+            localStorage.removeItem('sectionOrder');
+            setSections(defaultSections);
+            toast.success('Section order reset to default');
+            setSyncedWithPage(false);
+          }}>
+            Reset Order
+          </Button>
         </div>
-      )}
+      </div>
       
-      {!isEditMode && (
-        <>
-          <p className="text-gray-600">
-            Drag and drop sections to reorder them on the page. Toggle visibility or edit content for each section.
-            {!previewLoaded && (
-              <span className="block mt-2 text-amber-600 font-medium">
-                Loading preview... Content editing will be available shortly.
-              </span>
-            )}
-            {!syncedWithPage && (
-              <span className="block mt-2 text-amber-600 font-medium">
-                Changes are pending. Click "Apply Changes" to update the page.
-              </span>
-            )}
-          </p>
-          
-          <Card>
-            <CardContent className="p-6">
-              <DragDropContext onDragEnd={onDragEnd}>
-                <Droppable droppableId="sections">
-                  {(provided) => (
-                    <div
-                      {...provided.droppableProps}
-                      ref={provided.innerRef}
-                      className="space-y-4"
-                    >
-                      {sections
-                        .sort((a, b) => a.order - b.order)
-                        .map((section, index) => (
-                          <Draggable key={section.id} draggableId={section.id} index={index}>
-                            {(provided) => (
+      <p className="text-gray-600">
+        Drag and drop sections to reorder them on the page. Toggle visibility or edit content for each section.
+        {!previewLoaded && (
+          <span className="block mt-2 text-amber-600 font-medium">
+            Loading preview... Content editing will be available shortly.
+          </span>
+        )}
+        {!syncedWithPage && (
+          <span className="block mt-2 text-amber-600 font-medium">
+            Changes are pending. Click "Apply Changes" to update the page.
+          </span>
+        )}
+      </p>
+      
+      <Card>
+        <CardContent className="p-6">
+          <DragDropContext onDragEnd={onDragEnd}>
+            <Droppable droppableId="sections">
+              {(provided) => (
+                <div
+                  {...provided.droppableProps}
+                  ref={provided.innerRef}
+                  className="space-y-4"
+                >
+                  {sections
+                    .sort((a, b) => a.order - b.order)
+                    .map((section, index) => (
+                      <Draggable key={section.id} draggableId={section.id} index={index}>
+                        {(provided) => (
+                          <div
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            className={`bg-white border rounded-lg p-4 flex items-center justify-between ${
+                              !section.visible ? 'opacity-60' : ''
+                            }`}
+                          >
+                            <div className="flex items-center">
                               <div
-                                ref={provided.innerRef}
-                                {...provided.draggableProps}
-                                className={`bg-white border rounded-lg p-4 flex items-center justify-between ${
-                                  !section.visible ? 'opacity-60' : ''
-                                }`}
+                                {...provided.dragHandleProps}
+                                className="mr-3 text-gray-400 hover:text-gray-600 cursor-grab"
                               >
-                                <div className="flex items-center">
-                                  <div
-                                    {...provided.dragHandleProps}
-                                    className="mr-3 text-gray-400 hover:text-gray-600 cursor-grab"
-                                  >
-                                    <Grip className="h-5 w-5" />
-                                  </div>
-                                  <div>
-                                    <h3 className="font-medium">{section.name}</h3>
-                                    <p className="text-sm text-gray-500">{section.component}</p>
-                                  </div>
-                                </div>
-                                <div className="flex items-center space-x-2">
-                                  <Button
-                                    variant="ghost"
-                                    size="icon"
-                                    onClick={() => moveSection(section.id, 'up')}
-                                    disabled={index === 0}
-                                  >
-                                    <ChevronUp className="h-4 w-4" />
-                                  </Button>
-                                  <Button
-                                    variant="ghost"
-                                    size="icon"
-                                    onClick={() => moveSection(section.id, 'down')}
-                                    disabled={index === sections.length - 1}
-                                  >
-                                    <ChevronDown className="h-4 w-4" />
-                                  </Button>
-                                  <Button
-                                    variant="ghost"
-                                    size="icon"
-                                    onClick={() => toggleVisibility(section.id)}
-                                  >
-                                    {section.visible ? (
-                                      <Eye className="h-4 w-4" />
-                                    ) : (
-                                      <EyeOff className="h-4 w-4" />
-                                    )}
-                                  </Button>
-                                  <Button
-                                    variant="ghost"
-                                    size="icon"
-                                    onClick={() => handleEditSection(section)}
-                                    disabled={!previewLoaded}
-                                  >
-                                    <Edit className="h-4 w-4" />
-                                  </Button>
-                                </div>
+                                <Grip className="h-5 w-5" />
                               </div>
-                            )}
-                          </Draggable>
-                        ))}
-                      {provided.placeholder}
-                    </div>
-                  )}
-                </Droppable>
-              </DragDropContext>
-            </CardContent>
-          </Card>
-        </>
-      )}
+                              <div>
+                                <h3 className="font-medium">{section.name}</h3>
+                                <p className="text-sm text-gray-500">{section.component}</p>
+                              </div>
+                            </div>
+                            <div className="flex items-center space-x-2">
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                onClick={() => moveSection(section.id, 'up')}
+                                disabled={index === 0}
+                              >
+                                <ChevronUp className="h-4 w-4" />
+                              </Button>
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                onClick={() => moveSection(section.id, 'down')}
+                                disabled={index === sections.length - 1}
+                              >
+                                <ChevronDown className="h-4 w-4" />
+                              </Button>
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                onClick={() => toggleVisibility(section.id)}
+                              >
+                                {section.visible ? (
+                                  <Eye className="h-4 w-4" />
+                                ) : (
+                                  <EyeOff className="h-4 w-4" />
+                                )}
+                              </Button>
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                onClick={() => handleEditSection(section)}
+                                disabled={!previewLoaded}
+                              >
+                                <Edit className="h-4 w-4" />
+                              </Button>
+                            </div>
+                          </div>
+                        )}
+                      </Draggable>
+                    ))}
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
+          </DragDropContext>
+        </CardContent>
+      </Card>
 
       {editingSection && (
         <SectionEditor 

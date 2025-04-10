@@ -1,60 +1,79 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground: 20 14.3% 4.1%;
-  --background: 0 0% 100%;
-  --card: 0 0% 100%;
-  --card-foreground: 20 14.3% 4.1%;
-  --popover: 0 0% 100%;
-  --popover-foreground: 20 14.3% 4.1%;
-  --primary: 47.9 95.8% 53.1%;
-  --primary-foreground: 26 83.3% 14.1%;
-  --secondary: 60 4.8% 95.9%;
-  --secondary-foreground: 24 9.8% 10%;
-  --muted: 60 4.8% 95.9%;
-  --muted-foreground: 25 5.3% 44.7%;
-  --accent: 60 4.8% 95.9%;
-  --accent-foreground: 24 9.8% 10%;
-  --destructive: 0 84.2% 60.2%;
-  --destructive-foreground: 60 9.1% 97.8%;
-  --border: 20 5.9% 90%;
-  --input: 20 5.9% 90%;
-  --ring: 20 14.3% 4.1%;
-  --radius: 0.5rem;
-  
-  /* Custom Colors */
-  --forest: 147 44% 16%;
-  --sage: 138 26% 60%;
-  --mint: 168 81% 95%;
-  --moss: 148 44% 26%;
-  --coral: 357 77% 63%;
-  --highlight: 46 100% 73%;
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: 20 14.3% 4.1%;
-    --foreground: 60 9.1% 97.8%;
-    --card: 20 14.3% 4.1%;
-    --card-foreground: 60 9.1% 97.8%;
-    --popover: 20 14.3% 4.1%;
-    --popover-foreground: 60 9.1% 97.8%;
-    --primary: 47.9 95.8% 53.1%;
-    --primary-foreground: 26 83.3% 14.1%;
-    --secondary: 12 6.5% 15.1%;
-    --secondary-foreground: 60 9.1% 97.8%;
-    --muted: 12 6.5% 15.1%;
-    --muted-foreground: 24 5.4% 63.9%;
-    --accent: 12 6.5% 15.1%;
-    --accent-foreground: 60 9.1% 97.8%;
+    --background: 30 32% 90%;  /* Lighter version of beige */
+    --foreground: 135 50% 15%; /* Forest green for text */
+
+    --card: 0 0% 100%;
+    --card-foreground: 135 50% 15%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 135 50% 15%;
+
+    --primary: 186 29% 35%; /* Petrol blue */
+    --primary-foreground: 30 32% 90%;
+
+    --secondary: 120 15% 67%; /* Sage green */
+    --secondary-foreground: 135 50% 15%;
+
+    --muted: 100 25% 90%;
+    --muted-foreground: 135 10% 45%;
+
+    --accent: 337 41% 74%; /* Mauve */
+    --accent-foreground: 135 50% 15%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 30 32% 90%;
+
+    --border: 120 15% 67%; /* Sage for borders */
+    --input: 100 25% 90%;
+    --ring: 186 29% 35%; /* Petrol blue */
+
+    --radius: 0.5rem;
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --background: 135 50% 5%;
+    --foreground: 30 32% 90%; /* Beige */
+
+    --card: 135 50% 5%;
+    --card-foreground: 30 32% 90%;
+
+    --popover: 135 50% 5%;
+    --popover-foreground: 30 32% 90%;
+
+    --primary: 186 29% 35%; /* Petrol blue */
+    --primary-foreground: 30 32% 90%;
+
+    --secondary: 120 10% 37%; /* Darker sage */
+    --secondary-foreground: 30 32% 90%;
+
+    --muted: 135 40% 15%;
+    --muted-foreground: 30 20% 70%;
+
+    --accent: 337 41% 74%; /* Mauve */
+    --accent-foreground: 135 50% 5%;
+
     --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 60 9.1% 97.8%;
-    --border: 12 6.5% 15.1%;
-    --input: 12 6.5% 15.1%;
-    --ring: 35.5 91.7% 32.9%;
+    --destructive-foreground: 30 32% 90%;
+
+    --border: 135 40% 15%;
+    --input: 135 40% 15%;
+    --ring: 186 29% 35%; /* Petrol blue */
   }
 }
 
@@ -62,89 +81,171 @@
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground font-sans antialiased;
   }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-serif;
+  }
 }
 
-@layer components {
-  /* Font Settings */
-  h1, h2, h3, h4, h5, h6 {
-    font-family: 'Georgia', serif;
+@layer utilities {
+  .section-padding {
+    @apply py-20 md:py-28;
   }
   
-  /* Main Layout Elements */
-  .section-padding {
-    @apply py-16 md:py-24;
+  .hero-text-gradient {
+    @apply bg-gradient-to-r from-sage via-petrol to-moss bg-clip-text text-transparent;
+  }
+  
+  .card-hover {
+    @apply transition-all duration-300 hover:shadow-lg hover:-translate-y-1;
+  }
+  
+  .focus-ring {
+    @apply focus:outline-none focus:ring-2 focus:ring-sage focus:ring-opacity-50;
   }
 
-  /* Animation and Transition */
   .reveal-element {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: all 1s ease-out;
+    @apply opacity-0 translate-y-8 transition-all duration-700 ease-out;
   }
   
   .reveal-element.revealed {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  /* Image reveal animation */
-  .image-reveal {
-    position: relative;
-    overflow: hidden;
+    @apply opacity-100 translate-y-0;
   }
   
-  .image-reveal::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: #f3f4f6;
-    transform: translateX(0);
-    transition: transform 1.2s cubic-bezier(0.77, 0, 0.18, 1);
-  }
-  
-  .image-reveal.reveal::after {
-    transform: translateX(100%);
-  }
-  
-  /* Left to right reveal */
-  .reveal-right {
-    opacity: 0;
-    transform: translateX(-30px);
-    transition: all 1s ease-out;
-  }
-  
-  .reveal-right.revealed {
-    opacity: 1;
-    transform: translateX(0);
-  }
-  
-  /* Right to left reveal */
   .reveal-left {
-    opacity: 0;
-    transform: translateX(30px);
-    transition: all 1s ease-out;
+    @apply opacity-0 -translate-x-8 transition-all duration-700 ease-out;
   }
   
   .reveal-left.revealed {
-    opacity: 1;
-    transform: translateX(0);
+    @apply opacity-100 translate-x-0;
   }
   
-  /* WYSIWYG Edit Mode Styles */
-  body.edit-mode [contenteditable=true]:focus {
-    outline: 2px solid #38b2ac;
-    padding: 0.25rem;
-    border-radius: 0.25rem;
+  .reveal-right {
+    @apply opacity-0 translate-x-8 transition-all duration-700 ease-out;
   }
   
-  body.edit-mode .group:hover {
-    outline: 2px dashed rgba(59, 130, 246, 0.5);
-    border-radius: 0.25rem;
+  .reveal-right.revealed {
+    @apply opacity-100 translate-x-0;
   }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #E8F1E8;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #3F6C72; /* Changed to petrol */
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #274B2A;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px; /* Accounts for fixed navbar */
+}
+
+/* Image reveal animations */
+.image-reveal {
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path 1.2s cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+.image-reveal.reveal {
+  clip-path: inset(0 0 0 0);
+}
+
+/* Link hover effect */
+.link-hover {
+  position: relative;
+}
+
+.link-hover::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  transform: scaleX(0);
+  height: 2px;
+  bottom: -2px;
+  left: 0;
+  background-color: #A8B5A2;
+  transform-origin: bottom right;
+  transition: transform 0.3s ease-out;
+}
+
+.link-hover:hover::after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
+}
+
+/* Section divider */
+.section-divider {
+  position: relative;
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(168, 181, 162, 0.3), transparent);
+  margin: 3rem 0;
+}
+
+.section-divider::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 12px;
+  height: 12px;
+  background-color: #A8B5A2;
+  border-radius: 50%;
+}
+
+/* Button animation */
+.btn-primary {
+  @apply bg-forest text-white px-6 py-3 inline-flex items-center justify-center transition-all duration-300;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-primary::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.7s ease;
+}
+
+.btn-primary:hover::after {
+  left: 100%;
+}
+
+/* Updated utility classes */
+.nature-card {
+  @apply bg-white/90 backdrop-blur-sm border-l-2 border-sage shadow-md hover:shadow-lg transition-all duration-300;
+}
+
+.section-fade {
+  @apply bg-gradient-to-b from-beige/50 to-white/80;
+}
+
+/* Background patterns */
+.leaf-pattern {
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 30c0-9.94-8.06-30-30-30v60c21.94 0 30-20.06 30-30z' fill='%23FFFFFF' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+}
+
+.bg-pattern-light {
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 30c0-9.94-8.06-30-30-30v60c21.94 0 30-20.06 30-30z' fill='%23274B2A' fill-opacity='0.03' fill-rule='evenodd'/%3E%3C/svg%3E");
 }
