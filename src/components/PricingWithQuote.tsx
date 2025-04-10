@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from 'react';
 import { AspectRatio } from './ui/aspect-ratio';
 import { MessageSquareQuote, Check, Calendar, Clock, Users } from 'lucide-react';
@@ -165,15 +164,6 @@ const PricingWithQuote = () => {
               </div>
             </div>
           </div>
-        </div>
-
-        <div className="flex justify-center mt-12">
-          <a 
-            href="#contact" 
-            className="inline-flex items-center justify-center px-8 py-3 bg-highlight/10 text-forest hover:bg-highlight/20 transition-colors shadow-lg font-medium rounded-md backdrop-blur-sm border border-sage/20"
-          >
-            Starte jetzt deine persönliche Reise
-          </a>
         </div>
       </div>
     </section>
