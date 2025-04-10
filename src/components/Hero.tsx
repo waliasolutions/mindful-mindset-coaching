@@ -1,3 +1,4 @@
+
 import { ArrowDown, Leaf } from 'lucide-react';
 import { useEffect, useRef } from 'react';
 import { useIsMobile } from '../hooks/use-mobile';
@@ -64,15 +65,6 @@ const Hero = () => {
                   Mehr erfahren
                 </a>
               </div>
-              <div className="absolute -bottom-6 -left-6 p-4 bg-white shadow-lg max-w-xs rounded-lg border-l-2 border-petrol">
-                <div className="flex items-center gap-2">
-                  <div className="w-6 h-6 rounded-full bg-sage/30 flex items-center justify-center">
-                    <Leaf size={14} className="text-forest" />
-                  </div>
-                  <p className="text-sm font-medium text-forest">Martina Domeniconi</p>
-                </div>
-                <p className="text-xs text-foreground/70 mt-1">Zertifizierter Mindset Coach</p>
-              </div>
             </div>
           </div>
           
@@ -87,15 +79,6 @@ const Hero = () => {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-forest/40 to-transparent opacity-40 rounded-lg"></div>
               </div>
-            </div>
-            <div className="absolute -bottom-6 -left-6 p-4 bg-white shadow-lg max-w-xs rounded-lg border-l-2 border-petrol">
-              <div className="flex items-center gap-2">
-                <div className="w-6 h-6 rounded-full bg-sage/30 flex items-center justify-center">
-                  <Leaf size={14} className="text-forest" />
-                </div>
-                <p className="text-sm font-medium text-forest">Martina Domeniconi</p>
-              </div>
-              <p className="text-xs text-foreground/70 mt-1">Zertifizierter Mindset Coach</p>
             </div>
           </div>
         </div>
@@ -115,3 +98,4 @@ const Hero = () => {
 };
 
 export default Hero;
+
