@@ -1,7 +1,7 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-import { Edit, Trash2, ChevronDown, ChevronUp, Grip, Eye, EyeOff } from 'lucide-react';
+import { Edit, Trash2, ChevronDown, ChevronUp, Grip, Eye, EyeOff, RefreshCw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { toast } from 'sonner';
@@ -29,6 +29,98 @@ const AdminSections = () => {
     JSON.parse(localStorage.getItem('sectionOrder') || JSON.stringify(defaultSections))
   );
   const [editingSection, setEditingSection] = useState<Section | null>(null);
+  const [syncedWithPage, setSyncedWithPage] = useState(true);
+
+  useEffect(() => {
+    // Check if the page has been updated outside of admin
+    const pageContent = document.querySelector('main');
+    if (pageContent) {
+      // This is a simple way to detect changes - in a real app you'd use a more robust approach
+      const sectionElements = Array.from(pageContent.children);
+      if (sectionElements.length !== sections.filter(s => s.visible).length) {
+        setSyncedWithPage(false);
+      }
+    }
+  }, [sections]);
+
+  useEffect(() => {
+    // Apply section settings from localStorage on admin load
+    applySettingsToPage();
+  }, []);
+
+  const applySettingsToPage = () => {
+    // Update document title and meta tags from SEO settings
+    const seoSettings = localStorage.getItem('seoSettings');
+    if (seoSettings) {
+      const { title, description, keywords, ogImage, gaTrackingId, enableGa } = JSON.parse(seoSettings);
+      
+      if (title) document.title = title;
+      
+      // Update meta tags
+      updateMetaTag('description', description);
+      updateMetaTag('keywords', keywords);
+      updateMetaTag('og:image', ogImage, 'property');
+      
+      // Handle Google Analytics
+      if (enableGa && gaTrackingId) {
+        updateGoogleAnalytics(gaTrackingId);
+      } else {
+        removeGoogleAnalytics();
+      }
+    }
+    
+    setSyncedWithPage(true);
+  };
+
+  const updateMetaTag = (name: string, content: string, attribute: 'name' | 'property' = 'name') => {
+    if (!content) return;
+    
+    let meta = document.querySelector(`meta[${attribute}="${name}"]`);
+    if (!meta) {
+      meta = document.createElement('meta');
+      meta.setAttribute(attribute, name);
+      document.head.appendChild(meta);
+    }
+    meta.setAttribute('content', content);
+  };
+
+  const updateGoogleAnalytics = (trackingId: string) => {
+    removeGoogleAnalytics(); // Remove existing GA script if any
+    
+    // Create GA4 script
+    const scriptGA = document.createElement('script');
+    scriptGA.async = true;
+    scriptGA.src = `https://www.googletagmanager.com/gtag/js?id=${trackingId}`;
+    scriptGA.id = 'ga-script';
+    
+    // Create config script
+    const scriptConfig = document.createElement('script');
+    scriptConfig.id = 'ga-config';
+    scriptConfig.innerHTML = `
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', '${trackingId}');
+    `;
+    
+    // Add scripts to document
+    document.head.appendChild(scriptGA);
+    document.head.appendChild(scriptConfig);
+  };
+
+  const removeGoogleAnalytics = () => {
+    // Remove existing GA scripts if they exist
+    const gaScript = document.getElementById('ga-script');
+    const gaConfig = document.getElementById('ga-config');
+    
+    if (gaScript) {
+      gaScript.remove();
+    }
+    
+    if (gaConfig) {
+      gaConfig.remove();
+    }
+  };
 
   const onDragEnd = (result: any) => {
     if (!result.destination) return;
@@ -46,6 +138,7 @@ const AdminSections = () => {
     setSections(updatedItems);
     localStorage.setItem('sectionOrder', JSON.stringify(updatedItems));
     toast.success('Section order updated');
+    setSyncedWithPage(false);
   };
 
   const toggleVisibility = (id: string) => {
@@ -57,6 +150,7 @@ const AdminSections = () => {
     
     const section = sections.find(s => s.id === id);
     toast.success(`${section?.name} section ${section?.visible ? 'hidden' : 'visible'}`);
+    setSyncedWithPage(false);
   };
 
   const moveSection = (id: string, direction: 'up' | 'down') => {
@@ -84,6 +178,7 @@ const AdminSections = () => {
     setSections(updatedSections);
     localStorage.setItem('sectionOrder', JSON.stringify(updatedSections));
     toast.success('Section moved');
+    setSyncedWithPage(false);
   };
 
   const handleEditSection = (section: Section) => {
@@ -94,21 +189,40 @@ const AdminSections = () => {
     setEditingSection(null);
   };
 
+  const handleSyncChanges = () => {
+    // Reload the page to apply changes
+    window.location.reload();
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold text-forest">Website Sections</h1>
-        <Button variant="default" onClick={() => {
-          localStorage.removeItem('sectionOrder');
-          setSections(defaultSections);
-          toast.success('Section order reset to default');
-        }}>
-          Reset Order
-        </Button>
+        <div className="space-x-2">
+          {!syncedWithPage && (
+            <Button variant="outline" onClick={handleSyncChanges} className="mr-2">
+              <RefreshCw className="mr-2 h-4 w-4" />
+              Apply Changes
+            </Button>
+          )}
+          <Button variant="default" onClick={() => {
+            localStorage.removeItem('sectionOrder');
+            setSections(defaultSections);
+            toast.success('Section order reset to default');
+            setSyncedWithPage(false);
+          }}>
+            Reset Order
+          </Button>
+        </div>
       </div>
       
       <p className="text-gray-600">
         Drag and drop sections to reorder them on the page. Toggle visibility or edit content for each section.
+        {!syncedWithPage && (
+          <span className="block mt-2 text-amber-600 font-medium">
+            Changes are pending. Click "Apply Changes" to update the page.
+          </span>
+        )}
       </p>
       
       <Card>
