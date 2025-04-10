@@ -1,6 +1,8 @@
+
 import { useState, useEffect, useRef } from 'react';
 import { AspectRatio } from './ui/aspect-ratio';
 import { MessageSquareQuote, Check, Calendar, Clock, Users } from 'lucide-react';
+import OptimizedImage from './OptimizedImage';
 
 const PricingWithQuote = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -79,13 +81,23 @@ const PricingWithQuote = () => {
           >
             <div className="h-full flex items-center">
               <div className="bg-white/10 backdrop-blur-sm p-5 border border-sage/20 rounded-lg h-full">
-                <div className="flex items-center mb-3">
-                  <MessageSquareQuote size={24} className="text-highlight mr-2" />
+                <div className="flex flex-col items-center">
+                  <div className="w-32 h-32 mb-4 rounded-full overflow-hidden bg-white/20">
+                    <OptimizedImage
+                      src="/lovable-uploads/eff14ab3-8502-4ea4-9c20-75fe9b485119.png"
+                      alt="Albert Einstein portrait"
+                      className="w-full h-full object-cover"
+                      priority="high"
+                    />
+                  </div>
+                  <div className="flex items-center mb-3">
+                    <MessageSquareQuote size={24} className="text-highlight mr-2" />
+                  </div>
+                  <p className="text-xl text-forest font-serif mb-3 leading-relaxed text-center">
+                    Unsere wichtigste Entscheidung ist, ob wir das Universum für einen freundlichen oder feindlichen Ort halten.
+                  </p>
+                  <p className="text-forest/70 font-medium">― Albert Einstein</p>
                 </div>
-                <p className="text-xl text-forest font-serif mb-3 leading-relaxed">
-                  Unsere wichtigste Entscheidung ist, ob wir das Universum für einen freundlichen oder feindlichen Ort halten.
-                </p>
-                <p className="text-forest/70 font-medium">― Albert Einstein</p>
               </div>
             </div>
           </div>
