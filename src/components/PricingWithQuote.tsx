@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useRef } from 'react';
 import { AspectRatio } from './ui/aspect-ratio';
 import { MessageSquareQuote, Check, Calendar, Clock, Users } from 'lucide-react';
@@ -79,7 +80,7 @@ const PricingWithQuote = () => {
             }`}
           >
             <div className="h-full flex items-center">
-              <div className="bg-white/10 backdrop-blur-sm p-5 border border-sage/20 rounded-lg h-full">
+              <div className="bg-white/10 backdrop-blur-sm p-5 border border-sage/20 rounded-lg h-full flex items-center justify-center">
                 <div className="flex flex-col items-center">
                   <div className="w-40 h-40 md:w-48 md:h-48 mb-4 rounded-lg overflow-hidden bg-white/20">
                     <OptimizedImage
