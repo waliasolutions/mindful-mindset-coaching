@@ -19,7 +19,7 @@ const Footer = () => {
   const closeLegalInfo = () => setIsLegalInfoOpen(false);
   
   return (
-    <footer className="py-16 bg-[#F2FCE2] text-forest relative overflow-hidden">
+    <footer className="py-16 bg-[#E8F1E8] text-forest relative overflow-hidden">
       {/* Decorative leaf pattern */}
       <div className="absolute inset-0 opacity-5 leaf-pattern -z-10"></div>
       
