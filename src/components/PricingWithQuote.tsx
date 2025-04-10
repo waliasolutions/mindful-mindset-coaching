@@ -102,13 +102,9 @@ const PricingWithQuote = () => {
           </div>
 
           {/* Pricing */}
-          <div 
-            className={`md:col-span-3 transition-all duration-1000 ease-out ${
-              isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-            }`}
-          >
+          <div className="md:col-span-3">
             <div className="bg-white shadow-xl overflow-hidden border border-sage/20 rounded-lg h-full">
-              <div className="h-0.5 bg-forest"></div> {/* Made the line thinner */}
+              <div className="h-0.5 bg-forest"></div>
               <div className="bg-gradient-to-r from-highlight/50 to-highlight p-6 md:p-8 text-forest">
                 <h3 className="text-2xl font-serif font-medium mb-2">Coaching Einzelsitzung</h3>
                 <p className="text-forest/90 mb-4">Individuelle Betreuung für deine Bedürfnisse</p>
@@ -159,7 +155,7 @@ const PricingWithQuote = () => {
                     "Flexible Terminvereinbarung"
                   ].map((feature, index) => (
                     <li key={index} className="flex items-start gap-3">
-                      <Check size={18} className="text-highlight flex-shrink-0 mt-0.5" />
+                      <Check size={18} className="text-moss flex-shrink-0 mt-0.5" />
                       <span className="text-foreground/80">{feature}</span>
                     </li>
                   ))}
