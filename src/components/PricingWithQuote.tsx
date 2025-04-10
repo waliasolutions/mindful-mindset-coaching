@@ -82,7 +82,7 @@ const PricingWithQuote = () => {
             <div className="h-full flex items-center">
               <div className="bg-white/10 backdrop-blur-sm p-5 border border-sage/20 rounded-lg h-full">
                 <div className="flex flex-col items-center">
-                  <div className="w-32 h-32 mb-4 rounded-full overflow-hidden bg-white/20">
+                  <div className="w-40 h-40 md:w-48 md:h-48 mb-4 rounded-lg overflow-hidden bg-white/20">
                     <OptimizedImage
                       src="/lovable-uploads/eff14ab3-8502-4ea4-9c20-75fe9b485119.png"
                       alt="Albert Einstein portrait"
