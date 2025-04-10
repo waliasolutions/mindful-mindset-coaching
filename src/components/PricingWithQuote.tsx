@@ -124,7 +124,7 @@ const PricingWithQuote = () => {
                     </div>
                     <div>
                       <p className="font-medium mb-1">Format</p>
-                      <p className="text-foreground/70">Online oder vor Ort</p>
+                      <p className="text-foreground/70">Online</p>
                     </div>
                   </div>
                   
