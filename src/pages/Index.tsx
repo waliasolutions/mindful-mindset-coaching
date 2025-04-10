@@ -1,14 +1,25 @@
-
-import { useEffect, useState } from 'react';
+import { useEffect, useState, lazy, Suspense } from 'react';
 import Navbar from '../components/Navbar';
 import Hero from '../components/Hero';
-import About from '../components/About';
-import Services from '../components/Services';
-import PricingWithQuote from '../components/PricingWithQuote';
-import Contact from '../components/Contact';
-import Footer from '../components/Footer';
+import { Skeleton } from '@/components/ui/skeleton';
 
-// Define the section type
+const About = lazy(() => import('../components/About'));
+const Services = lazy(() => import('../components/Services'));
+const PricingWithQuote = lazy(() => import('../components/PricingWithQuote'));
+const Contact = lazy(() => import('../components/Contact'));
+const Footer = lazy(() => import('../components/Footer'));
+
+const SectionLoader = () => (
+  <div className="w-full py-20">
+    <div className="container mx-auto px-4">
+      <Skeleton className="h-10 w-1/3 mx-auto mb-8" />
+      <Skeleton className="h-4 w-full mb-4" />
+      <Skeleton className="h-4 w-4/5 mb-4" />
+      <Skeleton className="h-4 w-3/5" />
+    </div>
+  </div>
+);
+
 interface Section {
   id: string;
   name: string;
@@ -17,7 +28,6 @@ interface Section {
   order: number;
 }
 
-// Map from component name to the actual component
 const componentMap: Record<string, React.ComponentType<any>> = {
   Hero,
   About,
@@ -26,7 +36,6 @@ const componentMap: Record<string, React.ComponentType<any>> = {
   Contact
 };
 
-// Default section order if not found in localStorage
 const defaultSections: Section[] = [
   { id: 'hero', name: 'Hero', component: 'Hero', visible: true, order: 0 },
   { id: 'services', name: 'Services', component: 'Services', visible: true, order: 1 },
@@ -47,9 +56,9 @@ interface GlobalSettings {
 const Index = () => {
   const [sections, setSections] = useState<Section[]>([]);
   const [globalSettings, setGlobalSettings] = useState<GlobalSettings | null>(null);
+  const [isAboveTheFold, setIsAboveTheFold] = useState(true);
   
   useEffect(() => {
-    // Load section order from localStorage
     const storedSections = localStorage.getItem('sectionOrder');
     if (storedSections) {
       setSections(JSON.parse(storedSections));
@@ -57,25 +66,21 @@ const Index = () => {
       setSections(defaultSections);
     }
     
-    // Load global settings from localStorage
     const storedSettings = localStorage.getItem('globalSettings');
     if (storedSettings) {
       setGlobalSettings(JSON.parse(storedSettings));
     }
     
-    // Apply theme settings if available
     const storedTheme = localStorage.getItem('themeSettings');
     if (storedTheme) {
       applyThemeSettings(JSON.parse(storedTheme));
     }
     
-    // Apply SEO settings if available
     const storedSeo = localStorage.getItem('seoSettings');
     if (storedSeo) {
       applySeoSettings(JSON.parse(storedSeo));
     }
     
-    // Smooth scrolling for anchor links
     const handleAnchorClick = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
       if (target.tagName === 'A' && target.getAttribute('href')?.startsWith('#')) {
@@ -83,7 +88,7 @@ const Index = () => {
         const id = target.getAttribute('href')?.slice(1);
         const element = document.getElementById(id as string);
         if (element) {
-          const navbarHeight = 80; // approximate navbar height
+          const navbarHeight = 80;
           const top = element.getBoundingClientRect().top + window.scrollY - navbarHeight;
           window.scrollTo({
             top,
@@ -95,8 +100,7 @@ const Index = () => {
     
     document.addEventListener('click', handleAnchorClick);
     
-    // Reveal animation on scroll
-    const handleReveal = () => {
+    const handleScroll = () => {
       const reveals = document.querySelectorAll('.reveal-element');
       const images = document.querySelectorAll('.image-reveal');
       
@@ -119,19 +123,28 @@ const Index = () => {
           el.classList.add('reveal');
         }
       });
+      
+      if (window.scrollY > 100 && isAboveTheFold) {
+        setIsAboveTheFold(false);
+      }
     };
     
-    window.addEventListener('scroll', handleReveal);
-    handleReveal(); // Trigger on initial load
+    window.addEventListener('scroll', handleScroll);
+    
+    handleScroll();
+    
+    const timeout = setTimeout(() => {
+      setIsAboveTheFold(false);
+    }, 3000);
     
     return () => {
       document.removeEventListener('click', handleAnchorClick);
-      window.removeEventListener('scroll', handleReveal);
+      window.removeEventListener('scroll', handleScroll);
+      clearTimeout(timeout);
     };
-  }, []);
+  }, [isAboveTheFold]);
   
   const applyThemeSettings = (theme: any) => {
-    // Create or update theme CSS variables
     let styleTag = document.getElementById('theme-variables');
     
     if (!styleTag) {
@@ -159,17 +172,14 @@ const Index = () => {
   };
   
   const applySeoSettings = (seo: any) => {
-    // Update document title
     if (seo.title) {
       document.title = seo.title;
     }
     
-    // Update meta tags
     updateMetaTag('description', seo.description);
     updateMetaTag('keywords', seo.keywords);
     updateMetaTag('og:image', seo.ogImage, 'property');
     
-    // Handle Google Analytics
     if (seo.enableGa && seo.gaTrackingId) {
       addGoogleAnalytics(seo.gaTrackingId);
     }
@@ -190,16 +200,13 @@ const Index = () => {
   const addGoogleAnalytics = (trackingId: string) => {
     if (!trackingId) return;
     
-    // Check if GA script already exists
     if (document.getElementById('ga-script')) return;
     
-    // Create GA4 script
     const scriptGA = document.createElement('script');
     scriptGA.async = true;
     scriptGA.src = `https://www.googletagmanager.com/gtag/js?id=${trackingId}`;
     scriptGA.id = 'ga-script';
     
-    // Create config script
     const scriptConfig = document.createElement('script');
     scriptConfig.id = 'ga-config';
     scriptConfig.innerHTML = `
@@ -209,37 +216,47 @@ const Index = () => {
       gtag('config', '${trackingId}');
     `;
     
-    // Add scripts to document
     document.head.appendChild(scriptGA);
     document.head.appendChild(scriptConfig);
   };
   
-  // Render each section according to the order and visibility
   const renderSections = () => {
     return sections
       .sort((a, b) => a.order - b.order)
       .filter(section => section.visible)
-      .map(section => {
+      .map((section, index) => {
         const Component = componentMap[section.component];
-        // Pass global settings as props to each component if needed
+        
+        if (index === 0) {
+          return Component ? (
+            <Component 
+              key={section.id} 
+              settings={globalSettings}
+            />
+          ) : null;
+        }
+        
         return Component ? (
-          <Component 
-            key={section.id} 
-            settings={globalSettings}
-          />
+          <Suspense key={section.id} fallback={<SectionLoader />}>
+            {(!isAboveTheFold || index < 2) && (
+              <Component 
+                settings={globalSettings}
+              />
+            )}
+          </Suspense>
         ) : null;
       });
   };
   
   return (
     <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
-      {/* Don't pass navigation prop to Navbar since it doesn't accept it */}
       <Navbar />
       <main>
         {renderSections()}
       </main>
-      {/* Don't pass props to Footer since it doesn't accept them */}
-      <Footer />
+      <Suspense fallback={<SectionLoader />}>
+        <Footer />
+      </Suspense>
     </div>
   );
 };

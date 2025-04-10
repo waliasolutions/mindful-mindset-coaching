@@ -1,14 +1,16 @@
 
 import { ArrowDown, Leaf, Shield } from 'lucide-react';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useIsMobile } from '../hooks/use-mobile';
 import { Badge } from '@/components/ui/badge';
+import OptimizedImage from './OptimizedImage';
 
 const Hero = () => {
   const headingRef = useRef<HTMLHeadingElement>(null);
   const subtitleRef = useRef<HTMLParagraphElement>(null);
   const ctaRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
+  const [imageLoaded, setImageLoaded] = useState(false);
   
   useEffect(() => {
     // Staggered reveal animation
@@ -21,6 +23,15 @@ const Hero = () => {
           el.classList.remove('opacity-0', 'translate-y-10');
         }, 300 * (index + 1));
       }
+    });
+
+    // Pre-connect to external domains if any
+    const domains = ['fonts.googleapis.com', 'fonts.gstatic.com'];
+    domains.forEach(domain => {
+      const link = document.createElement('link');
+      link.rel = 'preconnect';
+      link.href = `https://${domain}`;
+      document.head.appendChild(link);
     });
   }, []);
 
@@ -72,11 +83,13 @@ const Hero = () => {
           <div className="relative w-full max-w-md lg:max-w-lg xl:max-w-xl">
             <div className="aspect-[3/4] overflow-hidden shadow-xl transition-all duration-500 hover:shadow-2xl rounded-lg">
               <div className="image-reveal reveal w-full h-full relative">
-                <img 
+                <OptimizedImage 
                   src="/lovable-uploads/7b4f0db6-80ea-4da6-b817-0f33ba7562b5.png" 
                   alt="Martina Domeniconi - Mindset Coach" 
                   className="w-full h-full object-cover object-center"
-                  loading="lazy"
+                  priority="high"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  onLoad={() => setImageLoaded(true)}
                 />
                 <div className="absolute inset-0 bg-forest/20 rounded-lg"></div>
                 
@@ -107,4 +120,3 @@ const Hero = () => {
 };
 
 export default Hero;
-
