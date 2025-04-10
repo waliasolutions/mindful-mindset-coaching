@@ -231,7 +231,7 @@ const PricingWithQuote = () => {
                           onSave={(value) => {
                             const newFeatures = [...features];
                             newFeatures[index] = value;
-                            handleContentSave('features', newFeatures);
+                            handleContentSave('features', JSON.stringify(newFeatures));
                           }}
                           isEditMode={isEditMode}
                           className="text-foreground/80"
