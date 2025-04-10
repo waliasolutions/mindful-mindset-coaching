@@ -1,4 +1,3 @@
-
 import { ArrowDown, Leaf, Shield } from 'lucide-react';
 import { useEffect, useRef } from 'react';
 import { useIsMobile } from '../hooks/use-mobile';
@@ -80,8 +79,8 @@ const Hero = () => {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-forest/40 to-transparent opacity-40 rounded-lg"></div>
                 
-                {/* Add badge overlay */}
-                <div className="absolute bottom-4 left-4 z-10">
+                {/* Add badge overlay - now aligned to the right */}
+                <div className="absolute bottom-4 right-4 z-10">
                   <Badge variant="default" className="bg-white text-forest flex items-center gap-2 py-2 px-3 shadow-lg">
                     <Shield size={16} className="text-forest" />
                     Zertifizierter Mindset Coach
