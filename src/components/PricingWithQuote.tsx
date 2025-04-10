@@ -68,7 +68,7 @@ const PricingWithQuote = () => {
           </h2>
           <div className="w-16 h-1 bg-highlight mx-auto mb-8"></div>
           <p className="text-lg text-center text-forest/90 max-w-2xl mx-auto">
-            Vor jedem 1:1 Coaching machen wir zuerst ein kostenloses Kennenlerngespräch online oder per Telefon.
+            Vor jedem Coaching machen wir zuerst ein kostenloses Kennenlerngespräch online oder per Telefon.
           </p>
         </div>
 
@@ -183,3 +183,4 @@ const PricingWithQuote = () => {
 };
 
 export default PricingWithQuote;
+
