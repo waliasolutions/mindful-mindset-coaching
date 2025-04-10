@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { MapPin, Mail, Phone, Leaf, Facebook, Instagram, FileText, Shield, ScrollText } from 'lucide-react';
 import Terms from './Terms';
@@ -93,21 +94,21 @@ const Footer = () => {
           <div className="flex justify-center items-center gap-8 text-center">
             <button 
               onClick={openTerms} 
-              className="text-forest/70 text-sm hover:text-moss transition-colors flex items-center gap-1"
+              className="text-forest/75 text-sm hover:text-moss transition-colors flex items-center gap-1"
             >
               <ScrollText size={14} />
               <span>AGB</span>
             </button>
             <button 
               onClick={() => openLegalInfo("impressum")} 
-              className="text-forest/70 text-sm hover:text-moss transition-colors flex items-center gap-1"
+              className="text-forest/75 text-sm hover:text-moss transition-colors flex items-center gap-1"
             >
               <FileText size={14} />
               <span>Impressum</span>
             </button>
             <button 
               onClick={() => openLegalInfo("datenschutz")} 
-              className="text-forest/70 text-sm hover:text-moss transition-colors flex items-center gap-1"
+              className="text-forest/75 text-sm hover:text-moss transition-colors flex items-center gap-1"
             >
               <Shield size={14} />
               <span>Datenschutz</span>
