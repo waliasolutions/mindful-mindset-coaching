@@ -7,6 +7,9 @@ import Services from '../components/Services';
 import PricingWithQuote from '../components/PricingWithQuote';
 import Contact from '../components/Contact';
 import Footer from '../components/Footer';
+import { Button } from '@/components/ui/button';
+import { Save, X } from 'lucide-react';
+import { toast } from 'sonner';
 
 // Define the section type
 interface Section {
@@ -37,14 +40,53 @@ const defaultSections: Section[] = [
 
 const Index = () => {
   const [sections, setSections] = useState<Section[]>([]);
+  const [isEditMode, setIsEditMode] = useState(false);
   
   useEffect(() => {
+    // Check if we're in edit mode (from admin panel)
+    setIsEditMode(localStorage.getItem('editMode') === 'true');
+    
     // Load section order from localStorage or use default
     const storedSections = localStorage.getItem('sectionOrder');
     if (storedSections) {
       setSections(JSON.parse(storedSections));
     } else {
       setSections(defaultSections);
+    }
+    
+    // Add edit mode class to body if editing
+    if (localStorage.getItem('editMode') === 'true') {
+      document.body.classList.add('edit-mode');
+      
+      // Show edit mode toolbar
+      const toolbar = document.createElement('div');
+      toolbar.id = 'edit-mode-toolbar';
+      toolbar.className = 'fixed bottom-0 left-0 right-0 bg-forest text-white p-3 flex items-center justify-between z-50';
+      toolbar.innerHTML = `
+        <div class="flex items-center">
+          <span class="font-medium mr-2">WYSIWYG Edit Mode</span>
+          <span class="text-sm bg-green-700 px-2 py-0.5 rounded">Active</span>
+        </div>
+        <div class="flex items-center space-x-2">
+          <button id="exit-edit-mode" class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded flex items-center">
+            <span class="mr-1">Exit</span>
+          </button>
+        </div>
+      `;
+      document.body.appendChild(toolbar);
+      
+      // Add event listener to exit button
+      const exitButton = document.getElementById('exit-edit-mode');
+      if (exitButton) {
+        exitButton.addEventListener('click', () => {
+          localStorage.removeItem('editMode');
+          window.close();
+        });
+      }
+      
+      toast.info('WYSIWYG Edit Mode Active. Hover over content to edit.', {
+        duration: 5000,
+      });
     }
     
     // Smooth scrolling for anchor links
@@ -99,6 +141,14 @@ const Index = () => {
     return () => {
       document.removeEventListener('click', handleAnchorClick);
       window.removeEventListener('scroll', handleReveal);
+      
+      // Clean up edit mode toolbar
+      const toolbar = document.getElementById('edit-mode-toolbar');
+      if (toolbar) {
+        document.body.removeChild(toolbar);
+      }
+      
+      document.body.classList.remove('edit-mode');
     };
   }, []);
   

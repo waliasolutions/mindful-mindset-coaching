@@ -3,12 +3,24 @@ import { useState, useEffect, useRef } from 'react';
 import { AspectRatio } from './ui/aspect-ratio';
 import { MessageSquareQuote, Check, Calendar, Clock, Users } from 'lucide-react';
 import OptimizedImage from './OptimizedImage';
+import InlineEditor from './admin/InlineEditor';
 
 const PricingWithQuote = () => {
   const [isVisible, setIsVisible] = useState(false);
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [content, setContent] = useState<any>(null);
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
+    // Check if we're in edit mode
+    setIsEditMode(localStorage.getItem('editMode') === 'true');
+    
+    // Load section content
+    const sectionContent = localStorage.getItem('section_pricing');
+    if (sectionContent) {
+      setContent(JSON.parse(sectionContent));
+    }
+    
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -29,6 +41,30 @@ const PricingWithQuote = () => {
       }
     };
   }, []);
+
+  const handleContentSave = (key: string, value: string) => {
+    if (!content) return;
+    
+    const updatedContent = { ...content, [key]: value };
+    setContent(updatedContent);
+    localStorage.setItem('section_pricing', JSON.stringify(updatedContent));
+  };
+
+  // Use default content if not loaded from storage
+  const title = content?.title || "Investiere in dein Wohlbefinden";
+  const description = content?.description || "Vor jedem Coaching machen wir zuerst ein kostenloses Kennenlerngespraech online oder per Telefon.";
+  const quote = content?.quote || "Unsere wichtigste Entscheidung ist, ob wir das Universum für einen freundlichen oder feindlichen Ort halten.";
+  const quoteAuthor = content?.quoteAuthor || "― Albert Einstein";
+  const price = content?.price || "CHF 90";
+  const pricePeriod = content?.pricePeriod || "pro Sitzung";
+  const packageTitle = content?.packageTitle || "Coaching Einzelsitzung";
+  const packageDescription = content?.packageDescription || "Individuelle Betreuung für deine Bedürfnisse";
+  const features = content?.features || [
+    "Individuelle Betreuung auf deine Bedürfnisse zugeschnitten",
+    "Praktische Übungen und Techniken für den Alltag",
+    "Fokus auf deine persönlichen Ziele und Herausforderungen",
+    "Flexible Terminvereinbarung"
+  ];
 
   return (
     <section 
@@ -63,13 +99,19 @@ const PricingWithQuote = () => {
               Investition
             </span>
           </div>
-          <h2 className="text-3xl md:text-4xl font-serif font-semibold text-center mb-4 text-forest">
-            Investiere in dein Wohlbefinden
-          </h2>
+          <InlineEditor
+            content={title}
+            onSave={(value) => handleContentSave('title', value)}
+            isEditMode={isEditMode}
+            className="text-3xl md:text-4xl font-serif font-semibold text-center mb-4 text-forest"
+          />
           <div className="w-16 h-1 bg-highlight mx-auto mb-8"></div>
-          <p className="text-lg text-center text-forest/90 max-w-2xl mx-auto">
-            Vor jedem Coaching machen wir zuerst ein kostenloses Kennenlerngespraech online oder per Telefon.
-          </p>
+          <InlineEditor
+            content={description}
+            onSave={(value) => handleContentSave('description', value)}
+            isEditMode={isEditMode}
+            className="text-lg text-center text-forest/90 max-w-2xl mx-auto"
+          />
         </div>
 
         <div className="grid md:grid-cols-5 gap-8 lg:gap-12 max-w-6xl mx-auto">
@@ -93,10 +135,19 @@ const PricingWithQuote = () => {
                   <div className="flex items-center mb-3">
                     <MessageSquareQuote size={24} className="text-highlight mr-2" />
                   </div>
-                  <p className="text-xl text-forest font-serif mb-3 leading-relaxed text-center">
-                    Unsere wichtigste Entscheidung ist, ob wir das Universum für einen freundlichen oder feindlichen Ort halten.
-                  </p>
-                  <p className="text-forest/70 font-medium">― Albert Einstein</p>
+                  <InlineEditor
+                    content={quote}
+                    onSave={(value) => handleContentSave('quote', value)}
+                    isEditMode={isEditMode}
+                    className="text-xl text-forest font-serif mb-3 leading-relaxed text-center"
+                  />
+                  <InlineEditor
+                    content={quoteAuthor}
+                    onSave={(value) => handleContentSave('quoteAuthor', value)}
+                    isEditMode={isEditMode}
+                    className="text-forest/70 font-medium"
+                    simpleEditor={true}
+                  />
                 </div>
               </div>
             </div>
@@ -107,11 +158,33 @@ const PricingWithQuote = () => {
             <div className="bg-white shadow-xl overflow-hidden border border-sage/20 rounded-lg h-full">
               <div className="h-0.5 bg-forest"></div>
               <div className="bg-gradient-to-r from-highlight/50 to-highlight p-6 md:p-8 text-forest">
-                <h3 className="text-2xl font-serif font-medium mb-2">Coaching Einzelsitzung</h3>
-                <p className="text-forest/90 mb-4">Individuelle Betreuung für deine Bedürfnisse</p>
+                <InlineEditor
+                  content={packageTitle}
+                  onSave={(value) => handleContentSave('packageTitle', value)}
+                  isEditMode={isEditMode}
+                  className="text-2xl font-serif font-medium mb-2"
+                />
+                <InlineEditor
+                  content={packageDescription}
+                  onSave={(value) => handleContentSave('packageDescription', value)}
+                  isEditMode={isEditMode}
+                  className="text-forest/90 mb-4"
+                />
                 <div className="flex items-baseline">
-                  <span className="text-4xl font-bold">CHF 90</span>
-                  <span className="text-forest/90 ml-2">pro Sitzung</span>
+                  <InlineEditor
+                    content={price}
+                    onSave={(value) => handleContentSave('price', value)}
+                    isEditMode={isEditMode}
+                    className="text-4xl font-bold"
+                    simpleEditor={true}
+                  />
+                  <InlineEditor
+                    content={pricePeriod}
+                    onSave={(value) => handleContentSave('pricePeriod', value)}
+                    isEditMode={isEditMode}
+                    className="text-forest/90 ml-2"
+                    simpleEditor={true}
+                  />
                 </div>
               </div>
               
@@ -149,15 +222,24 @@ const PricingWithQuote = () => {
                 </div>
                 
                 <ul className="space-y-3 mb-8">
-                  {[
-                    "Individuelle Betreuung auf deine Bedürfnisse zugeschnitten",
-                    "Praktische Übungen und Techniken für den Alltag",
-                    "Fokus auf deine persönlichen Ziele und Herausforderungen",
-                    "Flexible Terminvereinbarung"
-                  ].map((feature, index) => (
+                  {features.map((feature: string, index: number) => (
                     <li key={index} className="flex items-start gap-3">
                       <Check size={18} className="text-moss flex-shrink-0 mt-0.5" />
-                      <span className="text-foreground/80">{feature}</span>
+                      {isEditMode ? (
+                        <InlineEditor
+                          content={feature}
+                          onSave={(value) => {
+                            const newFeatures = [...features];
+                            newFeatures[index] = value;
+                            handleContentSave('features', newFeatures);
+                          }}
+                          isEditMode={isEditMode}
+                          className="text-foreground/80"
+                          simpleEditor={true}
+                        />
+                      ) : (
+                        <span className="text-foreground/80">{feature}</span>
+                      )}
                     </li>
                   ))}
                 </ul>
