@@ -5,9 +5,6 @@ import AdminLayout from '../components/admin/AdminLayout';
 import AdminSections from '../components/admin/AdminSections';
 import { Search, Layers } from 'lucide-react';
 
-// Import SEO component
-import SeoSettings from '../components/admin/SeoSettings';
-
 const Admin = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -86,6 +83,61 @@ const Admin = () => {
         };
         
         localStorage.setItem('seoSettings', JSON.stringify(defaultSeoSettings));
+      }
+
+      // Initialize theme settings if not present
+      if (!localStorage.getItem('themeSettings')) {
+        const defaultTheme = {
+          colors: {
+            primary: '#2F5233',  // forest
+            secondary: '#94A38D', // sage
+            accent: '#D5BDAF',   // beige
+            background: '#FFFFFF', // white
+            text: '#1A1A1A',     // dark gray
+          },
+          typography: {
+            headingFont: '"Playfair Display", serif',
+            bodyFont: '"Inter", sans-serif',
+            baseFontSize: '16px',
+          },
+          spacing: {
+            sectionPadding: '4rem',
+            containerMaxWidth: '1200px',
+          }
+        };
+        
+        localStorage.setItem('themeSettings', JSON.stringify(defaultTheme));
+      }
+
+      // Initialize global settings if not present
+      if (!localStorage.getItem('globalSettings')) {
+        const defaultSettings = {
+          siteName: 'Mindset Coaching',
+          contactEmail: 'info@mindset-coach-martina.ch',
+          contactPhone: '+41 788 400 481',
+          address: 'Ruedi-Walter-strasse 4, 8050 Zürich',
+          navigation: [
+            { id: 'home', label: 'Home', url: '#home' },
+            { id: 'services', label: 'Services', url: '#services' },
+            { id: 'about', label: 'About', url: '#about' },
+            { id: 'pricing', label: 'Pricing', url: '#pricing' },
+            { id: 'contact', label: 'Contact', url: '#contact' }
+          ],
+          footer: {
+            contactText: 'Get in touch to learn more about our coaching services',
+            socialLinks: [
+              { id: 'instagram', platform: 'Instagram', url: 'https://instagram.com', icon: 'Instagram' },
+              { id: 'facebook', platform: 'Facebook', url: 'https://facebook.com', icon: 'Facebook' }
+            ],
+            legalLinks: [
+              { id: 'privacy', label: 'Privacy Policy', url: '/privacy' },
+              { id: 'terms', label: 'Terms & Conditions', url: '/terms' }
+            ],
+            copyrightText: '© 2025 Mindset Coaching. All rights reserved.'
+          }
+        };
+        
+        localStorage.setItem('globalSettings', JSON.stringify(defaultSettings));
       }
     }
   }, [isAuthenticated]);

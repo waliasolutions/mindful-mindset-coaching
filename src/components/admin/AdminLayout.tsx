@@ -1,7 +1,11 @@
+
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Layers, Search } from 'lucide-react';
+import { Layers, Search, PaintBucket, Image, FileText, Settings } from 'lucide-react';
 import SeoSettings from './SeoSettings';
+import MediaLibrary from './MediaLibrary';
+import ThemeSettings from './ThemeSettings';
+import GlobalSettings from './GlobalSettings';
 
 const AdminLayout = ({ children, onLogout }: { children: React.ReactNode; onLogout: () => void }) => {
   const [activeTab, setActiveTab] = useState('sections');
@@ -37,6 +41,22 @@ const AdminLayout = ({ children, onLogout }: { children: React.ReactNode; onLogo
                 Sections
               </Button>
               <Button
+                variant={activeTab === 'media' ? 'default' : 'ghost'}
+                className="w-full justify-start"
+                onClick={() => setActiveTab('media')}
+              >
+                <Image className="mr-2 h-4 w-4" />
+                Media Library
+              </Button>
+              <Button
+                variant={activeTab === 'theme' ? 'default' : 'ghost'}
+                className="w-full justify-start"
+                onClick={() => setActiveTab('theme')}
+              >
+                <PaintBucket className="mr-2 h-4 w-4" />
+                Theme
+              </Button>
+              <Button
                 variant={activeTab === 'seo' ? 'default' : 'ghost'} 
                 className="w-full justify-start"
                 onClick={() => setActiveTab('seo')}
@@ -44,12 +64,23 @@ const AdminLayout = ({ children, onLogout }: { children: React.ReactNode; onLogo
                 <Search className="mr-2 h-4 w-4" />
                 SEO & Analytics
               </Button>
+              <Button
+                variant={activeTab === 'settings' ? 'default' : 'ghost'} 
+                className="w-full justify-start"
+                onClick={() => setActiveTab('settings')}
+              >
+                <Settings className="mr-2 h-4 w-4" />
+                Global Settings
+              </Button>
             </nav>
           </div>
           
           <div>
             {activeTab === 'sections' && children}
+            {activeTab === 'media' && <MediaLibrary />}
+            {activeTab === 'theme' && <ThemeSettings />}
             {activeTab === 'seo' && <SeoSettings />}
+            {activeTab === 'settings' && <GlobalSettings />}
           </div>
         </div>
       </main>

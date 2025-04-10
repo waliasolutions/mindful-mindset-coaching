@@ -35,16 +35,44 @@ const defaultSections: Section[] = [
   { id: 'contact', name: 'Contact', component: 'Contact', visible: true, order: 4 },
 ];
 
+interface GlobalSettings {
+  siteName: string;
+  contactEmail: string;
+  contactPhone: string;
+  address: string;
+  navigation: any[];
+  footer: any;
+}
+
 const Index = () => {
   const [sections, setSections] = useState<Section[]>([]);
+  const [globalSettings, setGlobalSettings] = useState<GlobalSettings | null>(null);
   
   useEffect(() => {
-    // Load section order from localStorage or use default
+    // Load section order from localStorage
     const storedSections = localStorage.getItem('sectionOrder');
     if (storedSections) {
       setSections(JSON.parse(storedSections));
     } else {
       setSections(defaultSections);
+    }
+    
+    // Load global settings from localStorage
+    const storedSettings = localStorage.getItem('globalSettings');
+    if (storedSettings) {
+      setGlobalSettings(JSON.parse(storedSettings));
+    }
+    
+    // Apply theme settings if available
+    const storedTheme = localStorage.getItem('themeSettings');
+    if (storedTheme) {
+      applyThemeSettings(JSON.parse(storedTheme));
+    }
+    
+    // Apply SEO settings if available
+    const storedSeo = localStorage.getItem('seoSettings');
+    if (storedSeo) {
+      applySeoSettings(JSON.parse(storedSeo));
     }
     
     // Smooth scrolling for anchor links
@@ -102,6 +130,90 @@ const Index = () => {
     };
   }, []);
   
+  const applyThemeSettings = (theme: any) => {
+    // Create or update theme CSS variables
+    let styleTag = document.getElementById('theme-variables');
+    
+    if (!styleTag) {
+      styleTag = document.createElement('style');
+      styleTag.id = 'theme-variables';
+      document.head.appendChild(styleTag);
+    }
+    
+    styleTag.innerHTML = `
+      :root {
+        --color-primary: ${theme.colors.primary};
+        --color-secondary: ${theme.colors.secondary};
+        --color-accent: ${theme.colors.accent};
+        --color-background: ${theme.colors.background};
+        --color-text: ${theme.colors.text};
+        
+        --font-heading: ${theme.typography.headingFont};
+        --font-body: ${theme.typography.bodyFont};
+        --font-size-base: ${theme.typography.baseFontSize};
+        
+        --section-padding: ${theme.spacing.sectionPadding};
+        --container-max-width: ${theme.spacing.containerMaxWidth};
+      }
+    `;
+  };
+  
+  const applySeoSettings = (seo: any) => {
+    // Update document title
+    if (seo.title) {
+      document.title = seo.title;
+    }
+    
+    // Update meta tags
+    updateMetaTag('description', seo.description);
+    updateMetaTag('keywords', seo.keywords);
+    updateMetaTag('og:image', seo.ogImage, 'property');
+    
+    // Handle Google Analytics
+    if (seo.enableGa && seo.gaTrackingId) {
+      addGoogleAnalytics(seo.gaTrackingId);
+    }
+  };
+  
+  const updateMetaTag = (name: string, content: string, attribute: 'name' | 'property' = 'name') => {
+    if (!content) return;
+    
+    let meta = document.querySelector(`meta[${attribute}="${name}"]`);
+    if (!meta) {
+      meta = document.createElement('meta');
+      meta.setAttribute(attribute, name);
+      document.head.appendChild(meta);
+    }
+    meta.setAttribute('content', content);
+  };
+  
+  const addGoogleAnalytics = (trackingId: string) => {
+    if (!trackingId) return;
+    
+    // Check if GA script already exists
+    if (document.getElementById('ga-script')) return;
+    
+    // Create GA4 script
+    const scriptGA = document.createElement('script');
+    scriptGA.async = true;
+    scriptGA.src = `https://www.googletagmanager.com/gtag/js?id=${trackingId}`;
+    scriptGA.id = 'ga-script';
+    
+    // Create config script
+    const scriptConfig = document.createElement('script');
+    scriptConfig.id = 'ga-config';
+    scriptConfig.innerHTML = `
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', '${trackingId}');
+    `;
+    
+    // Add scripts to document
+    document.head.appendChild(scriptGA);
+    document.head.appendChild(scriptConfig);
+  };
+  
   // Render each section according to the order and visibility
   const renderSections = () => {
     return sections
@@ -109,17 +221,31 @@ const Index = () => {
       .filter(section => section.visible)
       .map(section => {
         const Component = componentMap[section.component];
-        return Component ? <Component key={section.id} /> : null;
+        // Pass global settings as props to each component if needed
+        return Component ? (
+          <Component 
+            key={section.id} 
+            settings={globalSettings}
+          />
+        ) : null;
       });
   };
   
   return (
     <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
-      <Navbar />
+      <Navbar navigation={globalSettings?.navigation} />
       <main>
         {renderSections()}
       </main>
-      <Footer />
+      <Footer 
+        contactText={globalSettings?.footer?.contactText}
+        contactEmail={globalSettings?.contactEmail}
+        contactPhone={globalSettings?.contactPhone}
+        address={globalSettings?.address}
+        socialLinks={globalSettings?.footer?.socialLinks}
+        legalLinks={globalSettings?.footer?.legalLinks}
+        copyrightText={globalSettings?.footer?.copyrightText}
+      />
     </div>
   );
 };
