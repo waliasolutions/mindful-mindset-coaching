@@ -1,3 +1,4 @@
+
 import { useEffect, useState, lazy, Suspense } from 'react';
 import Navbar from '../components/Navbar';
 import Hero from '../components/Hero';
@@ -57,8 +58,12 @@ const Index = () => {
   const [sections, setSections] = useState<Section[]>([]);
   const [globalSettings, setGlobalSettings] = useState<GlobalSettings | null>(null);
   const [isAboveTheFold, setIsAboveTheFold] = useState(true);
+  const [lastUpdate, setLastUpdate] = useState(Date.now());
   
-  useEffect(() => {
+  // Function to load settings from localStorage
+  const loadSettings = () => {
+    console.log('Loading settings from localStorage');
+    
     const storedSections = localStorage.getItem('sectionOrder');
     if (storedSections) {
       setSections(JSON.parse(storedSections));
@@ -80,7 +85,48 @@ const Index = () => {
     if (storedSeo) {
       applySeoSettings(JSON.parse(storedSeo));
     }
+  };
+  
+  // Initial load of settings
+  useEffect(() => {
+    loadSettings();
     
+    // Listen for storage events from other tabs/windows
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === 'globalSettings' || e.key === 'themeSettings' || 
+          e.key === 'seoSettings' || e.key === 'sectionOrder') {
+        console.log(`Storage changed: ${e.key}`);
+        setLastUpdate(Date.now()); // Trigger a re-render
+        loadSettings(); // Reload all settings
+      }
+    };
+    
+    // Add event listener for storage changes
+    window.addEventListener('storage', handleStorageChange);
+    
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+    };
+  }, []);
+  
+  // Same-tab storage change detector
+  useEffect(() => {
+    // Create a custom event listener for same-tab updates
+    const handleCustomStorageChange = () => {
+      console.log('Same-tab storage change detected');
+      setLastUpdate(Date.now());
+      loadSettings();
+    };
+    
+    // Add event listener for custom event
+    window.addEventListener('localStorageUpdated', handleCustomStorageChange);
+    
+    return () => {
+      window.removeEventListener('localStorageUpdated', handleCustomStorageChange);
+    };
+  }, []);
+  
+  useEffect(() => {
     const handleAnchorClick = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
       if (target.tagName === 'A' && target.getAttribute('href')?.startsWith('#')) {

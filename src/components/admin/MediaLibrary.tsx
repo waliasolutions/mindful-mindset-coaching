@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -32,6 +31,13 @@ const MediaLibrary = () => {
     }
   }, []);
 
+  // Helper function to dispatch storage event for same-tab updates
+  const dispatchStorageEvent = (key: string) => {
+    window.dispatchEvent(new CustomEvent('localStorageUpdated', { 
+      detail: { key, newValue: JSON.stringify(images) }
+    }));
+  };
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files || e.target.files.length === 0) return;
     
@@ -51,6 +57,10 @@ const MediaLibrary = () => {
       const newImages = [...images, result];
       setImages(newImages);
       localStorage.setItem('mediaLibrary', JSON.stringify(newImages));
+      
+      // Dispatch event for same-tab updates
+      dispatchStorageEvent('mediaLibrary');
+      
       setIsUploading(false);
       toast.success('Image uploaded successfully');
     };
@@ -67,6 +77,9 @@ const MediaLibrary = () => {
     const newImages = images.filter(image => image !== imageToDelete);
     setImages(newImages);
     localStorage.setItem('mediaLibrary', JSON.stringify(newImages));
+    
+    // Dispatch event for same-tab updates
+    dispatchStorageEvent('mediaLibrary');
     
     if (selectedImage === imageToDelete) {
       setSelectedImage(null);

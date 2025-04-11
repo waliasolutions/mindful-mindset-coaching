@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -70,7 +69,6 @@ const GlobalSettings = () => {
   const [activeTab, setActiveTab] = useState('general');
 
   useEffect(() => {
-    // Load saved settings from localStorage
     const savedSettings = localStorage.getItem('globalSettings');
     if (savedSettings) {
       setSettings(JSON.parse(savedSettings));
@@ -201,13 +199,25 @@ const GlobalSettings = () => {
 
   const handleSave = () => {
     localStorage.setItem('globalSettings', JSON.stringify(settings));
+    
+    dispatchStorageEvent('globalSettings');
+    
     toast.success('Global settings saved successfully');
   };
 
   const handleReset = () => {
     setSettings(defaultSettings);
     localStorage.removeItem('globalSettings');
+    
+    dispatchStorageEvent('globalSettings');
+    
     toast.success('Settings reset to default');
+  };
+
+  const dispatchStorageEvent = (key: string) => {
+    window.dispatchEvent(new CustomEvent('localStorageUpdated', { 
+      detail: { key, newValue: JSON.stringify(settings) }
+    }));
   };
 
   return (

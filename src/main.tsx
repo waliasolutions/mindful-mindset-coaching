@@ -29,8 +29,21 @@ const preloadCriticalImages = () => {
   });
 };
 
-// Execute preload
+// Set up a global storage event handler for admin-frontend communication
+const setupStorageEventHandler = () => {
+  // This is needed for admin panel updates to be reflected in the frontend
+  // without a full page reload
+  window.addEventListener('storage', (e) => {
+    if (['globalSettings', 'themeSettings', 'seoSettings', 'sectionOrder', 'mediaLibrary'].includes(e.key || '')) {
+      console.log(`Storage updated: ${e.key}`);
+      // The Index component will handle the actual refresh logic
+    }
+  });
+};
+
+// Execute setup functions
 preloadCriticalImages();
+setupStorageEventHandler();
 
 createRoot(document.getElementById("root")!).render(
   <Suspense fallback={<Loading />}>

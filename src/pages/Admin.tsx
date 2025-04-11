@@ -5,6 +5,13 @@ import AdminLayout from '../components/admin/AdminLayout';
 import AdminSections from '../components/admin/AdminSections';
 import { Search, Layers } from 'lucide-react';
 
+// Add a helper function to dispatch storage event for same-tab updates
+export const dispatchStorageEvent = (key: string, newValue?: string) => {
+  window.dispatchEvent(new CustomEvent('localStorageUpdated', { 
+    detail: { key, newValue }
+  }));
+};
+
 const Admin = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
