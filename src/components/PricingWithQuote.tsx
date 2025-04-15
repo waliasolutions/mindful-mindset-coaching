@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from 'react';
 import { AspectRatio } from './ui/aspect-ratio';
 import { MessageSquareQuote, Check, Calendar, Clock, Users } from 'lucide-react';
@@ -68,7 +67,7 @@ const PricingWithQuote = () => {
             <div className="h-full flex items-center">
               <div className="bg-white/10 backdrop-blur-sm p-8 border border-transparent rounded-xl h-full flex items-center justify-center shadow-2xl transition-all duration-300">
                 <div className="flex flex-col items-center">
-                  <div className="w-56 h-56 md:w-64 md:h-64 mb-8 rounded-xl overflow-hidden bg-transparent shadow-2xl">
+                  <div className="w-56 h-56 md:w-64 md:h-64 mb-8 rounded-xl bg-transparent">
                     <OptimizedImage 
                       src="/lovable-uploads/8a4be257-655e-4d69-b10e-5db95864ae5a.png" 
                       alt="Albert Einstein sketch" 
@@ -160,4 +159,3 @@ const PricingWithQuote = () => {
 };
 
 export default PricingWithQuote;
-
