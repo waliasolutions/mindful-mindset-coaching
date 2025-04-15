@@ -28,17 +28,17 @@ const PricingWithQuote = () => {
     };
   }, []);
 
-  return <section id="pricing" ref={sectionRef} className="section-padding relative overflow-hidden bg-mint/30 text-forest">
+  return <section id="pricing" ref={sectionRef} className="section-padding relative overflow-hidden bg-mint/20 text-forest">
       {/* Background with overlay */}
-      <div className="absolute inset-0 -z-10 opacity-25">
+      <div className="absolute inset-0 -z-10 opacity-20">
         <AspectRatio ratio={16 / 9} className="h-full">
           <img src="/lovable-uploads/bfcdd5e2-5796-4cc9-b81c-3651711c0440.png" alt="Forest background" className="w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-sage/30"></div>
+          <div className="absolute inset-0 bg-sage/20"></div>
         </AspectRatio>
       </div>
       
       {/* Decorative elements */}
-      <div className="absolute inset-0 opacity-10 -z-10">
+      <div className="absolute inset-0 opacity-5 -z-10">
         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-forest/40 to-transparent"></div>
         <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-forest/40 to-transparent"></div>
         <div className="absolute top-0 left-0 right-0 w-px bg-gradient-to-b from-transparent via-forest/40 to-transparent"></div>
@@ -65,23 +65,23 @@ const PricingWithQuote = () => {
           {/* Quote */}
           <div className={`md:col-span-2 transition-all duration-1000 ease-out ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
             <div className="h-full flex items-center">
-              <div className="bg-white/10 backdrop-blur-sm p-6 border border-forest/10 rounded-lg h-full flex items-center justify-center shadow-xl">
+              <div className="bg-white/20 backdrop-blur-sm p-8 border border-forest/10 rounded-xl h-full flex items-center justify-center shadow-2xl hover:shadow-3xl transition-all duration-300">
                 <div className="flex flex-col items-center">
-                  <div className="w-48 h-48 md:w-56 md:h-56 mb-6 rounded-lg overflow-hidden bg-white/20 shadow-2xl ring-2 ring-forest/10">
+                  <div className="w-56 h-56 md:w-64 md:h-64 mb-8 rounded-xl overflow-hidden bg-white/30 shadow-2xl ring-4 ring-forest/5 hover:ring-forest/10 transition-all duration-500">
                     <OptimizedImage 
-                      src="/lovable-uploads/f1d83475-166b-4e13-b206-6d3f5e8097f2.png" 
-                      alt="Albert Einstein portrait" 
-                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" 
+                      src="/lovable-uploads/bd5be052-018c-4d84-a5b7-2a3deeab2715.png" 
+                      alt="Albert Einstein sketch" 
+                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-700 grayscale hover:grayscale-0" 
                       priority="high" 
                     />
                   </div>
-                  <div className="flex items-center mb-4">
-                    <MessageSquareQuote size={28} className="text-forest mr-2" />
+                  <div className="flex items-center mb-6">
+                    <MessageSquareQuote size={32} className="text-forest/80" />
                   </div>
-                  <p className="text-xl md:text-2xl text-forest font-serif mb-4 leading-relaxed text-center">
+                  <p className="text-2xl md:text-3xl text-forest font-serif mb-6 leading-relaxed text-center italic">
                     Unsere wichtigste Entscheidung ist, ob wir das Universum für einen freundlichen oder feindlichen Ort halten.
                   </p>
-                  <p className="text-forest/80 font-medium">― Albert Einstein</p>
+                  <p className="text-forest/80 font-medium text-lg">― Albert Einstein</p>
                 </div>
               </div>
             </div>
