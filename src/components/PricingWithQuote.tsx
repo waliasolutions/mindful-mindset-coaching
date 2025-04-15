@@ -46,6 +46,7 @@ const PricingWithQuote = () => {
       </div>
 
       <div className="container mx-auto px-4 md:px-6">
+        {/* Title section */}
         <div className="max-w-4xl mx-auto mb-16 reveal-element">
           <div className="flex justify-center mb-2">
             <span className="px-3 py-1 text-xs font-medium bg-moss/20 rounded-full backdrop-blur-sm text-forest">
@@ -64,10 +65,10 @@ const PricingWithQuote = () => {
         <div className="grid md:grid-cols-5 gap-8 lg:gap-12 max-w-6xl mx-auto">
           {/* Quote */}
           <div className={`md:col-span-2 transition-all duration-1000 ease-out ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-            <div className="h-full flex items-center">
-              <div className="bg-white/10 backdrop-blur-sm p-8 border border-transparent rounded-xl h-full flex items-center justify-center shadow-2xl transition-all duration-300">
+            <div className="h-full flex items-center justify-center md:justify-start">
+              <div className="bg-white/10 backdrop-blur-sm p-6 md:p-8 border border-transparent rounded-xl h-full flex items-center justify-center shadow-2xl transition-all duration-300 w-full max-w-md md:max-w-none">
                 <div className="flex flex-col items-center">
-                  <div className="w-56 h-56 md:w-64 md:h-64 mb-8 rounded-xl bg-transparent">
+                  <div className="w-48 h-48 md:w-56 md:h-56 lg:w-64 lg:h-64 mb-6 md:mb-8 rounded-xl bg-transparent">
                     <OptimizedImage 
                       src="/lovable-uploads/8a4be257-655e-4d69-b10e-5db95864ae5a.png" 
                       alt="Albert Einstein sketch" 
@@ -75,13 +76,13 @@ const PricingWithQuote = () => {
                       priority="high" 
                     />
                   </div>
-                  <div className="flex items-center mb-6">
-                    <MessageSquareQuote size={32} className="text-forest/80" />
+                  <div className="flex items-center mb-4 md:mb-6">
+                    <MessageSquareQuote size={28} className="text-forest/80" />
                   </div>
-                  <p className="text-2xl md:text-3xl text-forest font-serif mb-6 leading-relaxed text-center italic">
+                  <p className="text-xl md:text-2xl lg:text-3xl text-forest font-serif mb-4 md:mb-6 leading-relaxed text-center italic">
                     Unsere wichtigste Entscheidung ist, ob wir das Universum für einen freundlichen oder feindlichen Ort halten.
                   </p>
-                  <p className="text-forest/80 font-medium text-lg">― Albert Einstein</p>
+                  <p className="text-forest/80 font-medium text-base md:text-lg">― Albert Einstein</p>
                 </div>
               </div>
             </div>
