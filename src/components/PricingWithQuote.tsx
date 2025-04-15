@@ -1,13 +1,10 @@
-
 import { useState, useEffect, useRef } from 'react';
 import { AspectRatio } from './ui/aspect-ratio';
 import { MessageSquareQuote, Check, Calendar, Clock, Users } from 'lucide-react';
 import OptimizedImage from './OptimizedImage';
-
 const PricingWithQuote = () => {
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
-  
   useEffect(() => {
     const observer = new IntersectionObserver(([entry]) => {
       if (entry.isIntersecting) {
@@ -17,20 +14,16 @@ const PricingWithQuote = () => {
     }, {
       threshold: 0.1
     });
-    
     if (sectionRef.current) {
       observer.observe(sectionRef.current);
     }
-    
     return () => {
       if (sectionRef.current) {
         observer.unobserve(sectionRef.current);
       }
     };
   }, []);
-  
-  return (
-    <section id="pricing" ref={sectionRef} className="section-padding relative overflow-hidden bg-white text-forest">
+  return <section id="pricing" ref={sectionRef} className="section-padding relative overflow-hidden text-forest bg-[#e8f1e8]">
       <div className="container mx-auto px-4 md:px-6">
         <div className="max-w-4xl mx-auto mb-12 md:mb-16 reveal-element">
           <div className="flex justify-center mb-2">
@@ -111,22 +104,14 @@ const PricingWithQuote = () => {
                 </div>
                 
                 <ul className="space-y-2 md:space-y-3 mb-6 md:mb-8">
-                  {["Individuelle Betreuung auf deine Bedürfnisse zugeschnitten", 
-                    "Praktische Übungen und Techniken für den Alltag", 
-                    "Fokus auf deine persönlichen Ziele und Herausforderungen", 
-                    "Flexible Terminvereinbarung"].map((feature, index) => (
-                    <li key={index} className="flex items-start gap-2 md:gap-3">
+                  {["Individuelle Betreuung auf deine Bedürfnisse zugeschnitten", "Praktische Übungen und Techniken für den Alltag", "Fokus auf deine persönlichen Ziele und Herausforderungen", "Flexible Terminvereinbarung"].map((feature, index) => <li key={index} className="flex items-start gap-2 md:gap-3">
                       <Check size={16} className="text-moss flex-shrink-0 mt-1" />
                       <span className="text-sm md:text-base text-forest/80">{feature}</span>
-                    </li>
-                  ))}
+                    </li>)}
                 </ul>
                 
                 <div>
-                  <a 
-                    href="#contact" 
-                    className="bg-forest hover:bg-forest/90 text-white w-full flex justify-center py-2.5 md:py-3 px-4 rounded-md transition-all text-sm md:text-base font-medium"
-                  >
+                  <a href="#contact" className="bg-forest hover:bg-forest/90 text-white w-full flex justify-center py-2.5 md:py-3 px-4 rounded-md transition-all text-sm md:text-base font-medium">
                     Jetzt buchen
                   </a>
                 </div>
@@ -135,8 +120,6 @@ const PricingWithQuote = () => {
           </div>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default PricingWithQuote;
