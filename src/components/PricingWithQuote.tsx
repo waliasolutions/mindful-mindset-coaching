@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useRef } from 'react';
 import { AspectRatio } from './ui/aspect-ratio';
 import { MessageSquareQuote, Check, Calendar, Clock, Users } from 'lucide-react';
@@ -68,7 +69,12 @@ const PricingWithQuote = () => {
               <div className="bg-white/5 backdrop-blur-sm p-5 border border-forest/10 rounded-lg h-full flex items-center justify-center">
                 <div className="flex flex-col items-center">
                   <div className="w-40 h-40 md:w-48 md:h-48 mb-4 rounded-lg overflow-hidden bg-white/10">
-                    <OptimizedImage src="/lovable-uploads/eff14ab3-8502-4ea4-9c20-75fe9b485119.png" alt="Albert Einstein portrait" className="w-full h-full object-cover" priority="high" />
+                    <OptimizedImage 
+                      src="/lovable-uploads/f1d83475-166b-4e13-b206-6d3f5e8097f2.png" 
+                      alt="Albert Einstein portrait" 
+                      className="w-full h-full object-cover" 
+                      priority="high" 
+                    />
                   </div>
                   <div className="flex items-center mb-3">
                     <MessageSquareQuote size={24} className="text-forest mr-2" />
