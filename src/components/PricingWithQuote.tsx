@@ -92,7 +92,7 @@ const PricingWithQuote = () => {
           <div className="md:col-span-3">
             <div className="bg-white/90 shadow-xl overflow-hidden border border-forest/10 rounded-lg h-full">
               <div className="h-0.5 bg-forest/20"></div>
-              <div className="bg-gradient-to-r from-sage/30 to-moss/30 p-6 md:p-8 text-forest">
+              <div className="bg-sage/30 p-6 md:p-8 text-forest">
                 <h3 className="text-2xl font-serif font-medium mb-2">Coaching Einzelsitzung</h3>
                 <p className="text-forest/90 mb-4">Individuelle Betreuung für deine Bedürfnisse</p>
                 <div className="flex items-baseline">
