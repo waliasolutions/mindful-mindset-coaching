@@ -2,9 +2,11 @@ import { useState, useEffect, useRef } from 'react';
 import { AspectRatio } from './ui/aspect-ratio';
 import { MessageSquareQuote, Check, Calendar, Clock, Users } from 'lucide-react';
 import OptimizedImage from './OptimizedImage';
+
 const PricingWithQuote = () => {
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
+
   useEffect(() => {
     const observer = new IntersectionObserver(([entry]) => {
       if (entry.isIntersecting) {
@@ -14,17 +16,19 @@ const PricingWithQuote = () => {
     }, {
       threshold: 0.1
     });
+
     if (sectionRef.current) {
       observer.observe(sectionRef.current);
     }
+
     return () => {
       if (sectionRef.current) {
         observer.unobserve(sectionRef.current);
       }
     };
   }, []);
+
   return <section id="pricing" ref={sectionRef} className="section-padding relative overflow-hidden bg-mint/20 text-forest">
-      {/* Background with overlay */}
       <div className="absolute inset-0 -z-10 opacity-20">
         <AspectRatio ratio={16 / 9} className="h-full">
           <img src="/lovable-uploads/bfcdd5e2-5796-4cc9-b81c-3651711c0440.png" alt="Forest background" className="w-full h-full object-cover" />
@@ -32,7 +36,6 @@ const PricingWithQuote = () => {
         </AspectRatio>
       </div>
       
-      {/* Decorative elements */}
       <div className="absolute inset-0 opacity-5 -z-10">
         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-forest/40 to-transparent"></div>
         <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-forest/40 to-transparent"></div>
@@ -41,7 +44,6 @@ const PricingWithQuote = () => {
       </div>
 
       <div className="container mx-auto px-4 md:px-6">
-        {/* Title section */}
         <div className="max-w-4xl mx-auto mb-16 reveal-element">
           <div className="flex justify-center mb-2">
             <span className="px-3 py-1 text-xs font-medium bg-moss/20 rounded-full backdrop-blur-sm text-forest">
@@ -58,7 +60,6 @@ const PricingWithQuote = () => {
         </div>
 
         <div className="grid md:grid-cols-5 gap-8 lg:gap-12 max-w-6xl mx-auto">
-          {/* Quote */}
           <div className={`md:col-span-2 transition-all duration-1000 ease-out ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
             <div className="h-full flex items-center justify-center md:justify-start">
               <div className="bg-white/10 backdrop-blur-sm p-6 md:p-8 border border-transparent rounded-xl h-full flex items-center justify-center shadow-2xl transition-all duration-300 w-full max-w-md md:max-w-none">
@@ -78,7 +79,6 @@ const PricingWithQuote = () => {
             </div>
           </div>
 
-          {/* Pricing */}
           <div className="md:col-span-3">
             <div className="bg-white/90 shadow-xl overflow-hidden border border-forest/10 rounded-lg h-full">
               <div className="h-0.5 bg-forest/20"></div>
@@ -125,10 +125,17 @@ const PricingWithQuote = () => {
                 </div>
                 
                 <ul className="space-y-3 mb-8">
-                  {["Individuelle Betreuung auf deine Bedürfnisse zugeschnitten", "Praktische Übungen und Techniken für den Alltag", "Fokus auf deine persönlichen Ziele und Herausforderungen", "Flexible Terminvereinbarung"].map((feature, index) => <li key={index} className="flex items-center gap-3">
+                  {[
+                    "Individuelle Betreuung auf deine Bedürfnisse zugeschnitten", 
+                    "Praktische Übungen und Techniken für den Alltag", 
+                    "Fokus auf deine persönlichen Ziele und Herausforderungen", 
+                    "Flexible Terminvereinbarung"
+                  ].map((feature, index) => (
+                    <li key={index} className="flex items-center gap-3">
                       <Check size={18} className="text-moss flex-shrink-0" />
                       <span className="text-forest/80">{feature}</span>
-                    </li>)}
+                    </li>
+                  ))}
                 </ul>
                 
                 <div>
@@ -143,4 +150,5 @@ const PricingWithQuote = () => {
       </div>
     </section>;
 };
+
 export default PricingWithQuote;
