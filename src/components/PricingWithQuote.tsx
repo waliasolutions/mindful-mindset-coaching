@@ -129,7 +129,7 @@ const PricingWithQuote = () => {
                     </div>
                     <div>
                       <p className="font-medium mb-1">Kennenlerngespräch</p>
-                      <p className="text-forest/70">Kostenlos</p>
+                      <p className="text-forest/70">Nach Vereinbarung</p>
                     </div>
                   </div>
                 </div>
