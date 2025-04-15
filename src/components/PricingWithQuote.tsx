@@ -28,7 +28,7 @@ const PricingWithQuote = () => {
     };
   }, []);
 
-  return <section id="pricing" ref={sectionRef} className="section-padding relative overflow-hidden bg-mint/20 text-forest">
+  return <section id="pricing" ref={sectionRef} className="section-padding relative overflow-hidden bg-white text-forest">
       <div className="absolute inset-0 -z-10 opacity-20">
         <AspectRatio ratio={16 / 9} className="h-full">
           <img src="/lovable-uploads/bfcdd5e2-5796-4cc9-b81c-3651711c0440.png" alt="Forest background" className="w-full h-full object-cover" />
