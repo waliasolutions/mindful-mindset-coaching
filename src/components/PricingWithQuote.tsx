@@ -28,21 +28,21 @@ const PricingWithQuote = () => {
     };
   }, []);
 
-  return <section id="pricing" ref={sectionRef} className="section-padding relative overflow-hidden bg-sage/10 text-forest">
+  return <section id="pricing" ref={sectionRef} className="section-padding relative overflow-hidden bg-mint/20 text-forest">
       {/* Background with overlay */}
       <div className="absolute inset-0 -z-10 opacity-20">
         <AspectRatio ratio={16 / 9} className="h-full">
           <img src="/lovable-uploads/bfcdd5e2-5796-4cc9-b81c-3651711c0440.png" alt="Forest background" className="w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-sage/60"></div>
+          <div className="absolute inset-0 bg-sage/40"></div>
         </AspectRatio>
       </div>
       
       {/* Decorative elements */}
       <div className="absolute inset-0 opacity-5 -z-10">
-        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-forest to-transparent"></div>
-        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-forest to-transparent"></div>
-        <div className="absolute top-0 left-0 right-0 w-px bg-gradient-to-b from-transparent via-forest to-transparent"></div>
-        <div className="absolute top-0 bottom-0 right-0 w-px bg-gradient-to-b from-transparent via-forest to-transparent"></div>
+        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-forest/30 to-transparent"></div>
+        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-forest/30 to-transparent"></div>
+        <div className="absolute top-0 left-0 right-0 w-px bg-gradient-to-b from-transparent via-forest/30 to-transparent"></div>
+        <div className="absolute top-0 bottom-0 right-0 w-px bg-gradient-to-b from-transparent via-forest/30 to-transparent"></div>
       </div>
 
       <div className="container mx-auto px-4 md:px-6">
