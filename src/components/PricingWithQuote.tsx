@@ -2,11 +2,9 @@ import { useState, useEffect, useRef } from 'react';
 import { AspectRatio } from './ui/aspect-ratio';
 import { MessageSquareQuote, Check, Calendar, Clock, Users } from 'lucide-react';
 import OptimizedImage from './OptimizedImage';
-
 const PricingWithQuote = () => {
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
-
   useEffect(() => {
     const observer = new IntersectionObserver(([entry]) => {
       if (entry.isIntersecting) {
@@ -16,18 +14,15 @@ const PricingWithQuote = () => {
     }, {
       threshold: 0.1
     });
-
     if (sectionRef.current) {
       observer.observe(sectionRef.current);
     }
-
     return () => {
       if (sectionRef.current) {
         observer.unobserve(sectionRef.current);
       }
     };
   }, []);
-
   return <section id="pricing" ref={sectionRef} className="section-padding relative overflow-hidden bg-white text-forest">
       <div className="absolute inset-0 -z-10 opacity-20">
         <AspectRatio ratio={16 / 9} className="h-full">
@@ -46,9 +41,7 @@ const PricingWithQuote = () => {
       <div className="container mx-auto px-4 md:px-6">
         <div className="max-w-4xl mx-auto mb-16 reveal-element">
           <div className="flex justify-center mb-2">
-            <span className="px-3 py-1 text-xs font-medium bg-moss/20 rounded-full backdrop-blur-sm text-forest">
-              Investition
-            </span>
+            <span className="px-3 py-1 text-xs font-medium bg-moss/20 rounded-full backdrop-blur-sm text-forest">Preise</span>
           </div>
           <h2 className="text-3xl md:text-4xl font-serif font-semibold text-center mb-4 text-forest">
             Investiere in dein Wohlbefinden
@@ -125,17 +118,10 @@ const PricingWithQuote = () => {
                 </div>
                 
                 <ul className="space-y-3 mb-8">
-                  {[
-                    "Individuelle Betreuung auf deine Bedürfnisse zugeschnitten", 
-                    "Praktische Übungen und Techniken für den Alltag", 
-                    "Fokus auf deine persönlichen Ziele und Herausforderungen", 
-                    "Flexible Terminvereinbarung"
-                  ].map((feature, index) => (
-                    <li key={index} className="flex items-center gap-3">
+                  {["Individuelle Betreuung auf deine Bedürfnisse zugeschnitten", "Praktische Übungen und Techniken für den Alltag", "Fokus auf deine persönlichen Ziele und Herausforderungen", "Flexible Terminvereinbarung"].map((feature, index) => <li key={index} className="flex items-center gap-3">
                       <Check size={18} className="text-moss flex-shrink-0" />
                       <span className="text-forest/80">{feature}</span>
-                    </li>
-                  ))}
+                    </li>)}
                 </ul>
                 
                 <div>
@@ -150,5 +136,4 @@ const PricingWithQuote = () => {
       </div>
     </section>;
 };
-
 export default PricingWithQuote;
