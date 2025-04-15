@@ -27,31 +27,38 @@ const Services = () => {
     };
   }, []);
   
-  const benefits = [{
-    icon: <Brain size={20} className="text-white" />,
-    title: "Persönliches Wachstum",
-    description: "Du möchtest ein erfülltes und selbstbestimmtes Leben führen"
-  }, {
-    icon: <Star size={20} className="text-white" />,
-    title: "Potenzialentfaltung",
-    description: "Du willst endlich deine Ziele erreichen und dein volles Potenzial entfalten"
-  }, {
-    icon: <Heart size={20} className="text-white" />,
-    title: "Selbstbewusstsein",
-    description: "Du möchtest mehr Selbstbewusstsein und Vertrauen aufbauen"
-  }, {
-    icon: <Lightbulb size={20} className="text-white" />,
-    title: "Klarheit & Gelassenheit",
-    description: "Du sehnst dich nach mehr Klarheit, Gelassenheit und Lebensfreude"
-  }, {
-    icon: <Heart size={20} className="text-white" />,
-    title: "Beziehungen",
-    description: "Du willst eine liebevolle Beziehung führen"
-  }, {
-    icon: <Sun size={20} className="text-white" />,
-    title: "Gesunde Routinen",
-    description: "Du möchtest gesunde Routinen und Gewohnheiten entwickeln"
-  }];
+  const benefits = [
+    {
+      icon: <Brain size={20} className="text-white" />,
+      title: "Persönliches Wachstum",
+      description: "Du möchtest ein erfülltes und selbstbestimmtes Leben führen"
+    }, 
+    {
+      icon: <Star size={20} className="text-white" />,
+      title: "Potenzialentfaltung",
+      description: "Du willst endlich deine Ziele erreichen und dein volles Potenzial entfalten"
+    }, 
+    {
+      icon: <Heart size={20} className="text-white" />,
+      title: "Selbstbewusstsein",
+      description: "Du möchtest mehr Selbstbewusstsein und Vertrauen aufbauen"
+    }, 
+    {
+      icon: <Lightbulb size={20} className="text-white" />,
+      title: "Klarheit & Gelassenheit",
+      description: "Du sehnst dich nach mehr Klarheit, Gelassenheit und Lebensfreude"
+    }, 
+    {
+      icon: <Heart size={20} className="text-white" />,
+      title: "Beziehungen",
+      description: "Du willst eine liebevolle Beziehung führen"
+    }, 
+    {
+      icon: <Sun size={20} className="text-white" />,
+      title: "Gesunde Routinen",
+      description: "Du möchtest gesunde Routinen und Gewohnheiten entwickeln"
+    }
+  ];
   
   return (
     <section id="services" ref={sectionRef} className="section-padding relative overflow-hidden bg-white">

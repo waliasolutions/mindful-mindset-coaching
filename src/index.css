@@ -154,7 +154,7 @@
 
 /* Smooth scrolling */
 html {
-  scroll-behavior: smooth;
+  scroll-behavior: smooth !important;
   scroll-padding-top: 80px; /* Accounts for fixed navbar */
 }
 
