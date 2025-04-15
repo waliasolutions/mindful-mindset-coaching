@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Menu, X, Leaf } from 'lucide-react';
 
@@ -44,11 +45,34 @@ const Navbar = () => {
     setIsMenuOpen(false);
   };
 
+  const handleSmoothScroll = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, targetId: string) => {
+    e.preventDefault();
+    const element = document.getElementById(targetId);
+    if (element) {
+      const navbarHeight = 80; // Adjust based on your navbar height
+      const elementPosition = element.getBoundingClientRect().top + window.scrollY;
+      const offsetPosition = elementPosition - navbarHeight;
+      
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
+      
+      // Update active section
+      setActiveSection(targetId);
+      
+      // Close mobile menu if open
+      if (isMenuOpen) {
+        closeMenu();
+      }
+    }
+  };
+
   const navLinks = [
-    { name: 'Mindset Coaching', href: '#services' },
-    { name: 'Über mich', href: '#about' },
-    { name: 'Preise', href: '#pricing' },
-    { name: 'Kontakt', href: '#contact' },
+    { name: 'Mindset Coaching', href: '#services', id: 'services' },
+    { name: 'Über mich', href: '#about', id: 'about' },
+    { name: 'Preise', href: '#pricing', id: 'pricing' },
+    { name: 'Kontakt', href: '#contact', id: 'contact' },
   ];
 
   return (
@@ -59,21 +83,26 @@ const Navbar = () => {
     >
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex items-center justify-between">
-          <a href="#services" className="flex items-center gap-2">
+          <a 
+            href="#services" 
+            onClick={(e) => handleSmoothScroll(e, 'services')}
+            className="flex items-center gap-2"
+          >
             <Leaf size={24} className="text-petrol" />
-            <span className="text-forest font-serif text-2xl md:text-3xl font-medium">
+            <span className="text-forest font-serif text-xl md:text-2xl lg:text-3xl font-medium">
               Mindset <span className="text-petrol">Coach Martina</span>
             </span>
           </a>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex space-x-6 lg:space-x-8">
+          <div className="hidden md:flex space-x-4 lg:space-x-8">
             {navLinks.map((link) => (
               <a
                 key={link.name}
                 href={link.href}
+                onClick={(e) => handleSmoothScroll(e, link.id)}
                 className={`${
-                  activeSection === link.href.slice(1) 
+                  activeSection === link.id 
                     ? 'text-petrol font-medium' 
                     : 'text-foreground hover:text-moss'
                 } transition-colors link-hover focus-ring text-sm lg:text-base`}
@@ -102,12 +131,12 @@ const Navbar = () => {
               <a
                 key={link.name}
                 href={link.href}
+                onClick={(e) => handleSmoothScroll(e, link.id)}
                 className={`${
-                  activeSection === link.href.slice(1) 
+                  activeSection === link.id 
                     ? 'text-petrol font-medium' 
                     : 'text-foreground hover:text-moss'
                 } py-2 transition-colors focus-ring`}
-                onClick={closeMenu}
               >
                 {link.name}
               </a>

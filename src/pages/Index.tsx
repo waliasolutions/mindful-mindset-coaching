@@ -127,7 +127,7 @@ const Index = () => {
   }, []);
   
   useEffect(() => {
-    const handleAnchorClick = (e: MouseEvent) => {
+    const handleSmoothScroll = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
       if (target.tagName === 'A' && target.getAttribute('href')?.startsWith('#')) {
         e.preventDefault();
@@ -144,7 +144,7 @@ const Index = () => {
       }
     };
     
-    document.addEventListener('click', handleAnchorClick);
+    document.addEventListener('click', handleSmoothScroll);
     
     const handleScroll = () => {
       const reveals = document.querySelectorAll('.reveal-element');
@@ -184,7 +184,7 @@ const Index = () => {
     }, 3000);
     
     return () => {
-      document.removeEventListener('click', handleAnchorClick);
+      document.removeEventListener('click', handleSmoothScroll);
       window.removeEventListener('scroll', handleScroll);
       clearTimeout(timeout);
     };
