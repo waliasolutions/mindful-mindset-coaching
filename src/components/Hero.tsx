@@ -3,7 +3,6 @@ import { useEffect, useRef, useState } from 'react';
 import { useIsMobile } from '../hooks/use-mobile';
 import { Badge } from '@/components/ui/badge';
 import OptimizedImage from './OptimizedImage';
-
 const Hero = () => {
   const headingRef = useRef<HTMLHeadingElement>(null);
   const subtitleRef = useRef<HTMLParagraphElement>(null);
@@ -11,7 +10,6 @@ const Hero = () => {
   const ctaRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
   const [imageLoaded, setImageLoaded] = useState(false);
-
   useEffect(() => {
     // Staggered reveal animation
     const elements = [headingRef.current, subtitleRef.current, additionalTextRef.current, ctaRef.current];
@@ -33,7 +31,6 @@ const Hero = () => {
       document.head.appendChild(link);
     });
   }, []);
-
   return <section id="home" className="relative min-h-screen flex items-center pt-20 pb-12 overflow-hidden">
       {/* Background pattern and gradient */}
       <div className="absolute inset-0 bg-beige/60 leaf-pattern -z-10"></div>
@@ -55,14 +52,7 @@ const Hero = () => {
                 <div className="relative w-full max-w-md mx-auto">
                   <div className="aspect-[3/4] overflow-hidden shadow-xl transition-all duration-500 hover:shadow-2xl rounded-lg">
                     <div className="image-reveal reveal w-full h-full relative">
-                      <OptimizedImage 
-                        src="/lovable-uploads/7b4f0db6-80ea-4da6-b817-0f33ba7562b5.png" 
-                        alt="Martina Domeniconi - Mindset Coach" 
-                        className="w-full h-full object-cover object-center" 
-                        priority="high" 
-                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" 
-                        onLoad={() => setImageLoaded(true)} 
-                      />
+                      <OptimizedImage src="/lovable-uploads/7b4f0db6-80ea-4da6-b817-0f33ba7562b5.png" alt="Martina Domeniconi - Mindset Coach" className="w-full h-full object-cover object-center" priority="high" sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" onLoad={() => setImageLoaded(true)} />
                       <div className="absolute inset-0 bg-forest/20 rounded-lg"></div>
                       
                       <div className="absolute bottom-4 right-4 z-10">
@@ -83,9 +73,7 @@ const Hero = () => {
                 Das zentrale Thema bei Mindset Coaching sind deine persönlichen Überzeugungen und Glaubenssätze. Wovon du selber überzeugst bist, verwirklichst du in deinem Leben. In einem persönlichen Coaching lernst du deine negativen Glaubenssätze zu erkennen und abzulegen und stattdessen in jedem Lebensbereich bestärkende Glaubenssätze zu entwickeln. Dazu gehört auch ein positives Selbstbild aufzubauen und in den inneren Frieden mit dir, deinen Mitmenschen, deiner Vergangenheit und deiner Geschichte zu kommen.
               </p>
               <div ref={ctaRef} className="flex flex-col sm:flex-row gap-4 transition-all duration-700 ease-out opacity-0 translate-y-10 delay-200">
-                <a href="#contact" className="inline-flex items-center justify-center px-6 py-3 bg-petrol text-white hover:bg-petrol/90 transition-colors shadow-lg font-medium rounded-md">
-                  Kostenloses Erstgespräch vereinbaren
-                </a>
+                <a href="#contact" className="inline-flex items-center justify-center px-6 py-3 bg-petrol text-white hover:bg-petrol/90 transition-colors shadow-lg font-medium rounded-md">Kennenlerngespräch vereinbaren</a>
                 <a href="#services" className="inline-flex items-center justify-center px-6 py-3 bg-sage/30 hover:bg-sage/40 text-forest transition-colors focus-ring text-center">
                   Mehr erfahren
                 </a>
@@ -97,14 +85,7 @@ const Hero = () => {
           <div className="hidden lg:block relative w-full max-w-md lg:max-w-lg xl:max-w-xl">
             <div className="aspect-[3/4] overflow-hidden shadow-xl transition-all duration-500 hover:shadow-2xl rounded-lg">
               <div className="image-reveal reveal w-full h-full relative">
-                <OptimizedImage 
-                  src="/lovable-uploads/7b4f0db6-80ea-4da6-b817-0f33ba7562b5.png" 
-                  alt="Martina Domeniconi - Mindset Coach" 
-                  className="w-full h-full object-cover object-center" 
-                  priority="high" 
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" 
-                  onLoad={() => setImageLoaded(true)} 
-                />
+                <OptimizedImage src="/lovable-uploads/7b4f0db6-80ea-4da6-b817-0f33ba7562b5.png" alt="Martina Domeniconi - Mindset Coach" className="w-full h-full object-cover object-center" priority="high" sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" onLoad={() => setImageLoaded(true)} />
                 <div className="absolute inset-0 bg-forest/20 rounded-lg"></div>
                 
                 <div className="absolute bottom-4 right-4 z-10">
@@ -127,5 +108,4 @@ const Hero = () => {
         </div>}
     </section>;
 };
-
 export default Hero;
