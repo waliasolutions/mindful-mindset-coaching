@@ -1,49 +1,33 @@
-
 import { useState, useEffect, useRef } from 'react';
 import { AspectRatio } from './ui/aspect-ratio';
 import { MessageSquareQuote, Check, Calendar, Clock, Users } from 'lucide-react';
 import OptimizedImage from './OptimizedImage';
-
 const PricingWithQuote = () => {
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
-
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          observer.unobserve(entry.target);
-        }
-      },
-      { threshold: 0.1 }
-    );
-
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        setIsVisible(true);
+        observer.unobserve(entry.target);
+      }
+    }, {
+      threshold: 0.1
+    });
     if (sectionRef.current) {
       observer.observe(sectionRef.current);
     }
-
     return () => {
       if (sectionRef.current) {
         observer.unobserve(sectionRef.current);
       }
     };
   }, []);
-
-  return (
-    <section 
-      id="pricing" 
-      ref={sectionRef}
-      className="section-padding relative overflow-hidden bg-mint text-forest"
-    >
+  return <section id="pricing" ref={sectionRef} className="section-padding relative overflow-hidden bg-mint text-forest">
       {/* Background with overlay */}
       <div className="absolute inset-0 -z-10 opacity-30">
-        <AspectRatio ratio={16/9} className="h-full">
-          <img 
-            src="/lovable-uploads/bfcdd5e2-5796-4cc9-b81c-3651711c0440.png" 
-            alt="Forest background" 
-            className="w-full h-full object-cover"
-          />
+        <AspectRatio ratio={16 / 9} className="h-full">
+          <img src="/lovable-uploads/bfcdd5e2-5796-4cc9-b81c-3651711c0440.png" alt="Forest background" className="w-full h-full object-cover" />
           <div className="absolute inset-0 bg-mint/80"></div>
         </AspectRatio>
       </div>
@@ -74,21 +58,12 @@ const PricingWithQuote = () => {
 
         <div className="grid md:grid-cols-5 gap-8 lg:gap-12 max-w-6xl mx-auto">
           {/* Quote */}
-          <div 
-            className={`md:col-span-2 transition-all duration-1000 ease-out ${
-              isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-            }`}
-          >
+          <div className={`md:col-span-2 transition-all duration-1000 ease-out ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
             <div className="h-full flex items-center">
               <div className="bg-white/10 backdrop-blur-sm p-5 border border-sage/20 rounded-lg h-full flex items-center justify-center">
                 <div className="flex flex-col items-center">
                   <div className="w-40 h-40 md:w-48 md:h-48 mb-4 rounded-lg overflow-hidden bg-white/20">
-                    <OptimizedImage
-                      src="/lovable-uploads/eff14ab3-8502-4ea4-9c20-75fe9b485119.png"
-                      alt="Albert Einstein portrait"
-                      className="w-full h-full object-cover"
-                      priority="high"
-                    />
+                    <OptimizedImage src="/lovable-uploads/eff14ab3-8502-4ea4-9c20-75fe9b485119.png" alt="Albert Einstein portrait" className="w-full h-full object-cover" priority="high" />
                   </div>
                   <div className="flex items-center mb-3">
                     <MessageSquareQuote size={24} className="text-highlight mr-2" />
@@ -123,7 +98,7 @@ const PricingWithQuote = () => {
                     </div>
                     <div>
                       <p className="font-medium mb-1">Dauer</p>
-                      <p className="text-foreground/70">45 Min – 1 Std.</p>
+                      <p className="text-foreground/70">45 Min – 60 Min</p>
                     </div>
                   </div>
                   
@@ -142,31 +117,21 @@ const PricingWithQuote = () => {
                       <Calendar size={20} className="text-forest" />
                     </div>
                     <div>
-                      <p className="font-medium mb-1">Erstgespraech</p>
-                      <p className="text-coral font-medium">Kostenlos</p>
+                      <p className="font-medium mb-1">Kennenlerngespräch</p>
+                      
                     </div>
                   </div>
                 </div>
                 
                 <ul className="space-y-3 mb-8">
-                  {[
-                    "Individuelle Betreuung auf deine Bedürfnisse zugeschnitten",
-                    "Praktische Übungen und Techniken für den Alltag",
-                    "Fokus auf deine persönlichen Ziele und Herausforderungen",
-                    "Flexible Terminvereinbarung"
-                  ].map((feature, index) => (
-                    <li key={index} className="flex items-start gap-3">
+                  {["Individuelle Betreuung auf deine Bedürfnisse zugeschnitten", "Praktische Übungen und Techniken für den Alltag", "Fokus auf deine persönlichen Ziele und Herausforderungen", "Flexible Terminvereinbarung"].map((feature, index) => <li key={index} className="flex items-start gap-3">
                       <Check size={18} className="text-moss flex-shrink-0 mt-0.5" />
                       <span className="text-foreground/80">{feature}</span>
-                    </li>
-                  ))}
+                    </li>)}
                 </ul>
                 
                 <div>
-                  <a 
-                    href="#contact" 
-                    className="bg-highlight hover:bg-highlight/90 text-forest w-full flex justify-center py-3 px-4 rounded-md transition-all"
-                  >
+                  <a href="#contact" className="bg-highlight hover:bg-highlight/90 text-forest w-full flex justify-center py-3 px-4 rounded-md transition-all">
                     Jetzt buchen
                   </a>
                 </div>
@@ -175,8 +140,6 @@ const PricingWithQuote = () => {
           </div>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default PricingWithQuote;
