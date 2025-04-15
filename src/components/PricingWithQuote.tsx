@@ -2,11 +2,9 @@ import { useState, useEffect, useRef } from 'react';
 import { AspectRatio } from './ui/aspect-ratio';
 import { MessageSquareQuote, Check, Calendar, Clock, Users } from 'lucide-react';
 import OptimizedImage from './OptimizedImage';
-
 const PricingWithQuote = () => {
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
-
   useEffect(() => {
     const observer = new IntersectionObserver(([entry]) => {
       if (entry.isIntersecting) {
@@ -16,18 +14,15 @@ const PricingWithQuote = () => {
     }, {
       threshold: 0.1
     });
-
     if (sectionRef.current) {
       observer.observe(sectionRef.current);
     }
-
     return () => {
       if (sectionRef.current) {
         observer.unobserve(sectionRef.current);
       }
     };
   }, []);
-
   return <section id="pricing" ref={sectionRef} className="section-padding relative overflow-hidden bg-mint/20 text-forest">
       {/* Background with overlay */}
       <div className="absolute inset-0 -z-10 opacity-20">
@@ -69,12 +64,7 @@ const PricingWithQuote = () => {
               <div className="bg-white/10 backdrop-blur-sm p-6 md:p-8 border border-transparent rounded-xl h-full flex items-center justify-center shadow-2xl transition-all duration-300 w-full max-w-md md:max-w-none">
                 <div className="flex flex-col items-center">
                   <div className="w-48 h-48 md:w-56 md:h-56 lg:w-64 lg:h-64 mb-6 md:mb-8 rounded-xl bg-transparent">
-                    <OptimizedImage 
-                      src="/lovable-uploads/8a4be257-655e-4d69-b10e-5db95864ae5a.png" 
-                      alt="Albert Einstein sketch" 
-                      className="w-full h-full object-cover" 
-                      priority="high" 
-                    />
+                    <OptimizedImage src="/lovable-uploads/8a4be257-655e-4d69-b10e-5db95864ae5a.png" alt="Albert Einstein sketch" className="w-full h-full object-cover" priority="high" />
                   </div>
                   <div className="flex items-center mb-4 md:mb-6">
                     <MessageSquareQuote size={28} className="text-forest/80" />
@@ -129,21 +119,16 @@ const PricingWithQuote = () => {
                     </div>
                     <div>
                       <p className="font-medium mb-1">Kennenlerngespräch</p>
-                      <p className="text-forest/70">Nach Vereinbarung</p>
+                      
                     </div>
                   </div>
                 </div>
                 
                 <ul className="space-y-3 mb-8">
-                  {["Individuelle Betreuung auf deine Bedürfnisse zugeschnitten", 
-                    "Praktische Übungen und Techniken für den Alltag", 
-                    "Fokus auf deine persönlichen Ziele und Herausforderungen", 
-                    "Flexible Terminvereinbarung"].map((feature, index) => (
-                    <li key={index} className="flex items-center gap-3">
+                  {["Individuelle Betreuung auf deine Bedürfnisse zugeschnitten", "Praktische Übungen und Techniken für den Alltag", "Fokus auf deine persönlichen Ziele und Herausforderungen", "Flexible Terminvereinbarung"].map((feature, index) => <li key={index} className="flex items-center gap-3">
                       <Check size={18} className="text-moss flex-shrink-0" />
                       <span className="text-forest/80">{feature}</span>
-                    </li>
-                  ))}
+                    </li>)}
                 </ul>
                 
                 <div>
@@ -158,5 +143,4 @@ const PricingWithQuote = () => {
       </div>
     </section>;
 };
-
 export default PricingWithQuote;
