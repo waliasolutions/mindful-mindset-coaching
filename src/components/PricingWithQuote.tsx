@@ -66,13 +66,13 @@ const PricingWithQuote = () => {
           {/* Quote */}
           <div className={`md:col-span-2 transition-all duration-1000 ease-out ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
             <div className="h-full flex items-center">
-              <div className="bg-white/10 backdrop-blur-sm p-8 border border-transparent rounded-xl h-full flex items-center justify-center shadow-2xl hover:shadow-3xl transition-all duration-300">
+              <div className="bg-white/10 backdrop-blur-sm p-8 border border-transparent rounded-xl h-full flex items-center justify-center shadow-2xl transition-all duration-300">
                 <div className="flex flex-col items-center">
-                  <div className="w-56 h-56 md:w-64 md:h-64 mb-8 rounded-xl overflow-hidden bg-transparent shadow-2xl ring-4 ring-transparent hover:ring-forest/10 transition-all duration-500">
+                  <div className="w-56 h-56 md:w-64 md:h-64 mb-8 rounded-xl overflow-hidden bg-transparent shadow-2xl">
                     <OptimizedImage 
-                      src="/lovable-uploads/bd5be052-018c-4d84-a5b7-2a3deeab2715.png" 
+                      src="/lovable-uploads/8a4be257-655e-4d69-b10e-5db95864ae5a.png" 
                       alt="Albert Einstein sketch" 
-                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-700 grayscale hover:grayscale-0" 
+                      className="w-full h-full object-cover" 
                       priority="high" 
                     />
                   </div>
@@ -160,3 +160,4 @@ const PricingWithQuote = () => {
 };
 
 export default PricingWithQuote;
+
