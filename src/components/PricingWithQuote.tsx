@@ -2,9 +2,11 @@ import { useState, useEffect, useRef } from 'react';
 import { AspectRatio } from './ui/aspect-ratio';
 import { MessageSquareQuote, Check, Calendar, Clock, Users } from 'lucide-react';
 import OptimizedImage from './OptimizedImage';
+
 const PricingWithQuote = () => {
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
+
   useEffect(() => {
     const observer = new IntersectionObserver(([entry]) => {
       if (entry.isIntersecting) {
@@ -14,15 +16,18 @@ const PricingWithQuote = () => {
     }, {
       threshold: 0.1
     });
+
     if (sectionRef.current) {
       observer.observe(sectionRef.current);
     }
+
     return () => {
       if (sectionRef.current) {
         observer.unobserve(sectionRef.current);
       }
     };
   }, []);
+
   return <section id="pricing" ref={sectionRef} className="section-padding relative overflow-hidden bg-mint text-forest">
       {/* Background with overlay */}
       <div className="absolute inset-0 -z-10 opacity-30">
@@ -36,7 +41,7 @@ const PricingWithQuote = () => {
       <div className="absolute inset-0 opacity-10 -z-10">
         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-sage to-transparent"></div>
         <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-sage to-transparent"></div>
-        <div className="absolute top-0 bottom-0 left-0 w-px bg-gradient-to-b from-transparent via-sage to-transparent"></div>
+        <div className="absolute top-0 left-0 right-0 w-px bg-gradient-to-b from-transparent via-sage to-transparent"></div>
         <div className="absolute top-0 bottom-0 right-0 w-px bg-gradient-to-b from-transparent via-sage to-transparent"></div>
       </div>
 
@@ -92,7 +97,7 @@ const PricingWithQuote = () => {
               
               <div className="p-6 md:p-8 text-foreground">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                  <div className="flex items-start gap-4">
+                  <div className="flex items-center gap-4">
                     <div className="flex-shrink-0 w-10 h-10 bg-highlight rounded-full flex items-center justify-center">
                       <Clock size={20} className="text-forest" />
                     </div>
@@ -102,7 +107,7 @@ const PricingWithQuote = () => {
                     </div>
                   </div>
                   
-                  <div className="flex items-start gap-4">
+                  <div className="flex items-center gap-4">
                     <div className="flex-shrink-0 w-10 h-10 bg-highlight rounded-full flex items-center justify-center">
                       <Users size={20} className="text-forest" />
                     </div>
@@ -112,13 +117,13 @@ const PricingWithQuote = () => {
                     </div>
                   </div>
                   
-                  <div className="flex items-start gap-4">
+                  <div className="flex items-center gap-4">
                     <div className="flex-shrink-0 w-10 h-10 bg-highlight rounded-full flex items-center justify-center">
                       <Calendar size={20} className="text-forest" />
                     </div>
                     <div>
                       <p className="font-medium mb-1">Kennenlerngespräch</p>
-                      
+                      <p className="text-foreground/70">Kostenlos</p>
                     </div>
                   </div>
                 </div>
@@ -142,4 +147,5 @@ const PricingWithQuote = () => {
       </div>
     </section>;
 };
+
 export default PricingWithQuote;
