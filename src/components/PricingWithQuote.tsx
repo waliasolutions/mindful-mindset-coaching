@@ -41,7 +41,7 @@ const PricingWithQuote = () => {
         <div className="grid md:grid-cols-5 gap-6 lg:gap-12 max-w-6xl mx-auto">
           <div className={`md:col-span-2 transition-all duration-1000 ease-out ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
             <div className="h-full flex items-center justify-center md:justify-start">
-              <div className="bg-white/10 backdrop-blur-sm p-5 md:p-6 lg:p-8 border border-transparent rounded-xl h-full flex items-center justify-center shadow-2xl transition-all duration-300 w-full max-w-md md:max-w-none">
+              <div className="backdrop-blur-sm p-5 md:p-6 lg:p-8 border border-transparent rounded-xl h-full flex items-center justify-center shadow-2xl transition-all duration-300 w-full max-w-md md:max-w-none bg-[e8f1e8] bg-[#e8f1e8]">
                 <div className="flex flex-col items-center">
                   <div className="w-40 h-40 md:w-48 md:h-48 lg:w-64 lg:h-64 mb-5 md:mb-6 lg:mb-8 rounded-xl bg-transparent">
                     <OptimizedImage src="/lovable-uploads/8a4be257-655e-4d69-b10e-5db95864ae5a.png" alt="Albert Einstein sketch" className="w-full h-full object-cover" priority="high" />
