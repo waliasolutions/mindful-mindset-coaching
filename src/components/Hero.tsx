@@ -8,13 +8,14 @@ import OptimizedImage from './OptimizedImage';
 const Hero = () => {
   const headingRef = useRef<HTMLHeadingElement>(null);
   const subtitleRef = useRef<HTMLParagraphElement>(null);
+  const additionalTextRef = useRef<HTMLParagraphElement>(null);
   const ctaRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
   const [imageLoaded, setImageLoaded] = useState(false);
   
   useEffect(() => {
     // Staggered reveal animation
-    const elements = [headingRef.current, subtitleRef.current, ctaRef.current];
+    const elements = [headingRef.current, subtitleRef.current, additionalTextRef.current, ctaRef.current];
     
     elements.forEach((el, index) => {
       if (el) {
@@ -59,6 +60,12 @@ const Hero = () => {
                 className="text-lg md:text-xl text-foreground/90 mb-8 max-w-xl transition-all duration-700 ease-out opacity-0 translate-y-10 delay-100"
               >
                 Entfalte dein volles Potenzial und erschaffe das Leben, von dem du träumst. Mit dem richtigen Mindset sind deinen Möglichkeiten keine Grenzen gesetzt.
+              </p>
+              <p
+                ref={additionalTextRef}
+                className="text-base text-foreground/80 mb-8 max-w-xl transition-all duration-700 ease-out opacity-0 translate-y-10 delay-200"
+              >
+                Das zentrale Thema bei Mindset Coaching sind deine persönlichen Überzeugen und Glaubenssätze. Wovon du selber überzeugst bist, verwirklichst du in deinem Leben. In einem persönlichen Coaching lernst du deine negativen Glaubenssätze zu erkennen und abzulegen und stattdessen in jedem Lebensbereich bestärkende Glaubenssätze zu entwickeln. Dazu gehört auch ein positives Selbstbild aufzubauen und in den inneren Frieden mit dir, deinen Mitmenschen, deiner Vergangenheit und deiner Geschichte zu kommen.
               </p>
               <div 
                 ref={ctaRef}
@@ -120,3 +127,4 @@ const Hero = () => {
 };
 
 export default Hero;
+
