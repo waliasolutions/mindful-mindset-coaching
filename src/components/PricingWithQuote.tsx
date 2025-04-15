@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useRef } from 'react';
 import { AspectRatio } from './ui/aspect-ratio';
 import { MessageSquareQuote, Check, Calendar, Clock, Users } from 'lucide-react';
@@ -65,9 +66,9 @@ const PricingWithQuote = () => {
           {/* Quote */}
           <div className={`md:col-span-2 transition-all duration-1000 ease-out ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
             <div className="h-full flex items-center">
-              <div className="bg-white/20 backdrop-blur-sm p-8 border border-forest/10 rounded-xl h-full flex items-center justify-center shadow-2xl hover:shadow-3xl transition-all duration-300">
+              <div className="bg-white/10 backdrop-blur-sm p-8 border border-transparent rounded-xl h-full flex items-center justify-center shadow-2xl hover:shadow-3xl transition-all duration-300">
                 <div className="flex flex-col items-center">
-                  <div className="w-56 h-56 md:w-64 md:h-64 mb-8 rounded-xl overflow-hidden bg-white/30 shadow-2xl ring-4 ring-forest/5 hover:ring-forest/10 transition-all duration-500">
+                  <div className="w-56 h-56 md:w-64 md:h-64 mb-8 rounded-xl overflow-hidden bg-transparent shadow-2xl ring-4 ring-transparent hover:ring-forest/10 transition-all duration-500">
                     <OptimizedImage 
                       src="/lovable-uploads/bd5be052-018c-4d84-a5b7-2a3deeab2715.png" 
                       alt="Albert Einstein sketch" 
