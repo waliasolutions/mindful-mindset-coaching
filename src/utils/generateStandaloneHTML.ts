@@ -113,9 +113,9 @@ export const generateHTML = () => {
     document.head.appendChild(schemaScript);
     
     // Add canonical URL
-    let canonicalLink = document.querySelector('link[rel="canonical"]');
+    let canonicalLink = document.querySelector('link[rel="canonical"]') as HTMLLinkElement | null;
     if (!canonicalLink) {
-      canonicalLink = document.createElement('link');
+      canonicalLink = document.createElement('link') as HTMLLinkElement;
       canonicalLink.rel = 'canonical';
       document.head.appendChild(canonicalLink);
     }
