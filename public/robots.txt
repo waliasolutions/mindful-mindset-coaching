@@ -1,17 +1,41 @@
 
+# Mindset Coaching mit Martina - Website Robots configuration
+# https://mindset-coach-martina.ch/
+
+# Allow all web crawlers full access
+User-agent: *
+Allow: /
+
+# Individual settings for major search engines
 User-agent: Googlebot
 Allow: /
+Crawl-delay: 1
 
 User-agent: Bingbot
 Allow: /
+Crawl-delay: 2
 
+User-agent: Yandexbot
+Allow: /
+
+User-agent: Baiduspider
+Allow: /
+
+# Social media crawlers
 User-agent: Twitterbot
 Allow: /
 
 User-agent: facebookexternalhit
 Allow: /
 
-User-agent: *
-Allow: /
+# Block admin and sensitive directories
+Disallow: /admin/
+Disallow: /wp-admin/
+Disallow: /wp-login/
+Disallow: /wp-includes/
+Disallow: /private/
+Disallow: /tmp/
+Disallow: /cache/
 
+# Sitemap location
 Sitemap: https://mindset-coach-martina.ch/sitemap.xml
