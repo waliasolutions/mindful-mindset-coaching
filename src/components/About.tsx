@@ -1,39 +1,27 @@
-
 import { useState, useEffect, useRef } from 'react';
 import { Award, BookOpen, Users, Leaf } from 'lucide-react';
-
 const About = () => {
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
-
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          observer.unobserve(entry.target);
-        }
-      },
-      { threshold: 0.1 }
-    );
-
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        setIsVisible(true);
+        observer.unobserve(entry.target);
+      }
+    }, {
+      threshold: 0.1
+    });
     if (sectionRef.current) {
       observer.observe(sectionRef.current);
     }
-
     return () => {
       if (sectionRef.current) {
         observer.unobserve(sectionRef.current);
       }
     };
   }, []);
-
-  return (
-    <section 
-      id="about" 
-      ref={sectionRef}
-      className="section-padding relative overflow-hidden bg-mint/30"
-    >
+  return <section id="about" ref={sectionRef} className="section-padding relative overflow-hidden bg-mint/30">
       {/* Background texture */}
       <div className="absolute inset-0 bg-pattern-light -z-10"></div>
       
@@ -54,12 +42,7 @@ const About = () => {
           <div className={`relative reveal-left ${isVisible ? 'revealed' : ''}`}>
             <div className="aspect-[4/5] relative z-10 overflow-hidden rounded-lg">
               <div className="image-reveal reveal w-full h-full">
-                <img 
-                  src="/lovable-uploads/053f601c-1228-481c-9aca-d078fb3d7d8a.png" 
-                  alt="Martina Domeniconi - Mindset Coach" 
-                  className="w-full h-full object-cover object-center"
-                  loading="lazy"
-                />
+                <img src="/lovable-uploads/053f601c-1228-481c-9aca-d078fb3d7d8a.png" alt="Martina Domeniconi - Mindset Coach" className="w-full h-full object-cover object-center" loading="lazy" />
                 <div className="absolute inset-0 bg-gradient-to-t from-forest/20 to-transparent"></div>
               </div>
             </div>
@@ -79,9 +62,7 @@ const About = () => {
               Mein Ziel ist es, das Wissen, das ich in dieser Ausbildung erlernt habe, weiterzugeben, damit auch <span className="text-forest font-medium">du dein wahres Potenzial entfalten und deinen Herzensweg mit Freude und Gelassenheit gehen kannst</span>.
             </p>
             
-            <p className="text-lg text-foreground/80 mb-8">
-              Seit 2019 bin ich als Ordnungs-Coach tätig. Beim Ordnungs-Coaching geht es vorrangig um die äußere Ordnung – darum, Dinge loszulassen, die keinen Mehrwert mehr bieten. Durch diese Tätigkeit wurde mir zunehmend bewusst, dass Unordnung nicht nur im Außen existiert – sondern auch im Innern: in unseren Gedanken.
-            </p>
+            <p className="text-lg text-foreground/80 mb-8">Seit 2019 bin ich als Ordnungs-Coach tätig. Beim Ordnungs-Coaching geht es vorrangig um die äußere Ordnung – darum, Dinge loszulassen, die keinen Mehrwert mehr bieten. Durch diese Tätigkeit wurde mir zunehmend bewusst, dass Unordnung nicht nur im Aussen existiert – sondern auch im Innern: in unseren Gedanken.</p>
             
             <div className="p-5 bg-white backdrop-blur-sm shadow-sm border-l-2 border-moss rounded-r-md">
               <div className="flex items-start gap-3">
@@ -121,16 +102,11 @@ const About = () => {
         </div>
             
         <div className="mt-12 text-center">
-          <a 
-            href="#services" 
-            className="inline-flex items-center justify-center px-6 py-3 bg-forest text-white hover:bg-forest/90 transition-colors shadow-lg font-medium rounded-md"
-          >
+          <a href="#services" className="inline-flex items-center justify-center px-6 py-3 bg-forest text-white hover:bg-forest/90 transition-colors shadow-lg font-medium rounded-md">
             Entdecke meine Coaching-Angebote
           </a>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default About;
