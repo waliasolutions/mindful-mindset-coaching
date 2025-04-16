@@ -33,9 +33,7 @@ const PricingWithQuote = () => {
             Investiere in dein Wohlbefinden
           </h2>
           <div className="w-16 h-1 mx-auto mb-6 md:mb-8 bg-[f0f7f0] bg-[#41773a]"></div>
-          <p className="text-lg text-center text-forest/90 max-w-2xl mx-auto">
-            Vor jedem Coaching machen wir zuerst ein Kennenlerngespraech online oder per Telefon.
-          </p>
+          <p className="text-lg text-center text-forest/90 max-w-2xl mx-auto">Vor jedem Coaching machen wir zuerst ein Kennenlerngespräch online oder per Telefon.</p>
         </div>
 
         <div className="grid md:grid-cols-5 gap-6 lg:gap-12 max-w-6xl mx-auto">
