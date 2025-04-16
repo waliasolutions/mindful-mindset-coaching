@@ -5,6 +5,7 @@
 # Allow all web crawlers full access
 User-agent: *
 Allow: /
+Crawl-delay: 1
 
 # Individual settings for major search engines
 User-agent: Googlebot
@@ -17,18 +18,26 @@ Crawl-delay: 2
 
 User-agent: Yandexbot
 Allow: /
+Crawl-delay: 2
 
-User-agent: Baiduspider
-Allow: /
+# Media crawlers
+User-agent: Googlebot-Image
+Allow: /*.jpg$
+Allow: /*.jpeg$
+Allow: /*.gif$
+Allow: /*.png$
+Allow: /*.webp$
 
 # Social media crawlers
 User-agent: Twitterbot
 Allow: /
+Crawl-delay: 1
 
 User-agent: facebookexternalhit
 Allow: /
+Crawl-delay: 1
 
-# Block admin and sensitive directories
+# Block sensitive directories and files
 Disallow: /admin/
 Disallow: /wp-admin/
 Disallow: /wp-login/
@@ -36,6 +45,18 @@ Disallow: /wp-includes/
 Disallow: /private/
 Disallow: /tmp/
 Disallow: /cache/
+Disallow: /*.sql$
+Disallow: /*.log$
+Disallow: /*.conf$
+Disallow: /*.config$
+Disallow: /*.env$
+Disallow: /error_log
+Disallow: /.git/
+
+# Clean Parameters
+Allow: /*?page=*
+Allow: /*?lang=*
+Disallow: /*?*
 
 # Sitemap location
 Sitemap: https://mindset-coach-martina.ch/sitemap.xml

@@ -1,4 +1,3 @@
-
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" 
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
@@ -16,6 +15,8 @@
       <image:loc>https://mindset-coach-martina.ch/lovable-uploads/eff14ab3-8502-4ea4-9c20-75fe9b485119.png</image:loc>
       <image:title>Mindset Coaching mit Martina</image:title>
       <image:caption>Persönliche Entwicklung und Transformation</image:caption>
+      <image:geo_location>Zürich, Switzerland</image:geo_location>
+      <image:license>https://mindset-coach-martina.ch/terms</image:license>
     </image:image>
   </url>
   <url>
