@@ -478,6 +478,38 @@ export type Database = {
           },
         ]
       }
+      image_usage: {
+        Row: {
+          created_at: string | null
+          id: string
+          image_id: string
+          section_id: string
+          section_type: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          image_id: string
+          section_id: string
+          section_type: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          image_id?: string
+          section_id?: string
+          section_type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "image_usage_image_id_fkey"
+            columns: ["image_id"]
+            isOneToOne: false
+            referencedRelation: "media_library"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       lead_comments: {
         Row: {
           comment: string
@@ -611,6 +643,42 @@ export type Database = {
           status?: string
           updated_at?: string | null
           zip_code?: string | null
+        }
+        Relationships: []
+      }
+      media_library: {
+        Row: {
+          alt_text: string | null
+          created_at: string | null
+          file_name: string | null
+          file_size: number | null
+          file_type: string | null
+          id: string
+          image_url: string
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          alt_text?: string | null
+          created_at?: string | null
+          file_name?: string | null
+          file_size?: number | null
+          file_type?: string | null
+          id?: string
+          image_url: string
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          alt_text?: string | null
+          created_at?: string | null
+          file_name?: string | null
+          file_size?: number | null
+          file_type?: string | null
+          id?: string
+          image_url?: string
+          updated_at?: string | null
+          user_id?: string | null
         }
         Relationships: []
       }

@@ -6,6 +6,18 @@ import { Label } from '@/components/ui/label';
 import { Upload, X, Copy, Trash2, ImagePlus, AlertCircle } from 'lucide-react';
 import { toast } from 'sonner';
 import { Badge } from '@/components/ui/badge';
+import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/contexts/AuthContext';
+
+interface MediaItem {
+  id: string;
+  image_url: string;
+  file_name?: string;
+  file_size?: number;
+  file_type?: string;
+  alt_text?: string;
+  created_at: string;
+}
 
 interface ImageUsage {
   inHero?: boolean;
@@ -16,35 +28,36 @@ interface ImageUsage {
 }
 
 const MediaLibrary = () => {
-  const [images, setImages] = useState<string[]>([]);
+  const { user } = useAuth();
+  const [images, setImages] = useState<MediaItem[]>([]);
   const [isUploading, setIsUploading] = useState(false);
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [selectedImage, setSelectedImage] = useState<MediaItem | null>(null);
   const [imageUsage, setImageUsage] = useState<Record<string, ImageUsage>>({});
 
   useEffect(() => {
-    const savedImages = localStorage.getItem('mediaLibrary');
-    if (savedImages) {
-      try {
-        const parsedImages = JSON.parse(savedImages);
-        setImages(Array.isArray(parsedImages) ? parsedImages : []);
-        console.log('Loaded images from storage:', parsedImages.length);
-      } catch (error) {
-        console.error('Error parsing media library data:', error);
-        localStorage.setItem('mediaLibrary', JSON.stringify([]));
-      }
-    } else {
-      localStorage.setItem('mediaLibrary', JSON.stringify([]));
-      console.log('Initialized empty media library');
-    }
+    loadImages();
   }, []);
 
-  const dispatchStorageEvent = (key: string) => {
-    window.dispatchEvent(new CustomEvent('localStorageUpdated', { 
-      detail: { key, newValue: JSON.stringify(images) }
-    }));
+  const loadImages = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('media_library')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        throw error;
+      }
+
+      setImages(data || []);
+      console.log('Loaded images from Supabase:', data?.length);
+    } catch (error) {
+      console.error('Error loading media library:', error);
+      toast.error('Failed to load images');
+    }
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files || e.target.files.length === 0) return;
     
     const file = e.target.files[0];
@@ -55,39 +68,71 @@ const MediaLibrary = () => {
 
     setIsUploading(true);
     
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      const result = reader.result as string;
-      const newImages = [...images, result];
-      setImages(newImages);
-      localStorage.setItem('mediaLibrary', JSON.stringify(newImages));
-      
-      dispatchStorageEvent('mediaLibrary');
-      
-      setIsUploading(false);
+    try {
+      // Upload file to Supabase Storage
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${Math.random()}.${fileExt}`;
+      const { data: uploadData, error: uploadError } = await supabase.storage
+        .from('media')
+        .upload(fileName, file);
+
+      if (uploadError) throw uploadError;
+
+      // Get public URL
+      const { data: { publicUrl } } = supabase.storage
+        .from('media')
+        .getPublicUrl(fileName);
+
+      // Save to media_library table
+      const { error: dbError } = await supabase
+        .from('media_library')
+        .insert({
+          user_id: user?.id,
+          image_url: publicUrl,
+          file_name: file.name,
+          file_size: file.size,
+          file_type: file.type
+        });
+
+      if (dbError) throw dbError;
+
+      await loadImages();
       toast.success('Image uploaded successfully');
-    };
-    
-    reader.onerror = () => {
+    } catch (error) {
+      console.error('Upload error:', error);
       toast.error('Failed to upload image');
+    } finally {
       setIsUploading(false);
-    };
-    
-    reader.readAsDataURL(file);
+    }
   };
 
-  const handleDelete = (imageToDelete: string) => {
-    const newImages = images.filter(image => image !== imageToDelete);
-    setImages(newImages);
-    localStorage.setItem('mediaLibrary', JSON.stringify(newImages));
-    
-    dispatchStorageEvent('mediaLibrary');
-    
-    if (selectedImage === imageToDelete) {
-      setSelectedImage(null);
+  const handleDelete = async (imageToDelete: MediaItem) => {
+    try {
+      const { error } = await supabase
+        .from('media_library')
+        .delete()
+        .eq('id', imageToDelete.id);
+
+      if (error) throw error;
+
+      // Also try to delete from storage if it exists there
+      const fileName = imageToDelete.image_url.split('/').pop();
+      if (fileName) {
+        await supabase.storage
+          .from('media')
+          .remove([fileName]);
+      }
+
+      setImages(images.filter(image => image.id !== imageToDelete.id));
+      if (selectedImage?.id === imageToDelete.id) {
+        setSelectedImage(null);
+      }
+      
+      toast.success('Image deleted');
+    } catch (error) {
+      console.error('Delete error:', error);
+      toast.error('Failed to delete image');
     }
-    
-    toast.success('Image deleted');
   };
 
   const copyImagePath = (image: string) => {
@@ -99,7 +144,7 @@ const MediaLibrary = () => {
     const usage: Record<string, ImageUsage> = {};
     
     images.forEach(img => {
-      usage[img] = { count: 0 };
+      usage[img.image_url] = { count: 0 };
     });
 
     const previewFrame = document.getElementById('preview-frame') as HTMLIFrameElement;
@@ -110,27 +155,27 @@ const MediaLibrary = () => {
       const servicesSection = doc.getElementById('services');
       const aboutSection = doc.getElementById('about');
 
-      images.forEach(imagePath => {
-        if (heroSection?.innerHTML.includes(imagePath)) {
-          usage[imagePath].inHero = true;
-          usage[imagePath].count++;
+      images.forEach(image => {
+        if (heroSection?.innerHTML.includes(image.image_url)) {
+          usage[image.image_url].inHero = true;
+          usage[image.image_url].count++;
         }
 
-        if (servicesSection?.innerHTML.includes(imagePath)) {
-          usage[imagePath].inServices = true;
-          usage[imagePath].count++;
+        if (servicesSection?.innerHTML.includes(image.image_url)) {
+          usage[image.image_url].inServices = true;
+          usage[image.image_url].count++;
         }
 
-        if (aboutSection?.innerHTML.includes(imagePath)) {
-          usage[imagePath].inAbout = true;
-          usage[imagePath].count++;
+        if (aboutSection?.innerHTML.includes(image.image_url)) {
+          usage[image.image_url].inAbout = true;
+          usage[image.image_url].count++;
         }
       });
 
       const metaTags = doc.querySelectorAll('meta[property="og:image"], meta[name="twitter:image"]');
       metaTags.forEach(tag => {
         const content = tag.getAttribute('content');
-        if (content && images.includes(content)) {
+        if (content && images.map(img => img.image_url).includes(content)) {
           usage[content].inMeta = true;
           usage[content].count++;
         }
@@ -210,18 +255,18 @@ const MediaLibrary = () => {
         </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-          {images.map((image, index) => (
+          {images.map((image) => (
             <div 
-              key={index} 
+              key={image.id} 
               className={`relative group overflow-hidden rounded-md border ${
-                selectedImage === image ? 'ring-2 ring-forest ring-offset-2' : ''
+                selectedImage?.id === image.id ? 'ring-2 ring-forest ring-offset-2' : ''
               }`}
               onClick={() => setSelectedImage(image)}
             >
               <div className="aspect-square bg-gray-100">
                 <img 
-                  src={image} 
-                  alt={`Uploaded image ${index + 1}`}
+                  src={image.image_url} 
+                  alt={image.alt_text || `Image ${image.id}`}
                   className="w-full h-full object-cover"
                 />
               </div>
@@ -232,7 +277,7 @@ const MediaLibrary = () => {
                   className="text-white hover:bg-white/20 h-8 w-8"
                   onClick={(e) => {
                     e.stopPropagation();
-                    copyImagePath(image);
+                    copyImagePath(image.image_url);
                   }}
                 >
                   <Copy className="h-4 w-4" />
@@ -249,12 +294,7 @@ const MediaLibrary = () => {
                   <Trash2 className="h-4 w-4" />
                 </Button>
               </div>
-              {renderUsageBadges(image)}
-              {imageUsage[image]?.count === 0 && (
-                <div className="absolute top-2 right-2">
-                  <AlertCircle className="h-5 w-5 text-destructive" />
-                </div>
-              )}
+              {renderUsageBadges(image.image_url)}
             </div>
           ))}
 
@@ -280,8 +320,8 @@ const MediaLibrary = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <img 
-                  src={selectedImage} 
-                  alt="Selected image"
+                  src={selectedImage.image_url} 
+                  alt={selectedImage.alt_text || 'Selected image'}
                   className="w-full max-h-48 object-contain border rounded-md"
                 />
               </div>
@@ -290,14 +330,14 @@ const MediaLibrary = () => {
                 <div className="flex mt-1">
                   <Input 
                     id="image-path" 
-                    value={selectedImage}
+                    value={selectedImage.image_url}
                     readOnly
                     className="rounded-r-none"
                   />
                   <Button 
                     variant="default"
                     className="rounded-l-none"
-                    onClick={() => copyImagePath(selectedImage)}
+                    onClick={() => copyImagePath(selectedImage.image_url)}
                   >
                     <Copy className="h-4 w-4" />
                   </Button>
