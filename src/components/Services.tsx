@@ -65,7 +65,7 @@ const Services = () => {
             Transformiere dein Leben durch Mindset Coaching
           </h2>
           <div className="w-16 h-1 bg-moss mx-auto mb-6 md:mb-8"></div>
-          <p className="text-lg text-center text-foreground/80 max-w-2xl mx-auto">In einem 1:1 Coaching löst du Blockaden, bringen Klarheit in dein Gedanken-Karussell und richtest deinen Fokus auf das, was wirklich zählt: Deine Träume, Deine Lebenszufriedenheit und Deine innere Ruhe und Gelassenheit.</p>
+          <p className="text-lg text-center text-foreground/80 max-w-2xl mx-auto">In einem 1:1 Coaching löst du Blockaden, bringst Klarheit in dein Gedanken-Karussell und richtest deinen Fokus auf das, was wirklich zählt: Deine Träume, Deine Lebenszufriedenheit und Deine innere Ruhe und Gelassenheit.</p>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mb-12 md:mb-16">
