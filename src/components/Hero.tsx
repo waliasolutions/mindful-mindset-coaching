@@ -40,13 +40,13 @@ const Hero = () => {
       
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex flex-col lg:flex-row items-center justify-between gap-12">
-          <div className="max-w-2xl w-full">
+          <div className="max-w-2xl w-full text-center lg:text-left">
             <div className="mb-10">
-              <h1 ref={headingRef} className="font-serif text-4xl md:text-5xl lg:text-6xl font-semibold leading-tight mb-6 transition-all duration-700 ease-out opacity-0 translate-y-10">
+              <h1 ref={headingRef} className="font-serif text-4xl md:text-5xl lg:text-6xl font-semibold leading-tight mb-6 transition-all duration-700 ease-out opacity-0 translate-y-10 text-center lg:text-left">
                 <span className="bg-gradient-to-r from-moss via-petrol to-forest bg-clip-text text-transparent">Mindset Coaching</span> für ein glückliches und erfülltes Leben
               </h1>
 
-              <div className="block lg:hidden mb-8">
+              <div className="block lg:hidden mb-8 text-center">
                 <div className="relative w-full max-w-md mx-auto">
                   <div className="aspect-[3/4] overflow-hidden shadow-xl transition-all duration-500 hover:shadow-2xl rounded-lg">
                     <div className="image-reveal reveal w-full h-full relative">
@@ -64,13 +64,13 @@ const Hero = () => {
                 </div>
               </div>
 
-              <p ref={subtitleRef} className="text-lg md:text-xl text-foreground/90 mb-8 max-w-xl transition-all duration-700 ease-out opacity-0 translate-y-10 delay-100">
+              <p ref={subtitleRef} className="text-lg md:text-xl text-foreground/90 mb-8 max-w-xl mx-auto lg:mx-0 text-center lg:text-left transition-all duration-700 ease-out opacity-0 translate-y-10 delay-100">
                 Entfalte dein volles Potenzial und erschaffe das Leben, von dem du träumst. Mit dem richtigen Mindset sind deinen Möglichkeiten keine Grenzen gesetzt.
               </p>
-              <p ref={additionalTextRef} className="text-base text-foreground/80 mb-8 max-w-xl transition-all duration-700 ease-out opacity-0 translate-y-10 delay-200">
+              <p ref={additionalTextRef} className="text-base text-foreground/80 mb-8 max-w-xl mx-auto lg:mx-0 text-center lg:text-left transition-all duration-700 ease-out opacity-0 translate-y-10 delay-200">
                 Das zentrale Thema bei Mindset Coaching sind deine persönlichen Überzeugungen und Glaubenssätze. Wovon du selber überzeugst bist, verwirklichst du in deinem Leben. In einem persönlichen Coaching lernst du deine negativen Glaubenssätze zu erkennen und abzulegen und stattdessen in jedem Lebensbereich bestärkende Glaubenssätze zu entwickeln. Dazu gehört auch ein positives Selbstbild aufzubauen und in den inneren Frieden mit dir, deinen Mitmenschen, deiner Vergangenheit und deiner Geschichte zu kommen.
               </p>
-              <div ref={ctaRef} className="flex flex-col sm:flex-row gap-4 transition-all duration-700 ease-out opacity-0 translate-y-10 delay-200">
+              <div ref={ctaRef} className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start transition-all duration-700 ease-out opacity-0 translate-y-10 delay-200">
                 <a href="#contact" className="inline-flex items-center justify-center px-6 py-3 bg-petrol text-white hover:bg-petrol/90 transition-colors shadow-lg font-medium rounded-md">Kennenlerngespräch vereinbaren</a>
                 <a href="#services" className="hidden lg:inline-flex items-center justify-center px-6 py-3 bg-sage/30 hover:bg-sage/40 text-forest transition-colors focus-ring text-center">
                   Mehr erfahren
