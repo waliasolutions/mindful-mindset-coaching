@@ -4,7 +4,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "next-themes";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import Index from "./pages/Index";
 import Admin from "./pages/Admin";
@@ -12,28 +12,25 @@ import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
-// Function to initialize SEO settings
-const initializeSeoSettings = () => {
-  // Only run on non-admin routes
-  if (window.location.pathname !== '/admin') {
-    const seoSettings = localStorage.getItem('seoSettings');
-    if (seoSettings) {
-      const { title, description, keywords, ogImage, gaTrackingId, enableGa } = JSON.parse(seoSettings);
-      
-      // Update title
-      if (title) document.title = title;
-      
-      // Update meta tags
-      updateMetaTag('description', description);
-      updateMetaTag('keywords', keywords);
-      updateMetaTag('og:image', ogImage, 'property');
-      
-      // Handle Google Analytics
-      if (enableGa && gaTrackingId) {
-        setupGoogleAnalytics(gaTrackingId);
-      }
-    }
-  }
+// Function to update page metadata based on route
+const updatePageMetadata = (pathname: string) => {
+  const baseTitle = "Mindset Coaching mit Martina | Persönliche Entwicklung & Transformation";
+  const baseDescription = "Entdecken Sie transformatives Mindset Coaching mit Martina Domeniconi. Entwickeln Sie ein positives Mindset, erreichen Sie Ihre Ziele und leben Sie ein erfülltes Leben.";
+  const baseImage = "/lovable-uploads/eff14ab3-8502-4ea4-9c20-75fe9b485119.png";
+
+  // Update title and meta tags based on current route
+  document.title = pathname === "/" ? baseTitle : `${pathname.slice(1)} | ${baseTitle}`;
+  
+  // Update meta description
+  updateMetaTag('description', baseDescription);
+  
+  // Update OG tags
+  updateMetaTag('og:title', document.title, 'property');
+  updateMetaTag('og:description', baseDescription, 'property');
+  updateMetaTag('og:image', baseImage, 'property');
+  
+  // Update Twitter card
+  updateMetaTag('twitter:image', baseImage, 'property');
 };
 
 const updateMetaTag = (name: string, content: string, attribute = 'name') => {
@@ -48,35 +45,12 @@ const updateMetaTag = (name: string, content: string, attribute = 'name') => {
   meta.setAttribute('content', content);
 };
 
-const setupGoogleAnalytics = (trackingId: string) => {
-  // Check if GA is already initialized
-  if (document.getElementById('ga-script')) return;
-  
-  // Create GA4 script
-  const scriptGA = document.createElement('script');
-  scriptGA.async = true;
-  scriptGA.src = `https://www.googletagmanager.com/gtag/js?id=${trackingId}`;
-  scriptGA.id = 'ga-script';
-  
-  // Create config script
-  const scriptConfig = document.createElement('script');
-  scriptConfig.id = 'ga-config';
-  scriptConfig.innerHTML = `
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', '${trackingId}');
-  `;
-  
-  // Add scripts to document
-  document.head.appendChild(scriptGA);
-  document.head.appendChild(scriptConfig);
-};
-
 const AppContent = () => {
+  const location = useLocation();
+
   useEffect(() => {
-    initializeSeoSettings();
-  }, []);
+    updatePageMetadata(location.pathname);
+  }, [location]);
 
   return (
     <Routes>
