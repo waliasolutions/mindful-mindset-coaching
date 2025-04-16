@@ -18,9 +18,61 @@ export const extractCSS = () => {
     
     // Here we would parse the React components and extract Tailwind classes
     // This is a complex process that would require analyzing each component
-    // For now, we'll add some basic CSS that mimics the current design
+    // For now, we'll add some SEO-friendly CSS that mimics the current design
     
     const additionalCSS = `
+/* Base styling with accessibility and SEO considerations */
+:root {
+  --color-moss: #94A38D;
+  --color-petrol: #5C8D89;
+  --color-forest: #2F5233;
+  --color-beige: #D5BDAF;
+  --color-mint: #E8F3EC;
+  --color-mauve: #D0B0B1;
+  --font-heading: "Playfair Display", serif;
+  --font-body: "Inter", sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+}
+
+/* Improve accessibility */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  
+  .animate-bounce,
+  .transition-all,
+  .transition-colors,
+  .transition-opacity {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+body {
+  font-family: var(--font-body);
+  line-height: 1.5;
+  color: #1A1A1A;
+  background-color: #FFFFFF;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+/* Improve focus visibility for accessibility */
+a:focus,
+button:focus,
+input:focus,
+textarea:focus,
+select:focus {
+  outline: 2px solid var(--color-petrol);
+  outline-offset: 2px;
+}
+
 /* Navigation styles */
 .navbar {
   position: fixed;
@@ -63,7 +115,7 @@ export const extractCSS = () => {
 }
 
 .hero-title {
-  font-family: serif;
+  font-family: var(--font-heading);
   font-size: 2.5rem;
   font-weight: 600;
   line-height: 1.2;
@@ -83,6 +135,145 @@ export const extractCSS = () => {
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+}
+
+/* Image optimization for SEO */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Add proper image loading optimization */
+.image-reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.image-reveal.reveal {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* SEO-friendly heading hierarchy */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  margin-top: 0;
+  color: var(--color-forest);
+}
+
+h1 {
+  font-size: 2.5rem;
+}
+
+h2 {
+  font-size: 2rem;
+}
+
+h3 {
+  font-size: 1.5rem;
+}
+
+/* Print styles for SEO and usability */
+@media print {
+  .navbar,
+  .footer-cta,
+  button,
+  .no-print {
+    display: none !important;
+  }
+  
+  body {
+    font-size: 12pt;
+    background: #fff;
+    color: #000;
+  }
+  
+  h1, h2, h3 {
+    page-break-after: avoid;
+    page-break-inside: avoid;
+  }
+  
+  img {
+    max-width: 100% !important;
+    page-break-inside: avoid;
+  }
+  
+  a {
+    color: #000;
+    text-decoration: underline;
+  }
+  
+  a::after {
+    content: " (" attr(href) ")";
+    font-size: 0.8em;
+    font-weight: normal;
+  }
+  
+  a[href^="http"]::after {
+    content: " (" attr(href) ")";
+  }
+  
+  .container {
+    width: 100%;
+    max-width: none;
+    padding: 0;
+    margin: 0;
+  }
+}
+
+/* Media queries for better responsiveness */
+@media (max-width: 768px) {
+  h1 {
+    font-size: 2rem;
+  }
+  
+  h2 {
+    font-size: 1.75rem;
+  }
+  
+  h3 {
+    font-size: 1.25rem;
+  }
+  
+  .container {
+    padding: 0 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  html {
+    font-size: 14px;
+  }
+  
+  h1 {
+    font-size: 1.75rem;
+  }
+  
+  h2 {
+    font-size: 1.5rem;
+  }
+  
+  .container {
+    padding: 0 1rem;
+  }
+}
+
+/* Skip to content link for accessibility */
+.skip-to-content {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: var(--color-forest);
+  color: white;
+  padding: 8px 16px;
+  z-index: 100;
+  transition: top 0.3s;
+}
+
+.skip-to-content:focus {
+  top: 0;
 }
 
 /* Add more component styles here */
