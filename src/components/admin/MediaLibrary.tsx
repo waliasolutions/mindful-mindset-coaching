@@ -3,16 +3,25 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Upload, X, Copy, Trash2, ImagePlus } from 'lucide-react';
+import { Upload, X, Copy, Trash2, ImagePlus, AlertCircle } from 'lucide-react';
 import { toast } from 'sonner';
+import { Badge } from '@/components/ui/badge';
+
+interface ImageUsage {
+  inHero?: boolean;
+  inServices?: boolean;
+  inAbout?: boolean;
+  inMeta?: boolean;
+  count: number;
+}
 
 const MediaLibrary = () => {
   const [images, setImages] = useState<string[]>([]);
   const [isUploading, setIsUploading] = useState(false);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [imageUsage, setImageUsage] = useState<Record<string, ImageUsage>>({});
 
   useEffect(() => {
-    // Load saved images from localStorage
     const savedImages = localStorage.getItem('mediaLibrary');
     if (savedImages) {
       try {
@@ -21,17 +30,14 @@ const MediaLibrary = () => {
         console.log('Loaded images from storage:', parsedImages.length);
       } catch (error) {
         console.error('Error parsing media library data:', error);
-        // Initialize with empty array if parsing fails
         localStorage.setItem('mediaLibrary', JSON.stringify([]));
       }
     } else {
-      // Initialize media library in localStorage if it doesn't exist
       localStorage.setItem('mediaLibrary', JSON.stringify([]));
       console.log('Initialized empty media library');
     }
   }, []);
 
-  // Helper function to dispatch storage event for same-tab updates
   const dispatchStorageEvent = (key: string) => {
     window.dispatchEvent(new CustomEvent('localStorageUpdated', { 
       detail: { key, newValue: JSON.stringify(images) }
@@ -47,8 +53,6 @@ const MediaLibrary = () => {
       return;
     }
 
-    // In a real implementation, this would upload to a server or cloud storage
-    // For this demo, we'll use base64 encoding to simulate storage
     setIsUploading(true);
     
     const reader = new FileReader();
@@ -58,7 +62,6 @@ const MediaLibrary = () => {
       setImages(newImages);
       localStorage.setItem('mediaLibrary', JSON.stringify(newImages));
       
-      // Dispatch event for same-tab updates
       dispatchStorageEvent('mediaLibrary');
       
       setIsUploading(false);
@@ -78,7 +81,6 @@ const MediaLibrary = () => {
     setImages(newImages);
     localStorage.setItem('mediaLibrary', JSON.stringify(newImages));
     
-    // Dispatch event for same-tab updates
     dispatchStorageEvent('mediaLibrary');
     
     if (selectedImage === imageToDelete) {
@@ -89,10 +91,84 @@ const MediaLibrary = () => {
   };
 
   const copyImagePath = (image: string) => {
-    // In a real app, this would be a URL to the image
-    // For this demo, we'll just copy the base64 string
     navigator.clipboard.writeText(image);
     toast.success('Image path copied to clipboard');
+  };
+
+  const scanForImageUsage = () => {
+    const usage: Record<string, ImageUsage> = {};
+    
+    images.forEach(img => {
+      usage[img] = { count: 0 };
+    });
+
+    const previewFrame = document.getElementById('preview-frame') as HTMLIFrameElement;
+    if (previewFrame && previewFrame.contentDocument) {
+      const doc = previewFrame.contentDocument;
+
+      const heroSection = doc.getElementById('hero');
+      const servicesSection = doc.getElementById('services');
+      const aboutSection = doc.getElementById('about');
+
+      images.forEach(imagePath => {
+        if (heroSection?.innerHTML.includes(imagePath)) {
+          usage[imagePath].inHero = true;
+          usage[imagePath].count++;
+        }
+
+        if (servicesSection?.innerHTML.includes(imagePath)) {
+          usage[imagePath].inServices = true;
+          usage[imagePath].count++;
+        }
+
+        if (aboutSection?.innerHTML.includes(imagePath)) {
+          usage[imagePath].inAbout = true;
+          usage[imagePath].count++;
+        }
+      });
+
+      const metaTags = doc.querySelectorAll('meta[property="og:image"], meta[name="twitter:image"]');
+      metaTags.forEach(tag => {
+        const content = tag.getAttribute('content');
+        if (content && images.includes(content)) {
+          usage[content].inMeta = true;
+          usage[content].count++;
+        }
+      });
+    }
+
+    setImageUsage(usage);
+  };
+
+  useEffect(() => {
+    if (images.length > 0) {
+      scanForImageUsage();
+    }
+  }, [images]);
+
+  const renderUsageBadges = (image: string) => {
+    const usage = imageUsage[image];
+    if (!usage) return null;
+
+    return (
+      <div className="flex gap-1 mt-1 flex-wrap">
+        {usage.inHero && (
+          <Badge variant="secondary" className="text-xs">Hero</Badge>
+        )}
+        {usage.inServices && (
+          <Badge variant="secondary" className="text-xs">Services</Badge>
+        )}
+        {usage.inAbout && (
+          <Badge variant="secondary" className="text-xs">About</Badge>
+        )}
+        {usage.inMeta && (
+          <Badge variant="secondary" className="text-xs">Meta</Badge>
+        )}
+        {usage.count === 0 && (
+          <Badge variant="destructive" className="text-xs">Unused</Badge>
+        )}
+      </div>
+    );
   };
 
   return (
@@ -137,16 +213,18 @@ const MediaLibrary = () => {
           {images.map((image, index) => (
             <div 
               key={index} 
-              className={`relative group overflow-hidden rounded-md border aspect-square bg-gray-100 ${
+              className={`relative group overflow-hidden rounded-md border ${
                 selectedImage === image ? 'ring-2 ring-forest ring-offset-2' : ''
               }`}
               onClick={() => setSelectedImage(image)}
             >
-              <img 
-                src={image} 
-                alt={`Uploaded image ${index + 1}`}
-                className="w-full h-full object-cover"
-              />
+              <div className="aspect-square bg-gray-100">
+                <img 
+                  src={image} 
+                  alt={`Uploaded image ${index + 1}`}
+                  className="w-full h-full object-cover"
+                />
+              </div>
               <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-center items-center p-2">
                 <Button
                   variant="ghost"
@@ -171,6 +249,12 @@ const MediaLibrary = () => {
                   <Trash2 className="h-4 w-4" />
                 </Button>
               </div>
+              {renderUsageBadges(image)}
+              {imageUsage[image]?.count === 0 && (
+                <div className="absolute top-2 right-2">
+                  <AlertCircle className="h-5 w-5 text-destructive" />
+                </div>
+              )}
             </div>
           ))}
 
