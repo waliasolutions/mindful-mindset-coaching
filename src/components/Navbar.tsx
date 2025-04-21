@@ -88,8 +88,8 @@ const Navbar = () => {
             onClick={(e) => handleSmoothScroll(e, 'services')}
             className="flex items-center gap-2"
           >
-            <Leaf size={24} className="text-petrol" />
-            <span className="text-forest font-serif text-xl md:text-2xl lg:text-3xl font-medium">
+            <Leaf size={32} className="text-petrol" /> {/* Increased from 24 to 32 */}
+            <span className="text-forest font-serif text-2xl md:text-3xl lg:text-4xl font-medium"> {/* Increased text sizes */}
               Mindset <span className="text-petrol">Coach Martina</span>
             </span>
           </a>
@@ -118,7 +118,7 @@ const Navbar = () => {
             onClick={toggleMenu}
             aria-label="Toggle menu"
           >
-            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            {isMenuOpen ? <X size={32} /> : <Menu size={32} />} {/* Increased from 24 to 32 */}
           </button>
         </div>
       </div>
@@ -149,3 +149,4 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
