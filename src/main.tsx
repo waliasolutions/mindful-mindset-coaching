@@ -1,4 +1,3 @@
-
 import { createRoot } from 'react-dom/client'
 import { lazy, Suspense } from 'react'
 import './index.css'
@@ -12,6 +11,22 @@ const Loading = () => (
     <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
   </div>
 )
+
+// Load required script
+const loadLovableScript = () => {
+  if (document.querySelector('script[src="https://cdn.gpteng.co/gptengineer.js"]')) {
+    return Promise.resolve();
+  }
+  
+  return new Promise((resolve, reject) => {
+    const script = document.createElement('script');
+    script.src = 'https://cdn.gpteng.co/gptengineer.js';
+    script.type = 'module';
+    script.onload = resolve;
+    script.onerror = reject;
+    document.head.appendChild(script);
+  });
+};
 
 // Preload critical images
 const preloadCriticalImages = () => {
@@ -41,15 +56,22 @@ const setupStorageEventHandler = () => {
   });
 };
 
-// Execute setup functions
-preloadCriticalImages();
-setupStorageEventHandler();
+// Initialize application
+const initializeApp = async () => {
+  try {
+    await loadLovableScript();
+    preloadCriticalImages();
+    setupStorageEventHandler();
+    
+    createRoot(document.getElementById("root")!).render(
+      <Suspense fallback={<Loading />}>
+        <App />
+      </Suspense>
+    );
+  } catch (error) {
+    console.error('Error initializing application:', error);
+  }
+};
 
-// Ensure the DOM is fully loaded before rendering
-document.addEventListener('DOMContentLoaded', () => {
-  createRoot(document.getElementById("root")!).render(
-    <Suspense fallback={<Loading />}>
-      <App />
-    </Suspense>
-  );
-});
+// Start initialization when DOM is loaded
+document.addEventListener('DOMContentLoaded', initializeApp);
