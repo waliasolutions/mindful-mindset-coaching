@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { AspectRatio } from './ui/aspect-ratio';
-import { MessageSquareQuote, Check, Calendar, Clock, Users } from 'lucide-react';
+import { MessageSquareQuote, Check, Calendar, Clock, Users, Phone } from 'lucide-react';
 import OptimizedImage from './OptimizedImage';
 
 const PricingWithQuote = () => {
@@ -40,7 +40,7 @@ const PricingWithQuote = () => {
           <div className="w-16 h-1 mx-auto mb-6 md:mb-8 bg-[f0f7f0] bg-[#41773a]"></div>
           <p className="text-lg text-center text-forest/90 max-w-2xl mx-auto">
             Mir ist wichtig, dass du dich wohlfühlst – deshalb starten wir mit einem kostenlosen Kennenlerngespräch. 
-            Dabei hast du Raum, deine Fragen zu stellen, und wir sehen gemeinsam, ob die Zusammenarbeit für beide Seiten passt.
+            In einem kurzen Telefonat können wir erste Fragen klären und gemeinsam sehen, ob die Zusammenarbeit für beide Seiten passt.
           </p>
         </div>
 
@@ -105,6 +105,16 @@ const PricingWithQuote = () => {
                     <div>
                       <p className="font-medium mb-0.5 md:mb-1">Kennenlerngespräch</p>
                       <p className="text-sm md:text-base text-forest/70">Nach Vereinbarung</p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-center gap-3 md:gap-4">
+                    <div className="flex-shrink-0 w-9 h-9 md:w-10 md:h-10 bg-moss/20 rounded-full flex items-center justify-center">
+                      <Phone size={18} className="text-forest" />
+                    </div>
+                    <div>
+                      <p className="font-medium mb-0.5 md:mb-1">Erstgespräch</p>
+                      <p className="text-sm md:text-base text-forest/70">Kostenlos, 15 Min Telefon</p>
                     </div>
                   </div>
                 </div>
