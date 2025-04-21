@@ -45,8 +45,11 @@ const setupStorageEventHandler = () => {
 preloadCriticalImages();
 setupStorageEventHandler();
 
-createRoot(document.getElementById("root")!).render(
-  <Suspense fallback={<Loading />}>
-    <App />
-  </Suspense>
-);
+// Ensure the DOM is fully loaded before rendering
+document.addEventListener('DOMContentLoaded', () => {
+  createRoot(document.getElementById("root")!).render(
+    <Suspense fallback={<Loading />}>
+      <App />
+    </Suspense>
+  );
+});
