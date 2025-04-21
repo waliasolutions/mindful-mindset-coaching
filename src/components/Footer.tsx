@@ -44,7 +44,12 @@ const Footer = () => {
               >
                 <Facebook size={18} />
               </a>
-              <a href="#" className="w-10 h-10 flex items-center justify-center bg-forest/10 text-forest hover:bg-forest/20 transition-colors rounded-full">
+              <a 
+                href="https://www.instagram.com/organize.my.space/" 
+                target="_blank" 
+                rel="nofollow noopener noreferrer" 
+                className="w-10 h-10 flex items-center justify-center bg-forest/10 text-forest hover:bg-forest/20 transition-colors rounded-full"
+              >
                 <Instagram size={18} />
               </a>
             </div>
