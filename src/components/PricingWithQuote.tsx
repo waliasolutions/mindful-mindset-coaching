@@ -2,9 +2,11 @@ import { useState, useEffect, useRef } from 'react';
 import { AspectRatio } from './ui/aspect-ratio';
 import { MessageSquareQuote, Check, Calendar, Clock, Users } from 'lucide-react';
 import OptimizedImage from './OptimizedImage';
+
 const PricingWithQuote = () => {
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
+
   useEffect(() => {
     const observer = new IntersectionObserver(([entry]) => {
       if (entry.isIntersecting) {
@@ -14,15 +16,18 @@ const PricingWithQuote = () => {
     }, {
       threshold: 0.1
     });
+
     if (sectionRef.current) {
       observer.observe(sectionRef.current);
     }
+
     return () => {
       if (sectionRef.current) {
         observer.unobserve(sectionRef.current);
       }
     };
   }, []);
+
   return <section id="pricing" ref={sectionRef} className="section-padding relative overflow-hidden text-forest bg-[#e8f1e8]">
       <div className="container mx-auto px-4 md:px-6">
         <div className="max-w-4xl mx-auto mb-12 md:mb-16 reveal-element">
@@ -33,7 +38,10 @@ const PricingWithQuote = () => {
             Investiere in dein Wohlbefinden
           </h2>
           <div className="w-16 h-1 mx-auto mb-6 md:mb-8 bg-[f0f7f0] bg-[#41773a]"></div>
-          <p className="text-lg text-center text-forest/90 max-w-2xl mx-auto">Vor jedem Coaching machen wir zuerst ein Kennenlerngespräch online oder per Telefon.</p>
+          <p className="text-lg text-center text-forest/90 max-w-2xl mx-auto">
+            Mir ist wichtig, dass du dich wohlfühlst – deshalb starten wir mit einem kostenlosen Kennenlerngespräch. 
+            Dabei hast du Raum, deine Fragen zu stellen, und wir sehen gemeinsam, ob die Zusammenarbeit für beide Seiten passt.
+          </p>
         </div>
 
         <div className="grid md:grid-cols-5 gap-6 lg:gap-12 max-w-6xl mx-auto">
@@ -120,4 +128,5 @@ const PricingWithQuote = () => {
       </div>
     </section>;
 };
+
 export default PricingWithQuote;
