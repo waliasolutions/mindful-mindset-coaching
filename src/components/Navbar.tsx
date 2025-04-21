@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Menu, X, Leaf } from 'lucide-react';
 
@@ -15,10 +14,9 @@ const Navbar = () => {
         setIsScrolled(false);
       }
       
-      // Determine which section is in view
       const sections = ['services', 'about', 'pricing', 'contact'];
-      const scrollPosition = window.scrollY + 100; // Add offset for navbar
-      
+      const scrollPosition = window.scrollY + 100;
+
       for (const section of sections) {
         const element = document.getElementById(section);
         if (element) {
@@ -49,7 +47,7 @@ const Navbar = () => {
     e.preventDefault();
     const element = document.getElementById(targetId);
     if (element) {
-      const navbarHeight = 80; // Adjust based on your navbar height
+      const navbarHeight = 80;
       const elementPosition = element.getBoundingClientRect().top + window.scrollY;
       const offsetPosition = elementPosition - navbarHeight;
       
@@ -58,10 +56,8 @@ const Navbar = () => {
         behavior: 'smooth'
       });
       
-      // Update active section
       setActiveSection(targetId);
       
-      // Close mobile menu if open
       if (isMenuOpen) {
         closeMenu();
       }
@@ -88,13 +84,12 @@ const Navbar = () => {
             onClick={(e) => handleSmoothScroll(e, 'services')}
             className="flex items-center gap-2"
           >
-            <Leaf size={32} className="text-petrol" /> {/* Increased from 24 to 32 */}
-            <span className="text-forest font-serif text-2xl md:text-3xl lg:text-4xl font-medium"> {/* Increased text sizes */}
+            <Leaf size={32} className="text-petrol" />
+            <span className="text-forest font-serif text-2xl md:text-3xl lg:text-4xl font-medium">
               Mindset <span className="text-petrol">Coach Martina</span>
             </span>
           </a>
 
-          {/* Desktop Navigation */}
           <div className="hidden md:flex space-x-4 lg:space-x-8">
             {navLinks.map((link) => (
               <a
@@ -112,20 +107,18 @@ const Navbar = () => {
             ))}
           </div>
 
-          {/* Mobile Navigation Toggle */}
           <button
             className="md:hidden text-forest focus:outline-none focus-ring rounded-md p-2"
             onClick={toggleMenu}
             aria-label="Toggle menu"
           >
-            {isMenuOpen ? <X size={32} /> : <Menu size={32} />} {/* Increased from 24 to 32 */}
+            {isMenuOpen ? <X size={32} /> : <Menu size={32} />}
           </button>
         </div>
       </div>
 
-      {/* Mobile Navigation Menu */}
       {isMenuOpen && (
-        <div className="md:hidden absolute top-full left-0 right-0 bg-beige/90 backdrop-blur-sm shadow-lg animate-fade-in">
+        <div className="md:hidden absolute top-full left-0 right-0 bg-beige/90 backdrop-blur-sm shadow-lg animate-fade-in mb-8">
           <div className="container mx-auto px-4 py-4 flex flex-col space-y-4">
             {navLinks.map((link) => (
               <a
@@ -149,4 +142,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
-
