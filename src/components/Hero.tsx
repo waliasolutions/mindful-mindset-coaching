@@ -43,7 +43,7 @@ const Hero = () => {
         <div className="flex flex-col lg:flex-row items-center justify-between gap-12">
           <div className="max-w-2xl w-full text-center lg:text-left">
             <div className="mb-10">
-              <h1 ref={headingRef} className="font-serif text-4xl md:text-5xl lg:text-6xl font-semibold leading-tight mb-6 transition-all duration-700 ease-out opacity-0 translate-y-10 text-center sm:text-left">
+              <h1 ref={headingRef} className="font-serif text-3xl md:text-4xl lg:text-5xl font-semibold leading-tight mb-6 transition-all duration-700 ease-out opacity-0 translate-y-10 text-center sm:text-left">
                 <span className="bg-gradient-to-r from-moss via-petrol to-forest bg-clip-text text-transparent">Mindset Coaching</span> für ein glückliches und erfülltes Leben
               </h1>
 
