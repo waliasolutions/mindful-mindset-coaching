@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { MapPin, Mail, Phone, Leaf, Facebook, Instagram, FileText, Shield, ScrollText } from 'lucide-react';
 import Terms from './Terms';
@@ -37,7 +36,12 @@ const Footer = () => {
               Mit dem richtigen Mindset sind deinen Möglichkeiten keine Grenzen gesetzt. Entfalte dein volles Potenzial und erschaffe das Leben, von dem du träumst.
             </p>
             <div className="flex items-center space-x-4">
-              <a href="#" className="w-10 h-10 flex items-center justify-center bg-forest/10 text-forest hover:bg-forest/20 transition-colors rounded-full">
+              <a 
+                href="https://ne-np.facebook.com/organizemyspace.ch/" 
+                target="_blank" 
+                rel="nofollow noopener noreferrer" 
+                className="w-10 h-10 flex items-center justify-center bg-forest/10 text-forest hover:bg-forest/20 transition-colors rounded-full"
+              >
                 <Facebook size={18} />
               </a>
               <a href="#" className="w-10 h-10 flex items-center justify-center bg-forest/10 text-forest hover:bg-forest/20 transition-colors rounded-full">
