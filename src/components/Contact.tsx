@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useRef } from 'react';
 import { Phone, Mail, MapPin, Clock, ArrowRight, MessageSquare, Leaf } from 'lucide-react';
 
@@ -50,7 +51,7 @@ const Contact = () => {
           </h2>
           <div className="w-16 h-1 bg-moss mx-auto mb-8"></div>
           <p className="text-lg text-center text-foreground/80 max-w-2xl mx-auto">
-            Der erste Schritt zu einem erfüllteren Leben beginnt mit einem Gespräch. Kontaktiere mich für ein <span className="font-medium text-forest">kostenloses Erstgespräch</span>, in dem wir über deine Ziele sprechen und herausfinden, wie ich dich am besten unterstützen kann.
+            Der erste Schritt zu einem erfüllteren Leben beginnt mit einem Gespräch. Kontaktiere mich für ein <span className="font-medium text-forest">kostenloses Kennenlerngespräch</span>, in dem wir über deine Ziele sprechen und herausfinden, wie ich dich am besten unterstützen kann.
           </p>
         </div>
 
@@ -60,7 +61,7 @@ const Contact = () => {
               isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'
             }`}
           >
-            <div className="bg-white shadow-lg p-8 border-t-2 border-moss h-full rounded-md">
+            <div className="bg-[#e8f1e8] text-forest shadow-lg p-8 border-t-2 border-moss/30 h-full rounded-md">
               <div className="flex items-center gap-2 mb-6">
                 <Leaf size={20} className="text-forest" />
                 <h3 className="text-2xl font-serif font-medium text-forest">Kontaktinformationen</h3>
@@ -73,7 +74,7 @@ const Contact = () => {
                   </div>
                   <div>
                     <p className="font-medium mb-1">Telefon</p>
-                    <a href="tel:+41788400481" className="text-foreground/70 hover:text-forest transition-colors">078 840 04 81</a>
+                    <a href="tel:+41788400481" className="text-forest/70 hover:text-forest transition-colors">078 840 04 81</a>
                   </div>
                 </div>
                 
@@ -83,7 +84,7 @@ const Contact = () => {
                   </div>
                   <div>
                     <p className="font-medium mb-1">E-Mail</p>
-                    <a href="mailto:info@mindset-coach-martina.ch" className="text-foreground/70 hover:text-forest transition-colors">info@mindset-coach-martina.ch</a>
+                    <a href="mailto:info@mindset-coach-martina.ch" className="text-forest/70 hover:text-forest transition-colors">info@mindset-coach-martina.ch</a>
                   </div>
                 </div>
                 
@@ -93,9 +94,9 @@ const Contact = () => {
                   </div>
                   <div>
                     <p className="font-medium mb-1">Adresse</p>
-                    <p className="text-foreground/70">Martina Domeniconi</p>
-                    <p className="text-foreground/70">Ruedi-Walter-strasse 4</p>
-                    <p className="text-foreground/70">8050 Zürich</p>
+                    <p className="text-forest/70">Martina Domeniconi</p>
+                    <p className="text-forest/70">Ruedi-Walter-strasse 4</p>
+                    <p className="text-forest/70">8050 Zürich</p>
                   </div>
                 </div>
                 
@@ -105,7 +106,7 @@ const Contact = () => {
                   </div>
                   <div>
                     <p className="font-medium mb-1">Telefonische Erreichbarkeit</p>
-                    <p className="text-foreground/70">MO - FR: 8 - 18 Uhr</p>
+                    <p className="text-forest/70">MO - FR: 8 - 18 Uhr</p>
                   </div>
                 </div>
               </div>
@@ -177,3 +178,4 @@ const Contact = () => {
 };
 
 export default Contact;
+
