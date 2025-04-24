@@ -13,28 +13,9 @@ const Loading = () => (
   </div>
 )
 
-// Load required script
-const loadLovableScript = () => {
-  return new Promise((resolve) => {
-    // Check if script already exists to prevent duplicates
-    if (document.querySelector('script[src="https://cdn.gpteng.co/gptengineer.js"]')) {
-      resolve(true);
-      return;
-    }
-    
-    const script = document.createElement('script');
-    script.src = 'https://cdn.gpteng.co/gptengineer.js';
-    script.type = 'module';
-    script.onload = () => {
-      console.log('Lovable script loaded successfully');
-      resolve(true);
-    };
-    script.onerror = (error) => {
-      console.error('Error loading Lovable script:', error);
-      resolve(false);
-    };
-    document.head.appendChild(script);
-  });
+// Check if Lovable script is already loaded
+const isLovableScriptLoaded = () => {
+  return !!document.querySelector('script[src="https://cdn.gpteng.co/gptengineer.js"]');
 };
 
 // Preload critical images
@@ -68,8 +49,10 @@ const setupStorageEventHandler = () => {
 // Initialize application
 const initializeApp = async () => {
   try {
-    // First load the Lovable script
-    await loadLovableScript();
+    // Skip loading Lovable script if it's already in the HTML
+    if (!isLovableScriptLoaded()) {
+      console.log('Lovable script not found in HTML, this should not happen');
+    }
     
     // Then preload images and set up event handlers
     preloadCriticalImages();
@@ -93,4 +76,3 @@ if (document.readyState === 'loading') {
   // If DOMContentLoaded already fired, initialize immediately
   initializeApp();
 }
-
