@@ -1,6 +1,7 @@
+
 import { useState, useEffect, useRef } from 'react';
 import { AspectRatio } from './ui/aspect-ratio';
-import { MessageSquareQuote, Check, Calendar, Clock, Users, Phone } from 'lucide-react';
+import { MessageSquareQuote, Check, Clock, Users, Phone } from 'lucide-react';
 import OptimizedImage from './OptimizedImage';
 
 const PricingWithQuote = () => {
@@ -95,16 +96,6 @@ const PricingWithQuote = () => {
                     <div>
                       <p className="font-medium mb-0.5 md:mb-1">Format</p>
                       <p className="text-sm md:text-base text-forest/70">Online</p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-center gap-3 md:gap-4">
-                    <div className="flex-shrink-0 w-9 h-9 md:w-10 md:h-10 bg-moss/20 rounded-full flex items-center justify-center">
-                      <Calendar size={18} className="text-forest" />
-                    </div>
-                    <div>
-                      <p className="font-medium mb-0.5 md:mb-1">Kennenlerngespräch</p>
-                      <p className="text-sm md:text-base text-forest/70">Kostenlos, telefonisch 10-15 Min</p>
                     </div>
                   </div>
                 </div>
