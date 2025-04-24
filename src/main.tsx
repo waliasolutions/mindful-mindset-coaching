@@ -93,3 +93,4 @@ if (document.readyState === 'loading') {
   // If DOMContentLoaded already fired, initialize immediately
   initializeApp();
 }
+
