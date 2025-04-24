@@ -1,3 +1,4 @@
+
 import { createRoot } from 'react-dom/client'
 import { lazy, Suspense } from 'react'
 import './index.css'
@@ -14,16 +15,24 @@ const Loading = () => (
 
 // Load required script
 const loadLovableScript = () => {
-  if (document.querySelector('script[src="https://cdn.gpteng.co/gptengineer.js"]')) {
-    return Promise.resolve();
-  }
-  
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
+    // Check if script already exists to prevent duplicates
+    if (document.querySelector('script[src="https://cdn.gpteng.co/gptengineer.js"]')) {
+      resolve(true);
+      return;
+    }
+    
     const script = document.createElement('script');
     script.src = 'https://cdn.gpteng.co/gptengineer.js';
     script.type = 'module';
-    script.onload = resolve;
-    script.onerror = reject;
+    script.onload = () => {
+      console.log('Lovable script loaded successfully');
+      resolve(true);
+    };
+    script.onerror = (error) => {
+      console.error('Error loading Lovable script:', error);
+      resolve(false);
+    };
     document.head.appendChild(script);
   });
 };
@@ -59,10 +68,14 @@ const setupStorageEventHandler = () => {
 // Initialize application
 const initializeApp = async () => {
   try {
+    // First load the Lovable script
     await loadLovableScript();
+    
+    // Then preload images and set up event handlers
     preloadCriticalImages();
     setupStorageEventHandler();
     
+    // Finally render the React app
     createRoot(document.getElementById("root")!).render(
       <Suspense fallback={<Loading />}>
         <App />
@@ -74,4 +87,9 @@ const initializeApp = async () => {
 };
 
 // Start initialization when DOM is loaded
-document.addEventListener('DOMContentLoaded', initializeApp);
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initializeApp);
+} else {
+  // If DOMContentLoaded already fired, initialize immediately
+  initializeApp();
+}
