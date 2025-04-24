@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from 'react';
 import { Phone, Mail, MapPin, Clock, ArrowRight, MessageSquare, Leaf } from 'lucide-react';
 
@@ -34,10 +33,8 @@ const Contact = () => {
       ref={sectionRef}
       className="section-padding relative overflow-hidden bg-mint/30"
     >
-      {/* Decorative leaf pattern */}
       <div className="absolute inset-0 leaf-pattern -z-10"></div>
       
-      {/* Decorative elements */}
       <div className="absolute top-1/3 right-0 w-80 h-80 bg-forest/5 rounded-full blur-3xl -z-10"></div>
       <div className="absolute bottom-1/4 left-0 w-96 h-96 bg-moss/5 rounded-full blur-3xl -z-10"></div>
       
@@ -58,7 +55,6 @@ const Contact = () => {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-stretch max-w-6xl mx-auto">
-          {/* Contact info */}
           <div 
             className={`lg:col-span-5 transition-all duration-1000 ease-out ${
               isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'
@@ -134,7 +130,6 @@ const Contact = () => {
             </div>
           </div>
           
-          {/* Image and free call offer */}
           <div 
             className={`lg:col-span-7 transition-all duration-1000 ease-out delay-300 ${
               isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'
@@ -153,21 +148,21 @@ const Contact = () => {
                 </div>
               </div>
               
-              <div className="bg-forest p-8 text-white shadow-lg rounded-md">
+              <div className="bg-sage p-8 text-white shadow-lg rounded-md">
                 <div className="flex items-center gap-4 mb-4">
                   <div className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center">
                     <MessageSquare size={24} className="text-white" />
                   </div>
-                  <h3 className="text-xl font-serif font-medium">Kostenloses Erstgespräch</h3>
+                  <h3 className="text-xl font-serif font-medium">Kennenlerngespräch</h3>
                 </div>
                 
                 <p className="mb-6 text-white/90">
-                  In einem unverbindlichen Erstgespräch können wir uns kennenlernen und herausfinden, ob wir zusammenpassen. Erzähle mir von deinen Zielen und Herausforderungen, und ich erkläre dir, wie mein Coaching dich unterstützen kann.
+                  In einem unverbindlichen Kennenlerngespräch können wir uns kennenlernen und herausfinden, ob wir zusammenpassen. Erzähle mir von deinen Zielen und Herausforderungen, und ich erkläre dir, wie mein Coaching dich unterstützen kann.
                 </p>
                 
                 <a 
-                  href="mailto:info@mindset-coach-martina.ch?subject=Erstgespräch%20Mindset%20Coaching" 
-                  className="flex items-center justify-center w-full py-3 bg-white text-forest hover:bg-white/90 transition-colors shadow-md text-center gap-2 font-medium rounded-md"
+                  href="mailto:info@mindset-coach-martina.ch?subject=Kennenlerngespräch%20Mindset%20Coaching" 
+                  className="flex items-center justify-center w-full py-3 bg-white text-moss hover:bg-white/90 transition-colors shadow-md text-center gap-2 font-medium rounded-md"
                 >
                   <span>Jetzt Termin vereinbaren</span>
                   <ArrowRight size={16} />
