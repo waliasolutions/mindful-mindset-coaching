@@ -1,4 +1,3 @@
-
 import { lazy, Suspense } from 'react';
 import Navbar from '../components/Navbar';
 import Hero from '../components/Hero';
@@ -7,6 +6,7 @@ import SectionLoader from '../components/SectionLoader';
 import { useSections } from '../hooks/use-sections';
 import { useGlobalSettings } from '../hooks/use-global-settings';
 import { useAboveFold } from '../hooks/use-above-fold';
+import { SEO } from '../components/SEO';
 
 const About = lazy(() => import('../components/About'));
 const Services = lazy(() => import('../components/Services'));
@@ -61,13 +61,16 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
-      <Navbar />
-      <main>
-        {renderSections()}
-      </main>
-      <Footer />
-    </div>
+    <>
+      <SEO />
+      <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
+        <Navbar />
+        <main>
+          {renderSections()}
+        </main>
+        <Footer />
+      </div>
+    </>
   );
 };
 
