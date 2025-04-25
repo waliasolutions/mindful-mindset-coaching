@@ -5,7 +5,6 @@ import LegalInfo from './LegalInfo';
 import { AspectRatio } from "./ui/aspect-ratio";
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
-import OrganizeMySpaceLogo from '../assets/organize-my-space-logo.png';
 
 interface LogoSettings {
   url: string | null;
@@ -105,7 +104,7 @@ const Footer = () => {
                 >
                   <AspectRatio ratio={4/3} className="w-full">
                     <img 
-                      src={logoSettings?.url || '/lovable-uploads/abb0bc70-ae8b-43ce-867f-d7beece5a8a2.png'} 
+                      src={logoSettings?.url || '/lovable-uploads/3294b598-35d6-4226-a958-c41c428e89dd.png'} 
                       alt={logoSettings?.alt || "Organize My Space Logo"} 
                       className="w-full h-full object-contain"
                     />
