@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import {
   Dialog,
@@ -62,14 +61,28 @@ const LegalInfo = ({ isOpen, onClose, defaultTab = "impressum" }: LegalInfoProps
                 <section>
                   <h4 className="font-medium text-lg mb-2">Realisierung Webdesign</h4>
                   <p className="text-muted-foreground">
-                    walia solutions – 8610 Uster
+                    <a 
+                      href="https://walia-solutions.ch" 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      className="hover:text-moss transition-colors"
+                    >
+                      walia solutions
+                    </a> – 8610 Uster
                   </p>
                 </section>
                 
                 <section>
                   <h4 className="font-medium text-lg mb-2">Fotoshooting Website</h4>
                   <p className="text-muted-foreground">
-                    Livia Bass
+                    <a 
+                      href="https://liviabass.com" 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      className="hover:text-moss transition-colors"
+                    >
+                      Livia Bass
+                    </a>
                   </p>
                 </section>
                 
