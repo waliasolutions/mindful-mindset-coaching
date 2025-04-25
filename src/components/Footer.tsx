@@ -16,12 +16,12 @@ const Footer = () => {
   const [isLegalInfoOpen, setIsLegalInfoOpen] = useState(false);
   const [legalInfoTab, setLegalInfoTab] = useState<string>("impressum");
   
-  const { data: logoSettings } = useQuery({
+  const { data: logoSettings } = useQuery<LogoSettings | null>({
     queryKey: ['site-settings', 'partner_logo'],
     queryFn: async () => {
       const { data, error } = await supabase
         .from('site_settings')
-        .select('*')
+        .select('settings')
         .eq('name', 'partner_logo')
         .maybeSingle();
       
@@ -30,13 +30,11 @@ const Footer = () => {
         return null;
       }
       
-      // Check if data exists and has the expected structure
-      if (data && data.settings && typeof data.settings === 'object') {
+      if (data?.settings && typeof data.settings === 'object') {
         const settings = data.settings as Record<string, unknown>;
-        // Validate that the settings object has the required properties
         if (typeof settings.url === 'string' || settings.url === null) {
           return {
-            url: settings.url as string | null,
+            url: settings.url,
             alt: typeof settings.alt === 'string' ? settings.alt : "Organize My Space Logo"
           };
         }
@@ -104,7 +102,7 @@ const Footer = () => {
                 >
                   <AspectRatio ratio={4/3} className="w-full">
                     <img 
-                      src={logoSettings?.url || '/lovable-uploads/3294b598-35d6-4226-a958-c41c428e89dd.png'} 
+                      src={logoSettings?.url || '/lovable-uploads/19df668f-c39c-4106-8dd8-4920636e5c18.png'} 
                       alt={logoSettings?.alt || "Organize My Space Logo"} 
                       className="w-full h-full object-contain"
                     />
