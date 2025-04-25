@@ -19,9 +19,9 @@ const LogoSettings = () => {
   const queryClient = useQueryClient();
 
   // Query site_settings to get the partner_logo data
-  const { data: logoSettings, isLoading } = useQuery({
+  const { data: logoSettings, isLoading } = useQuery<LogoSettings>({
     queryKey: ['site-settings', 'partner_logo'],
-    queryFn: async () => {
+    queryFn: async (): Promise<LogoSettings> => {
       const { data, error } = await supabase
         .from('site_settings')
         .select('settings')
@@ -30,7 +30,7 @@ const LogoSettings = () => {
       
       if (error) {
         console.error('Error fetching logo settings:', error);
-        return { url: null, alt: 'Organize My Space Logo' } as LogoSettings;
+        return { url: null, alt: 'Organize My Space Logo' };
       }
       
       // Check if data exists and has the expected structure
@@ -40,10 +40,10 @@ const LogoSettings = () => {
         return {
           url: typeof settings.url === 'string' ? settings.url : null,
           alt: typeof settings.alt === 'string' ? settings.alt : "Organize My Space Logo"
-        } as LogoSettings;
+        };
       }
       
-      return { url: null, alt: 'Organize My Space Logo' } as LogoSettings;
+      return { url: null, alt: 'Organize My Space Logo' };
     }
   });
 
