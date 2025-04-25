@@ -1,8 +1,10 @@
+
 import { useState, useEffect } from 'react';
 import { MapPin, Mail, Phone, Leaf, Facebook, Instagram, FileText, Shield, ScrollText } from 'lucide-react';
 import Terms from './Terms';
 import LegalInfo from './LegalInfo';
 import OrganizeMySpaceLogo from '@/assets/organize-my-space-logo.png';
+import { optimizeImageForSEO } from '@/utils/imageOptimizer';
 
 const Footer = () => {
   const [isTermsOpen, setIsTermsOpen] = useState(false);
@@ -30,27 +32,12 @@ const Footer = () => {
                   Mindset <span className="text-moss">Coach Martina</span>
                 </span>
               </a>
-              
-              <div className="flex flex-col items-center ml-4">
-                <a 
-                  href="https://organize-my-space.ch" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                >
-                  <img 
-                    src={OrganizeMySpaceLogo} 
-                    alt="Organize My Space Logo" 
-                    className="h-10 w-auto object-contain"
-                  />
-                </a>
-                <span className="text-xs text-moss mt-1">Partner</span>
-              </div>
             </div>
             
             <p className="text-forest/90 max-w-md mb-6">
               Mit dem richtigen Mindset sind deinen Möglichkeiten keine Grenzen gesetzt. Entfalte dein volles Potenzial und erschaffe das Leben, von dem du träumst.
             </p>
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-6">
               <a 
                 href="https://ne-np.facebook.com/organizemyspace.ch/" 
                 target="_blank" 
@@ -67,6 +54,21 @@ const Footer = () => {
               >
                 <Instagram size={18} />
               </a>
+              
+              <div className="flex flex-col items-center">
+                <a 
+                  href="https://organize-my-space.ch" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                >
+                  <img 
+                    src={OrganizeMySpaceLogo} 
+                    alt="Organize My Space Logo" 
+                    className="h-10 w-auto object-contain"
+                  />
+                </a>
+                <span className="text-xs text-moss mt-1">Partner</span>
+              </div>
             </div>
           </div>
           
