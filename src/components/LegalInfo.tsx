@@ -54,7 +54,7 @@ const LegalInfo = ({ isOpen, onClose, defaultTab = "impressum" }: LegalInfoProps
                     Martina Domeniconi<br />
                     Ruedi Walterstr. 4<br />
                     8050 Zürich<br />
-                    info@organize-my-space.ch
+                    info@mindset-coach-martina.ch
                   </p>
                 </section>
                 
