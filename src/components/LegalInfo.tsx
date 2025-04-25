@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import {
   Dialog,
@@ -18,7 +17,6 @@ interface LegalInfoProps {
 const LegalInfo = ({ isOpen, onClose, defaultTab = "impressum" }: LegalInfoProps) => {
   const [activeTab, setActiveTab] = useState(defaultTab);
   
-  // Update activeTab when defaultTab prop changes
   useEffect(() => {
     setActiveTab(defaultTab);
   }, [defaultTab]);
@@ -52,7 +50,7 @@ const LegalInfo = ({ isOpen, onClose, defaultTab = "impressum" }: LegalInfoProps
                 <section>
                   <h4 className="font-medium text-lg mb-2">Kontakt</h4>
                   <p className="text-muted-foreground">
-                    ORGANIZE MY SPACE<br />
+                    Mindset Coach Martina<br />
                     Martina Domeniconi<br />
                     Ruedi Walterstr. 4<br />
                     8050 Zürich<br />
