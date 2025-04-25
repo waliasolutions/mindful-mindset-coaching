@@ -13,28 +13,69 @@ const LogoSettings = () => {
   const [isUploading, setIsUploading] = useState(false);
   const queryClient = useQueryClient();
 
+  // Query site_settings to get the partner_logo data
   const { data: logoSettings, isLoading } = useQuery({
     queryKey: ['site-settings', 'partner_logo'],
     queryFn: async () => {
       const { data, error } = await supabase
         .from('site_settings')
-        .select('value')
+        .select('*')
         .eq('key', 'partner_logo')
         .single();
       
-      if (error) throw error;
-      return data?.value;
+      if (error) {
+        console.error('Error fetching logo settings:', error);
+        return { url: null, alt: 'Organize My Space Logo' };
+      }
+      
+      // Check if data exists and has the expected structure
+      if (data && data.settings) {
+        // Try to get logo data from the settings JSON field
+        return data.settings.logo || { url: null, alt: 'Organize My Space Logo' };
+      }
+      
+      return { url: null, alt: 'Organize My Space Logo' };
     }
   });
 
+  // Update logo mutation
   const updateLogoMutation = useMutation({
     mutationFn: async ({ url, alt }: { url: string, alt: string }) => {
-      const { error } = await supabase
+      // First check if the partner_logo record exists
+      const { data: existingData, error: fetchError } = await supabase
         .from('site_settings')
-        .update({ value: { url, alt } })
-        .eq('key', 'partner_logo');
+        .select('*')
+        .eq('key', 'partner_logo')
+        .maybeSingle();
       
-      if (error) throw error;
+      if (fetchError && fetchError.code !== 'PGRST116') {
+        throw fetchError;
+      }
+
+      if (existingData) {
+        // Update existing record
+        const { error } = await supabase
+          .from('site_settings')
+          .update({ 
+            settings: { 
+              ...existingData.settings,
+              logo: { url, alt } 
+            } 
+          })
+          .eq('key', 'partner_logo');
+        
+        if (error) throw error;
+      } else {
+        // Insert new record
+        const { error } = await supabase
+          .from('site_settings')
+          .insert({ 
+            key: 'partner_logo',
+            settings: { logo: { url, alt } }
+          });
+        
+        if (error) throw error;
+      }
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['site-settings', 'partner_logo'] });
@@ -112,7 +153,7 @@ const LogoSettings = () => {
               {logoSettings?.url ? (
                 <img
                   src={logoSettings.url}
-                  alt={logoSettings.alt}
+                  alt={logoSettings.alt || "Organize My Space Logo"}
                   className="w-full h-full object-contain"
                 />
               ) : (

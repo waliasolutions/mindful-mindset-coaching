@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Button } from '../ui/button';
 import { Layers, Search, PaintBucket, Image, FileText, Settings } from 'lucide-react';
@@ -10,6 +11,22 @@ import { useNavigate } from 'react-router-dom';
 
 const AdminLayout = ({ children, onLogout }: { children: React.ReactNode; onLogout: () => void }) => {
   const [activeTab, setActiveTab] = useState('sections');
+  
+  // Function to render the active panel based on the activeTab state
+  const renderActivePanel = () => {
+    switch (activeTab) {
+      case 'media':
+        return <MediaLibrary />;
+      case 'theme':
+        return <ThemeSettings />;
+      case 'seo':
+        return <SeoSettings />;
+      case 'settings':
+        return <GlobalSettings />;
+      default:
+        return children;
+    }
+  };
   
   return (
     <div className="min-h-screen bg-gray-50">
@@ -32,7 +49,7 @@ const AdminLayout = ({ children, onLogout }: { children: React.ReactNode; onLogo
       <main className="container mx-auto px-4 py-8">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
           <div className="md:col-span-8">
-            {children}
+            {renderActivePanel()}
           </div>
           <div className="md:col-span-4 space-y-6">
             <LogoSettings />

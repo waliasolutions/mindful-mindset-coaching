@@ -17,12 +17,21 @@ const Footer = () => {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('site_settings')
-        .select('value')
+        .select('*')
         .eq('key', 'partner_logo')
-        .single();
+        .maybeSingle();
       
-      if (error) throw error;
-      return data?.value;
+      if (error && error.code !== 'PGRST116') {
+        console.error("Error fetching logo:", error);
+        return null;
+      }
+      
+      // Check if data exists and has the expected structure
+      if (data && data.settings && data.settings.logo) {
+        return data.settings.logo;
+      }
+      
+      return null;
     }
   });
 
@@ -34,8 +43,6 @@ const Footer = () => {
     setIsLegalInfoOpen(true);
   };
   const closeLegalInfo = () => setIsLegalInfoOpen(false);
-
-  console.log('Footer rendering');
 
   return (
     <footer className="py-16 bg-[#E8F1E8] text-forest relative">
