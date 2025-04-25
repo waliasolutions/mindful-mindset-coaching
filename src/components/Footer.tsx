@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { MapPin, Mail, Phone, Leaf, Facebook, Instagram, FileText, Shield, ScrollText } from 'lucide-react';
 import Terms from './Terms';
 import LegalInfo from './LegalInfo';
+import OrganizeMySpaceLogo from '@/assets/organize-my-space-logo.png';
 
 const Footer = () => {
   const [isTermsOpen, setIsTermsOpen] = useState(false);
@@ -26,12 +27,28 @@ const Footer = () => {
       <div className="container mx-auto px-4 md:px-6">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8 mb-12">
           <div className="md:col-span-5">
-            <a href="#home" className="flex items-center gap-2 mb-4 text-forest">
-              <Leaf size={24} className="text-moss" />
-              <span className="font-serif text-2xl font-medium inline-block">
-                Mindset <span className="text-moss">Coach Martina</span>
-              </span>
-            </a>
+            <div className="flex items-center gap-4 mb-4">
+              <a href="#home" className="flex items-center gap-2 text-forest">
+                <Leaf size={24} className="text-moss" />
+                <span className="font-serif text-2xl font-medium inline-block">
+                  Mindset <span className="text-moss">Coach Martina</span>
+                </span>
+              </a>
+              
+              <a 
+                href="https://organize-my-space.ch" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="ml-4"
+              >
+                <img 
+                  src={OrganizeMySpaceLogo} 
+                  alt="Organize My Space Logo" 
+                  className="h-10 w-auto object-contain"
+                />
+              </a>
+            </div>
+            
             <p className="text-forest/90 max-w-md mb-6">
               Mit dem richtigen Mindset sind deinen Möglichkeiten keine Grenzen gesetzt. Entfalte dein volles Potenzial und erschaffe das Leben, von dem du träumst.
             </p>
