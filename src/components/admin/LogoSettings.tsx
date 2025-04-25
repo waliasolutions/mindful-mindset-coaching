@@ -25,7 +25,7 @@ const LogoSettings = () => {
       const { data, error } = await supabase
         .from('site_settings')
         .select('*')
-        .eq('id', 'partner_logo')
+        .eq('name', 'partner_logo')
         .maybeSingle();
       
       if (error) {
@@ -56,7 +56,7 @@ const LogoSettings = () => {
       const { data: existingData, error: fetchError } = await supabase
         .from('site_settings')
         .select('*')
-        .eq('id', 'partner_logo')
+        .eq('name', 'partner_logo')
         .maybeSingle();
       
       if (fetchError && fetchError.code !== 'PGRST116') {
@@ -70,7 +70,7 @@ const LogoSettings = () => {
           .update({ 
             settings: { url, alt }
           })
-          .eq('id', 'partner_logo');
+          .eq('name', 'partner_logo');
         
         if (error) throw error;
       } else {
@@ -78,7 +78,7 @@ const LogoSettings = () => {
         const { error } = await supabase
           .from('site_settings')
           .insert({ 
-            id: 'partner_logo',
+            name: 'partner_logo',
             settings: { url, alt }
           });
         

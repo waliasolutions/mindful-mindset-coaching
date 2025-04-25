@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { MapPin, Mail, Phone, Leaf, Facebook, Instagram, FileText, Shield, ScrollText } from 'lucide-react';
 import Terms from './Terms';
@@ -24,7 +23,7 @@ const Footer = () => {
       const { data, error } = await supabase
         .from('site_settings')
         .select('*')
-        .eq('id', 'partner_logo')
+        .eq('name', 'partner_logo')
         .maybeSingle();
       
       if (error && error.code !== 'PGRST116') {
