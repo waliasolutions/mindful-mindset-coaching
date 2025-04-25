@@ -68,9 +68,9 @@ const Footer = () => {
                   <OptimizedImage 
                     src={OrganizeMySpaceLogo} 
                     alt="Organize My Space Logo" 
-                    width={80} 
-                    height={40} 
-                    className="h-10 w-auto object-contain"
+                    width={120} 
+                    height={60} 
+                    className="h-12 w-auto object-contain"
                     priority="high"
                   />
                   <span className="text-xs text-moss mt-1">Partner</span>
