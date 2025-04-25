@@ -20,6 +20,8 @@ const Footer = () => {
   };
   const closeLegalInfo = () => setIsLegalInfoOpen(false);
 
+  console.log('Footer rendering');
+
   return (
     <footer className="py-16 bg-[#E8F1E8] text-forest relative">
       <div className="container mx-auto px-4 md:px-6">
@@ -132,7 +134,7 @@ const Footer = () => {
                 <li className="flex items-center gap-3">
                   <Phone size={18} className="text-moss flex-shrink-0" />
                   <a href="tel:+41788400481" className="text-forest/80 hover:text-moss transition-colors">
-                    078 840 04 81
+                    +41 788 400 481
                   </a>
                 </li>
               </ul>

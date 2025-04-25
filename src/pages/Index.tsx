@@ -1,3 +1,4 @@
+
 import { useEffect, useState, lazy, Suspense } from 'react';
 import Navbar from '../components/Navbar';
 import Hero from '../components/Hero';
@@ -287,6 +288,13 @@ const Index = () => {
         ) : null;
       });
   };
+  
+  // Add debugging logs to check what's happening during rendering
+  console.log('Index rendering', { 
+    sectionsCount: sections.length,
+    hasGlobalSettings: !!globalSettings,
+    isAboveTheFold
+  });
   
   return (
     <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
