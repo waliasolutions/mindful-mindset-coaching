@@ -1,0 +1,23 @@
+
+@import './base.css';
+@import './theme.css';
+@import './utilities.css';
+@import './animations.css';
+@import './components.css';
+@import './scrollbar.css';
+
+@media (max-width: 768px) {
+  .section-padding {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+  }
+  
+  h2 {
+    font-size: 1.75rem;
+  }
+  
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
