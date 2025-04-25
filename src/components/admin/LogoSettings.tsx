@@ -18,14 +18,22 @@ interface LogoSettings {
   alt: string;
 }
 
+// Define the type for the data response to avoid infinite type instantiation
+interface SiteSettingsResponse {
+  settings: {
+    url?: string | null;
+    alt?: string;
+  } | null;
+}
+
 const LogoSettings = () => {
   const [isUploading, setIsUploading] = useState(false);
   const [selectedMediaUrl, setSelectedMediaUrl] = useState<string | null>(null);
   const queryClient = useQueryClient();
 
-  const { data: logoSettings, isLoading } = useQuery({
+  const { data: logoSettings, isLoading } = useQuery<LogoSettings>({
     queryKey: ['site-settings', 'partner_logo'],
-    queryFn: async (): Promise<LogoSettings> => {
+    queryFn: async () => {
       const { data, error } = await supabase
         .from('site_settings')
         .select('settings')
