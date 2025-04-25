@@ -34,7 +34,14 @@ const Footer = () => {
       
       // Check if data exists and has the expected structure
       if (data && data.settings && typeof data.settings === 'object') {
-        return data.settings as LogoSettings;
+        const settings = data.settings as Record<string, unknown>;
+        // Validate that the settings object has the required properties
+        if (typeof settings.url === 'string' || settings.url === null) {
+          return {
+            url: settings.url as string | null,
+            alt: typeof settings.alt === 'string' ? settings.alt : "Organize My Space Logo"
+          };
+        }
       }
       
       return null;
