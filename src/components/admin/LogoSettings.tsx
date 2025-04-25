@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -21,7 +22,8 @@ const LogoSettings = () => {
   const [selectedMediaUrl, setSelectedMediaUrl] = useState<string | null>(null);
   const queryClient = useQueryClient();
 
-  const { data: logoSettings, isLoading } = useQuery<LogoSettings>({
+  // Fix the TypeScript error by providing explicit type
+  const { data: logoSettings, isLoading } = useQuery({
     queryKey: ['site-settings', 'partner_logo'],
     queryFn: async () => {
       const { data, error } = await supabase
