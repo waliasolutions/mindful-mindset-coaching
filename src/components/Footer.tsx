@@ -1,9 +1,10 @@
-
 import { useState } from 'react';
 import { MapPin, Mail, Phone, Leaf, Facebook, Instagram, FileText, Shield, ScrollText } from 'lucide-react';
 import Terms from './Terms';
 import LegalInfo from './LegalInfo';
 import { AspectRatio } from "./ui/aspect-ratio";
+import { useQuery } from '@tanstack/react-query';
+import { supabase } from '@/integrations/supabase/client';
 import OrganizeMySpaceLogo from '../assets/organize-my-space-logo.png';
 
 const Footer = () => {
@@ -11,6 +12,20 @@ const Footer = () => {
   const [isLegalInfoOpen, setIsLegalInfoOpen] = useState(false);
   const [legalInfoTab, setLegalInfoTab] = useState<string>("impressum");
   
+  const { data: logoSettings } = useQuery({
+    queryKey: ['site-settings', 'partner_logo'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('site_settings')
+        .select('value')
+        .eq('key', 'partner_logo')
+        .single();
+      
+      if (error) throw error;
+      return data?.value;
+    }
+  });
+
   const openTerms = () => setIsTermsOpen(true);
   const closeTerms = () => setIsTermsOpen(false);
   
@@ -26,7 +41,6 @@ const Footer = () => {
     <footer className="py-16 bg-[#E8F1E8] text-forest relative">
       <div className="container mx-auto px-4 md:px-6">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8 mb-12">
-          {/* Brand Section */}
           <div className="md:col-span-5 space-y-6">
             <div className="flex items-center gap-4">
               <a href="#home" className="flex items-center gap-2 text-forest">
@@ -42,7 +56,6 @@ const Footer = () => {
               Entfalte dein volles Potenzial und erschaffe das Leben, von dem du träumst.
             </p>
 
-            {/* Social Links and Partner Logo */}
             <div className="flex items-center gap-6">
               <a 
                 href="https://ne-np.facebook.com/organizemyspace.ch/" 
@@ -73,8 +86,8 @@ const Footer = () => {
                 >
                   <AspectRatio ratio={4/3} className="w-full">
                     <img 
-                      src={OrganizeMySpaceLogo} 
-                      alt="Organize My Space Logo" 
+                      src={logoSettings?.url || '/lovable-uploads/abb0bc70-ae8b-43ce-867f-d7beece5a8a2.png'} 
+                      alt={logoSettings?.alt || "Organize My Space Logo"} 
                       className="w-full h-full object-contain"
                     />
                   </AspectRatio>
@@ -84,7 +97,6 @@ const Footer = () => {
             </div>
           </div>
           
-          {/* Navigation Section */}
           <div className="md:col-span-3">
             <h4 className="font-serif text-lg font-medium mb-4 text-moss">Navigation</h4>
             <nav>
@@ -113,7 +125,6 @@ const Footer = () => {
             </nav>
           </div>
           
-          {/* Contact Section */}
           <div className="md:col-span-4">
             <h4 className="font-serif text-lg font-medium mb-4 text-moss">Kontakt</h4>
             <address className="not-italic">
@@ -142,7 +153,6 @@ const Footer = () => {
           </div>
         </div>
         
-        {/* Legal Section */}
         <div className="border-t border-forest/20 pt-8">
           <div className="flex justify-center items-center gap-8 text-center">
             <button 
