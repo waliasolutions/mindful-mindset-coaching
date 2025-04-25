@@ -12,7 +12,8 @@ import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuIte
 import { downloadFile } from '@/utils/downloadFile';
 import MediaLibrary from './MediaLibrary';
 
-type LogoSettings = {
+// Define a proper interface for logo settings
+interface LogoSettings {
   url: string | null;
   alt: string;
 }
@@ -22,10 +23,9 @@ const LogoSettings = () => {
   const [selectedMediaUrl, setSelectedMediaUrl] = useState<string | null>(null);
   const queryClient = useQueryClient();
 
-  // Fix the TypeScript error by providing explicit type
   const { data: logoSettings, isLoading } = useQuery({
     queryKey: ['site-settings', 'partner_logo'],
-    queryFn: async () => {
+    queryFn: async (): Promise<LogoSettings> => {
       const { data, error } = await supabase
         .from('site_settings')
         .select('settings')
