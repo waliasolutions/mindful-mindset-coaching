@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { MapPin, Mail, Phone, Leaf, Facebook, Instagram, FileText, Shield, ScrollText } from 'lucide-react';
 import Terms from './Terms';
@@ -17,31 +16,29 @@ const Footer = () => {
   const [isLegalInfoOpen, setIsLegalInfoOpen] = useState(false);
   const [legalInfoTab, setLegalInfoTab] = useState<string>("impressum");
   
-  const { data: logoSettings } = useQuery<LogoSettings | null>({
+  const { data: logoSettings } = useQuery({
     queryKey: ['site-settings', 'partner_logo'],
-    queryFn: async () => {
+    queryFn: async (): Promise<LogoSettings> => {
       const { data, error } = await supabase
         .from('site_settings')
-        .select('settings')
-        .eq('name', 'partner_logo')
+        .select('id, settings')
+        .eq('id', 'partner_logo')
         .maybeSingle();
       
-      if (error && error.code !== 'PGRST116') {
+      if (error) {
         console.error("Error fetching logo:", error);
-        return null;
+        return { url: null, alt: "Organize My Space Logo" };
       }
       
       if (data?.settings && typeof data.settings === 'object') {
         const settings = data.settings as Record<string, unknown>;
-        if (typeof settings.url === 'string' || settings.url === null) {
-          return {
-            url: settings.url as string | null,
-            alt: typeof settings.alt === 'string' ? settings.alt : "Organize My Space Logo"
-          };
-        }
+        return {
+          url: typeof settings.url === 'string' ? settings.url : null,
+          alt: typeof settings.alt === 'string' ? settings.alt : "Organize My Space Logo"
+        };
       }
       
-      return null;
+      return { url: null, alt: "Organize My Space Logo" };
     }
   });
 
