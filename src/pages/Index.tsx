@@ -1,13 +1,13 @@
 import { useEffect, useState, lazy, Suspense } from 'react';
 import Navbar from '../components/Navbar';
 import Hero from '../components/Hero';
+import Footer from '../components/Footer';
 import { Skeleton } from '@/components/ui/skeleton';
 
 const About = lazy(() => import('../components/About'));
 const Services = lazy(() => import('../components/Services'));
 const PricingWithQuote = lazy(() => import('../components/PricingWithQuote'));
 const Contact = lazy(() => import('../components/Contact'));
-const Footer = lazy(() => import('../components/Footer'));
 
 const SectionLoader = () => (
   <div className="w-full py-20">
@@ -294,9 +294,7 @@ const Index = () => {
       <main>
         {renderSections()}
       </main>
-      <Suspense fallback={<SectionLoader />}>
-        <Footer />
-      </Suspense>
+      <Footer />
     </div>
   );
 };
