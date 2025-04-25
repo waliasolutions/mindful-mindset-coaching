@@ -117,10 +117,7 @@ const LegalInfo = ({ isOpen, onClose, defaultTab = "impressum" }: LegalInfoProps
                   <p className="text-muted-foreground">
                     Die durch die Seitenbetreiber erstellten Inhalte und Werke auf diesen Seiten unterliegen 
                     dem schweizerischen Urheberrecht. Die Vervielfältigung, Bearbeitung, Verbreitung und jede 
-                    Art der Verwertung ausserhalb der Grenzen des Urheberrechtes bedürfen der schriftlichen 
-                    Zustimmung von Mindset Coach Martina. Sollten Sie trotzdem auf eine Urheberrechtsverletzung 
-                    aufmerksam werden, bitten wir um einen entsprechenden Hinweis. Bei Bekanntwerden von 
-                    Rechtsverletzungen werden wir derartige Inhalte umgehend entfernen.
+                    Art der Verwertung ausserhalb des Urheberrechtes bedürfen der schriftlichen Zustimmung von Mindset Coach Martina. Sollten Sie trotzdem auf eine Urheberrechtsverletzung aufmerksam werden, bitten wir um einen entsprechenden Hinweis. Bei Bekanntwerden von Rechtsverletzungen werden wir derartige Inhalte umgehend entfernen.
                   </p>
                 </section>
               </div>
@@ -176,6 +173,43 @@ const LegalInfo = ({ isOpen, onClose, defaultTab = "impressum" }: LegalInfoProps
                   </p>
                 </section>
                 
+                <section>
+                  <h4 className="font-medium text-lg mb-2">Google Analytics</h4>
+                  <p className="text-muted-foreground">
+                    Diese Website benutzt Google Analytics, einen Webanalysedienst der Google Inc. 
+                    Google Analytics verwendet sog. "Cookies", Textdateien, die auf Ihrem Computer 
+                    gespeichert werden und die eine Analyse der Benutzung der Website durch Sie 
+                    ermöglichen. Die durch den Cookie erzeugten Informationen werden in der Regel 
+                    an einen Server von Google in den USA übertragen und dort gespeichert.
+                  </p>
+                  <p className="text-muted-foreground mt-2">
+                    Sie können die Speicherung der Cookies durch eine entsprechende Einstellung 
+                    Ihrer Browser-Software verhindern.
+                  </p>
+                </section>
+
+                <section>
+                  <h4 className="font-medium text-lg mb-2">Soziale Medien</h4>
+                  <p className="text-muted-foreground">
+                    Unsere Website enthält Links zu unseren Präsenzen auf Facebook und Instagram. 
+                    Beim Klick auf diese Links verlassen Sie unsere Website und werden zu den 
+                    entsprechenden Plattformen weitergeleitet. Die Datenverarbeitung auf diesen 
+                    Plattformen erfolgt nach deren Datenschutzbestimmungen. Wir haben keinen 
+                    Einfluss auf die Datenverarbeitung durch diese Drittanbieter.
+                  </p>
+                </section>
+
+                <section>
+                  <h4 className="font-medium text-lg mb-2">E-Mail-Kommunikation</h4>
+                  <p className="text-muted-foreground">
+                    Wenn Sie uns per E-Mail kontaktieren, werden Ihre Angaben einschliesslich der 
+                    von Ihnen dort angegebenen Kontaktdaten zwecks Bearbeitung der Anfrage und für 
+                    den Fall von Anschlussfragen ausschliesslich für den spezifischen Zweck Ihrer 
+                    Anfrage bei uns gespeichert. Diese Daten geben wir nicht ohne Ihre Einwilligung 
+                    weiter.
+                  </p>
+                </section>
+
                 <section>
                   <h4 className="font-medium text-lg mb-2">Ihre Rechte</h4>
                   <p className="text-muted-foreground">
