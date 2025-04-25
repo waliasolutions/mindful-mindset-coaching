@@ -3,7 +3,7 @@ import { supabase } from '@/integrations/supabase/client';
 
 export async function uploadPartnerLogo() {
   // Read the logo file
-  const response = await fetch('/public/organize-my-space-logo.png');
+  const response = await fetch('/lovable-uploads/c726ddaf-6ac7-4323-af12-5c60fa678f8e.png');
   const blob = await response.blob();
   
   // Generate a unique filename
