@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -18,12 +17,15 @@ interface LogoSettings {
   alt: string;
 }
 
-// Define the type for the data response to avoid infinite type instantiation
-interface SiteSettingsResponse {
+// Define the type for the Supabase response to avoid infinite type instantiation
+interface SupabaseSettingsResponse {
+  id: string;
   settings: {
     url?: string | null;
     alt?: string;
   } | null;
+  created_at?: string;
+  updated_at?: string;
 }
 
 const LogoSettings = () => {
@@ -31,7 +33,7 @@ const LogoSettings = () => {
   const [selectedMediaUrl, setSelectedMediaUrl] = useState<string | null>(null);
   const queryClient = useQueryClient();
 
-  const { data: logoSettings, isLoading } = useQuery<LogoSettings>({
+  const { data: logoSettings, isLoading } = useQuery({
     queryKey: ['site-settings', 'partner_logo'],
     queryFn: async () => {
       const { data, error } = await supabase

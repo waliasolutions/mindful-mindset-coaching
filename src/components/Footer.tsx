@@ -16,13 +16,13 @@ const Footer = () => {
   const [isLegalInfoOpen, setIsLegalInfoOpen] = useState(false);
   const [legalInfoTab, setLegalInfoTab] = useState<string>("impressum");
   
-  const { data: logoSettings } = useQuery<LogoSettings>({
+  const { data: logoSettings } = useQuery({
     queryKey: ['site-settings', 'partner_logo'],
     queryFn: async () => {
       const { data, error } = await supabase
         .from('site_settings')
         .select('settings')
-        .eq('id', 'partner_logo')
+        .eq('name', 'partner_logo')
         .maybeSingle();
       
       if (error && error.code !== 'PGRST116') {
