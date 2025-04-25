@@ -100,7 +100,7 @@ const Footer = () => {
                 >
                   <AspectRatio ratio={4/3} className="w-full">
                     <img 
-                      src={logoSettings?.url || '/lovable-uploads/c726ddaf-6ac7-4323-af12-5c60fa678f8e.png'} 
+                      src={logoSettings?.url || '/lovable-uploads/c4c9647e-ea24-451e-b5a7-94cf38dc28b3.png'} 
                       alt={logoSettings?.alt || "Organize My Space Logo"} 
                       className="w-full h-full object-contain"
                     />
