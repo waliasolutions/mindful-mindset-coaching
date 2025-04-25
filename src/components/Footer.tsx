@@ -20,10 +20,6 @@ const Footer = () => {
   
   return (
     <footer className="py-16 bg-[#E8F1E8] text-forest relative overflow-hidden">
-      <div className="absolute inset-0 opacity-5 leaf-pattern -z-10"></div>
-      
-      <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-forest/30 to-transparent"></div>
-      
       <div className="container mx-auto px-4 md:px-6">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8 mb-12">
           <div className="md:col-span-5">
@@ -35,18 +31,20 @@ const Footer = () => {
                 </span>
               </a>
               
-              <a 
-                href="https://organize-my-space.ch" 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                className="ml-4"
-              >
-                <img 
-                  src={OrganizeMySpaceLogo} 
-                  alt="Organize My Space Logo" 
-                  className="h-10 w-auto object-contain"
-                />
-              </a>
+              <div className="flex flex-col items-center ml-4">
+                <a 
+                  href="https://organize-my-space.ch" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                >
+                  <img 
+                    src={OrganizeMySpaceLogo} 
+                    alt="Organize My Space Logo" 
+                    className="h-10 w-auto object-contain"
+                  />
+                </a>
+                <span className="text-xs text-moss mt-1">Partner</span>
+              </div>
             </div>
             
             <p className="text-forest/90 max-w-md mb-6">
