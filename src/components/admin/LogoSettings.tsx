@@ -1,5 +1,5 @@
 
-import { useState, useCallback } from 'react';
+import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -24,28 +24,26 @@ const LogoSettings = () => {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('site_settings')
-        .select('*')
+        .select('settings')
         .eq('name', 'partner_logo')
         .maybeSingle();
       
       if (error) {
         console.error('Error fetching logo settings:', error);
-        return { url: null, alt: 'Organize My Space Logo' };
+        return { url: null, alt: 'Organize My Space Logo' } as LogoSettings;
       }
       
       // Check if data exists and has the expected structure
       if (data && data.settings && typeof data.settings === 'object') {
         const settings = data.settings as Record<string, unknown>;
         // Validate that the settings object has the required properties
-        if (typeof settings.url === 'string' || settings.url === null) {
-          return {
-            url: settings.url as string | null,
-            alt: typeof settings.alt === 'string' ? settings.alt : "Organize My Space Logo"
-          };
-        }
+        return {
+          url: typeof settings.url === 'string' ? settings.url : null,
+          alt: typeof settings.alt === 'string' ? settings.alt : "Organize My Space Logo"
+        } as LogoSettings;
       }
       
-      return { url: null, alt: 'Organize My Space Logo' };
+      return { url: null, alt: 'Organize My Space Logo' } as LogoSettings;
     }
   });
 

@@ -31,7 +31,7 @@ export async function uploadPartnerLogo() {
   const { error: settingsError } = await supabase
     .from('site_settings')
     .upsert({
-      id: 'partner_logo',
+      name: 'partner_logo',
       settings: {
         url: publicUrl,
         alt: 'Organize My Space Logo'
