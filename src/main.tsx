@@ -1,7 +1,6 @@
-
 import { createRoot } from 'react-dom/client'
 import { lazy, Suspense } from 'react'
-import './index.css'
+import './styles/index.css'  // Change import path to styles/index.css
 
 // Lazy load the App component
 const App = lazy(() => import('./App.tsx'))
