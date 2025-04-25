@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { MapPin, Mail, Phone, Leaf, Facebook, Instagram, FileText, Shield, ScrollText } from 'lucide-react';
 import Terms from './Terms';
@@ -9,6 +10,7 @@ const Footer = () => {
   const [isTermsOpen, setIsTermsOpen] = useState(false);
   const [isLegalInfoOpen, setIsLegalInfoOpen] = useState(false);
   const [legalInfoTab, setLegalInfoTab] = useState<string>("impressum");
+  const [logoLoaded, setLogoLoaded] = useState(false);
   
   const openTerms = () => setIsTermsOpen(true);
   const closeTerms = () => setIsTermsOpen(false);
@@ -22,6 +24,11 @@ const Footer = () => {
   useEffect(() => {
     console.log('Organize My Space Logo Path:', OrganizeMySpaceLogo);
   }, []);
+
+  const handleLogoLoad = () => {
+    setLogoLoaded(true);
+    console.log("Logo loaded successfully");
+  };
 
   return (
     <footer className="py-16 bg-[#E8F1E8] text-forest relative overflow-hidden">
@@ -65,13 +72,12 @@ const Footer = () => {
                   rel="noopener noreferrer"
                   className="flex flex-col items-center"
                 >
-                  <OptimizedImage 
+                  <img 
                     src={OrganizeMySpaceLogo} 
                     alt="Organize My Space Logo" 
-                    width={120} 
-                    height={60} 
                     className="h-12 w-auto object-contain"
-                    priority="high"
+                    onLoad={handleLogoLoad}
+                    style={{ zIndex: 5 }}
                   />
                   <span className="text-xs text-moss mt-1">Partner</span>
                 </a>

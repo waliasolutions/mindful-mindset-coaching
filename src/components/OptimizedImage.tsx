@@ -12,7 +12,7 @@ interface OptimizedImageProps {
   priority?: 'high' | 'medium' | 'low';
   objectFit?: 'cover' | 'contain' | 'fill' | 'none' | 'scale-down';
   onClick?: () => void;
-  onLoad?: () => void;  // Added the onLoad prop
+  onLoad?: () => void;
   sizes?: string;
 }
 
@@ -25,7 +25,7 @@ const OptimizedImage = ({
   priority = 'medium',
   objectFit = 'cover',
   onClick,
-  onLoad,  // Added the onLoad prop to the component props
+  onLoad,
   sizes = '100vw',
 }: OptimizedImageProps) => {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -37,11 +37,8 @@ const OptimizedImage = ({
     setMounted(true);
   }, []);
   
-  // Generate WebP version if possible
-  const webpSrc = getWebPVersion(src);
-  
-  // Generate srcset for responsive images
-  const srcSet = generateSrcSet(src);
+  // Explicitly use the original source instead of trying WebP conversion
+  // This avoids the WebP conversion issues shown in console logs
   
   // Determine loading strategy
   const loading = getImageLoadingStrategy(priority);
@@ -49,7 +46,7 @@ const OptimizedImage = ({
   // Handle image load error
   const handleError = () => {
     setError(true);
-    console.warn(`Failed to load optimized image: ${webpSrc}, falling back to original: ${src}`);
+    console.warn(`Failed to load image: ${src}`);
   };
   
   // Handle image load success
@@ -65,10 +62,10 @@ const OptimizedImage = ({
   const objectFitClass = `object-${objectFit}`;
   
   // Don't show placeholder during SSR to prevent hydration mismatch
-  const showPlaceholder = mounted && !isLoaded;
+  const showPlaceholder = mounted && !isLoaded && !error;
   
   return (
-    <div className={`relative ${width ? 'w-full' : ''} ${height ? 'h-full' : ''}`}>
+    <div className={`relative ${width ? 'w-full' : ''} ${height ? 'h-full' : ''}`} style={{ zIndex: 0 }}>
       {showPlaceholder && (
         <Skeleton 
           className={`absolute inset-0 ${className}`} 
@@ -76,9 +73,7 @@ const OptimizedImage = ({
         />
       )}
       <img
-        src={error ? src : webpSrc}
-        srcSet={!error ? srcSet : undefined}
-        sizes={sizes}
+        src={src} /* Use original source directly */
         alt={alt}
         width={width}
         height={height}
@@ -88,6 +83,7 @@ const OptimizedImage = ({
         onError={handleError}
         onClick={onClick}
         decoding="async"
+        style={{ zIndex: 1 }}
       />
     </div>
   );
