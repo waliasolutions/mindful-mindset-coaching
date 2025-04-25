@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { MapPin, Mail, Phone, Leaf, Facebook, Instagram, FileText, Shield, ScrollText } from 'lucide-react';
 import Terms from './Terms';
@@ -6,6 +7,11 @@ import { AspectRatio } from "./ui/aspect-ratio";
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import OrganizeMySpaceLogo from '../assets/organize-my-space-logo.png';
+
+interface LogoSettings {
+  url: string | null;
+  alt: string;
+}
 
 const Footer = () => {
   const [isTermsOpen, setIsTermsOpen] = useState(false);
@@ -27,8 +33,8 @@ const Footer = () => {
       }
       
       // Check if data exists and has the expected structure
-      if (data && data.settings && data.settings.logo) {
-        return data.settings.logo;
+      if (data && data.value && typeof data.value === 'object') {
+        return data.value as LogoSettings;
       }
       
       return null;

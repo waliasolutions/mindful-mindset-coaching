@@ -9,6 +9,11 @@ import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
+interface LogoSettings {
+  url: string | null;
+  alt: string;
+}
+
 const LogoSettings = () => {
   const [isUploading, setIsUploading] = useState(false);
   const queryClient = useQueryClient();
@@ -29,9 +34,9 @@ const LogoSettings = () => {
       }
       
       // Check if data exists and has the expected structure
-      if (data && data.settings) {
-        // Try to get logo data from the settings JSON field
-        return data.settings.logo || { url: null, alt: 'Organize My Space Logo' };
+      if (data && data.value && typeof data.value === 'object') {
+        // Try to get logo data from the value JSON field
+        return data.value as LogoSettings;
       }
       
       return { url: null, alt: 'Organize My Space Logo' };
@@ -40,7 +45,7 @@ const LogoSettings = () => {
 
   // Update logo mutation
   const updateLogoMutation = useMutation({
-    mutationFn: async ({ url, alt }: { url: string, alt: string }) => {
+    mutationFn: async ({ url, alt }: LogoSettings) => {
       // First check if the partner_logo record exists
       const { data: existingData, error: fetchError } = await supabase
         .from('site_settings')
@@ -57,10 +62,7 @@ const LogoSettings = () => {
         const { error } = await supabase
           .from('site_settings')
           .update({ 
-            settings: { 
-              ...existingData.settings,
-              logo: { url, alt } 
-            } 
+            value: { url, alt }
           })
           .eq('key', 'partner_logo');
         
@@ -71,7 +73,7 @@ const LogoSettings = () => {
           .from('site_settings')
           .insert({ 
             key: 'partner_logo',
-            settings: { logo: { url, alt } }
+            value: { url, alt }
           });
         
         if (error) throw error;
