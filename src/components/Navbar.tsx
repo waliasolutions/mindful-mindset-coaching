@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
 import { Menu, X, Leaf } from 'lucide-react';
+import { useSmoothScroll } from '@/hooks/use-smooth-scroll';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState('services');
+  const { scrollToElement } = useSmoothScroll();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -45,22 +47,11 @@ const Navbar = () => {
 
   const handleSmoothScroll = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, targetId: string) => {
     e.preventDefault();
-    const element = document.getElementById(targetId);
-    if (element) {
-      const navbarHeight = 80;
-      const elementPosition = element.getBoundingClientRect().top + window.scrollY;
-      const offsetPosition = elementPosition - navbarHeight;
-      
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth'
-      });
-      
-      setActiveSection(targetId);
-      
-      if (isMenuOpen) {
-        closeMenu();
-      }
+    scrollToElement(targetId);
+    setActiveSection(targetId);
+    
+    if (isMenuOpen) {
+      closeMenu();
     }
   };
 
