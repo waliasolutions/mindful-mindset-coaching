@@ -87,13 +87,6 @@ const LegalInfo = ({ isOpen, onClose, defaultTab = "impressum" }: LegalInfoProps
                 </section>
                 
                 <section>
-                  <h4 className="font-medium text-lg mb-2">Fotos für die Posts (Tipps & Tricks)</h4>
-                  <p className="text-muted-foreground">
-                    unsplash.com
-                  </p>
-                </section>
-                
-                <section>
                   <h4 className="font-medium text-lg mb-2">Haftung für Inhalte & Links</h4>
                   <p className="text-muted-foreground">
                     Die Inhalte unserer Seiten wurden mit grösster Sorgfalt erstellt. Für die Richtigkeit, 
