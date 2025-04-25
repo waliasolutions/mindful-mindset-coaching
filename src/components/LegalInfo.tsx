@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import {
   Dialog,
@@ -96,10 +97,10 @@ const LegalInfo = ({ isOpen, onClose, defaultTab = "impressum" }: LegalInfoProps
                     Seiten verantwortlich.
                   </p>
                   <p className="text-muted-foreground mt-2">
-                    Haftungsansprüche gegen ORGANIZE MY SPACE wegen Schäden materieller oder immaterieller Art, 
+                    Haftungsansprüche gegen Mindset Coach Martina wegen Schäden materieller oder immaterieller Art, 
                     welche aus dem Zugriff oder der Nutzung bzw. Nichtnutzung der veröffentlichten Informationen, 
                     durch Missbrauch der Verbindung oder durch technische Störungen entstanden sind, werden 
-                    ausgeschlossen. ORGANIZE MY SPACE behält es sich ausdrücklich vor, Teile der Seiten oder das 
+                    ausgeschlossen. Mindset Coach Martina behält es sich ausdrücklich vor, Teile der Seiten oder das 
                     gesamte Angebot ohne gesonderte Ankündigung zu verändern, zu ergänzen, zu löschen oder die 
                     Veröffentlichung zeitweise oder endgültig einzustellen.
                   </p>
@@ -111,7 +112,7 @@ const LegalInfo = ({ isOpen, onClose, defaultTab = "impressum" }: LegalInfoProps
                     Die durch die Seitenbetreiber erstellten Inhalte und Werke auf diesen Seiten unterliegen 
                     dem schweizerischen Urheberrecht. Die Vervielfältigung, Bearbeitung, Verbreitung und jede 
                     Art der Verwertung ausserhalb der Grenzen des Urheberrechtes bedürfen der schriftlichen 
-                    Zustimmung von ORGANIZE MY SPACE. Sollten Sie trotzdem auf eine Urheberrechtsverletzung 
+                    Zustimmung von Mindset Coach Martina. Sollten Sie trotzdem auf eine Urheberrechtsverletzung 
                     aufmerksam werden, bitten wir um einen entsprechenden Hinweis. Bei Bekanntwerden von 
                     Rechtsverletzungen werden wir derartige Inhalte umgehend entfernen.
                   </p>
