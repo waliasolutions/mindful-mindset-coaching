@@ -4,7 +4,7 @@ import { MapPin, Mail, Phone, Leaf, Facebook, Instagram, FileText, Shield, Scrol
 import Terms from './Terms';
 import LegalInfo from './LegalInfo';
 import { AspectRatio } from "./ui/aspect-ratio";
-import OrganizeMySpaceLogo from '@/assets/organize-my-space-logo.png';
+import OrganizeMySpaceLogo from '../assets/organize-my-space-logo.png';
 
 const Footer = () => {
   const [isTermsOpen, setIsTermsOpen] = useState(false);
