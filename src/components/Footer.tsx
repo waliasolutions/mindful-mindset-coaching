@@ -1,10 +1,9 @@
-
 import { useState, useEffect } from 'react';
 import { MapPin, Mail, Phone, Leaf, Facebook, Instagram, FileText, Shield, ScrollText } from 'lucide-react';
 import Terms from './Terms';
 import LegalInfo from './LegalInfo';
+import OptimizedImage from './OptimizedImage';
 import OrganizeMySpaceLogo from '@/assets/organize-my-space-logo.png';
-import { optimizeImageForSEO } from '@/utils/imageOptimizer';
 
 const Footer = () => {
   const [isTermsOpen, setIsTermsOpen] = useState(false);
@@ -20,6 +19,10 @@ const Footer = () => {
   };
   const closeLegalInfo = () => setIsLegalInfoOpen(false);
   
+  useEffect(() => {
+    console.log('Organize My Space Logo Path:', OrganizeMySpaceLogo);
+  }, []);
+
   return (
     <footer className="py-16 bg-[#E8F1E8] text-forest relative overflow-hidden">
       <div className="container mx-auto px-4 md:px-6">
@@ -60,14 +63,18 @@ const Footer = () => {
                   href="https://organize-my-space.ch" 
                   target="_blank" 
                   rel="noopener noreferrer"
+                  className="flex flex-col items-center"
                 >
-                  <img 
+                  <OptimizedImage 
                     src={OrganizeMySpaceLogo} 
                     alt="Organize My Space Logo" 
+                    width={80} 
+                    height={40} 
                     className="h-10 w-auto object-contain"
+                    priority="high"
                   />
+                  <span className="text-xs text-moss mt-1">Partner</span>
                 </a>
-                <span className="text-xs text-moss mt-1">Partner</span>
               </div>
             </div>
           </div>
