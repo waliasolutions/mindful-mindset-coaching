@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { MapPin, Mail, Phone, Leaf, Facebook, Instagram, FileText, Shield, ScrollText } from 'lucide-react';
 import Terms from './Terms';
@@ -34,7 +35,7 @@ const Footer = () => {
         const settings = data.settings as Record<string, unknown>;
         if (typeof settings.url === 'string' || settings.url === null) {
           return {
-            url: settings.url,
+            url: settings.url as string | null,
             alt: typeof settings.alt === 'string' ? settings.alt : "Organize My Space Logo"
           };
         }
