@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from 'react';
-import { getWebPVersion, getImageLoadingStrategy, generateSrcSet } from '../utils/imageOptimizer';
+import { getWebPVersion, getImageLoadingStrategy, generateSrcSet } from '../utils/image';
 import { Skeleton } from '@/components/ui/skeleton';
 
 interface OptimizedImageProps {
