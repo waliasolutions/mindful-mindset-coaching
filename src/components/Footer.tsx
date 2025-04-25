@@ -16,16 +16,16 @@ const Footer = () => {
   const [isLegalInfoOpen, setIsLegalInfoOpen] = useState(false);
   const [legalInfoTab, setLegalInfoTab] = useState<string>("impressum");
   
-  const { data: logoSettings } = useQuery({
+  const { data: logoSettings } = useQuery<LogoSettings>({
     queryKey: ['site-settings', 'partner_logo'],
-    queryFn: async (): Promise<LogoSettings> => {
+    queryFn: async () => {
       const { data, error } = await supabase
         .from('site_settings')
-        .select('id, settings')
+        .select('settings')
         .eq('id', 'partner_logo')
         .maybeSingle();
       
-      if (error) {
+      if (error && error.code !== 'PGRST116') {
         console.error("Error fetching logo:", error);
         return { url: null, alt: "Organize My Space Logo" };
       }
@@ -100,7 +100,7 @@ const Footer = () => {
                 >
                   <AspectRatio ratio={4/3} className="w-full">
                     <img 
-                      src={logoSettings?.url || '/lovable-uploads/19df668f-c39c-4106-8dd8-4920636e5c18.png'} 
+                      src={logoSettings?.url || '/public/organize-my-space-logo.png'} 
                       alt={logoSettings?.alt || "Organize My Space Logo"} 
                       className="w-full h-full object-contain"
                     />
