@@ -25,8 +25,8 @@ const LogoSettings = () => {
       const { data, error } = await supabase
         .from('site_settings')
         .select('*')
-        .eq('key', 'partner_logo')
-        .single();
+        .eq('id', 'partner_logo')
+        .maybeSingle();
       
       if (error) {
         console.error('Error fetching logo settings:', error);
@@ -34,9 +34,9 @@ const LogoSettings = () => {
       }
       
       // Check if data exists and has the expected structure
-      if (data && data.value && typeof data.value === 'object') {
-        // Try to get logo data from the value JSON field
-        return data.value as LogoSettings;
+      if (data && data.settings && typeof data.settings === 'object') {
+        // Try to get logo data from the settings JSON field
+        return data.settings as LogoSettings;
       }
       
       return { url: null, alt: 'Organize My Space Logo' };
@@ -50,7 +50,7 @@ const LogoSettings = () => {
       const { data: existingData, error: fetchError } = await supabase
         .from('site_settings')
         .select('*')
-        .eq('key', 'partner_logo')
+        .eq('id', 'partner_logo')
         .maybeSingle();
       
       if (fetchError && fetchError.code !== 'PGRST116') {
@@ -62,9 +62,9 @@ const LogoSettings = () => {
         const { error } = await supabase
           .from('site_settings')
           .update({ 
-            value: { url, alt }
+            settings: { url, alt }
           })
-          .eq('key', 'partner_logo');
+          .eq('id', 'partner_logo');
         
         if (error) throw error;
       } else {
@@ -72,8 +72,8 @@ const LogoSettings = () => {
         const { error } = await supabase
           .from('site_settings')
           .insert({ 
-            key: 'partner_logo',
-            value: { url, alt }
+            id: 'partner_logo',
+            settings: { url, alt }
           });
         
         if (error) throw error;

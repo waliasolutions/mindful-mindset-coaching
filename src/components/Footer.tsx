@@ -24,7 +24,7 @@ const Footer = () => {
       const { data, error } = await supabase
         .from('site_settings')
         .select('*')
-        .eq('key', 'partner_logo')
+        .eq('id', 'partner_logo')
         .maybeSingle();
       
       if (error && error.code !== 'PGRST116') {
@@ -33,8 +33,8 @@ const Footer = () => {
       }
       
       // Check if data exists and has the expected structure
-      if (data && data.value && typeof data.value === 'object') {
-        return data.value as LogoSettings;
+      if (data && data.settings && typeof data.settings === 'object') {
+        return data.settings as LogoSettings;
       }
       
       return null;
