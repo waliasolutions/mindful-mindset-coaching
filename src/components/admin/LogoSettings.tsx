@@ -9,17 +9,19 @@ import { supabase } from '@/integrations/supabase/client';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { downloadFile } from '@/utils/downloadFile';
+import MediaLibrary from './MediaLibrary';
 
-interface LogoSettings {
+type LogoSettings = {
   url: string | null;
   alt: string;
 }
 
 const LogoSettings = () => {
   const [isUploading, setIsUploading] = useState(false);
+  const [selectedMediaUrl, setSelectedMediaUrl] = useState<string | null>(null);
   const queryClient = useQueryClient();
 
-  const { data: logoSettings, isLoading } = useQuery({
+  const { data: logoSettings, isLoading } = useQuery<LogoSettings>({
     queryKey: ['site-settings', 'partner_logo'],
     queryFn: async () => {
       const { data, error } = await supabase
@@ -30,7 +32,7 @@ const LogoSettings = () => {
       
       if (error) {
         console.error('Error fetching logo settings:', error);
-        return { url: null, alt: 'Organize My Space Logo' } satisfies LogoSettings;
+        return { url: null, alt: 'Organize My Space Logo' };
       }
       
       if (data && data.settings && typeof data.settings === 'object') {
@@ -38,10 +40,10 @@ const LogoSettings = () => {
         return {
           url: typeof settings.url === 'string' ? settings.url : null,
           alt: typeof settings.alt === 'string' ? settings.alt : "Organize My Space Logo"
-        } satisfies LogoSettings;
+        };
       }
       
-      return { url: null, alt: 'Organize My Space Logo' } satisfies LogoSettings;
+      return { url: null, alt: 'Organize My Space Logo' };
     }
   });
 
@@ -86,6 +88,15 @@ const LogoSettings = () => {
       toast.error('Failed to update logo settings');
     }
   });
+
+  const handleUseMediaImage = () => {
+    if (selectedMediaUrl) {
+      updateLogoMutation.mutateAsync({
+        url: selectedMediaUrl,
+        alt: 'Organize My Space Logo'
+      });
+    }
+  };
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -222,6 +233,24 @@ const LogoSettings = () => {
             <p className="text-xs text-gray-500 mt-2">
               Recommended size: 200x60px. Supported formats: PNG, JPG, SVG
             </p>
+          </div>
+
+          <div>
+            <Label>Media Library</Label>
+            <div className="mt-2 border rounded-lg p-4">
+              <MediaLibrary 
+                onSelectImage={(imageUrl) => setSelectedMediaUrl(imageUrl)}
+                selectedImage={selectedMediaUrl}
+              />
+              {selectedMediaUrl && (
+                <Button 
+                  onClick={handleUseMediaImage} 
+                  className="mt-2"
+                >
+                  Use Selected Image as Logo
+                </Button>
+              )}
+            </div>
           </div>
         </div>
       </CardContent>
