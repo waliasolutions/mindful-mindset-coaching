@@ -1,13 +1,14 @@
-
 import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Upload, ImageIcon } from 'lucide-react';
+import { Upload, ImageIcon, Download } from 'lucide-react';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu";
+import { downloadFile } from '@/utils/downloadFile';
 
 interface LogoSettings {
   url: string | null;
@@ -18,7 +19,6 @@ const LogoSettings = () => {
   const [isUploading, setIsUploading] = useState(false);
   const queryClient = useQueryClient();
 
-  // Query site_settings to get the partner_logo data
   const { data: logoSettings, isLoading } = useQuery({
     queryKey: ['site-settings', 'partner_logo'],
     queryFn: async () => {
@@ -33,10 +33,8 @@ const LogoSettings = () => {
         return { url: null, alt: 'Organize My Space Logo' } satisfies LogoSettings;
       }
       
-      // Check if data exists and has the expected structure
       if (data && data.settings && typeof data.settings === 'object') {
         const settings = data.settings as Record<string, unknown>;
-        // Validate that the settings object has the required properties
         return {
           url: typeof settings.url === 'string' ? settings.url : null,
           alt: typeof settings.alt === 'string' ? settings.alt : "Organize My Space Logo"
@@ -47,10 +45,8 @@ const LogoSettings = () => {
     }
   });
 
-  // Update logo mutation
   const updateLogoMutation = useMutation({
     mutationFn: async ({ url, alt }: LogoSettings) => {
-      // First check if the partner_logo record exists
       const { data: existingData, error: fetchError } = await supabase
         .from('site_settings')
         .select('*')
@@ -62,7 +58,6 @@ const LogoSettings = () => {
       }
 
       if (existingData) {
-        // Update existing record
         const { error } = await supabase
           .from('site_settings')
           .update({ 
@@ -72,7 +67,6 @@ const LogoSettings = () => {
         
         if (error) throw error;
       } else {
-        // Insert new record
         const { error } = await supabase
           .from('site_settings')
           .insert({ 
@@ -130,6 +124,21 @@ const LogoSettings = () => {
     }
   };
 
+  const handleDownload = async (format: 'svg' | 'png') => {
+    if (!logoSettings?.url) {
+      toast.error('No logo available to download');
+      return;
+    }
+
+    try {
+      const filename = `organize-my-space-logo.${format}`;
+      await downloadFile(logoSettings.url, filename);
+      toast.success(`Logo downloaded as ${format.toUpperCase()}`);
+    } catch (error) {
+      toast.error(`Failed to download logo as ${format.toUpperCase()}`);
+    }
+  };
+
   if (isLoading) {
     return (
       <Card>
@@ -152,9 +161,28 @@ const LogoSettings = () => {
       </CardHeader>
       <CardContent>
         <div className="space-y-6">
-          {/* Current Logo Preview */}
           <div>
-            <Label>Current Logo</Label>
+            <div className="flex items-center justify-between mb-2">
+              <Label>Current Logo</Label>
+              {logoSettings?.url && (
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="outline" size="sm">
+                      <Download className="h-4 w-4 mr-2" />
+                      Download
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent>
+                    <DropdownMenuItem onClick={() => handleDownload('svg')}>
+                      Download as SVG
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => handleDownload('png')}>
+                      Download as PNG
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              )}
+            </div>
             <div className="mt-2 h-32 border rounded-lg overflow-hidden">
               {logoSettings?.url ? (
                 <img
@@ -170,7 +198,6 @@ const LogoSettings = () => {
             </div>
           </div>
 
-          {/* Upload New Logo */}
           <div>
             <Label htmlFor="logo-upload">Upload New Logo</Label>
             <div className="mt-2">
