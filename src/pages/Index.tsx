@@ -27,12 +27,6 @@ const Index = () => {
   const globalSettings = useGlobalSettings();
   const isAboveTheFold = useAboveFold();
 
-  console.log('Index rendering', { 
-    sectionsCount: sections.length,
-    hasGlobalSettings: !!globalSettings,
-    isAboveTheFold
-  });
-
   const renderSections = () => {
     return sections
       .sort((a, b) => a.order - b.order)

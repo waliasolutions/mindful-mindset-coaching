@@ -34,18 +34,6 @@ const preloadCriticalImages = () => {
   });
 };
 
-// Set up a global storage event handler for admin-frontend communication
-const setupStorageEventHandler = () => {
-  // This is needed for admin panel updates to be reflected in the frontend
-  // without a full page reload
-  window.addEventListener('storage', (e) => {
-    if (['globalSettings', 'themeSettings', 'seoSettings', 'sectionOrder', 'mediaLibrary'].includes(e.key || '')) {
-      console.log(`Storage updated: ${e.key}`);
-      // The Index component will handle the actual refresh logic
-    }
-  });
-};
-
 // Initialize application
 const initializeApp = async () => {
   try {
@@ -54,9 +42,8 @@ const initializeApp = async () => {
       console.log('Lovable script not found in HTML, this should not happen');
     }
     
-    // Then preload images and set up event handlers
+    // Then preload images
     preloadCriticalImages();
-    setupStorageEventHandler();
     
     // Finally render the React app
     createRoot(document.getElementById("root")!).render(
