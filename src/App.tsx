@@ -29,7 +29,7 @@ const AppContent = () => {
   return (
     <Routes>
       <Route path="/" element={<Index />} />
-      <Route path="/admin" element={<Admin />} />
+      <Route path="/dashboard-management-portal-9a7b2c3d" element={<Admin />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

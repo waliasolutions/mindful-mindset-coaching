@@ -40,3 +40,21 @@
     X-XSS-Protection = "1; mode=block"
     Referrer-Policy = "strict-origin-when-cross-origin"
     Permissions-Policy = "camera=(), microphone=(), geolocation=(), interest-cohort=()"
+
+# Add specific enhanced security for the admin path
+[[headers]]
+  for = "/dashboard-management-portal-9a7b2c3d/*"
+  [headers.values]
+    # Stronger CSP for admin area
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://*.supabase.co; frame-ancestors 'none'; form-action 'self';"
+    
+    # Additional security for admin area
+    Cache-Control = "no-store, max-age=0"
+    Clear-Site-Data = "\"cache\",\"cookies\",\"storage\""
+    X-Robots-Tag = "noindex, nofollow"
+
+# Handle SPA routing - this ensures our React Router paths work properly
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
