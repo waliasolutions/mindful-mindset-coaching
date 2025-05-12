@@ -25,10 +25,12 @@ const Footer = () => {
   } = useQuery<LogoSettings>({
     queryKey: ['site-settings', 'partner_logo'],
     queryFn: async () => {
+      // Updated query to fetch by ID instead of name since there's no name column
       const {
         data,
         error
-      } = await supabase.from('site_settings').select('settings').eq('name', 'partner_logo').maybeSingle();
+      } = await supabase.from('site_settings').select('settings').eq('id', 'partner_logo').maybeSingle();
+      
       if (error && error.code !== 'PGRST116') {
         console.error("Error fetching logo:", error);
         return {
@@ -36,6 +38,7 @@ const Footer = () => {
           alt: "Organize My Space Logo"
         };
       }
+      
       if (data?.settings && typeof data.settings === 'object') {
         const settings = data.settings as Record<string, unknown>;
         return {
@@ -43,6 +46,7 @@ const Footer = () => {
           alt: typeof settings.alt === 'string' ? settings.alt : "Organize My Space Logo"
         };
       }
+      
       return {
         url: null,
         alt: "Organize My Space Logo"

@@ -36,10 +36,11 @@ const LogoSettings = () => {
   const { data: logoSettings, isLoading } = useQuery({
     queryKey: ['site-settings', 'partner_logo'],
     queryFn: async () => {
+      // Updated query to fetch by ID instead of name since there's no name column
       const { data, error } = await supabase
         .from('site_settings')
         .select('settings')
-        .eq('name', 'partner_logo')
+        .eq('id', 'partner_logo')
         .maybeSingle();
       
       if (error) {
@@ -64,7 +65,7 @@ const LogoSettings = () => {
       const { data: existingData, error: fetchError } = await supabase
         .from('site_settings')
         .select('*')
-        .eq('name', 'partner_logo')
+        .eq('id', 'partner_logo')
         .maybeSingle();
       
       if (fetchError && fetchError.code !== 'PGRST116') {
@@ -77,14 +78,14 @@ const LogoSettings = () => {
           .update({ 
             settings: { url, alt }
           })
-          .eq('name', 'partner_logo');
+          .eq('id', 'partner_logo');
         
         if (error) throw error;
       } else {
         const { error } = await supabase
           .from('site_settings')
           .insert({ 
-            name: 'partner_logo',
+            id: 'partner_logo',
             settings: { url, alt }
           });
         
