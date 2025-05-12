@@ -13,7 +13,24 @@ import NotFound from "./pages/NotFound";
 import { HelmetProvider } from "react-helmet-async";
 import { toast } from "@/components/ui/use-toast";
 
-const queryClient = new QueryClient();
+// Create a query client with error handling
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 1,
+      refetchOnWindowFocus: false,
+      staleTime: 5 * 60 * 1000,
+      onError: (error) => {
+        console.error('Query error:', error);
+        toast({
+          title: "Error",
+          description: "Something went wrong. Please try again.",
+          variant: "destructive",
+        });
+      },
+    },
+  },
+});
 
 // Create an admin redirect page that will help users access the admin panel
 const AdminRedirect = () => {
@@ -22,7 +39,6 @@ const AdminRedirect = () => {
 
 const AppContent = () => {
   const location = useLocation();
-  const navigate = useLocation();
 
   useEffect(() => {
     // Update page metadata based on route
@@ -47,7 +63,7 @@ const AppContent = () => {
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [location, navigate]);
+  }, [location]);
 
   return (
     <Routes>

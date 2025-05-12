@@ -1,10 +1,12 @@
+
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Instagram, Facebook, Mail, Phone, MapPin } from 'lucide-react';
 import { useGlobalSettings } from '../hooks/use-global-settings';
 
 const Footer = () => {
-  const { footer, contactEmail, contactPhone, address } = useGlobalSettings();
+  const globalSettings = useGlobalSettings();
+  const { footer, contactEmail, contactPhone, address } = globalSettings;
   const navigate = useNavigate();
   
   // Add a hidden admin link that becomes visible when pressing Alt+Shift+A
