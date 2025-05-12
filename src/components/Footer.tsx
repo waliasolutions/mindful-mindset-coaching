@@ -18,9 +18,9 @@ const Footer = () => {
   const [isLegalInfoOpen, setIsLegalInfoOpen] = useState(false);
   const [legalInfoTab, setLegalInfoTab] = useState<string>("impressum");
   
-  const { data: logoSettings } = useQuery<LogoSettings>({
+  const { data: logoSettings } = useQuery<LogoSettings, Error>({
     queryKey: ['site-settings', 'partner_logo'],
-    queryFn: async () => {
+    queryFn: async (): Promise<LogoSettings> => {
       const { data, error } = await supabase
         .from('site_settings')
         .select('settings')
