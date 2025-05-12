@@ -20,15 +20,17 @@ const queryClient = new QueryClient({
       retry: 1,
       refetchOnWindowFocus: false,
       staleTime: 5 * 60 * 1000,
+    },
+    mutations: {
       onError: (error) => {
-        console.error('Query error:', error);
+        console.error('Mutation error:', error);
         toast({
           title: "Error",
           description: "Something went wrong. Please try again.",
           variant: "destructive",
         });
       },
-    },
+    }
   },
 });
 
