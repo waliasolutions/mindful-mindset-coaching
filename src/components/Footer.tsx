@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { MapPin, Mail, Phone, Leaf, Facebook, Instagram, FileText, Shield, ScrollText } from 'lucide-react';
 import Terms from './Terms';
@@ -6,6 +5,7 @@ import LegalInfo from './LegalInfo';
 import { AspectRatio } from "./ui/aspect-ratio";
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
+import OptimizedImage from './OptimizedImage';
 
 // Define the interface for logo settings to prevent excessive type instantiation
 interface LogoSettings {
@@ -18,9 +18,10 @@ const Footer = () => {
   const [isLegalInfoOpen, setIsLegalInfoOpen] = useState(false);
   const [legalInfoTab, setLegalInfoTab] = useState<string>("impressum");
   
-  const { data: logoSettings } = useQuery<LogoSettings, Error>({
+  // Define the return type explicitly to avoid type instantiation issues
+  const { data: logoSettings } = useQuery<LogoSettings>({
     queryKey: ['site-settings', 'partner_logo'],
-    queryFn: async (): Promise<LogoSettings> => {
+    queryFn: async () => {
       const { data, error } = await supabase
         .from('site_settings')
         .select('settings')
@@ -102,7 +103,7 @@ const Footer = () => {
                 >
                   <AspectRatio ratio={4/3} className="w-full">
                     <img 
-                      src={logoSettings?.url || '/lovable-uploads/c4c9647e-ea24-451e-b5a7-94cf38dc28b3.png'} 
+                      src="/lovable-uploads/dbfa1619-8795-4376-affc-a41a48d6bc39.png" 
                       alt={logoSettings?.alt || "Organize My Space Logo"} 
                       className="w-full h-full object-contain"
                     />
