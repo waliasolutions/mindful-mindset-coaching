@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { MapPin, Mail, Phone, Leaf, Facebook, Instagram, FileText, Shield, ScrollText } from 'lucide-react';
 import Terms from './Terms';
@@ -6,6 +7,7 @@ import { AspectRatio } from "./ui/aspect-ratio";
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 
+// Define the interface for logo settings to prevent excessive type instantiation
 interface LogoSettings {
   url: string | null;
   alt: string;
@@ -16,7 +18,7 @@ const Footer = () => {
   const [isLegalInfoOpen, setIsLegalInfoOpen] = useState(false);
   const [legalInfoTab, setLegalInfoTab] = useState<string>("impressum");
   
-  const { data: logoSettings } = useQuery({
+  const { data: logoSettings } = useQuery<LogoSettings>({
     queryKey: ['site-settings', 'partner_logo'],
     queryFn: async () => {
       const { data, error } = await supabase

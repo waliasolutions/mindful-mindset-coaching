@@ -103,7 +103,11 @@ export type Database = {
           date: string
           deleted_at: string | null
           email: string
+          email_attempts: number | null
+          email_error: string | null
+          email_status: string | null
           id: string
+          last_email_attempt: string | null
           name: string
           profile_id: string | null
           rejection_message: string | null
@@ -119,7 +123,11 @@ export type Database = {
           date: string
           deleted_at?: string | null
           email: string
+          email_attempts?: number | null
+          email_error?: string | null
+          email_status?: string | null
           id?: string
+          last_email_attempt?: string | null
           name: string
           profile_id?: string | null
           rejection_message?: string | null
@@ -135,7 +143,11 @@ export type Database = {
           date?: string
           deleted_at?: string | null
           email?: string
+          email_attempts?: number | null
+          email_error?: string | null
+          email_status?: string | null
           id?: string
+          last_email_attempt?: string | null
           name?: string
           profile_id?: string | null
           rejection_message?: string | null
