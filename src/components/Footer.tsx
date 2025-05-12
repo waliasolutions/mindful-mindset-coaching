@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { MapPin, Mail, Phone, Leaf, Facebook, Instagram, FileText, Shield, ScrollText } from 'lucide-react';
 import Terms from './Terms';
@@ -101,14 +102,16 @@ const Footer = () => {
                   className="block"
                   aria-label="Organize My Space"
                 >
-                  <AspectRatio ratio={4/3} className="w-full">
-                    <img 
-                      src="/lovable-uploads/0bacd932-81ec-4c1b-b330-546f5a1116dd.png" 
-                      alt={logoSettings?.alt || "Organize My Space Logo"} 
-                      className="w-full h-full object-contain"
-                    />
-                  </AspectRatio>
-                  <span className="text-xs text-moss text-center block mt-1">Partner</span>
+                  <div className="relative">
+                    <AspectRatio ratio={4/3} className="w-full">
+                      <img 
+                        src="/lovable-uploads/0bacd932-81ec-4c1b-b330-546f5a1116dd.png" 
+                        alt={logoSettings?.alt || "Organize My Space Logo"} 
+                        className="w-full h-full object-contain"
+                      />
+                    </AspectRatio>
+                    <span className="text-xs text-moss absolute bottom-0 right-0">Partner</span>
+                  </div>
                 </a>
               </div>
             </div>
