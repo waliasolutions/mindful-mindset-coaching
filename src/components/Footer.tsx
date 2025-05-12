@@ -93,7 +93,7 @@ const Footer = () => {
                 <Instagram size={18} />
               </a>
               
-              <div className="relative w-24">
+              <div className="relative w-36">
                 <a 
                   href="https://organize-my-space.ch" 
                   target="_blank" 
@@ -103,7 +103,7 @@ const Footer = () => {
                 >
                   <AspectRatio ratio={4/3} className="w-full">
                     <img 
-                      src="/lovable-uploads/dbfa1619-8795-4376-affc-a41a48d6bc39.png" 
+                      src="/lovable-uploads/0bacd932-81ec-4c1b-b330-546f5a1116dd.png" 
                       alt={logoSettings?.alt || "Organize My Space Logo"} 
                       className="w-full h-full object-contain"
                     />
