@@ -46,7 +46,7 @@ const preloadCriticalImages = () => {
     link.rel = 'preload';
     link.as = 'image';
     link.href = img.src;
-    link.fetchpriority = img.importance;
+    link.fetchPriority = img.importance as 'high' | 'low' | 'auto'; // Fixed capitalization here
     if (img.type) {
       link.type = img.type;
     }
@@ -57,7 +57,7 @@ const preloadCriticalImages = () => {
     webpLink.rel = 'preload';
     webpLink.as = 'image';
     webpLink.href = `${img.src}?format=webp`;
-    webpLink.fetchpriority = img.importance;
+    webpLink.fetchPriority = img.importance as 'high' | 'low' | 'auto'; // Fixed capitalization here
     webpLink.type = 'image/webp';
     document.head.appendChild(webpLink);
   });
