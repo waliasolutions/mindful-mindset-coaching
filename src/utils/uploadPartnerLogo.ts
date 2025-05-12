@@ -1,9 +1,12 @@
 
 import { supabase } from '@/integrations/supabase/client';
 
+// UUID for the partner logo setting in the site_settings table
+const PARTNER_LOGO_ID = '6c375a0d-f89a-4b9c-a79c-43b8f5c93bca';
+
 export async function uploadPartnerLogo() {
   // Read the logo file
-  const response = await fetch('/lovable-uploads/c4c9647e-ea24-451e-b5a7-94cf38dc28b3.png');
+  const response = await fetch('/lovable-uploads/0bacd932-81ec-4c1b-b330-546f5a1116dd.png');
   const blob = await response.blob();
   
   // Generate a unique filename
@@ -27,11 +30,11 @@ export async function uploadPartnerLogo() {
     .from('media')
     .getPublicUrl(fileName);
   
-  // Update site settings with logo URL
+  // Update site settings with logo URL using the fixed UUID
   const { error: settingsError } = await supabase
     .from('site_settings')
     .upsert({
-      name: 'partner_logo',
+      id: PARTNER_LOGO_ID,
       settings: {
         url: publicUrl,
         alt: 'Organize My Space Logo'

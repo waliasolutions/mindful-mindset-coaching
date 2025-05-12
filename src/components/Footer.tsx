@@ -13,6 +13,10 @@ interface LogoSettings {
   url: string | null;
   alt: string;
 }
+
+// UUID for the partner logo setting in the site_settings table
+const PARTNER_LOGO_ID = '6c375a0d-f89a-4b9c-a79c-43b8f5c93bca';
+
 const Footer = () => {
   const [isTermsOpen, setIsTermsOpen] = useState(false);
   const [isLegalInfoOpen, setIsLegalInfoOpen] = useState(false);
@@ -24,11 +28,12 @@ const Footer = () => {
   } = useQuery<LogoSettings>({
     queryKey: ['site-settings', 'partner_logo'],
     queryFn: async () => {
-      // Updated query to fetch by ID instead of name since there's no name column
+      // Updated query to fetch by UUID
       const {
         data,
         error
-      } = await supabase.from('site_settings').select('settings').eq('id', 'partner_logo').maybeSingle();
+      } = await supabase.from('site_settings').select('settings').eq('id', PARTNER_LOGO_ID).maybeSingle();
+      
       if (error && error.code !== 'PGRST116') {
         console.error("Error fetching logo:", error);
         return {
@@ -36,6 +41,7 @@ const Footer = () => {
           alt: "Organize My Space Logo"
         };
       }
+      
       if (data?.settings && typeof data.settings === 'object') {
         const settings = data.settings as Record<string, unknown>;
         return {
@@ -43,12 +49,14 @@ const Footer = () => {
           alt: typeof settings.alt === 'string' ? settings.alt : "Organize My Space Logo"
         };
       }
+      
       return {
         url: null,
         alt: "Organize My Space Logo"
       };
     }
   });
+  
   const openTerms = () => setIsTermsOpen(true);
   const closeTerms = () => setIsTermsOpen(false);
   const openLegalInfo = (tab: string) => {
@@ -56,6 +64,7 @@ const Footer = () => {
     setIsLegalInfoOpen(true);
   };
   const closeLegalInfo = () => setIsLegalInfoOpen(false);
+  
   return <footer className="py-16 bg-[#E8F1E8] text-forest relative">
       <div className="container mx-auto px-4 md:px-6">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8 mb-12">
@@ -86,7 +95,16 @@ const Footer = () => {
                 <a href="https://organize-my-space.ch" target="_blank" rel="noopener noreferrer" className="block h-full" aria-label="Organize My Space">
                   <div className="relative h-full">
                     <AspectRatio ratio={4 / 3} className="w-full h-full">
-                      <OptimizedImage src="/lovable-uploads/0bacd932-81ec-4c1b-b330-546f5a1116dd.png" alt={logoSettings?.alt || "Organize My Space Logo"} className="w-full h-full" objectFit="contain" width={144} height={68} priority="medium" sizes="(max-width: 768px) 100px, 144px" />
+                      <OptimizedImage 
+                        src={logoSettings?.url || "/lovable-uploads/0bacd932-81ec-4c1b-b330-546f5a1116dd.png"} 
+                        alt={logoSettings?.alt || "Organize My Space Logo"} 
+                        className="w-full h-full" 
+                        objectFit="contain" 
+                        width={144} 
+                        height={68} 
+                        priority="medium" 
+                        sizes="(max-width: 768px) 100px, 144px" 
+                      />
                     </AspectRatio>
                     <span className="text-xs text-moss absolute bottom-0 right-0 font-normal mx-[0px] py-0 my-0">Partner</span>
                   </div>
@@ -173,4 +191,5 @@ const Footer = () => {
       <LegalInfo isOpen={isLegalInfoOpen} onClose={closeLegalInfo} defaultTab={legalInfoTab} />
     </footer>;
 };
+
 export default Footer;

@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -17,16 +18,8 @@ interface LogoSettings {
   alt: string;
 }
 
-// Define the type for the Supabase response to avoid infinite type instantiation
-interface SupabaseSettingsResponse {
-  id: string;
-  settings: {
-    url?: string | null;
-    alt?: string;
-  } | null;
-  created_at?: string;
-  updated_at?: string;
-}
+// UUID for the partner logo setting in the site_settings table
+const PARTNER_LOGO_ID = '6c375a0d-f89a-4b9c-a79c-43b8f5c93bca';
 
 const LogoSettings = () => {
   const [isUploading, setIsUploading] = useState(false);
@@ -36,14 +29,13 @@ const LogoSettings = () => {
   const { data: logoSettings, isLoading } = useQuery({
     queryKey: ['site-settings', 'partner_logo'],
     queryFn: async () => {
-      // Updated query to fetch by ID instead of name since there's no name column
       const { data, error } = await supabase
         .from('site_settings')
         .select('settings')
-        .eq('id', 'partner_logo')
+        .eq('id', PARTNER_LOGO_ID)
         .maybeSingle();
       
-      if (error) {
+      if (error && error.code !== 'PGRST116') {
         console.error('Error fetching logo settings:', error);
         return { url: null, alt: 'Organize My Space Logo' };
       }
@@ -65,7 +57,7 @@ const LogoSettings = () => {
       const { data: existingData, error: fetchError } = await supabase
         .from('site_settings')
         .select('*')
-        .eq('id', 'partner_logo')
+        .eq('id', PARTNER_LOGO_ID)
         .maybeSingle();
       
       if (fetchError && fetchError.code !== 'PGRST116') {
@@ -78,14 +70,14 @@ const LogoSettings = () => {
           .update({ 
             settings: { url, alt }
           })
-          .eq('id', 'partner_logo');
+          .eq('id', PARTNER_LOGO_ID);
         
         if (error) throw error;
       } else {
         const { error } = await supabase
           .from('site_settings')
           .insert({ 
-            id: 'partner_logo',
+            id: PARTNER_LOGO_ID,
             settings: { url, alt }
           });
         
