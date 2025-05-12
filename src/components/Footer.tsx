@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { MapPin, Mail, Phone, Leaf, Facebook, Instagram, FileText, Shield, ScrollText } from 'lucide-react';
 import Terms from './Terms';
@@ -142,7 +143,7 @@ const Footer = () => {
                 <li className="flex items-center gap-3">
                   <Phone size={18} className="text-moss flex-shrink-0" />
                   <a href="tel:+41788400481" className="text-forest/80 hover:text-moss transition-colors">
-                    +41 788 400 481
+                    +41 78 840 04 81
                   </a>
                 </li>
               </ul>
