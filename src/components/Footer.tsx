@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { MapPin, Mail, Phone, Leaf, Facebook, Instagram, FileText, Shield, ScrollText } from 'lucide-react';
 import Terms from './Terms';
@@ -56,6 +57,7 @@ const Footer = () => {
     setIsLegalInfoOpen(true);
   };
   const closeLegalInfo = () => setIsLegalInfoOpen(false);
+  
   return <footer className="py-16 bg-[#E8F1E8] text-forest relative">
       <div className="container mx-auto px-4 md:px-6">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8 mb-12">
