@@ -12,6 +12,7 @@ interface LogoSettings {
   url: string | null;
   alt: string;
 }
+
 const Footer = () => {
   const [isTermsOpen, setIsTermsOpen] = useState(false);
   const [isLegalInfoOpen, setIsLegalInfoOpen] = useState(false);
@@ -47,6 +48,7 @@ const Footer = () => {
       };
     }
   });
+
   const openTerms = () => setIsTermsOpen(true);
   const closeTerms = () => setIsTermsOpen(false);
   const openLegalInfo = (tab: string) => {
@@ -171,4 +173,5 @@ const Footer = () => {
       <LegalInfo isOpen={isLegalInfoOpen} onClose={closeLegalInfo} defaultTab={legalInfoTab} />
     </footer>;
 };
+
 export default Footer;
