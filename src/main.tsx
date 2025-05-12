@@ -1,3 +1,4 @@
+
 import { createRoot } from 'react-dom/client'
 import { lazy, Suspense } from 'react'
 import './styles/index.css'  // Change import path to styles/index.css
@@ -20,16 +21,45 @@ const isLovableScriptLoaded = () => {
 // Preload critical images
 const preloadCriticalImages = () => {
   const images = [
-    '/lovable-uploads/7b4f0db6-80ea-4da6-b817-0f33ba7562b5.png', // Hero image
-    '/lovable-uploads/abb0bc70-ae8b-43ce-867f-d7beece5a8a2.png', // Favicon
+    // Hero image (high priority - LCP element)
+    {
+      src: '/lovable-uploads/7b4f0db6-80ea-4da6-b817-0f33ba7562b5.png',
+      importance: 'high',
+      type: 'image/png'
+    },
+    // Favicon (medium priority)
+    {
+      src: '/lovable-uploads/abb0bc70-ae8b-43ce-867f-d7beece5a8a2.png',
+      importance: 'auto',
+      type: 'image/png'
+    },
+    // Partner logo (medium priority)
+    {
+      src: '/lovable-uploads/0bacd932-81ec-4c1b-b330-546f5a1116dd.png',
+      importance: 'auto',
+      type: 'image/png'
+    }
   ];
   
-  images.forEach(src => {
+  images.forEach(img => {
     const link = document.createElement('link');
     link.rel = 'preload';
     link.as = 'image';
-    link.href = src;
+    link.href = img.src;
+    link.fetchpriority = img.importance;
+    if (img.type) {
+      link.type = img.type;
+    }
     document.head.appendChild(link);
+    
+    // Also preload WebP version if available
+    const webpLink = document.createElement('link');
+    webpLink.rel = 'preload';
+    webpLink.as = 'image';
+    webpLink.href = `${img.src}?format=webp`;
+    webpLink.fetchpriority = img.importance;
+    webpLink.type = 'image/webp';
+    document.head.appendChild(webpLink);
   });
 };
 
@@ -41,7 +71,7 @@ const initializeApp = async () => {
       console.log('Lovable script not found in HTML, this should not happen');
     }
     
-    // Then preload images
+    // Preload images before initializing the app
     preloadCriticalImages();
     
     // Finally render the React app

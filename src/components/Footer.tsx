@@ -88,11 +88,20 @@ const Footer = () => {
                 <Instagram size={18} />
               </a>
               
-              <div className="relative w-36">
-                <a href="https://organize-my-space.ch" target="_blank" rel="noopener noreferrer" className="block" aria-label="Organize My Space">
-                  <div className="relative">
-                    <AspectRatio ratio={4 / 3} className="w-full">
-                      <img src="/lovable-uploads/0bacd932-81ec-4c1b-b330-546f5a1116dd.png" alt={logoSettings?.alt || "Organize My Space Logo"} className="w-full h-full object-contain" />
+              <div className="relative w-36 h-[68px]">
+                <a href="https://organize-my-space.ch" target="_blank" rel="noopener noreferrer" className="block h-full" aria-label="Organize My Space">
+                  <div className="relative h-full">
+                    <AspectRatio ratio={4 / 3} className="w-full h-full">
+                      <OptimizedImage
+                        src="/lovable-uploads/0bacd932-81ec-4c1b-b330-546f5a1116dd.png"
+                        alt={logoSettings?.alt || "Organize My Space Logo"}
+                        className="w-full h-full"
+                        objectFit="contain"
+                        width={144}
+                        height={68}
+                        priority="medium"
+                        sizes="(max-width: 768px) 100px, 144px"
+                      />
                     </AspectRatio>
                     <span className="text-xs text-moss absolute bottom-0 right-0 font-normal mx-[45px]">Partner</span>
                   </div>

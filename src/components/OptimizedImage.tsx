@@ -37,11 +37,13 @@ const OptimizedImage = ({
     setMounted(true);
   }, []);
   
-  // Explicitly use the original source instead of trying WebP conversion
-  // This avoids the WebP conversion issues shown in console logs
+  // Generate WebP version and srcset for responsive images
+  const webpSrc = getWebPVersion(src);
+  const srcSet = generateSrcSet(src);
   
   // Determine loading strategy
   const loading = getImageLoadingStrategy(priority);
+  const fetchPriority = priority === 'high' ? 'high' : 'auto';
   
   // Handle image load error
   const handleError = () => {
@@ -65,7 +67,14 @@ const OptimizedImage = ({
   const showPlaceholder = mounted && !isLoaded && !error;
   
   return (
-    <div className={`relative ${width ? 'w-full' : ''} ${height ? 'h-full' : ''}`} style={{ zIndex: 0 }}>
+    <div 
+      className={`relative ${width ? 'w-full' : ''} ${height ? 'h-full' : ''}`} 
+      style={{ 
+        zIndex: 0,
+        width: width ? `${width}px` : undefined,
+        height: height ? `${height}px` : undefined
+      }}
+    >
       {showPlaceholder && (
         <Skeleton 
           className={`absolute inset-0 ${className}`} 
@@ -73,11 +82,14 @@ const OptimizedImage = ({
         />
       )}
       <img
-        src={src} /* Use original source directly */
+        src={webpSrc || src}
+        srcSet={srcSet}
+        sizes={sizes}
         alt={alt}
         width={width}
         height={height}
         loading={loading}
+        fetchPriority={fetchPriority as any}
         className={`transition-opacity duration-300 ${objectFitClass} ${className} ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
         onLoad={handleLoad}
         onError={handleError}

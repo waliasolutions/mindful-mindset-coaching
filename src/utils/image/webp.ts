@@ -12,6 +12,11 @@ export const getWebPVersion = (imageUrl: string): string => {
   // Check if the image is already a WebP
   if (imageUrl.endsWith('.webp')) return imageUrl;
   
+  // For Lovable uploaded images (add .webp query parameter instead of changing extension)
+  if (imageUrl.includes('/lovable-uploads/')) {
+    return `${imageUrl}?format=webp`;
+  }
+  
   // For URLs with query parameters
   if (imageUrl.includes('?')) {
     const [path, query] = imageUrl.split('?');
