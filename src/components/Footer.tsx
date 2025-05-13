@@ -5,7 +5,13 @@ import { Instagram, Facebook, Mail, Phone, MapPin } from 'lucide-react';
 import { useGlobalSettings } from '../hooks/use-global-settings';
 import OptimizedImage from './OptimizedImage';
 
-const Footer = () => {
+interface FooterProps {
+  onTermsClick: () => void;
+  onImpressumClick: () => void;
+  onDatenschutzClick: () => void;
+}
+
+const Footer = ({ onTermsClick, onImpressumClick, onDatenschutzClick }: FooterProps) => {
   const globalSettings = useGlobalSettings();
   const { footer, contactEmail, contactPhone, address } = globalSettings;
   const navigate = useNavigate();
@@ -32,6 +38,16 @@ const Footer = () => {
         return <Facebook className="h-5 w-5" />;
       default:
         return null;
+    }
+  };
+
+  const handleLegalLinkClick = (linkId: string) => {
+    if (linkId === 'terms') {
+      onTermsClick();
+    } else if (linkId === 'impressum') {
+      onImpressumClick();
+    } else if (linkId === 'datenschutz') {
+      onDatenschutzClick();
     }
   };
 
@@ -63,13 +79,30 @@ const Footer = () => {
           <div>
             <h3 className="text-xl font-semibold mb-4">Schnellzugriff</h3>
             <ul className="space-y-2">
-              {footer?.legalLinks?.map((link) => (
-                <li key={link.id}>
-                  <a href={link.url} className="hover:text-beige transition-colors">
-                    {link.label}
-                  </a>
-                </li>
-              ))}
+              <li>
+                <button 
+                  onClick={() => handleLegalLinkClick('impressum')}
+                  className="hover:text-beige transition-colors cursor-pointer"
+                >
+                  Impressum
+                </button>
+              </li>
+              <li>
+                <button 
+                  onClick={() => handleLegalLinkClick('datenschutz')}
+                  className="hover:text-beige transition-colors cursor-pointer"
+                >
+                  Datenschutz
+                </button>
+              </li>
+              <li>
+                <button 
+                  onClick={() => handleLegalLinkClick('terms')}
+                  className="hover:text-beige transition-colors cursor-pointer"
+                >
+                  AGB
+                </button>
+              </li>
             </ul>
             
             {/* Partner Logo */}

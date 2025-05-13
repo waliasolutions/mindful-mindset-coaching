@@ -1,5 +1,5 @@
 
-import { lazy, Suspense } from 'react';
+import { lazy, Suspense, useState } from 'react';
 import Navbar from '../components/Navbar';
 import Hero from '../components/Hero';
 import Footer from '../components/Footer';
@@ -8,6 +8,8 @@ import { useSections } from '../hooks/use-sections';
 import { useGlobalSettings } from '../hooks/use-global-settings';
 import { useAboveFold } from '../hooks/use-above-fold';
 import { SEO } from '../components/SEO';
+import Terms from '../components/Terms';
+import LegalInfo from '../components/LegalInfo';
 
 const About = lazy(() => import('../components/About'));
 const Services = lazy(() => import('../components/Services'));
@@ -26,6 +28,27 @@ const Index = () => {
   const { sections } = useSections();
   const globalSettings = useGlobalSettings();
   const isAboveTheFold = useAboveFold();
+  
+  // Dialog states for legal popups
+  const [isTermsOpen, setIsTermsOpen] = useState(false);
+  const [isLegalInfoOpen, setIsLegalInfoOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState("impressum");
+
+  // Open dialog handlers
+  const openTerms = () => setIsTermsOpen(true);
+  const closeTerms = () => setIsTermsOpen(false);
+  
+  const openImpressum = () => {
+    setActiveTab("impressum");
+    setIsLegalInfoOpen(true);
+  };
+  
+  const openDatenschutz = () => {
+    setActiveTab("datenschutz");
+    setIsLegalInfoOpen(true);
+  };
+  
+  const closeLegalInfo = () => setIsLegalInfoOpen(false);
 
   const renderSections = () => {
     return sections
@@ -63,7 +86,19 @@ const Index = () => {
         <main>
           {renderSections()}
         </main>
-        <Footer />
+        <Footer 
+          onTermsClick={openTerms}
+          onImpressumClick={openImpressum}
+          onDatenschutzClick={openDatenschutz}
+        />
+        
+        {/* Legal Popups */}
+        <Terms isOpen={isTermsOpen} onClose={closeTerms} />
+        <LegalInfo 
+          isOpen={isLegalInfoOpen} 
+          onClose={closeLegalInfo} 
+          defaultTab={activeTab}
+        />
       </div>
     </>
   );
