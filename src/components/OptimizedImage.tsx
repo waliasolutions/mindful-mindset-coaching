@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from 'react';
-import { getWebPVersion, getImageLoadingStrategy, generateSrcSet } from '../utils/image';
+import { getImageLoadingStrategy } from '../utils/image';
 import { Skeleton } from '@/components/ui/skeleton';
 
 interface OptimizedImageProps {
@@ -36,10 +36,6 @@ const OptimizedImage = ({
   useEffect(() => {
     setMounted(true);
   }, []);
-  
-  // Generate WebP version and srcset for responsive images
-  const webpSrc = getWebPVersion(src);
-  const srcSet = generateSrcSet(src);
   
   // Determine loading strategy
   const loading = getImageLoadingStrategy(priority);
@@ -82,9 +78,7 @@ const OptimizedImage = ({
         />
       )}
       <img
-        src={webpSrc || src}
-        srcSet={srcSet}
-        sizes={sizes}
+        src={src}
         alt={alt}
         width={width}
         height={height}

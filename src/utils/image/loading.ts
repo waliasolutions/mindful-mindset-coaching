@@ -1,14 +1,12 @@
 
 /**
- * Determines appropriate loading strategy based on image position
+ * Get the correct loading strategy based on priority
  */
-export const getImageLoadingStrategy = (priority: 'high' | 'medium' | 'low' = 'medium'): 'eager' | 'lazy' => {
+export const getImageLoadingStrategy = (priority: 'high' | 'medium' | 'low'): 'eager' | 'lazy' => {
   switch (priority) {
     case 'high':
-      return 'eager'; // Load immediately, good for above-the-fold content
-    case 'low':
-    case 'medium':
+      return 'eager';
     default:
-      return 'lazy'; // Load when user scrolls near it
+      return 'lazy';
   }
 };
