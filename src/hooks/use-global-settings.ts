@@ -30,7 +30,7 @@ interface GlobalSettings {
 }
 
 const defaultSettings: GlobalSettings = {
-  siteName: 'Mindset Coaching',
+  siteName: 'Mindset Coach Martina',
   contactEmail: 'info@mindset-coach-martina.ch',
   contactPhone: '+41 78 840 04 81',
   address: 'Ruedi-Walter-strasse 4, 8050 Zürich',
@@ -51,7 +51,7 @@ const defaultSettings: GlobalSettings = {
       { id: 'privacy', label: 'Datenschutz', url: '/privacy' },
       { id: 'terms', label: 'Nutzungsbedingungen', url: '/terms' }
     ],
-    copyrightText: '© 2025 Mindset Coaching. Alle Rechte vorbehalten.'
+    copyrightText: '© 2025 Mindset Coach Martina.'
   }
 };
 

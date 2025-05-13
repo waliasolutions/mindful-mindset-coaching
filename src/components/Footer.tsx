@@ -1,3 +1,4 @@
+
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Instagram, Facebook, Mail, Phone, MapPin } from 'lucide-react';
@@ -143,9 +144,9 @@ const Footer = ({ onTermsClick, onImpressumClick, onDatenschutzClick }: FooterPr
           </div>
         </div>
 
-        {/* Copyright */}
+        {/* Copyright - Updated to remove "All rights reserved" */}
         <div className="border-t border-white/20 mt-8 pt-8 text-center">
-          <p>{footer?.copyrightText || '© 2025 Mindset Coaching. Alle Rechte vorbehalten.'}</p>
+          <p>{footer?.copyrightText || '© 2025 Mindset Coach Martina.'}</p>
         </div>
       </div>
     </footer>
