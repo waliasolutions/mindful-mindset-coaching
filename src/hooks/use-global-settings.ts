@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 
 interface SocialLink {
@@ -44,8 +45,8 @@ const defaultSettings: GlobalSettings = {
   footer: {
     contactText: 'Kontaktieren Sie uns, um mehr über unsere Coaching-Dienstleistungen zu erfahren',
     socialLinks: [
-      { id: 'instagram', platform: 'Instagram', url: 'https://instagram.com', icon: 'Instagram' },
-      { id: 'facebook', platform: 'Facebook', url: 'https://facebook.com', icon: 'Facebook' }
+      { id: 'instagram', platform: 'Instagram', url: 'https://www.instagram.com/organize.my.space/', icon: 'Instagram' },
+      { id: 'facebook', platform: 'Facebook', url: 'https://ne-np.facebook.com/organizemyspace.ch/', icon: 'Facebook' }
     ],
     legalLinks: [
       { id: 'privacy', label: 'Datenschutz', url: '/privacy' },
