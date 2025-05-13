@@ -1,40 +1,47 @@
 
-import { Helmet } from "react-helmet-async";
+import { Helmet } from 'react-helmet-async';
+import { useSeoSettings } from '../components/admin/seo/useSeoSettings';
+import { useEffect } from 'react';
 
-interface SEOProps {
-  title?: string;
-  description?: string;
-  keywords?: string;
-  image?: string;
-  url?: string;
-}
+export const SEO = () => {
+  const { seoData } = useSeoSettings();
+  
+  useEffect(() => {
+    // Handle Google Analytics script if enabled
+    if (seoData.enableGa && seoData.gaTrackingId) {
+      // Remove any existing GA scripts first
+      const existingGaScript = document.getElementById('ga-script');
+      const existingGaConfig = document.getElementById('ga-config');
+      
+      if (existingGaScript) existingGaScript.remove();
+      if (existingGaConfig) existingGaConfig.remove();
+      
+      // Add GA script
+      const scriptGA = document.createElement('script');
+      scriptGA.async = true;
+      scriptGA.src = `https://www.googletagmanager.com/gtag/js?id=${seoData.gaTrackingId}`;
+      scriptGA.id = 'ga-script';
+      
+      const scriptConfig = document.createElement('script');
+      scriptConfig.id = 'ga-config';
+      scriptConfig.innerHTML = `
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', '${seoData.gaTrackingId}');
+      `;
+      
+      document.head.appendChild(scriptGA);
+      document.head.appendChild(scriptConfig);
+    }
+  }, [seoData.enableGa, seoData.gaTrackingId]);
 
-export const SEO = ({
-  title = "Mindset Coaching mit Martina | Persönliche Entwicklung & Transformation",
-  description = "Entdecken Sie transformatives Mindset Coaching mit Martina Domeniconi. Entwickeln Sie ein positives Mindset, erreichen Sie Ihre Ziele und leben Sie ein erfülltes Leben. Persönliche Online-Coachings in Zürich.",
-  keywords = "Mindset Coaching, Persönlichkeitsentwicklung, Life Coach Zürich, Online Coaching, Selbstentwicklung, Transformationscoaching, Martina Domeniconi",
-  image = "/lovable-uploads/eff14ab3-8502-4ea4-9c20-75fe9b485119.png",
-  url = "https://mindset-coach-martina.ch"
-}: SEOProps) => {
   return (
     <Helmet>
-      {/* Basic meta tags */}
-      <title>{title}</title>
-      <meta name="description" content={description} />
-      <meta name="keywords" content={keywords} />
-      
-      {/* OpenGraph meta tags */}
-      <meta property="og:title" content={title} />
-      <meta property="og:description" content={description} />
-      <meta property="og:image" content={image} />
-      <meta property="og:url" content={url} />
-      <meta property="og:type" content="website" />
-      
-      {/* Twitter Card meta tags */}
-      <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:title" content={title} />
-      <meta name="twitter:description" content={description} />
-      <meta name="twitter:image" content={image} />
+      {seoData.title && <title>{seoData.title}</title>}
+      {seoData.description && <meta name="description" content={seoData.description} />}
+      {seoData.keywords && <meta name="keywords" content={seoData.keywords} />}
+      {seoData.ogImage && <meta property="og:image" content={seoData.ogImage} />}
     </Helmet>
   );
 };

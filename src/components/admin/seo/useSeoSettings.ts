@@ -11,20 +11,27 @@ export interface SeoData {
   enableGa: boolean;
 }
 
+const defaultSeoData: SeoData = {
+  title: 'Mindset Coaching',
+  description: 'Professional coaching services to improve your mindset and achieve your goals',
+  keywords: 'coaching, mindset, personal development, goals',
+  ogImage: '',
+  gaTrackingId: '',
+  enableGa: false
+};
+
 export const useSeoSettings = () => {
-  const [seoData, setSeoData] = useState<SeoData>({
-    title: '',
-    description: '',
-    keywords: '',
-    ogImage: '',
-    gaTrackingId: '',
-    enableGa: false
-  });
+  const [seoData, setSeoData] = useState<SeoData>(defaultSeoData);
 
   useEffect(() => {
     const savedSeo = localStorage.getItem('seoSettings');
     if (savedSeo) {
-      setSeoData(JSON.parse(savedSeo));
+      try {
+        setSeoData(JSON.parse(savedSeo));
+      } catch (error) {
+        console.error('Error parsing SEO settings:', error);
+        setSeoData(defaultSeoData);
+      }
     }
   }, []);
 
