@@ -1,4 +1,3 @@
-
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Instagram, Facebook, Mail, Phone, MapPin } from 'lucide-react';
@@ -75,9 +74,9 @@ const Footer = ({ onTermsClick, onImpressumClick, onDatenschutzClick }: FooterPr
             </div>
           </div>
 
-          {/* Quick Links */}
+          {/* Quick Links - Updated heading */}
           <div>
-            <h3 className="text-xl font-semibold mb-4">Schnellzugriff</h3>
+            <h3 className="text-xl font-semibold mb-4">Rechtliches</h3>
             <ul className="space-y-2">
               <li>
                 <button 
