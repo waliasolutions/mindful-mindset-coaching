@@ -1,25 +1,33 @@
 
-import { optimizeImageForSEO } from './seo';
+import { generateAltText, optimizeImageForSEO } from './seo';
 
-export const generateImageAttributes = (
+interface SeoImageProps {
+  src: string;
+  alt?: string;
+  width?: number | string;
+  height?: number | string;
+  loading?: 'lazy' | 'eager';
+  className?: string;
+}
+
+export const optimizeImageSeo = (
   src: string,
-  alt: string = '',
-  priority: 'high' | 'medium' | 'low' = 'medium'
-) => {
-  // Get optimized image attributes
-  const imageProps = optimizeImageForSEO(src, alt, priority);
+  alt?: string
+): string => {
+  // Generate alt text if none provided
+  const altText = alt || generateAltText(src);
   
-  // Add structured data
-  const structuredData = {
-    '@context': 'https://schema.org/',
-    '@type': 'ImageObject',
-    contentUrl: src,
-    caption: alt,
-    description: alt
-  };
+  // Optimize image
+  return optimizeImageForSEO(src, altText);
+};
 
+export const createSeoImageProps = (props: SeoImageProps): SeoImageProps => {
+  const { src, alt, ...rest } = props;
+  
   return {
-    ...imageProps,
-    'data-structured': JSON.stringify(structuredData)
+    src: optimizeImageSeo(src, alt),
+    alt: alt || generateAltText(src),
+    loading: props.loading || 'lazy',
+    ...rest
   };
 };

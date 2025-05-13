@@ -33,7 +33,7 @@ interface GlobalSettings {
 const defaultSettings: GlobalSettings = {
   siteName: 'Mindset Coaching',
   contactEmail: 'info@mindset-coach-martina.ch',
-  contactPhone: '+41 788 400 481',
+  contactPhone: '+41 78 840 04 81',
   address: 'Ruedi-Walter-strasse 4, 8050 Zürich',
   navigation: [
     { id: 'home', label: 'Home', url: '#home' },
