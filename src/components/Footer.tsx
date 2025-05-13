@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Instagram, Facebook, Mail, Phone, MapPin } from 'lucide-react';
 import { useGlobalSettings } from '../hooks/use-global-settings';
+import OptimizedImage from './OptimizedImage';
 
 const Footer = () => {
   const globalSettings = useGlobalSettings();
@@ -70,6 +71,25 @@ const Footer = () => {
                 </li>
               ))}
             </ul>
+            
+            {/* Partner Logo */}
+            <div className="mt-6">
+              <h4 className="text-sm font-medium mb-2">Partner</h4>
+              <a 
+                href="https://organize-my-space.ch" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="inline-block hover:opacity-80 transition-opacity"
+              >
+                <OptimizedImage 
+                  src="/lovable-uploads/0bacd932-81ec-4c1b-b330-546f5a1116dd.png"
+                  alt="Organize My Space Logo"
+                  width={120}
+                  className="bg-white p-2 rounded"
+                  priority="low"
+                />
+              </a>
+            </div>
           </div>
 
           {/* Social Media */}
