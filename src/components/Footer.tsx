@@ -40,8 +40,8 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Contact Information */}
           <div>
-            <h3 className="text-xl font-semibold mb-4">Contact</h3>
-            <p className="mb-2">{footer?.contactText || 'Get in touch to learn more about our coaching services'}</p>
+            <h3 className="text-xl font-semibold mb-4">Kontakt</h3>
+            <p className="mb-2">{footer?.contactText || 'Kontaktieren Sie uns, um mehr über unsere Coaching-Dienstleistungen zu erfahren'}</p>
             <div className="space-y-2 mt-4">
               <a href={`mailto:${contactEmail}`} className="flex items-center gap-2 hover:text-beige transition-colors">
                 <Mail className="h-4 w-4" />
@@ -60,7 +60,7 @@ const Footer = () => {
 
           {/* Quick Links */}
           <div>
-            <h3 className="text-xl font-semibold mb-4">Quick Links</h3>
+            <h3 className="text-xl font-semibold mb-4">Schnellzugriff</h3>
             <ul className="space-y-2">
               {footer?.legalLinks?.map((link) => (
                 <li key={link.id}>
@@ -74,7 +74,7 @@ const Footer = () => {
 
           {/* Social Media */}
           <div>
-            <h3 className="text-xl font-semibold mb-4">Follow Us</h3>
+            <h3 className="text-xl font-semibold mb-4">Folgen Sie uns</h3>
             <div className="flex space-x-4">
               {footer?.socialLinks?.map((social) => (
                 <a
@@ -93,7 +93,7 @@ const Footer = () => {
 
         {/* Copyright */}
         <div className="border-t border-white/20 mt-8 pt-8 text-center">
-          <p>{footer?.copyrightText || '© 2023 Mindset Coaching. All rights reserved.'}</p>
+          <p>{footer?.copyrightText || '© 2025 Mindset Coaching. Alle Rechte vorbehalten.'}</p>
         </div>
       </div>
     </footer>

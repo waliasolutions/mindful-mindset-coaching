@@ -51,16 +51,16 @@ const defaultSettings: GlobalSettings = {
     { id: 'contact', label: 'Contact', url: '#contact' }
   ],
   footer: {
-    contactText: 'Get in touch to learn more about our coaching services',
+    contactText: 'Kontaktieren Sie uns, um mehr über unsere Coaching-Dienstleistungen zu erfahren',
     socialLinks: [
       { id: 'instagram', platform: 'Instagram', url: 'https://instagram.com', icon: 'Instagram' },
       { id: 'facebook', platform: 'Facebook', url: 'https://facebook.com', icon: 'Facebook' }
     ],
     legalLinks: [
-      { id: 'privacy', label: 'Privacy Policy', url: '/privacy' },
-      { id: 'terms', label: 'Terms & Conditions', url: '/terms' }
+      { id: 'privacy', label: 'Datenschutz', url: '/privacy' },
+      { id: 'terms', label: 'Nutzungsbedingungen', url: '/terms' }
     ],
-    copyrightText: '© 2025 Mindset Coaching. All rights reserved.'
+    copyrightText: '© 2025 Mindset Coaching. Alle Rechte vorbehalten.'
   }
 };
 
