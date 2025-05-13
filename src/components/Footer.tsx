@@ -1,3 +1,4 @@
+
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Instagram, Facebook, Mail, Phone, MapPin } from 'lucide-react';
@@ -65,7 +66,7 @@ const Footer = ({ onTermsClick, onImpressumClick, onDatenschutzClick }: FooterPr
               </a>
               <a href={`tel:${contactPhone}`} className="flex items-center gap-2 hover:text-beige transition-colors">
                 <Phone className="h-4 w-4" />
-                <span>{contactPhone}</span>
+                <span>+41 78 840 04 81</span>
               </a>
               <div className="flex items-center gap-2">
                 <MapPin className="h-4 w-4" />
