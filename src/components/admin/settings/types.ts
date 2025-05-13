@@ -1,0 +1,61 @@
+
+export interface NavItem {
+  id: string;
+  label: string;
+  url: string;
+}
+
+export interface SocialLink {
+  id: string;
+  platform: string;
+  url: string;
+  icon: string;
+}
+
+export interface LegalLink {
+  id: string;
+  label: string;
+  url: string;
+}
+
+export interface FooterSettings {
+  contactText: string;
+  socialLinks: SocialLink[];
+  legalLinks: LegalLink[];
+  copyrightText: string;
+}
+
+export interface GlobalSettings {
+  siteName: string;
+  contactEmail: string;
+  contactPhone: string;
+  address: string;
+  navigation: NavItem[];
+  footer: FooterSettings;
+}
+
+export const defaultSettings: GlobalSettings = {
+  siteName: 'Mindset Coach Martina',
+  contactEmail: 'info@mindset-coach-martina.ch',
+  contactPhone: '+41 78 840 04 81',
+  address: 'Ruedi-Walter-strasse 4, 8050 Zürich',
+  navigation: [
+    { id: 'home', label: 'Home', url: '#home' },
+    { id: 'services', label: 'Services', url: '#services' },
+    { id: 'about', label: 'About', url: '#about' },
+    { id: 'pricing', label: 'Pricing', url: '#pricing' },
+    { id: 'contact', label: 'Contact', url: '#contact' }
+  ],
+  footer: {
+    contactText: 'Kontaktieren Sie uns, um mehr über unsere Coaching-Dienstleistungen zu erfahren',
+    socialLinks: [
+      { id: 'instagram', platform: 'Instagram', url: 'https://www.instagram.com/organize.my.space/', icon: 'Instagram' },
+      { id: 'facebook', platform: 'Facebook', url: 'https://ne-np.facebook.com/organizemyspace.ch/', icon: 'Facebook' }
+    ],
+    legalLinks: [
+      { id: 'privacy', label: 'Datenschutz', url: '/privacy' },
+      { id: 'terms', label: 'Nutzungsbedingungen', url: '/terms' }
+    ],
+    copyrightText: '© 2025 Mindset Coach Martina.'
+  }
+};
