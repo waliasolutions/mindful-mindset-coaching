@@ -16,67 +16,45 @@
   # Default build command.
   # command = "yarn build"
 
-# Simple redirects for mindset-coach-martina.ch
-# Simplifying to prevent redirect loops
-
-# Redirect non-secure, non-www to secure www 
-[[redirects]]
-  from = "http://mindset-coach-martina.ch/*"
-  to = "https://www.mindset-coach-martina.ch/:splat"
-  status = 301
-  force = true
-
-# Redirect secure, non-www to secure www
-[[redirects]]
-  from = "https://mindset-coach-martina.ch/*"
-  to = "https://www.mindset-coach-martina.ch/:splat"
-  status = 301
-  force = true
-
-# Redirect non-secure www to secure www
-[[redirects]]
-  from = "http://www.mindset-coach-martina.ch/*"
-  to = "https://www.mindset-coach-martina.ch/:splat"
-  status = 301
-  force = true
-
-# Define security headers for all pages - with relaxed cookie settings
+# Define security headers for all pages
 [[headers]]
   for = "/*"
   [headers.values]
-    # Content Security Policy (CSP) - allowing cookies
-    Content-Security-Policy = "default-src 'self'; script-src 'self' https://cdn.gpteng.co https://www.googletagmanager.com 'unsafe-inline' 'unsafe-eval'; style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://*.supabase.co https://www.google-analytics.com https://region1.google-analytics.com; frame-ancestors 'none';"
+    # Content Security Policy (CSP)
+    Content-Security-Policy = "default-src 'self'; script-src 'self' https://cdn.gpteng.co https://www.googletagmanager.com 'unsafe-inline' 'unsafe-eval'; style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://*.supabase.co https://www.google-analytics.com https://region1.google-analytics.com; frame-ancestors 'none'; form-action 'self';"
     
-    # HTTP Strict Transport Security (HSTS) - but not too aggressive
-    Strict-Transport-Security = "max-age=31536000" 
+    # HTTP Strict Transport Security (HSTS)
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains; preload"
     
-    # Cross-Origin Opener Policy (COOP) - relaxed
-    Cross-Origin-Opener-Policy = "same-origin-allow-popups"
+    # Cross-Origin Opener Policy (COOP)
+    Cross-Origin-Opener-Policy = "same-origin"
     
-    # Cross-Origin Embedder Policy (COEP) - removed to prevent cookie issues
+    # Cross-Origin Embedder Policy (COEP)
+    Cross-Origin-Embedder-Policy = "require-corp"
     
     # X-Frame-Options for clickjacking protection
     X-Frame-Options = "DENY"
     
-    # Additional security headers - keeping minimal set
+    # Additional security headers
     X-Content-Type-Options = "nosniff"
+    X-XSS-Protection = "1; mode=block"
     Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=(), interest-cohort=()"
 
-# Add specific security for the admin path - with relaxed cookie settings
+# Add specific enhanced security for the admin path
 [[headers]]
   for = "/dashboard-management-portal-9a7b2c3d/*"
   [headers.values]
-    # Stronger CSP for admin area, but still allow cookies
-    Content-Security-Policy = "default-src 'self'; script-src 'self' https://www.googletagmanager.com 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://*.supabase.co https://www.google-analytics.com https://region1.google-analytics.com; frame-ancestors 'none';"
+    # Stronger CSP for admin area
+    Content-Security-Policy = "default-src 'self'; script-src 'self' https://www.googletagmanager.com 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://*.supabase.co https://www.google-analytics.com https://region1.google-analytics.com; frame-ancestors 'none'; form-action 'self';"
     
     # Additional security for admin area
     Cache-Control = "no-store, max-age=0"
+    Clear-Site-Data = "\"cache\",\"cookies\",\"storage\""
     X-Robots-Tag = "noindex, nofollow"
 
 # Handle SPA routing - this ensures our React Router paths work properly
-# Adding a condition to avoid redirect loops - exclude domain redirects
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
-  conditions = {Role = ["admin", "member", "anonymous"]}
