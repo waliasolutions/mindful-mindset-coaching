@@ -7,15 +7,15 @@ export const SEO = () => {
   const { seoData } = useSeoSettings();
   
   useEffect(() => {
+    // Always remove existing GA scripts first to ensure correct state based on seoData
+    const existingGaScript = document.getElementById('ga-script');
+    const existingGaConfig = document.getElementById('ga-config');
+    
+    if (existingGaScript) existingGaScript.remove();
+    if (existingGaConfig) existingGaConfig.remove();
+
     // Handle Google Analytics script if enabled
     if (seoData.enableGa && seoData.gaTrackingId) {
-      // Remove any existing GA scripts first
-      const existingGaScript = document.getElementById('ga-script');
-      const existingGaConfig = document.getElementById('ga-config');
-      
-      if (existingGaScript) existingGaScript.remove();
-      if (existingGaConfig) existingGaConfig.remove();
-      
       // Add GA script
       const scriptGA = document.createElement('script');
       scriptGA.async = true;
@@ -34,8 +34,9 @@ export const SEO = () => {
       document.head.appendChild(scriptGA);
       document.head.appendChild(scriptConfig);
 
-      // For debugging
-      console.log(`Google Analytics initialized with ID: ${seoData.gaTrackingId}`);
+      console.log(`Google Analytics (re)initialized by SEO.tsx with ID: ${seoData.gaTrackingId}`);
+    } else {
+      console.log('Google Analytics disabled or ID missing in SEO.tsx, ensuring scripts are removed.');
     }
   }, [seoData.enableGa, seoData.gaTrackingId]);
 
