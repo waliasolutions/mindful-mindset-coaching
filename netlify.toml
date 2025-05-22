@@ -16,16 +16,26 @@
   # Default build command.
   # command = "yarn build"
 
-# Redirect HTTP to HTTPS (Netlify often does this by default, but explicit is good)
-[[redirects]]
-  from = "http://:splat"
-  to = "https://:splat"
-  status = 301
-  force = true # Ensures this redirect is applied even if a file exists at the HTTP path
+# Force HTTPS and WWW for mindset-coach-martina.ch
+# This ensures all traffic standardizes to https://www.mindset-coach-martina.ch
 
-# Redirect non-WWW to WWW for your domain
+# Redirect http://mindset-coach-martina.ch/* to https://www.mindset-coach-martina.ch/:splat
+[[redirects]]
+  from = "http://mindset-coach-martina.ch/*"
+  to = "https://www.mindset-coach-martina.ch/:splat"
+  status = 301
+  force = true
+
+# Redirect https://mindset-coach-martina.ch/* to https://www.mindset-coach-martina.ch/:splat
 [[redirects]]
   from = "https://mindset-coach-martina.ch/*"
+  to = "https://www.mindset-coach-martina.ch/:splat"
+  status = 301
+  force = true
+
+# Redirect http://www.mindset-coach-martina.ch/* to https://www.mindset-coach-martina.ch/:splat
+[[redirects]]
+  from = "http://www.mindset-coach-martina.ch/*"
   to = "https://www.mindset-coach-martina.ch/:splat"
   status = 301
   force = true
@@ -68,8 +78,9 @@
     X-Robots-Tag = "noindex, nofollow"
 
 # Handle SPA routing - this ensures our React Router paths work properly
-# This rule MUST come AFTER the canonical redirects.
+# This rule MUST come AFTER the canonical redirects and headers.
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
+
