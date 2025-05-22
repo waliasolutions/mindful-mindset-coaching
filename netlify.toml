@@ -16,6 +16,20 @@
   # Default build command.
   # command = "yarn build"
 
+# Redirect HTTP to HTTPS (Netlify often does this by default, but explicit is good)
+[[redirects]]
+  from = "http://:splat"
+  to = "https://:splat"
+  status = 301
+  force = true # Ensures this redirect is applied even if a file exists at the HTTP path
+
+# Redirect non-WWW to WWW for your domain
+[[redirects]]
+  from = "https://mindset-coach-martina.ch/*"
+  to = "https://www.mindset-coach-martina.ch/:splat"
+  status = 301
+  force = true
+
 # Define security headers for all pages
 [[headers]]
   for = "/*"
@@ -54,6 +68,7 @@
     X-Robots-Tag = "noindex, nofollow"
 
 # Handle SPA routing - this ensures our React Router paths work properly
+# This rule MUST come AFTER the canonical redirects.
 [[redirects]]
   from = "/*"
   to = "/index.html"

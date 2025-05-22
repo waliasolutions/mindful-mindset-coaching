@@ -1,4 +1,3 @@
-
 import { ArrowDown, Leaf, Shield } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { useIsMobile } from '../hooks/use-mobile';
@@ -33,6 +32,13 @@ const Hero = () => {
     });
   }, []);
 
+  // Define hero image dimensions for LCP improvement
+  // These should ideally match the intrinsic aspect ratio of the image or a common display size.
+  // For a 3/4 aspect ratio, if width is 1080, height is 1440.
+  // These are passed to OptimizedImage to help browser reserve space.
+  const heroImageWidth = 1080; 
+  const heroImageHeight = 1440;
+
   return <section id="home" className="relative min-h-screen flex items-center pt-20 pb-12 overflow-hidden">
       <div className="absolute inset-0 bg-beige/60 leaf-pattern -z-10"></div>
       
@@ -51,7 +57,16 @@ const Hero = () => {
                 <div className="relative w-full max-w-md mx-auto">
                   <div className="aspect-[3/4] overflow-hidden shadow-xl transition-all duration-500 hover:shadow-2xl rounded-lg">
                     <div className="image-reveal reveal w-full h-full relative">
-                      <OptimizedImage src="/lovable-uploads/7b4f0db6-80ea-4da6-b817-0f33ba7562b5.png" alt="Martina Domeniconi - Mindset Coach" className="w-full h-full object-cover object-center" priority="high" sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" onLoad={() => setImageLoaded(true)} />
+                      <OptimizedImage 
+                        src="/lovable-uploads/7b4f0db6-80ea-4da6-b817-0f33ba7562b5.png" 
+                        alt="Martina Domeniconi - Mindset Coach" 
+                        className="w-full h-full object-cover object-center" 
+                        priority="high" 
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" 
+                        onLoad={() => setImageLoaded(true)}
+                        width={heroImageWidth} // Added width
+                        height={heroImageHeight} // Added height
+                      />
                       <div className="absolute inset-0 bg-forest/20 rounded-lg"></div>
                       
                       <div className="absolute bottom-4 right-4 z-10">
@@ -83,7 +98,16 @@ const Hero = () => {
           <div className="hidden lg:block relative w-full max-w-md lg:max-w-lg xl:max-w-xl">
             <div className="aspect-[3/4] overflow-hidden shadow-xl transition-all duration-500 hover:shadow-2xl rounded-lg">
               <div className="image-reveal reveal w-full h-full relative">
-                <OptimizedImage src="/lovable-uploads/7b4f0db6-80ea-4da6-b817-0f33ba7562b5.png" alt="Martina Domeniconi - Mindset Coach" className="w-full h-full object-cover object-center" priority="high" sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" onLoad={() => setImageLoaded(true)} />
+                <OptimizedImage 
+                  src="/lovable-uploads/7b4f0db6-80ea-4da6-b817-0f33ba7562b5.png" 
+                  alt="Martina Domeniconi - Mindset Coach" 
+                  className="w-full h-full object-cover object-center" 
+                  priority="high" 
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" 
+                  onLoad={() => setImageLoaded(true)}
+                  width={heroImageWidth} // Added width
+                  height={heroImageHeight} // Added height
+                />
                 <div className="absolute inset-0 bg-forest/20 rounded-lg"></div>
                 
                 <div className="absolute bottom-4 right-4 z-10">

@@ -1,4 +1,3 @@
-
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Instagram, Facebook, Mail, Phone, MapPin } from 'lucide-react';
@@ -131,11 +130,13 @@ const Footer = ({ onTermsClick, onImpressumClick, onDatenschutzClick }: FooterPr
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="inline-block hover:opacity-80 transition-opacity"
+                style={{ width: 120, height: 40 }} // Added style for reserved space
               >
                 <OptimizedImage 
                   src="/lovable-uploads/0bacd932-81ec-4c1b-b330-546f5a1116dd.png"
                   alt="Organize My Space Logo"
                   width={120}
+                  height={40} // Added explicit height
                   className="bg-white p-2 rounded"
                   priority="low"
                 />
