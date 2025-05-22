@@ -16,8 +16,8 @@ const defaultSeoData: SeoData = {
   description: 'Professional coaching services to improve your mindset and achieve your goals',
   keywords: 'coaching, mindset, personal development, goals',
   ogImage: '',
-  gaTrackingId: '',
-  enableGa: false
+  gaTrackingId: 'G-CCD1ZR05L7',
+  enableGa: true
 };
 
 export const useSeoSettings = () => {
@@ -32,6 +32,10 @@ export const useSeoSettings = () => {
         console.error('Error parsing SEO settings:', error);
         setSeoData(defaultSeoData);
       }
+    } else {
+      // If no saved settings, initialize with Google Analytics enabled
+      localStorage.setItem('seoSettings', JSON.stringify(defaultSeoData));
+      setSeoData(defaultSeoData);
     }
   }, []);
 

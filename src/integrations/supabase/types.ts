@@ -96,6 +96,48 @@ export type Database = {
         }
         Relationships: []
       }
+      assignment_history: {
+        Row: {
+          assigned_at: string
+          assignment_iso_week: number
+          assignment_year: number
+          chore_color: string | null
+          chore_icon: string | null
+          chore_id: string
+          chore_name: string
+          created_at: string
+          id: string
+          participant_id: string
+          participant_name: string
+        }
+        Insert: {
+          assigned_at?: string
+          assignment_iso_week: number
+          assignment_year: number
+          chore_color?: string | null
+          chore_icon?: string | null
+          chore_id: string
+          chore_name: string
+          created_at?: string
+          id?: string
+          participant_id: string
+          participant_name: string
+        }
+        Update: {
+          assigned_at?: string
+          assignment_iso_week?: number
+          assignment_year?: number
+          chore_color?: string | null
+          chore_icon?: string | null
+          chore_id?: string
+          chore_name?: string
+          created_at?: string
+          id?: string
+          participant_id?: string
+          participant_name?: string
+        }
+        Relationships: []
+      }
       bookings: {
         Row: {
           comment: string | null

@@ -38,6 +38,14 @@ const AnalyticsForm = ({ seoData, handleChange, handleSwitchChange }: AnalyticsF
           Enter your GA4 measurement ID (starts with G-)
         </p>
       </div>
+
+      {seoData.enableGa && seoData.gaTrackingId === 'G-CCD1ZR05L7' && (
+        <div className="p-3 bg-green-50 border border-green-200 rounded-md">
+          <p className="text-sm text-green-700">
+            Google Analytics is correctly configured with ID: G-CCD1ZR05L7
+          </p>
+        </div>
+      )}
     </div>
   );
 };

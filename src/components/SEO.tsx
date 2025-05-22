@@ -33,6 +33,9 @@ export const SEO = () => {
       
       document.head.appendChild(scriptGA);
       document.head.appendChild(scriptConfig);
+
+      // For debugging
+      console.log(`Google Analytics initialized with ID: ${seoData.gaTrackingId}`);
     }
   }, [seoData.enableGa, seoData.gaTrackingId]);
 
