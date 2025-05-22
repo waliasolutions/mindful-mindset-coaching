@@ -1,4 +1,5 @@
-import { ArrowDown, Leaf, Shield } from 'lucide-react';
+
+import { ArrowDown, Shield } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { useIsMobile } from '../hooks/use-mobile';
 import { Badge } from '@/components/ui/badge';
@@ -32,12 +33,7 @@ const Hero = () => {
     });
   }, []);
 
-  // Define hero image dimensions for LCP improvement
-  // These should ideally match the intrinsic aspect ratio of the image or a common display size.
-  // For a 3/4 aspect ratio, if width is 1080, height is 1440.
-  // These are passed to OptimizedImage to help browser reserve space.
-  const heroImageWidth = 1080; 
-  const heroImageHeight = 1440;
+  // Removed heroImageWidth and heroImageHeight constants
 
   return <section id="home" className="relative min-h-screen flex items-center pt-20 pb-12 overflow-hidden">
       <div className="absolute inset-0 bg-beige/60 leaf-pattern -z-10"></div>
@@ -55,6 +51,7 @@ const Hero = () => {
 
               <div className="block lg:hidden mb-8 text-center">
                 <div className="relative w-full max-w-md mx-auto">
+                  {/* The aspect-[3/4] class here is important for reserving space */}
                   <div className="aspect-[3/4] overflow-hidden shadow-xl transition-all duration-500 hover:shadow-2xl rounded-lg">
                     <div className="image-reveal reveal w-full h-full relative">
                       <OptimizedImage 
@@ -64,8 +61,7 @@ const Hero = () => {
                         priority="high" 
                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" 
                         onLoad={() => setImageLoaded(true)}
-                        width={heroImageWidth} // Added width
-                        height={heroImageHeight} // Added height
+                        // Removed width and height props
                       />
                       <div className="absolute inset-0 bg-forest/20 rounded-lg"></div>
                       
@@ -96,6 +92,7 @@ const Hero = () => {
           </div>
           
           <div className="hidden lg:block relative w-full max-w-md lg:max-w-lg xl:max-w-xl">
+            {/* The aspect-[3/4] class here is important for reserving space */}
             <div className="aspect-[3/4] overflow-hidden shadow-xl transition-all duration-500 hover:shadow-2xl rounded-lg">
               <div className="image-reveal reveal w-full h-full relative">
                 <OptimizedImage 
@@ -105,8 +102,7 @@ const Hero = () => {
                   priority="high" 
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" 
                   onLoad={() => setImageLoaded(true)}
-                  width={heroImageWidth} // Added width
-                  height={heroImageHeight} // Added height
+                  // Removed width and height props
                 />
                 <div className="absolute inset-0 bg-forest/20 rounded-lg"></div>
                 
