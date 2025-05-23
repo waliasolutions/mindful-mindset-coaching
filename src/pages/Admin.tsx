@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AdminLayout from '../components/admin/AdminLayout';
@@ -66,6 +67,7 @@ const Admin = () => {
   const [loginAttempts, setLoginAttempts] = useState(0);
   const [lockedUntil, setLockedUntil] = useState<number | null>(null);
   const [lastActivity, setLastActivity] = useState(Date.now());
+  const [previewLoaded, setPreviewLoaded] = useState(false);
   const navigate = useNavigate();
   
   const form = useForm({
