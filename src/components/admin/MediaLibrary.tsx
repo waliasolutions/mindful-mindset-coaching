@@ -8,7 +8,6 @@ import { Upload, X, Copy, Trash2, ImagePlus, Check } from 'lucide-react';
 import { toast } from 'sonner';
 import { Badge } from '@/components/ui/badge';
 import { supabase } from '@/integrations/supabase/client';
-import { useAuth } from '@/contexts/AuthContext';
 
 interface MediaItem {
   id: string;
@@ -26,7 +25,6 @@ interface MediaLibraryProps {
 }
 
 const MediaLibrary = ({ onSelectImage, selectedImage }: MediaLibraryProps) => {
-  const { user } = useAuth();
   const [images, setImages] = useState<MediaItem[]>([]);
   const [isUploading, setIsUploading] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -144,11 +142,10 @@ const MediaLibrary = ({ onSelectImage, selectedImage }: MediaLibraryProps) => {
         .from('media')
         .getPublicUrl(fileName);
 
-      // Save to media_library table
+      // Save to media_library table (without user_id since this is admin panel)
       const { error: dbError } = await supabase
         .from('media_library')
         .insert({
-          user_id: user?.id,
           image_url: publicUrl,
           file_name: file.name,
           file_size: file.size,
