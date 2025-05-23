@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { X, Save, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -28,6 +29,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
+import { getContentFromStorage, saveContentToStorage, extractContentFromDOM } from '@/utils/contentSync';
 
 interface Section {
   id: string;
@@ -42,38 +44,23 @@ interface SectionEditorProps {
   onClose: () => void;
 }
 
-const getSectionContent = (sectionId: string) => {
-  const savedContent = localStorage.getItem(`section_${sectionId}`);
-  if (savedContent) return JSON.parse(savedContent);
-  
-  try {
-    const pageContent = extractContentFromPage(sectionId);
-    if (pageContent && Object.keys(pageContent).length > 0) {
-      return pageContent;
-    }
-  } catch (error) {
-    console.error('Error extracting content from page:', error);
-  }
-  
+const getDefaultContent = (sectionId: string) => {
   switch (sectionId) {
     case 'hero':
       return {
-        title: "Reframe Your Thinking, Transform Your Life",
-        subtitle: "Mindset Coaching für mehr Lebenszufriedenheit",
-        backgroundImage: "/lovable-uploads/bfcdd5e2-5796-4cc9-b81c-3651711c0440.png",
-        buttonText: "Mehr Erfahren"
+        title: "Mindset Coaching für ein glückliches und erfülltes Leben",
+        subtitle: "Entfalte dein volles Potenzial und erschaffe das Leben, von dem du träumst.",
+        backgroundImage: "/lovable-uploads/7b4f0db6-80ea-4da6-b817-0f33ba7562b5.png",
+        buttonText: "Kennenlerngespräch vereinbaren"
       };
     case 'services':
       return {
         title: "Transformiere dein Leben durch Mindset Coaching",
-        description: "In einem 1:1 Coaching lösen wir Blockaden, bringen Klarheit in dein Gedanken-Karussell und richten deinen Fokus auf das, was wirklich zählt: Deine Träume, Deine Lebenszufriedenheit und Deine innere Ruhe und Gelassenheit.",
+        description: "In einem 1:1 Coaching lösen wir Blockaden, bringen Klarheit in dein Gedanken-Karussell und richten deinen Fokus auf das, was wirklich zählt.",
         benefits: [
           { title: "Persönliches Wachstum", icon: "Brain", description: "Du möchtest ein erfülltes und selbstbestimmtes Leben führen" },
           { title: "Potenzialentfaltung", icon: "Star", description: "Du willst endlich deine Ziele erreichen und dein volles Potenzial entfalten" },
-          { title: "Selbstbewusstsein", icon: "Heart", description: "Du möchtest mehr Selbstbewusstsein und Vertrauen aufbauen" },
-          { title: "Klarheit & Gelassenheit", icon: "Lightbulb", description: "Du sehnst dich nach mehr Klarheit, Gelassenheit und Lebensfreude" },
-          { title: "Beziehungen", icon: "Heart", description: "Du willst eine liebevolle Beziehung führen" },
-          { title: "Gesunde Routinen", icon: "Sun", description: "Du möchtest gesunde Routinen und Gewohnheiten entwickeln" }
+          { title: "Selbstbewusstsein", icon: "Heart", description: "Du möchtest mehr Selbstbewusstsein und Vertrauen aufbauen" }
         ]
       };
     case 'pricing':
@@ -85,168 +72,53 @@ const getSectionContent = (sectionId: string) => {
         price: "CHF 90",
         pricePeriod: "pro Sitzung",
         packageTitle: "Coaching Einzelsitzung",
-        packageDescription: "Individuelle Betreuung für deine Bedürfnisse",
         features: [
           "Individuelle Betreuung auf deine Bedürfnisse zugeschnitten",
-          "Praktische Übungen und Techniken für den Alltag",
-          "Fokus auf deine persönlichen Ziele und Herausforderungen",
-          "Flexible Terminvereinbarung"
+          "Praktische Übungen und Techniken für den Alltag"
         ]
       };
     case 'about':
       return {
         title: "Über mich",
         subtitle: "Ein neuer Blickwinkel für deine Herausforderungen",
-        description: "Als Mindset Coach begleite ich dich dabei, hinderliche Denkmuster zu erkennen und in kraftvolle, positive Gedanken umzuwandeln.",
-        backgroundStory: "Mein eigener Weg hat mich durch viele Höhen und Tiefen geführt. Diese Erfahrungen haben mich gelehrt, wie wichtig unsere Gedanken für unser Wohlbefinden sind."
+        description: "Als Mindset Coach begleite ich dich dabei, hinderliche Denkmuster zu erkennen und in kraftvolle, positive Gedanken umzuwandeln."
       };
     case 'contact':
       return {
         title: "Kontakt",
         subtitle: "Lass uns gemeinsam an deinem Mindset arbeiten",
-        description: "Ich freue mich darauf, von dir zu hören und gemeinsam den ersten Schritt zu gehen.",
         email: "info@mindset-coach-martina.ch",
-        phone: "+41 788 400 481",
-        address: "Ruedi-Walter-strasse 4, 8050 Zürich"
+        phone: "+41 78 840 04 81"
       };
     default:
       return {};
   }
 };
 
-const extractContentFromPage = (sectionId: string) => {
-  const previewFrame = document.querySelector('iframe');
-  if (!previewFrame || !previewFrame.contentDocument) {
-    return null;
-  }
-  
-  const previewDocument = previewFrame.contentDocument;
-  
-  const sectionElement = previewDocument.getElementById(sectionId);
-  if (!sectionElement) {
-    return null;
-  }
-  
-  switch (sectionId) {
-    case 'hero': {
-      const title = sectionElement.querySelector('h1')?.textContent || '';
-      const subtitle = sectionElement.querySelector('p')?.textContent || '';
-      const buttonText = sectionElement.querySelector('a')?.textContent?.trim() || '';
-      const backgroundImage = sectionElement.querySelector('img')?.src || '';
-      
-      return {
-        title,
-        subtitle,
-        backgroundImage,
-        buttonText
-      };
-    }
-    
-    case 'services': {
-      const title = sectionElement.querySelector('h2')?.textContent || '';
-      const description = sectionElement.querySelector('p')?.textContent || '';
-      
-      const benefitElements = sectionElement.querySelectorAll('.grid > div');
-      const benefits = Array.from(benefitElements).map(el => {
-        const title = el.querySelector('h3')?.textContent || '';
-        const description = el.querySelector('p')?.textContent || '';
-        const iconEl = el.querySelector('.rounded-full');
-        const iconName = iconEl?.querySelector('svg')?.classList.value || 'Star';
-        
-        return { title, description, icon: iconName };
-      });
-      
-      return {
-        title,
-        description,
-        benefits: benefits.length > 0 ? benefits : undefined
-      };
-    }
-    
-    case 'pricing': {
-      const title = sectionElement.querySelector('h2')?.textContent || '';
-      const description = sectionElement.querySelector('.max-w-2xl p')?.textContent || '';
-      
-      const quote = sectionElement.querySelector('.text-xl')?.textContent || '';
-      const quoteAuthor = sectionElement.querySelector('.text-forest\\/70')?.textContent || '';
-      
-      const packageTitle = sectionElement.querySelector('.bg-gradient-to-r h3')?.textContent || '';
-      const packageDescription = sectionElement.querySelector('.bg-gradient-to-r p')?.textContent || '';
-      const price = sectionElement.querySelector('.text-4xl')?.textContent || '';
-      const pricePeriod = sectionElement.querySelector('.text-forest\\/90')?.textContent || '';
-      
-      const featureElements = sectionElement.querySelectorAll('.space-y-3 li');
-      const features = Array.from(featureElements).map(el => 
-        el.textContent?.replace(/✓/g, '').trim() || ''
-      );
-      
-      return {
-        title,
-        description,
-        quote,
-        quoteAuthor,
-        packageTitle,
-        packageDescription,
-        price,
-        pricePeriod,
-        features: features.length > 0 ? features : undefined
-      };
-    }
-    
-    case 'about': {
-      const title = sectionElement.querySelector('h2')?.textContent || '';
-      const subtitle = sectionElement.querySelector('.rounded-full + h2 + .w-16 + p')?.textContent || '';
-      const description = sectionElement.querySelector('.reveal-right p')?.textContent || '';
-      
-      const paragraphs = sectionElement.querySelectorAll('.reveal-right p');
-      let backgroundStory = '';
-      if (paragraphs.length > 1) {
-        backgroundStory = Array.from(paragraphs).slice(1, -1).map(p => p.textContent).join('\n\n');
-      }
-      
-      return {
-        title,
-        subtitle,
-        description,
-        backgroundStory
-      };
-    }
-    
-    case 'contact': {
-      const title = sectionElement.querySelector('h2')?.textContent || '';
-      const subtitle = sectionElement.querySelector('.w-16 + p')?.textContent || '';
-      const description = sectionElement.querySelector('.max-w-2xl')?.textContent || '';
-      
-      const emailElement = sectionElement.querySelector('a[href^="mailto:"]');
-      const email = emailElement?.getAttribute('href')?.replace('mailto:', '') || '';
-      
-      const phoneElement = sectionElement.querySelector('a[href^="tel:"]');
-      const phone = phoneElement?.textContent?.trim() || '';
-      
-      const addressElements = sectionElement.querySelectorAll('.text-foreground\\/70');
-      let address = '';
-      if (addressElements.length > 2) {
-        address = Array.from(addressElements).slice(-3).map(el => el.textContent).join(', ');
-      }
-      
-      return {
-        title,
-        subtitle,
-        description,
-        email,
-        phone,
-        address
-      };
-    }
-    
-    default:
-      return null;
-  }
-};
-
 const SectionEditor = ({ section, onClose }: SectionEditorProps) => {
-  const [content, setContent] = useState(getSectionContent(section.id));
   const [isOpen, setIsOpen] = useState(true);
+  
+  // Try to get content from storage first, then extract from DOM, then use defaults
+  const getInitialContent = () => {
+    let content = getContentFromStorage(section.id);
+    
+    if (!content || Object.keys(content).length === 0) {
+      // Try to extract from current DOM
+      const extractedContent = extractContentFromDOM(section.id);
+      if (extractedContent && Object.keys(extractedContent).length > 0) {
+        content = extractedContent;
+        // Save the extracted content for future use
+        saveContentToStorage(section.id, content);
+      } else {
+        // Fall back to defaults
+        content = getDefaultContent(section.id);
+      }
+    }
+    
+    return content;
+  };
+
+  const [content, setContent] = useState(getInitialContent());
   
   const form = useForm({
     defaultValues: content
@@ -256,6 +128,21 @@ const SectionEditor = ({ section, onClose }: SectionEditorProps) => {
     form.reset(content);
   }, [content, form]);
 
+  useEffect(() => {
+    // Listen for content updates from other parts of the app
+    const handleContentUpdate = (event: CustomEvent) => {
+      if (event.detail.sectionId === section.id) {
+        setContent(event.detail.content);
+        form.reset(event.detail.content);
+      }
+    };
+
+    window.addEventListener('contentUpdated', handleContentUpdate as EventListener);
+    return () => {
+      window.removeEventListener('contentUpdated', handleContentUpdate as EventListener);
+    };
+  }, [section.id, form]);
+
   const handleClose = () => {
     setIsOpen(false);
     setTimeout(onClose, 300);
@@ -263,9 +150,17 @@ const SectionEditor = ({ section, onClose }: SectionEditorProps) => {
 
   const handleSave = () => {
     const values = form.getValues();
-    localStorage.setItem(`section_${section.id}`, JSON.stringify(values));
-    toast.success(`${section.name} section updated successfully`);
-    handleClose();
+    
+    // Update the content state
+    setContent(values);
+    
+    // Save to localStorage and trigger update event
+    if (saveContentToStorage(section.id, values)) {
+      toast.success(`${section.name} section updated successfully`);
+      handleClose();
+    } else {
+      toast.error('Failed to save content');
+    }
   };
 
   const renderEditorFields = () => {
@@ -280,7 +175,7 @@ const SectionEditor = ({ section, onClose }: SectionEditorProps) => {
                 <FormItem>
                   <FormLabel>Title</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Textarea {...field} className="min-h-[60px]" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -293,20 +188,7 @@ const SectionEditor = ({ section, onClose }: SectionEditorProps) => {
                 <FormItem>
                   <FormLabel>Subtitle</FormLabel>
                   <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="backgroundImage"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Background Image</FormLabel>
-                  <FormControl>
-                    <Input {...field} />
+                    <Textarea {...field} className="min-h-[60px]" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -357,52 +239,6 @@ const SectionEditor = ({ section, onClose }: SectionEditorProps) => {
                 </FormItem>
               )}
             />
-            
-            <div className="border rounded-md p-4 mt-4">
-              <h4 className="font-medium mb-3">Service Benefits</h4>
-              {content.benefits && content.benefits.map((benefit: any, index: number) => (
-                <div key={index} className="mb-4 p-3 border rounded-md">
-                  <div className="grid grid-cols-2 gap-3 mb-2">
-                    <div>
-                      <Label htmlFor={`benefit-title-${index}`}>Title</Label>
-                      <Input
-                        id={`benefit-title-${index}`}
-                        value={benefit.title}
-                        onChange={(e) => {
-                          const newBenefits = [...content.benefits];
-                          newBenefits[index].title = e.target.value;
-                          setContent({...content, benefits: newBenefits});
-                        }}
-                      />
-                    </div>
-                    <div>
-                      <Label htmlFor={`benefit-icon-${index}`}>Icon</Label>
-                      <Input
-                        id={`benefit-icon-${index}`}
-                        value={benefit.icon}
-                        onChange={(e) => {
-                          const newBenefits = [...content.benefits];
-                          newBenefits[index].icon = e.target.value;
-                          setContent({...content, benefits: newBenefits});
-                        }}
-                      />
-                    </div>
-                  </div>
-                  <div>
-                    <Label htmlFor={`benefit-desc-${index}`}>Description</Label>
-                    <Input
-                      id={`benefit-desc-${index}`}
-                      value={benefit.description}
-                      onChange={(e) => {
-                        const newBenefits = [...content.benefits];
-                        newBenefits[index].description = e.target.value;
-                        setContent({...content, benefits: newBenefits});
-                      }}
-                    />
-                  </div>
-                </div>
-              ))}
-            </div>
           </>
         );
         
@@ -435,113 +271,59 @@ const SectionEditor = ({ section, onClose }: SectionEditorProps) => {
                 </FormItem>
               )}
             />
-            
-            <div className="border rounded-md p-4 mt-4 mb-4">
-              <h4 className="font-medium mb-3">Quote</h4>
-              <div className="space-y-3">
-                <FormField
-                  control={form.control}
-                  name="quote"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Quote Text</FormLabel>
-                      <FormControl>
-                        <Textarea {...field} className="min-h-[80px]" />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="quoteAuthor"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Author</FormLabel>
-                      <FormControl>
-                        <Input {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-            </div>
-            
-            <div className="border rounded-md p-4 mt-4">
-              <h4 className="font-medium mb-3">Pricing Package</h4>
-              <div className="space-y-3">
-                <FormField
-                  control={form.control}
-                  name="packageTitle"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Package Title</FormLabel>
-                      <FormControl>
-                        <Input {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="packageDescription"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Package Description</FormLabel>
-                      <FormControl>
-                        <Input {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <div className="grid grid-cols-2 gap-3">
-                  <FormField
-                    control={form.control}
-                    name="price"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Price</FormLabel>
-                        <FormControl>
-                          <Input {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="pricePeriod"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Period</FormLabel>
-                        <FormControl>
-                          <Input {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-              </div>
-            </div>
-            
-            <div className="border rounded-md p-4 mt-4">
-              <h4 className="font-medium mb-3">Features</h4>
-              {content.features && content.features.map((feature: string, index: number) => (
-                <div key={index} className="mb-2">
-                  <Input
-                    value={feature}
-                    onChange={(e) => {
-                      const newFeatures = [...content.features];
-                      newFeatures[index] = e.target.value;
-                      setContent({...content, features: newFeatures});
-                    }}
-                  />
-                </div>
-              ))}
+            <FormField
+              control={form.control}
+              name="quote"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Quote Text</FormLabel>
+                  <FormControl>
+                    <Textarea {...field} className="min-h-[80px]" />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="quoteAuthor"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Quote Author</FormLabel>
+                  <FormControl>
+                    <Input {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <div className="grid grid-cols-2 gap-3">
+              <FormField
+                control={form.control}
+                name="price"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Price</FormLabel>
+                    <FormControl>
+                      <Input {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="pricePeriod"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Period</FormLabel>
+                    <FormControl>
+                      <Input {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </div>
           </>
         );
@@ -588,19 +370,6 @@ const SectionEditor = ({ section, onClose }: SectionEditorProps) => {
                 </FormItem>
               )}
             />
-            <FormField
-              control={form.control}
-              name="backgroundStory"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Background Story</FormLabel>
-                  <FormControl>
-                    <Textarea {...field} className="min-h-[150px]" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
           </>
         );
         
@@ -633,19 +402,6 @@ const SectionEditor = ({ section, onClose }: SectionEditorProps) => {
                 </FormItem>
               )}
             />
-            <FormField
-              control={form.control}
-              name="description"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Description</FormLabel>
-                  <FormControl>
-                    <Textarea {...field} className="min-h-[100px]" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <FormField
                 control={form.control}
@@ -654,7 +410,7 @@ const SectionEditor = ({ section, onClose }: SectionEditorProps) => {
                   <FormItem>
                     <FormLabel>Email</FormLabel>
                     <FormControl>
-                      <Input {...field} />
+                      <Input {...field} type="email" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -667,26 +423,13 @@ const SectionEditor = ({ section, onClose }: SectionEditorProps) => {
                   <FormItem>
                     <FormLabel>Phone</FormLabel>
                     <FormControl>
-                      <Input {...field} />
+                      <Input {...field} type="tel" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
             </div>
-            <FormField
-              control={form.control}
-              name="address"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Address</FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
           </>
         );
         
@@ -708,8 +451,6 @@ const SectionEditor = ({ section, onClose }: SectionEditorProps) => {
         <Tabs defaultValue="content" className="mt-4">
           <TabsList>
             <TabsTrigger value="content">Content</TabsTrigger>
-            <TabsTrigger value="styling">Styling</TabsTrigger>
-            <TabsTrigger value="advanced">Advanced</TabsTrigger>
           </TabsList>
           <TabsContent value="content" className="py-4">
             <Form {...form}>
@@ -717,26 +458,6 @@ const SectionEditor = ({ section, onClose }: SectionEditorProps) => {
                 {renderEditorFields()}
               </form>
             </Form>
-          </TabsContent>
-          <TabsContent value="styling" className="py-4">
-            <div className="flex flex-col space-y-4">
-              <p className="text-gray-500">
-                The styling options allow you to customize colors, spacing, and other visual aspects of the section.
-              </p>
-              <div className="border p-4 rounded-md bg-gray-50 text-center">
-                Styling options coming soon...
-              </div>
-            </div>
-          </TabsContent>
-          <TabsContent value="advanced" className="py-4">
-            <div className="flex flex-col space-y-4">
-              <p className="text-gray-500">
-                Advanced settings give you more control over the behavior and rendering of this section.
-              </p>
-              <div className="border p-4 rounded-md bg-gray-50 text-center">
-                Advanced options coming soon...
-              </div>
-            </div>
           </TabsContent>
         </Tabs>
         

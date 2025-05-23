@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AdminLayout from '../components/admin/AdminLayout';
@@ -11,6 +10,7 @@ import { Form, FormField, FormItem, FormLabel, FormControl } from '@/components/
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { syncContentWithWebsite } from '@/utils/contentSync';
 
 // Add a helper function to dispatch storage event for same-tab updates
 export const dispatchStorageEvent = (key: string, newValue?: string) => {
@@ -65,7 +65,6 @@ const Admin = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [loginAttempts, setLoginAttempts] = useState(0);
   const [lockedUntil, setLockedUntil] = useState<number | null>(null);
-  const [previewLoaded, setPreviewLoaded] = useState(false);
   const [lastActivity, setLastActivity] = useState(Date.now());
   const navigate = useNavigate();
   
@@ -224,10 +223,15 @@ const Admin = () => {
     }
   }, [isAuthenticated]);
 
-  // Load SEO settings on admin panel load
+  // Initialize content synchronization when authenticated
   useEffect(() => {
     if (isAuthenticated) {
-      // Initialize SEO settings if not present
+      // Sync content with the current website state
+      setTimeout(() => {
+        syncContentWithWebsite();
+      }, 1000); // Wait a bit for the page to fully load
+      
+      // Initialize other settings if not present
       if (!localStorage.getItem('seoSettings')) {
         const defaultSeoSettings = {
           title: document.title || 'Mindset Coaching',
@@ -237,11 +241,9 @@ const Admin = () => {
           gaTrackingId: '',
           enableGa: false
         };
-        
         localStorage.setItem('seoSettings', JSON.stringify(defaultSeoSettings));
       }
 
-      // Initialize theme settings if not present
       if (!localStorage.getItem('themeSettings')) {
         const defaultTheme = {
           colors: {
@@ -261,11 +263,9 @@ const Admin = () => {
             containerMaxWidth: '1200px',
           }
         };
-        
         localStorage.setItem('themeSettings', JSON.stringify(defaultTheme));
       }
 
-      // Initialize global settings if not present
       if (!localStorage.getItem('globalSettings')) {
         const defaultSettings = {
           siteName: 'Mindset Coaching',
@@ -292,7 +292,6 @@ const Admin = () => {
             copyrightText: '© 2025 Mindset Coaching. All rights reserved.'
           }
         };
-        
         localStorage.setItem('globalSettings', JSON.stringify(defaultSettings));
       }
     }
