@@ -282,41 +282,6 @@ export type Database = {
         }
         Relationships: []
       }
-      content_versions: {
-        Row: {
-          content_id: string | null
-          content_value: Json
-          created_at: string | null
-          created_by: string | null
-          id: string
-          version_number: number
-        }
-        Insert: {
-          content_id?: string | null
-          content_value: Json
-          created_at?: string | null
-          created_by?: string | null
-          id?: string
-          version_number: number
-        }
-        Update: {
-          content_id?: string | null
-          content_value?: Json
-          created_at?: string | null
-          created_by?: string | null
-          id?: string
-          version_number?: number
-        }
-        Relationships: [
-          {
-            foreignKeyName: "content_versions_content_id_fkey"
-            columns: ["content_id"]
-            isOneToOne: false
-            referencedRelation: "page_content"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       contracts: {
         Row: {
           created_at: string | null
@@ -631,51 +596,6 @@ export type Database = {
           },
         ]
       }
-      lead_magnet_downloads: {
-        Row: {
-          created_at: string
-          email: string
-          form_data: Json | null
-          id: string
-          magnet_type: Database["public"]["Enums"]["lead_magnet_type_enum"]
-          name: string
-          user_id: string | null
-        }
-        Insert: {
-          created_at?: string
-          email: string
-          form_data?: Json | null
-          id?: string
-          magnet_type: Database["public"]["Enums"]["lead_magnet_type_enum"]
-          name: string
-          user_id?: string | null
-        }
-        Update: {
-          created_at?: string
-          email?: string
-          form_data?: Json | null
-          id?: string
-          magnet_type?: Database["public"]["Enums"]["lead_magnet_type_enum"]
-          name?: string
-          user_id?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "lead_magnet_downloads_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "lead_magnet_downloads_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "profiles_with_email"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       lead_status_history: {
         Row: {
           call_scheduled_at: string | null
@@ -894,102 +814,6 @@ export type Database = {
           subject?: string
           type?: string
           updated_at?: string
-        }
-        Relationships: []
-      }
-      offer_requests: {
-        Row: {
-          budget_range: string | null
-          company_name: string
-          company_size: string | null
-          contact_person_function: string
-          contact_person_name: string
-          created_at: string
-          current_crm: string | null
-          email: string
-          id: string
-          implementation_timeline: string | null
-          industry: string | null
-          notification_sent: boolean | null
-          pain_points: string | null
-          phone: string
-          roi_calculator_inputs: Json | null
-          roi_calculator_results: Json | null
-          source: string | null
-          status: string | null
-        }
-        Insert: {
-          budget_range?: string | null
-          company_name: string
-          company_size?: string | null
-          contact_person_function: string
-          contact_person_name: string
-          created_at?: string
-          current_crm?: string | null
-          email: string
-          id?: string
-          implementation_timeline?: string | null
-          industry?: string | null
-          notification_sent?: boolean | null
-          pain_points?: string | null
-          phone: string
-          roi_calculator_inputs?: Json | null
-          roi_calculator_results?: Json | null
-          source?: string | null
-          status?: string | null
-        }
-        Update: {
-          budget_range?: string | null
-          company_name?: string
-          company_size?: string | null
-          contact_person_function?: string
-          contact_person_name?: string
-          created_at?: string
-          current_crm?: string | null
-          email?: string
-          id?: string
-          implementation_timeline?: string | null
-          industry?: string | null
-          notification_sent?: boolean | null
-          pain_points?: string | null
-          phone?: string
-          roi_calculator_inputs?: Json | null
-          roi_calculator_results?: Json | null
-          source?: string | null
-          status?: string | null
-        }
-        Relationships: []
-      }
-      page_content: {
-        Row: {
-          content_key: string
-          content_type: string
-          content_value: Json
-          created_at: string | null
-          id: string
-          page_id: string
-          updated_at: string | null
-          updated_by: string | null
-        }
-        Insert: {
-          content_key: string
-          content_type: string
-          content_value: Json
-          created_at?: string | null
-          id?: string
-          page_id: string
-          updated_at?: string | null
-          updated_by?: string | null
-        }
-        Update: {
-          content_key?: string
-          content_type?: string
-          content_value?: Json
-          created_at?: string | null
-          id?: string
-          page_id?: string
-          updated_at?: string | null
-          updated_by?: string | null
         }
         Relationships: []
       }
@@ -1563,10 +1387,6 @@ export type Database = {
       }
     }
     Enums: {
-      lead_magnet_type_enum:
-        | "roi_report"
-        | "crm_readiness_guide"
-        | "crm_vs_excel_comparison"
       lead_status:
         | "new"
         | "call_scheduled"
@@ -1690,11 +1510,6 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      lead_magnet_type_enum: [
-        "roi_report",
-        "crm_readiness_guide",
-        "crm_vs_excel_comparison",
-      ],
       lead_status: [
         "new",
         "call_scheduled",

@@ -1,68 +1,105 @@
 
-import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
-import Hero from "../components/Hero";
-import Services from "../components/Services";
-import About from "../components/About";
-import PricingWithQuote from "../components/PricingWithQuote";
-import Contact from "../components/Contact";
-import Footer from "../components/Footer";
-import Navbar from "../components/Navbar";
-import { SEO } from "../components/SEO";
-import EditModeToolbar from "../components/EditModeToolbar";
-import LegalInfo from "../components/LegalInfo";
+import { lazy, Suspense, useState } from 'react';
+import Navbar from '../components/Navbar';
+import Hero from '../components/Hero';
+import Footer from '../components/Footer';
+import SectionLoader from '../components/SectionLoader';
+import { useSections } from '../hooks/use-sections';
+import { useGlobalSettings } from '../hooks/use-global-settings';
+import { useAboveFold } from '../hooks/use-above-fold';
+import { SEO } from '../components/SEO';
+import Terms from '../components/Terms';
+import LegalInfo from '../components/LegalInfo';
+
+const About = lazy(() => import('../components/About'));
+const Services = lazy(() => import('../components/Services'));
+const PricingWithQuote = lazy(() => import('../components/PricingWithQuote'));
+const Contact = lazy(() => import('../components/Contact'));
+
+const componentMap: Record<string, React.ComponentType<any>> = {
+  Hero,
+  About,
+  Services,
+  PricingWithQuote,
+  Contact
+};
 
 const Index = () => {
-  const location = useLocation();
-  const [showLegalInfo, setShowLegalInfo] = useState(false);
-  const [legalType, setLegalType] = useState<'impressum' | 'datenschutz'>('impressum');
+  const { sections } = useSections();
+  const globalSettings = useGlobalSettings();
+  const isAboveTheFold = useAboveFold();
+  
+  // Dialog states for legal popups
+  const [isTermsOpen, setIsTermsOpen] = useState(false);
+  const [isLegalInfoOpen, setIsLegalInfoOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState("impressum");
 
-  useEffect(() => {
-    // Handle hash-based navigation for smooth scrolling
-    if (location.hash) {
-      const element = document.getElementById(location.hash.slice(1));
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
-      }
-    }
-  }, [location]);
-
-  const handleLegalClick = (type: 'terms' | 'impressum' | 'datenschutz') => {
-    if (type === 'terms') {
-      // Handle terms separately if needed, or redirect to impressum
-      setLegalType('impressum');
-    } else {
-      setLegalType(type as 'impressum' | 'datenschutz');
-    }
-    setShowLegalInfo(true);
+  // Open dialog handlers
+  const openTerms = () => setIsTermsOpen(true);
+  const closeTerms = () => setIsTermsOpen(false);
+  
+  const openImpressum = () => {
+    setActiveTab("impressum");
+    setIsLegalInfoOpen(true);
   };
+  
+  const openDatenschutz = () => {
+    setActiveTab("datenschutz");
+    setIsLegalInfoOpen(true);
+  };
+  
+  const closeLegalInfo = () => setIsLegalInfoOpen(false);
 
-  const closeLegalInfo = () => {
-    setShowLegalInfo(false);
+  const renderSections = () => {
+    return sections
+      .sort((a, b) => a.order - b.order)
+      .filter(section => section.visible)
+      .map((section, index) => {
+        const Component = componentMap[section.component];
+        
+        if (index === 0) {
+          return Component ? (
+            <Component 
+              key={section.id} 
+              settings={globalSettings}
+            />
+          ) : null;
+        }
+        
+        return Component ? (
+          <Suspense key={section.id} fallback={<SectionLoader />}>
+            {(!isAboveTheFold || index < 2) && (
+              <Component 
+                settings={globalSettings}
+              />
+            )}
+          </Suspense>
+        ) : null;
+      });
   };
 
   return (
     <>
       <SEO />
-      <EditModeToolbar />
-      <Navbar />
-      <main>
-        <Hero />
-        <Services />
-        <About />
-        <PricingWithQuote />
-        <Contact />
-      </main>
-      <Footer 
-        onTermsClick={() => handleLegalClick('terms')}
-        onImpressumClick={() => handleLegalClick('impressum')}
-        onDatenschutzClick={() => handleLegalClick('datenschutz')}
-      />
-      <LegalInfo 
-        isOpen={showLegalInfo}
-        onClose={closeLegalInfo}
-        defaultTab={legalType}
-      />
+      <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
+        <Navbar />
+        <main>
+          {renderSections()}
+        </main>
+        <Footer 
+          onTermsClick={openTerms}
+          onImpressumClick={openImpressum}
+          onDatenschutzClick={openDatenschutz}
+        />
+        
+        {/* Legal Popups */}
+        <Terms isOpen={isTermsOpen} onClose={closeTerms} />
+        <LegalInfo 
+          isOpen={isLegalInfoOpen} 
+          onClose={closeLegalInfo} 
+          defaultTab={activeTab}
+        />
+      </div>
     </>
   );
 };

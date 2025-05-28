@@ -7,7 +7,6 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useLocation, Navigate } from "react-router-dom";
 import { useEffect } from "react";
 import { AuthProvider } from "./contexts/AuthContext";
-import { EditModeProvider } from "./contexts/EditModeContext";
 import Index from "./pages/Index";
 import Admin from "./pages/Admin";
 import NotFound from "./pages/NotFound";
@@ -83,15 +82,13 @@ const App = () => (
     <ThemeProvider attribute="class" defaultTheme="light">
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
-          <EditModeProvider>
-            <TooltipProvider>
-              <BrowserRouter>
-                <AppContent />
-              </BrowserRouter>
-              <Toaster />
-              <Sonner />
-            </TooltipProvider>
-          </EditModeProvider>
+          <TooltipProvider>
+            <BrowserRouter>
+              <AppContent />
+            </BrowserRouter>
+            <Toaster />
+            <Sonner />
+          </TooltipProvider>
         </AuthProvider>
       </QueryClientProvider>
     </ThemeProvider>
