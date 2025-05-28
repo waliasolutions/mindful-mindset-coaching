@@ -1,6 +1,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { Check, Brain, Heart, Star, Lightbulb, Sun } from 'lucide-react';
+import EditableText from './EditableText';
 
 const Services = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -74,13 +75,21 @@ const Services = () => {
               Mindset Coaching
             </span>
           </div>
-          <h2 id="services-heading" className="text-3xl md:text-4xl font-serif font-semibold text-center mb-4 text-forest">
-            Transformiere dein Leben durch Mindset Coaching
-          </h2>
+          <EditableText
+            pageId="services"
+            contentKey="main-heading"
+            defaultContent="Transformiere dein Leben durch Mindset Coaching"
+            tag="h2"
+            className="text-3xl md:text-4xl font-serif font-semibold text-center mb-4 text-forest"
+          />
           <div className="w-16 h-1 bg-moss mx-auto mb-6 md:mb-8" aria-hidden="true"></div>
-          <p className="text-lg text-center text-foreground/80 max-w-2xl mx-auto">
-            In einem 1:1 Coaching löst du Blockaden, bringst Klarheit in dein Gedanken-Karussell und richtest deinen Fokus auf das, was wirklich zählt: Deine Träume, Deine Lebenszufriedenheit und Deine innere Ruhe und Gelassenheit.
-          </p>
+          <EditableText
+            pageId="services"
+            contentKey="main-description"
+            defaultContent="In einem 1:1 Coaching löst du Blockaden, bringst Klarheit in dein Gedanken-Karussell und richtest deinen Fokus auf das, was wirklich zählt: Deine Träume, Deine Lebenszufriedenheit und Deine innere Ruhe und Gelassenheit."
+            tag="p"
+            className="text-lg text-center text-foreground/80 max-w-2xl mx-auto"
+          />
         </div>
 
         <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mb-12 md:mb-16" role="list">
@@ -93,12 +102,20 @@ const Services = () => {
                 <div className="w-10 h-10 rounded-full bg-forest flex items-center justify-center mb-4">
                   {benefit.icon}
                 </div>
-                <h3 className="text-lg md:text-xl font-serif font-medium mb-2 md:mb-3 text-forest">
-                  {benefit.title}
-                </h3>
-                <p className="text-sm md:text-base text-foreground/80">
-                  {benefit.description}
-                </p>
+                <EditableText
+                  pageId="services"
+                  contentKey={`benefit-${index}-title`}
+                  defaultContent={benefit.title}
+                  tag="h3"
+                  className="text-lg md:text-xl font-serif font-medium mb-2 md:mb-3 text-forest"
+                />
+                <EditableText
+                  pageId="services"
+                  contentKey={`benefit-${index}-description`}
+                  defaultContent={benefit.description}
+                  tag="p"
+                  className="text-sm md:text-base text-foreground/80"
+                />
               </article>
             </li>
           ))}
