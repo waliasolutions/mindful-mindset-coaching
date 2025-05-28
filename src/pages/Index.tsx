@@ -15,7 +15,7 @@ import LegalInfo from "../components/LegalInfo";
 const Index = () => {
   const location = useLocation();
   const [showLegalInfo, setShowLegalInfo] = useState(false);
-  const [legalType, setLegalType] = useState<'terms' | 'impressum' | 'datenschutz'>('terms');
+  const [legalType, setLegalType] = useState<'impressum' | 'datenschutz'>('impressum');
 
   useEffect(() => {
     // Handle hash-based navigation for smooth scrolling
@@ -28,7 +28,12 @@ const Index = () => {
   }, [location]);
 
   const handleLegalClick = (type: 'terms' | 'impressum' | 'datenschutz') => {
-    setLegalType(type);
+    if (type === 'terms') {
+      // Handle terms separately if needed, or redirect to impressum
+      setLegalType('impressum');
+    } else {
+      setLegalType(type as 'impressum' | 'datenschutz');
+    }
     setShowLegalInfo(true);
   };
 
@@ -53,12 +58,11 @@ const Index = () => {
         onImpressumClick={() => handleLegalClick('impressum')}
         onDatenschutzClick={() => handleLegalClick('datenschutz')}
       />
-      {showLegalInfo && (
-        <LegalInfo 
-          type={legalType} 
-          onClose={closeLegalInfo} 
-        />
-      )}
+      <LegalInfo 
+        isOpen={showLegalInfo}
+        onClose={closeLegalInfo}
+        defaultTab={legalType}
+      />
     </>
   );
 };
