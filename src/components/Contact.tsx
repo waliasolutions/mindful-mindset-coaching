@@ -81,13 +81,15 @@ const Contact = () => {
                   </div>
                   <div>
                     <p className="font-medium mb-1">Telefon</p>
-                    <EditableText
-                      pageId="contact"
-                      contentKey="phone-number"
-                      defaultContent="078 840 04 81"
-                      tag="a"
-                      className="text-forest/70 hover:text-forest transition-colors"
-                    />
+                    <a href="tel:+41788400481" className="text-forest/70 hover:text-forest transition-colors">
+                      <EditableText
+                        pageId="contact"
+                        contentKey="phone-number"
+                        defaultContent="078 840 04 81"
+                        tag="span"
+                        className="text-forest/70 hover:text-forest transition-colors"
+                      />
+                    </a>
                   </div>
                 </div>
                 
@@ -97,13 +99,15 @@ const Contact = () => {
                   </div>
                   <div>
                     <p className="font-medium mb-1">E-Mail</p>
-                    <EditableText
-                      pageId="contact"
-                      contentKey="email"
-                      defaultContent="info@mindset-coach-martina.ch"
-                      tag="a"
-                      className="text-forest/70 hover:text-forest transition-colors"
-                    />
+                    <a href="mailto:info@mindset-coach-martina.ch" className="text-forest/70 hover:text-forest transition-colors">
+                      <EditableText
+                        pageId="contact"
+                        contentKey="email"
+                        defaultContent="info@mindset-coach-martina.ch"
+                        tag="span"
+                        className="text-forest/70 hover:text-forest transition-colors"
+                      />
+                    </a>
                   </div>
                 </div>
                 
