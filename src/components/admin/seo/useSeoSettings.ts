@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { toast } from 'sonner';
 
@@ -12,10 +11,10 @@ export interface SeoData {
 }
 
 const defaultSeoData: SeoData = {
-  title: 'Mindset Coaching',
-  description: 'Professional coaching services to improve your mindset and achieve your goals',
-  keywords: 'coaching, mindset, personal development, goals',
-  ogImage: '',
+  title: 'Mindset Coaching Zürich mit Martina | Erreiche deine Ziele & verwandle dein Leben',
+  description: 'Verwandle dein Leben mit Mindset Coaching in Zürich! Coach Martina hilft dir dabei, deine Ziele zu erreichen. Kostenloses Kennenlerngespräch!',
+  keywords: 'mindset coaching zürich, life coach zürich, ziele erreichen zürich, coach martina, selbstbewusstsein stärken, persönlichkeitsentwicklung, lebensveränderung, mentales training zürich, lebenscoach schweiz, potenzial entfalten',
+  ogImage: '/lovable-uploads/eff14ab3-8502-4ea4-9c20-75fe9b485119.png',
   gaTrackingId: 'G-CCD1ZR05L7',
   enableGa: true
 };
@@ -33,7 +32,7 @@ export const useSeoSettings = () => {
         setSeoData(defaultSeoData);
       }
     } else {
-      // If no saved settings, initialize with Google Analytics enabled
+      // If no saved settings, initialize with the new natural German content
       localStorage.setItem('seoSettings', JSON.stringify(defaultSeoData));
       setSeoData(defaultSeoData);
     }
