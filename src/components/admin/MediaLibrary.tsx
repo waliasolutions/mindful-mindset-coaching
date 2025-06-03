@@ -107,6 +107,7 @@ const MediaLibrary = ({ onSelectImage, selectedImage }: MediaLibraryProps) => {
       }
 
       setImages(combinedImages);
+      console.log('Loaded images:', combinedImages.length);
     } catch (error) {
       console.error('Error loading media library:', error);
       toast.error('Failed to load images');
@@ -142,7 +143,7 @@ const MediaLibrary = ({ onSelectImage, selectedImage }: MediaLibraryProps) => {
         .from('media')
         .getPublicUrl(fileName);
 
-      // Save to media_library table (without user_id since this is admin panel)
+      // Save to media_library table
       const { error: dbError } = await supabase
         .from('media_library')
         .insert({
