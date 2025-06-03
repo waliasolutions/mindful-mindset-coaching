@@ -6,7 +6,6 @@ import AdminSections from '../components/admin/AdminSections';
 import LoginForm from '../components/admin/LoginForm';
 import LoadingState from '../components/admin/LoadingState';
 import { useAdminSession } from '@/hooks/useAdminSession';
-import { useAdminNotifications } from '@/hooks/useAdminNotifications';
 import { createPreviewIframe, initializeAdminContent } from '@/utils/adminPreview';
 
 const Admin = () => {
@@ -24,9 +23,6 @@ const Admin = () => {
   } = useAdminSession();
   
   const navigate = useNavigate();
-
-  // Use admin notifications
-  useAdminNotifications();
 
   // Initialize content synchronization when authenticated
   useEffect(() => {
