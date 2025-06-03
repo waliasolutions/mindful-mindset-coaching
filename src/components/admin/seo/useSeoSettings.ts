@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { toast } from 'sonner';
 
@@ -11,7 +12,7 @@ export interface SeoData {
 }
 
 const defaultSeoData: SeoData = {
-  title: 'Mindset Coaching Zürich mit Martina | Erreiche deine Ziele & verwandle dein Leben',
+  title: 'Mindset Coach Martina Zürich | Entfalte dein Potenzial',
   description: 'Verwandle dein Leben mit Mindset Coaching in Zürich! Coach Martina hilft dir dabei, deine Ziele zu erreichen. Kostenloses Kennenlerngespräch!',
   keywords: 'mindset coaching zürich, life coach zürich, ziele erreichen zürich, coach martina, selbstbewusstsein stärken, persönlichkeitsentwicklung, lebensveränderung, mentales training zürich, lebenscoach schweiz, potenzial entfalten',
   ogImage: '/lovable-uploads/eff14ab3-8502-4ea4-9c20-75fe9b485119.png',
