@@ -1,8 +1,10 @@
+
 import { useState, useEffect, useRef } from 'react';
 import { AspectRatio } from './ui/aspect-ratio';
 import { MessageSquareQuote, Check, Clock, Users, Phone } from 'lucide-react';
 import OptimizedImage from './OptimizedImage';
 import { useContentBridge } from '@/hooks/useContentBridge';
+import { useImageBridge } from '@/hooks/useImageBridge';
 
 const PricingWithQuote = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -21,6 +23,9 @@ const PricingWithQuote = () => {
 
   // Use content bridge to allow admin overrides
   const content = useContentBridge('pricing', defaultContent);
+
+  // Use image bridge for the Einstein image
+  const einsteinImageUrl = useImageBridge('pricing-einstein', '/lovable-uploads/8a4be257-655e-4d69-b10e-5db95864ae5a.png');
 
   useEffect(() => {
     const observer = new IntersectionObserver(([entry]) => {
@@ -65,7 +70,12 @@ const PricingWithQuote = () => {
               <div className="backdrop-blur-sm p-5 md:p-6 lg:p-8 border border-transparent rounded-xl h-full flex items-center justify-center shadow-2xl transition-all duration-300 w-full max-w-md md:max-w-none bg-[e8f1e8] bg-[#f0f7f0]">
                 <div className="flex flex-col items-center">
                   <div className="w-40 h-40 md:w-48 md:h-48 lg:w-64 lg:h-64 mb-5 md:mb-6 lg:mb-8 rounded-xl bg-transparent">
-                    <OptimizedImage src="/lovable-uploads/8a4be257-655e-4d69-b10e-5db95864ae5a.png" alt="Albert Einstein sketch" className="w-full h-full object-cover" priority="high" />
+                    <OptimizedImage 
+                      src={einsteinImageUrl} 
+                      alt="Albert Einstein sketch" 
+                      className="w-full h-full object-cover" 
+                      priority="high" 
+                    />
                   </div>
                   <div className="flex items-center mb-3 md:mb-4 lg:mb-6">
                     <MessageSquareQuote size={24} className="text-forest/80" />

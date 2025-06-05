@@ -1,12 +1,13 @@
 
 import React, { useState } from 'react';
 import { Button } from '../ui/button';
-import { Layers, Search, PaintBucket, Image, FileText, Settings } from 'lucide-react';
+import { Layers, Search, PaintBucket, Image, FileText, Settings, Users, History } from 'lucide-react';
 import SeoSettings from './SeoSettings';
 import MediaLibrary from './MediaLibrary';
 import ThemeSettings from './ThemeSettings';
 import GlobalSettings from './GlobalSettings';
 import LogoSettings from './LogoSettings';
+import ContentVersionManager from './ContentVersionManager';
 import { useNavigate } from 'react-router-dom';
 
 const AdminLayout = ({ children, onLogout }: { children: React.ReactNode; onLogout: () => void }) => {
@@ -23,6 +24,8 @@ const AdminLayout = ({ children, onLogout }: { children: React.ReactNode; onLogo
         return <SeoSettings />;
       case 'settings':
         return <GlobalSettings />;
+      case 'versions':
+        return <ContentVersionManager />;
       default:
         return children;
     }
@@ -86,6 +89,14 @@ const AdminLayout = ({ children, onLogout }: { children: React.ReactNode; onLogo
                 >
                   <Search className="mr-2 h-4 w-4" />
                   SEO & Analyse
+                </Button>
+                <Button
+                  variant={activeTab === 'versions' ? 'default' : 'ghost'} 
+                  className="w-full justify-start"
+                  onClick={() => setActiveTab('versions')}
+                >
+                  <History className="mr-2 h-4 w-4" />
+                  Versionen & Backup
                 </Button>
                 <Button
                   variant={activeTab === 'settings' ? 'default' : 'ghost'} 
