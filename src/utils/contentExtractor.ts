@@ -112,7 +112,7 @@ export const extractFooterContent = () => {
     }
   }
   
-  // Return default footer content if no saved settings
+  // Return default footer content with correct URLs
   return {
     contactText: 'Kontaktieren Sie uns, um mehr über unsere Coaching-Dienstleistungen zu erfahren',
     socialLinks: [
