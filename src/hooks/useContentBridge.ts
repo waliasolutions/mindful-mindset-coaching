@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 interface ContentOverrides {
   [sectionId: string]: {
@@ -7,37 +7,74 @@ interface ContentOverrides {
   };
 }
 
-export const useContentBridge = (sectionId: string, defaultContent: any) => {
-  const [content, setContent] = useState(defaultContent);
+// Cache for content to prevent repeated localStorage reads
+const contentCache = new Map<string, any>();
+const cacheExpiry = new Map<string, number>();
+const CACHE_DURATION = 5000; // 5 seconds
 
-  useEffect(() => {
-    // Check for admin overrides in localStorage
-    const adminOverrides = localStorage.getItem('adminContentOverrides');
-    if (adminOverrides) {
-      try {
+export const useContentBridge = (sectionId: string, defaultContent: any) => {
+  const [content, setContent] = useState(() => {
+    // Check cache first
+    const cacheKey = `content_${sectionId}`;
+    const cached = contentCache.get(cacheKey);
+    const expiry = cacheExpiry.get(cacheKey);
+    
+    if (cached && expiry && Date.now() < expiry) {
+      return cached;
+    }
+    
+    // If not cached, try localStorage
+    try {
+      const adminOverrides = localStorage.getItem('adminContentOverrides');
+      if (adminOverrides) {
         const overrides: ContentOverrides = JSON.parse(adminOverrides);
         if (overrides[sectionId]) {
-          // Merge admin overrides with default content
-          setContent({ ...defaultContent, ...overrides[sectionId] });
+          const mergedContent = { ...defaultContent, ...overrides[sectionId] };
+          // Cache the result
+          contentCache.set(cacheKey, mergedContent);
+          cacheExpiry.set(cacheKey, Date.now() + CACHE_DURATION);
+          return mergedContent;
         }
-      } catch (error) {
-        console.error('Error parsing admin content overrides:', error);
       }
+    } catch (error) {
+      console.error('Error parsing admin content overrides:', error);
     }
+    
+    // Cache default content
+    contentCache.set(cacheKey, defaultContent);
+    cacheExpiry.set(cacheKey, Date.now() + CACHE_DURATION);
+    return defaultContent;
+  });
 
-    // Listen for admin content updates
+  const updateContent = useCallback((newOverrides: any) => {
+    const mergedContent = { ...defaultContent, ...newOverrides };
+    setContent(mergedContent);
+    
+    // Update cache
+    const cacheKey = `content_${sectionId}`;
+    contentCache.set(cacheKey, mergedContent);
+    cacheExpiry.set(cacheKey, Date.now() + CACHE_DURATION);
+  }, [defaultContent, sectionId]);
+
+  useEffect(() => {
+    // Listen for admin content updates with debouncing
+    let debounceTimer: NodeJS.Timeout;
+    
     const handleStorageChange = (event: CustomEvent) => {
       if (event.detail.key === 'adminContentOverrides') {
-        try {
-          const overrides: ContentOverrides = JSON.parse(event.detail.newValue || '{}');
-          if (overrides[sectionId]) {
-            setContent({ ...defaultContent, ...overrides[sectionId] });
-          } else {
-            setContent(defaultContent);
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => {
+          try {
+            const overrides: ContentOverrides = JSON.parse(event.detail.newValue || '{}');
+            if (overrides[sectionId]) {
+              updateContent(overrides[sectionId]);
+            } else {
+              updateContent({});
+            }
+          } catch (error) {
+            console.error('Error parsing admin content overrides:', error);
           }
-        } catch (error) {
-          console.error('Error parsing admin content overrides:', error);
-        }
+        }, 100); // 100ms debounce
       }
     };
 
@@ -45,13 +82,14 @@ export const useContentBridge = (sectionId: string, defaultContent: any) => {
     
     return () => {
       window.removeEventListener('localStorageUpdated', handleStorageChange as EventListener);
+      clearTimeout(debounceTimer);
     };
-  }, [sectionId, defaultContent]);
+  }, [sectionId, updateContent]);
 
   return content;
 };
 
-// Helper function to save admin content overrides
+// Helper function to save admin content overrides with caching
 export const saveContentOverride = (sectionId: string, overrides: any) => {
   try {
     const existingOverrides = localStorage.getItem('adminContentOverrides');
@@ -61,6 +99,13 @@ export const saveContentOverride = (sectionId: string, overrides: any) => {
     
     const newValue = JSON.stringify(currentOverrides);
     localStorage.setItem('adminContentOverrides', newValue);
+    
+    // Update cache immediately
+    const cacheKey = `content_${sectionId}`;
+    const defaultContent = contentCache.get(cacheKey) || {};
+    const mergedContent = { ...defaultContent, ...overrides };
+    contentCache.set(cacheKey, mergedContent);
+    cacheExpiry.set(cacheKey, Date.now() + CACHE_DURATION);
     
     // Dispatch custom event for same-tab communication
     window.dispatchEvent(new CustomEvent('localStorageUpdated', { 
@@ -74,58 +119,8 @@ export const saveContentOverride = (sectionId: string, overrides: any) => {
   }
 };
 
-// Helper function to extract current content from DOM
-export const extractContentFromDOM = (sectionId: string) => {
-  const section = document.getElementById(sectionId);
-  if (!section) return {};
-
-  const extractedContent: any = {};
-
-  switch (sectionId) {
-    case 'home': // Hero section
-      const heroHeading = section.querySelector('h1');
-      const heroSubtitle = section.querySelector('p');
-      const heroButton = section.querySelector('a[href="#contact"]');
-      
-      if (heroHeading) extractedContent.title = heroHeading.textContent;
-      if (heroSubtitle) extractedContent.subtitle = heroSubtitle.textContent;
-      if (heroButton) extractedContent.buttonText = heroButton.textContent;
-      break;
-
-    case 'services':
-      const servicesHeading = section.querySelector('h2');
-      const servicesDescription = section.querySelector('p');
-      
-      if (servicesHeading) extractedContent.title = servicesHeading.textContent;
-      if (servicesDescription) extractedContent.description = servicesDescription.textContent;
-      break;
-
-    case 'about':
-      const aboutHeading = section.querySelector('h2');
-      const aboutSubtitle = section.querySelector('h2 + div + p, h2 ~ p');
-      
-      if (aboutHeading) extractedContent.title = aboutHeading.textContent;
-      if (aboutSubtitle) extractedContent.subtitle = aboutSubtitle.textContent;
-      break;
-
-    case 'pricing':
-      const pricingHeading = section.querySelector('h2');
-      const pricingDescription = section.querySelector('p');
-      const priceElement = section.querySelector('[class*="text-3xl"], [class*="text-4xl"]');
-      
-      if (pricingHeading) extractedContent.title = pricingHeading.textContent;
-      if (pricingDescription) extractedContent.description = pricingDescription.textContent;
-      if (priceElement) extractedContent.price = priceElement.textContent;
-      break;
-
-    case 'contact':
-      const contactHeading = section.querySelector('h2');
-      const contactSubtitle = section.querySelector('p');
-      
-      if (contactHeading) extractedContent.title = contactHeading.textContent;
-      if (contactSubtitle) extractedContent.subtitle = contactSubtitle.textContent;
-      break;
-  }
-
-  return extractedContent;
+// Clear cache function for admin use
+export const clearContentCache = () => {
+  contentCache.clear();
+  cacheExpiry.clear();
 };

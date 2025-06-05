@@ -1,5 +1,5 @@
 
-// Performance utilities for admin and website optimization
+// Enhanced performance utilities for optimization
 export const measurePerformance = (name: string, fn: Function) => {
   const start = performance.now();
   const result = fn();
@@ -33,12 +33,12 @@ export const throttle = <T extends (...args: any[]) => any>(
   };
 };
 
-// Cache utilities
-export const createCache = <T>(maxSize: number = 100) => {
+// Enhanced cache with memory management
+export const createCache = <T>(maxSize: number = 50) => { // Reduced from 100 to 50
   const cache = new Map<string, { value: T; timestamp: number }>();
   
   return {
-    get: (key: string, ttl: number = 300000) => { // 5 minutes default TTL
+    get: (key: string, ttl: number = 180000) => { // Reduced TTL to 3 minutes
       const item = cache.get(key);
       if (!item) return null;
       
@@ -52,8 +52,14 @@ export const createCache = <T>(maxSize: number = 100) => {
     
     set: (key: string, value: T) => {
       if (cache.size >= maxSize) {
-        const firstKey = cache.keys().next().value;
-        cache.delete(firstKey);
+        // Remove oldest entries
+        const sortedEntries = Array.from(cache.entries())
+          .sort(([,a], [,b]) => a.timestamp - b.timestamp);
+        
+        const toDelete = Math.ceil(maxSize * 0.3); // Remove 30% of oldest
+        for (let i = 0; i < toDelete; i++) {
+          cache.delete(sortedEntries[i][0]);
+        }
       }
       
       cache.set(key, { value, timestamp: Date.now() });
@@ -64,43 +70,87 @@ export const createCache = <T>(maxSize: number = 100) => {
   };
 };
 
-// Image optimization
-export const optimizeImageLoading = () => {
-  // Intersection Observer for lazy loading
-  const imageObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        const img = entry.target as HTMLImageElement;
-        if (img.dataset.src) {
-          img.src = img.dataset.src;
-          img.removeAttribute('data-src');
-          imageObserver.unobserve(img);
-        }
-      }
-    });
-  });
+// Optimized intersection observer for lazy loading
+export const createIntersectionObserver = (
+  callback: (entries: IntersectionObserverEntry[]) => void,
+  options: IntersectionObserverInit = {}
+) => {
+  const defaultOptions = {
+    rootMargin: '50px 0px', // Load 50px before entering viewport
+    threshold: 0.1,
+    ...options
+  };
 
-  // Observe all images with data-src
-  document.querySelectorAll('img[data-src]').forEach(img => {
-    imageObserver.observe(img);
-  });
-
-  return imageObserver;
+  return new IntersectionObserver(callback, defaultOptions);
 };
 
-// Preload critical resources
+// Preload critical resources with priority
 export const preloadCriticalResources = () => {
-  const criticalImages = [
-    '/lovable-uploads/7b4f0db6-80ea-4da6-b817-0f33ba7562b5.png', // Hero
-    '/lovable-uploads/053f601c-1228-481c-9aca-d078fb3d7d8a.png'  // Profile
+  const criticalResources = [
+    {
+      href: '/lovable-uploads/7b4f0db6-80ea-4da6-b817-0f33ba7562b5.png',
+      as: 'image',
+      type: 'image/png',
+      priority: 'high'
+    }
   ];
 
-  criticalImages.forEach(src => {
+  criticalResources.forEach(resource => {
     const link = document.createElement('link');
     link.rel = 'preload';
-    link.as = 'image';
-    link.href = src;
-    link.fetchPriority = 'high';
+    link.as = resource.as;
+    link.href = resource.href;
+    link.fetchPriority = resource.priority;
+    if (resource.type) {
+      link.type = resource.type;
+    }
     document.head.appendChild(link);
   });
+};
+
+// Memory cleanup utility
+export const cleanupMemory = () => {
+  // Force garbage collection if available
+  if ('gc' in window && typeof (window as any).gc === 'function') {
+    (window as any).gc();
+  }
+  
+  // Clear unused image objects
+  const images = document.querySelectorAll('img[data-cleanup="true"]');
+  images.forEach(img => {
+    if (img instanceof HTMLImageElement) {
+      img.src = '';
+      img.srcset = '';
+    }
+  });
+};
+
+// Performance monitoring with Core Web Vitals
+export const trackPerformanceMetrics = () => {
+  // Track LCP (Largest Contentful Paint)
+  new PerformanceObserver((entryList) => {
+    const entries = entryList.getEntries();
+    const lastEntry = entries[entries.length - 1];
+    console.log('LCP:', lastEntry.startTime);
+  }).observe({ entryTypes: ['largest-contentful-paint'] });
+
+  // Track FID (First Input Delay)
+  new PerformanceObserver((entryList) => {
+    const entries = entryList.getEntries();
+    entries.forEach((entry: any) => {
+      console.log('FID:', entry.processingStart - entry.startTime);
+    });
+  }).observe({ entryTypes: ['first-input'] });
+
+  // Track CLS (Cumulative Layout Shift)
+  let clsValue = 0;
+  new PerformanceObserver((entryList) => {
+    const entries = entryList.getEntries();
+    entries.forEach((entry: any) => {
+      if (!entry.hadRecentInput) {
+        clsValue += entry.value;
+        console.log('CLS:', clsValue);
+      }
+    });
+  }).observe({ entryTypes: ['layout-shift'] });
 };
