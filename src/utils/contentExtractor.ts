@@ -1,4 +1,3 @@
-
 // Utility to extract current content from the website components
 export const extractCurrentContent = (sectionId: string) => {
   // Get admin overrides first
@@ -17,7 +16,6 @@ export const extractCurrentContent = (sectionId: string) => {
   const getCurrentContent = (sectionId: string) => {
     switch (sectionId) {
       case 'hero':
-      case 'home':
         return {
           title: "Mindset Coaching für ein glückliches und erfülltes Leben",
           subtitle: "Entfalte dein volles Potenzial und erschaffe das Leben, von dem du träumst. Mit dem richtigen Mindset sind deinen Möglichkeiten keine Grenzen gesetzt.",

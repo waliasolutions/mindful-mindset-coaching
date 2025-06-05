@@ -23,8 +23,8 @@ const Hero = () => {
     backgroundImage: "/lovable-uploads/7b4f0db6-80ea-4da6-b817-0f33ba7562b5.png"
   };
 
-  // Use content bridge to allow admin overrides
-  const content = useContentBridge('home', defaultContent);
+  // Use content bridge to allow admin overrides - using 'hero' to match admin
+  const content = useContentBridge('hero', defaultContent);
 
   useEffect(() => {
     // Reduce animation delays for faster perceived loading
@@ -40,7 +40,7 @@ const Hero = () => {
   }, []);
 
   return (
-    <section id="home" className="relative min-h-screen flex items-center pt-20 pb-12 overflow-hidden">
+    <section id="hero" className="relative min-h-screen flex items-center pt-20 pb-12 overflow-hidden">
       <div className="absolute inset-0 bg-beige/60 leaf-pattern -z-10"></div>
       
       <div className="absolute top-40 right-10 w-64 h-64 bg-sage/20 rounded-full blur-3xl -z-10"></div>

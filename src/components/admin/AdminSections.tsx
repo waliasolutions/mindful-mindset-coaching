@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { Edit, Trash2, ChevronDown, ChevronUp, Grip, Eye, EyeOff, RefreshCw } from 'lucide-react';
@@ -29,32 +30,6 @@ const AdminSections = () => {
   );
   const [editingSection, setEditingSection] = useState<Section | null>(null);
   const [syncedWithPage, setSyncedWithPage] = useState(true);
-  const [previewLoaded, setPreviewLoaded] = useState(false);
-
-  useEffect(() => {
-    // Check if the page has been updated outside of admin
-    const pageContent = document.querySelector('main');
-    if (pageContent) {
-      // This is a simple way to detect changes - in a real app you'd use a more robust approach
-      const sectionElements = Array.from(pageContent.children);
-      if (sectionElements.length !== sections.filter(s => s.visible).length) {
-        setSyncedWithPage(false);
-      }
-    }
-    
-    // Check if the preview iframe is loaded
-    const checkPreviewLoaded = () => {
-      const previewFrame = document.querySelector('iframe');
-      if (previewFrame && previewFrame.contentDocument) {
-        setPreviewLoaded(true);
-      } else {
-        // Check again in a moment
-        setTimeout(checkPreviewLoaded, 500);
-      }
-    };
-    
-    checkPreviewLoaded();
-  }, [sections]);
 
   useEffect(() => {
     // Apply section settings from localStorage on admin load
@@ -195,16 +170,7 @@ const AdminSections = () => {
   };
 
   const handleEditSection = (section: Section) => {
-    // Ensure the preview iframe is loaded before opening editor
-    // so we can extract content from it
-    if (!previewLoaded) {
-      toast.error("Vorschau nicht vollständig geladen. Bitte warten Sie einen Moment, bevor Sie bearbeiten.");
-      setTimeout(() => {
-        handleSyncChanges();
-      }, 500);
-      return;
-    }
-    
+    // No longer need to wait for preview loading
     setEditingSection(section);
   };
 
@@ -241,11 +207,6 @@ const AdminSections = () => {
       
       <p className="text-gray-600">
         Ziehen Sie die Bereiche per Drag & Drop, um sie auf der Seite neu anzuordnen. Schalten Sie die Sichtbarkeit um oder bearbeiten Sie den Inhalt für jeden Bereich.
-        {!previewLoaded && (
-          <span className="block mt-2 text-amber-600 font-medium">
-            Vorschau wird geladen... Inhaltsbearbeitung wird in Kürze verfügbar sein.
-          </span>
-        )}
         {!syncedWithPage && (
           <span className="block mt-2 text-amber-600 font-medium">
             Änderungen stehen aus. Klicken Sie auf "Änderungen anwenden", um die Seite zu aktualisieren.
@@ -319,7 +280,6 @@ const AdminSections = () => {
                                 variant="ghost"
                                 size="icon"
                                 onClick={() => handleEditSection(section)}
-                                disabled={!previewLoaded}
                               >
                                 <Edit className="h-4 w-4" />
                               </Button>

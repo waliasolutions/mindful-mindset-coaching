@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useRef } from 'react';
 import { Phone, Mail, MapPin, Clock, ArrowRight, MessageSquare, Leaf } from 'lucide-react';
 import { useContentBridge } from '@/hooks/useContentBridge';
@@ -11,7 +12,8 @@ const Contact = () => {
     title: "Beginne deine Mindset-Reise heute",
     subtitle: "Der erste Schritt zu einem erfüllteren Leben beginnt mit einem Gespräch. Kontaktiere mich für ein kostenloses Kennenlerngespräch, in dem wir über deine Ziele sprechen und herausfinden, wie ich dich am besten unterstützen kann.",
     email: "info@mindset-coach-martina.ch",
-    phone: "078 840 04 81"
+    phone: "078 840 04 81",
+    sectionImage: "/lovable-uploads/41ccfa7b-2d21-4300-82ac-3cbd2ff728fe.png"
   };
 
   // Use content bridge to allow admin overrides
@@ -134,7 +136,7 @@ const Contact = () => {
             <div className="grid grid-cols-1 gap-8 h-full">
               <div className="aspect-[16/9] overflow-hidden shadow-xl rounded-lg">
                 <div className="image-reveal reveal w-full h-full">
-                  <img src="/lovable-uploads/41ccfa7b-2d21-4300-82ac-3cbd2ff728fe.png" alt="Martina Domeniconi with her dog" className="w-full h-full object-cover object-center" loading="lazy" />
+                  <img src={content.sectionImage} alt="Martina Domeniconi with her dog" className="w-full h-full object-cover object-center" loading="lazy" />
                   <div className="absolute inset-0 bg-gradient-to-t from-forest/30 to-transparent"></div>
                 </div>
               </div>

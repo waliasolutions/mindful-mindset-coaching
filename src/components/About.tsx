@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useRef } from 'react';
 import { Award, BookOpen, Users, Leaf } from 'lucide-react';
 import { useContentBridge } from '@/hooks/useContentBridge';
@@ -9,7 +10,8 @@ const About = () => {
   // Default content (original website content)
   const defaultContent = {
     title: "Martina Domeniconi – zertifizierter Mindset Coach",
-    subtitle: "Über mich"
+    subtitle: "Über mich",
+    profileImage: "/lovable-uploads/053f601c-1228-481c-9aca-d078fb3d7d8a.png"
   };
 
   // Use content bridge to allow admin overrides
@@ -58,7 +60,7 @@ const About = () => {
           <div className={`relative reveal-left ${isVisible ? 'revealed' : ''}`}>
             <div className="aspect-[4/5] relative z-10 overflow-hidden rounded-lg">
               <div className="image-reveal reveal w-full h-full">
-                <img src="/lovable-uploads/053f601c-1228-481c-9aca-d078fb3d7d8a.png" alt="Martina Domeniconi - Mindset Coach" className="w-full h-full object-cover object-center" loading="lazy" />
+                <img src={content.profileImage} alt="Martina Domeniconi - Mindset Coach" className="w-full h-full object-cover object-center" loading="lazy" />
                 <div className="absolute inset-0 bg-gradient-to-t from-forest/20 to-transparent"></div>
               </div>
             </div>
