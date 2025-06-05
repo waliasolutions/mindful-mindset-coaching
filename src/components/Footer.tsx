@@ -15,7 +15,7 @@ const Footer = ({ onTermsClick, onImpressumClick, onDatenschutzClick }: FooterPr
   const globalSettings = useGlobalSettings();
   const navigate = useNavigate();
   
-  // Use admin settings with proper fallbacks
+  // Use admin settings with proper fallbacks to correct URLs
   const footerContent = {
     contactText: globalSettings.footer?.contactText || 'Kontaktieren Sie uns, um mehr über unsere Coaching-Dienstleistungen zu erfahren',
     contactEmail: globalSettings.contactEmail || 'info@mindset-coach-martina.ch',
@@ -27,6 +27,9 @@ const Footer = ({ onTermsClick, onImpressumClick, onDatenschutzClick }: FooterPr
       { id: 'facebook', platform: 'Facebook', url: 'https://www.facebook.com/mindset.coach.martina' }
     ]
   };
+
+  // Debug log to see what URLs we're getting
+  console.log('Footer social links:', footerContent.socialLinks);
   
   // Add a hidden admin link that becomes visible when pressing Alt+Shift+A
   useEffect(() => {
