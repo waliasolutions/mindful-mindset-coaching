@@ -1,44 +1,89 @@
 
 import { Helmet } from 'react-helmet-async';
-import { useSeoSettings } from '../components/admin/seo/useSeoSettings';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { ga4Manager } from '@/utils/ga4Manager';
+
+interface SeoData {
+  title: string;
+  description: string;
+  keywords: string;
+  ogImage: string;
+  gaTrackingId: string;
+  enableGa: boolean;
+}
+
+const defaultSeoData: SeoData = {
+  title: 'Mindset Coach Martina Zürich | Entfalte dein Potenzial',
+  description: 'Verwandle dein Leben mit Mindset Coaching in Zürich! Coach Martina hilft dir dabei, deine Ziele zu erreichen. Kostenloses Kennenlerngespräch!',
+  keywords: 'mindset coaching zürich, life coach zürich, ziele erreichen zürich, coach martina, selbstbewusstsein stärken, persönlichkeitsentwicklung, lebensveränderung, mentales training zürich, lebenscoach schweiz, potenzial entfalten',
+  ogImage: '/lovable-uploads/eff14ab3-8502-4ea4-9c20-75fe9b485119.png',
+  gaTrackingId: 'G-CCD1ZR05L7',
+  enableGa: true
+};
 
 export const SEO = () => {
-  const { seoData } = useSeoSettings();
-  
+  const [seoData, setSeoData] = useState<SeoData>(defaultSeoData);
+
   useEffect(() => {
-    // Always remove existing GA scripts first to ensure correct state based on seoData
-    const existingGaScript = document.getElementById('ga-script');
-    const existingGaConfig = document.getElementById('ga-config');
-    
-    if (existingGaScript) existingGaScript.remove();
-    if (existingGaConfig) existingGaConfig.remove();
+    // Load initial SEO settings
+    const loadSeoSettings = () => {
+      const savedSeo = localStorage.getItem('seoSettings');
+      if (savedSeo) {
+        try {
+          const parsedData = JSON.parse(savedSeo);
+          setSeoData({ ...defaultSeoData, ...parsedData });
+          return { ...defaultSeoData, ...parsedData };
+        } catch (error) {
+          console.error('Error parsing SEO settings:', error);
+          return defaultSeoData;
+        }
+      }
+      return defaultSeoData;
+    };
 
-    // Handle Google Analytics script if enabled
-    if (seoData.enableGa && seoData.gaTrackingId) {
-      // Add GA script
-      const scriptGA = document.createElement('script');
-      scriptGA.async = true;
-      scriptGA.src = `https://www.googletagmanager.com/gtag/js?id=${seoData.gaTrackingId}`;
-      scriptGA.id = 'ga-script';
-      
-      const scriptConfig = document.createElement('script');
-      scriptConfig.id = 'ga-config';
-      scriptConfig.innerHTML = `
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', '${seoData.gaTrackingId}');
-      `;
-      
-      document.head.appendChild(scriptGA);
-      document.head.appendChild(scriptConfig);
+    const initialData = loadSeoSettings();
 
-      console.log(`Google Analytics (re)initialized by SEO.tsx with ID: ${seoData.gaTrackingId}`);
-    } else {
-      console.log('Google Analytics disabled or ID missing in SEO.tsx, ensuring scripts are removed.');
-    }
-  }, [seoData.enableGa, seoData.gaTrackingId]);
+    // Initialize GA4 with current settings
+    ga4Manager.initialize({
+      trackingId: initialData.gaTrackingId,
+      enabled: initialData.enableGa
+    });
+
+    // Listen for real-time updates from admin
+    const handleSeoUpdate = (event: CustomEvent) => {
+      const newSeoData = event.detail;
+      setSeoData(newSeoData);
+      console.log('SEO.tsx: Received real-time SEO update', newSeoData);
+    };
+
+    // Listen for localStorage changes from admin
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === 'seoSettings' && e.newValue) {
+        try {
+          const newData = JSON.parse(e.newValue);
+          setSeoData(newData);
+          
+          // Re-initialize GA4 with new settings
+          ga4Manager.initialize({
+            trackingId: newData.gaTrackingId,
+            enabled: newData.enableGa
+          });
+          
+          console.log('SEO.tsx: Updated from localStorage change', newData);
+        } catch (error) {
+          console.error('Error parsing updated SEO settings:', error);
+        }
+      }
+    };
+
+    window.addEventListener('seoSettingsUpdated', handleSeoUpdate as EventListener);
+    window.addEventListener('storage', handleStorageChange);
+
+    return () => {
+      window.removeEventListener('seoSettingsUpdated', handleSeoUpdate as EventListener);
+      window.removeEventListener('storage', handleStorageChange);
+    };
+  }, []);
 
   return (
     <Helmet>

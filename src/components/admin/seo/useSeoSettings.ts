@@ -1,6 +1,7 @@
 
 import { useState, useEffect } from 'react';
 import { toast } from 'sonner';
+import { ga4Manager } from '@/utils/ga4Manager';
 
 export interface SeoData {
   title: string;
@@ -22,22 +23,28 @@ const defaultSeoData: SeoData = {
 
 export const useSeoSettings = () => {
   const [seoData, setSeoData] = useState<SeoData>(defaultSeoData);
+  const [isLoading, setIsLoading] = useState(false);
+  const [testingConnection, setTestingConnection] = useState(false);
 
   useEffect(() => {
+    loadSeoSettings();
+  }, []);
+
+  const loadSeoSettings = () => {
     const savedSeo = localStorage.getItem('seoSettings');
     if (savedSeo) {
       try {
-        setSeoData(JSON.parse(savedSeo));
+        const parsedData = JSON.parse(savedSeo);
+        setSeoData({ ...defaultSeoData, ...parsedData });
       } catch (error) {
         console.error('Error parsing SEO settings:', error);
         setSeoData(defaultSeoData);
       }
     } else {
-      // If no saved settings, initialize with the new natural German content
       localStorage.setItem('seoSettings', JSON.stringify(defaultSeoData));
       setSeoData(defaultSeoData);
     }
-  }, []);
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -52,6 +59,30 @@ export const useSeoSettings = () => {
       ...prev,
       enableGa: checked
     }));
+  };
+
+  const testGa4Connection = async (): Promise<boolean> => {
+    if (!seoData.gaTrackingId) {
+      toast.error('Bitte geben Sie eine gültige GA4 Tracking-ID ein');
+      return false;
+    }
+
+    setTestingConnection(true);
+    try {
+      const isValid = await ga4Manager.testConnection(seoData.gaTrackingId);
+      if (isValid) {
+        toast.success('GA4 Tracking-ID ist gültig');
+        return true;
+      } else {
+        toast.error('Ungültige GA4 Tracking-ID Format (muss mit G- beginnen)');
+        return false;
+      }
+    } catch (error) {
+      toast.error('Fehler beim Testen der GA4 Verbindung');
+      return false;
+    } finally {
+      setTestingConnection(false);
+    }
   };
 
   const updateMetaTags = () => {
@@ -82,58 +113,46 @@ export const useSeoSettings = () => {
     ogImage.setAttribute('content', seoData.ogImage);
   };
 
-  const updateGoogleAnalytics = (trackingId: string) => {
-    removeGoogleAnalytics();
-    
-    const scriptGA = document.createElement('script');
-    scriptGA.async = true;
-    scriptGA.src = `https://www.googletagmanager.com/gtag/js?id=${trackingId}`;
-    scriptGA.id = 'ga-script';
-    
-    const scriptConfig = document.createElement('script');
-    scriptConfig.id = 'ga-config';
-    scriptConfig.innerHTML = `
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', '${trackingId}');
-    `;
-    
-    document.head.appendChild(scriptGA);
-    document.head.appendChild(scriptConfig);
-  };
+  const handleSave = async () => {
+    setIsLoading(true);
+    try {
+      // Save to localStorage
+      localStorage.setItem('seoSettings', JSON.stringify(seoData));
 
-  const removeGoogleAnalytics = () => {
-    const gaScript = document.getElementById('ga-script');
-    const gaConfig = document.getElementById('ga-config');
-    
-    if (gaScript) {
-      gaScript.remove();
+      // Initialize GA4 with new settings
+      const ga4Success = await ga4Manager.initialize({
+        trackingId: seoData.gaTrackingId,
+        enabled: seoData.enableGa
+      });
+
+      if (!ga4Success && seoData.enableGa) {
+        toast.error('GA4 konnte nicht initialisiert werden');
+      }
+
+      // Update meta tags
+      updateMetaTags();
+      
+      // Dispatch storage event for real-time sync
+      window.dispatchEvent(new CustomEvent('seoSettingsUpdated', { 
+        detail: seoData 
+      }));
+      
+      toast.success('SEO Einstellungen erfolgreich gespeichert');
+    } catch (error) {
+      console.error('Error saving SEO settings:', error);
+      toast.error('Fehler beim Speichern der SEO Einstellungen');
+    } finally {
+      setIsLoading(false);
     }
-    
-    if (gaConfig) {
-      gaConfig.remove();
-    }
-  };
-
-  const handleSave = () => {
-    localStorage.setItem('seoSettings', JSON.stringify(seoData));
-
-    if (seoData.enableGa && seoData.gaTrackingId) {
-      updateGoogleAnalytics(seoData.gaTrackingId);
-    } else {
-      removeGoogleAnalytics();
-    }
-
-    updateMetaTags();
-    
-    toast.success('SEO settings saved successfully');
   };
 
   return {
     seoData,
+    isLoading,
+    testingConnection,
     handleChange,
     handleSwitchChange,
-    handleSave
+    handleSave,
+    testGa4Connection
   };
 };

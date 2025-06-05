@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -13,6 +14,7 @@ import { HelmetProvider } from "react-helmet-async";
 import { toast } from "@/components/ui/use-toast";
 import { useServiceWorker } from "./hooks/useServiceWorker";
 import { preloadCriticalResources } from "./utils/performance";
+import { ga4Manager } from "./utils/ga4Manager";
 
 // Create a query client with error handling
 const queryClient = new QueryClient({
@@ -45,6 +47,35 @@ const AppContent = () => {
   useEffect(() => {
     // Preload critical resources
     preloadCriticalResources();
+
+    // Initialize GA4 on app startup
+    const initializeGA4 = () => {
+      const savedSeo = localStorage.getItem('seoSettings');
+      if (savedSeo) {
+        try {
+          const seoData = JSON.parse(savedSeo);
+          ga4Manager.initialize({
+            trackingId: seoData.gaTrackingId || 'G-CCD1ZR05L7',
+            enabled: seoData.enableGa !== false
+          });
+        } catch (error) {
+          console.error('Error initializing GA4 from localStorage:', error);
+          // Fallback to default
+          ga4Manager.initialize({
+            trackingId: 'G-CCD1ZR05L7',
+            enabled: true
+          });
+        }
+      } else {
+        // Initialize with defaults
+        ga4Manager.initialize({
+          trackingId: 'G-CCD1ZR05L7',
+          enabled: true
+        });
+      }
+    };
+
+    initializeGA4();
 
     // Update page metadata based on route
     const pathname = location.pathname;
