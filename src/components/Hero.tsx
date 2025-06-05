@@ -1,9 +1,9 @@
-
 import { ArrowDown, Leaf, Shield } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { useIsMobile } from '../hooks/use-mobile';
 import { Badge } from '@/components/ui/badge';
 import OptimizedImage from './OptimizedImage';
+import { useContentBridge } from '@/hooks/useContentBridge';
 
 const Hero = () => {
   const headingRef = useRef<HTMLHeadingElement>(null);
@@ -12,6 +12,18 @@ const Hero = () => {
   const ctaRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
   const [imageLoaded, setImageLoaded] = useState(false);
+
+  // Default content (original website content)
+  const defaultContent = {
+    title: "Mindset Coaching für ein glückliches und erfülltes Leben",
+    subtitle: "Entfalte dein volles Potenzial und erschaffe das Leben, von dem du träumst. Mit dem richtigen Mindset sind deinen Möglichkeiten keine Grenzen gesetzt.",
+    additionalText: "Das zentrale Thema bei Mindset Coaching sind deine persönlichen Überzeugungen und Glaubenssätze. Wovon du selber überzeugst bist, verwirklichst du in deinem Leben. In einem persönlichen Coaching lernst du deine negativen Glaubenssätze zu erkennen und abzulegen und stattdessen in jedem Lebensbereich bestärkende Glaubenssätze zu entwickeln. Dazu gehört auch ein positives Selbstbild aufzubauen und in den inneren Frieden mit dir, deinen Mitmenschen, deiner Vergangenheit und deiner Geschichte zu kommen.",
+    buttonText: "Kennenlerngespräch vereinbaren",
+    backgroundImage: "/lovable-uploads/7b4f0db6-80ea-4da6-b817-0f33ba7562b5.png"
+  };
+
+  // Use content bridge to allow admin overrides
+  const content = useContentBridge('home', defaultContent);
 
   useEffect(() => {
     const elements = [headingRef.current, subtitleRef.current, additionalTextRef.current, ctaRef.current];
@@ -33,7 +45,8 @@ const Hero = () => {
     });
   }, []);
 
-  return <section id="home" className="relative min-h-screen flex items-center pt-20 pb-12 overflow-hidden">
+  return (
+    <section id="home" className="relative min-h-screen flex items-center pt-20 pb-12 overflow-hidden">
       <div className="absolute inset-0 bg-beige/60 leaf-pattern -z-10"></div>
       
       <div className="absolute top-40 right-10 w-64 h-64 bg-sage/20 rounded-full blur-3xl -z-10"></div>
@@ -47,11 +60,19 @@ const Hero = () => {
                 <span className="bg-gradient-to-r from-moss via-petrol to-forest bg-clip-text text-transparent">Mindset Coaching</span> für ein glückliches und erfülltes Leben
               </h1>
 
+              {/* Mobile image */}
               <div className="block lg:hidden mb-8 text-center">
                 <div className="relative w-full max-w-md mx-auto">
                   <div className="aspect-[3/4] overflow-hidden shadow-xl transition-all duration-500 hover:shadow-2xl rounded-lg">
                     <div className="image-reveal reveal w-full h-full relative">
-                      <OptimizedImage src="/lovable-uploads/7b4f0db6-80ea-4da6-b817-0f33ba7562b5.png" alt="Martina Domeniconi - Mindset Coach" className="w-full h-full object-cover object-center" priority="high" sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" onLoad={() => setImageLoaded(true)} />
+                      <OptimizedImage 
+                        src={content.backgroundImage} 
+                        alt="Martina Domeniconi - Mindset Coach" 
+                        className="w-full h-full object-cover object-center" 
+                        priority="high" 
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" 
+                        onLoad={() => setImageLoaded(true)} 
+                      />
                       <div className="absolute inset-0 bg-forest/20 rounded-lg"></div>
                       
                       <div className="absolute bottom-4 right-4 z-10">
@@ -66,13 +87,15 @@ const Hero = () => {
               </div>
 
               <p ref={subtitleRef} className="text-lg md:text-xl text-foreground/90 mb-8 max-w-xl mx-auto lg:mx-0 text-center lg:text-left transition-all duration-700 ease-out opacity-0 translate-y-10 delay-100">
-                Entfalte dein volles Potenzial und erschaffe das Leben, von dem du träumst. Mit dem richtigen Mindset sind deinen Möglichkeiten keine Grenzen gesetzt.
+                {content.subtitle}
               </p>
               <p ref={additionalTextRef} className="text-base text-foreground/80 mb-8 max-w-xl mx-auto lg:mx-0 text-center lg:text-left transition-all duration-700 ease-out opacity-0 translate-y-10 delay-200">
-                Das zentrale Thema bei Mindset Coaching sind deine persönlichen Überzeugungen und Glaubenssätze. Wovon du selber überzeugst bist, verwirklichst du in deinem Leben. In einem persönlichen Coaching lernst du deine negativen Glaubenssätze zu erkennen und abzulegen und stattdessen in jedem Lebensbereich bestärkende Glaubenssätze zu entwickeln. Dazu gehört auch ein positives Selbstbild aufzubauen und in den inneren Frieden mit dir, deinen Mitmenschen, deiner Vergangenheit und deiner Geschichte zu kommen.
+                {content.additionalText}
               </p>
               <div ref={ctaRef} className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start transition-all duration-700 ease-out opacity-0 translate-y-10 delay-200">
-                <a href="#contact" className="inline-flex items-center justify-center px-6 py-3 bg-petrol text-white hover:bg-petrol/90 transition-colors shadow-lg font-medium rounded-md">Kennenlerngespräch vereinbaren</a>
+                <a href="#contact" className="inline-flex items-center justify-center px-6 py-3 bg-petrol text-white hover:bg-petrol/90 transition-colors shadow-lg font-medium rounded-md">
+                  {content.buttonText}
+                </a>
                 <a href="#services" className="hidden lg:inline-flex items-center justify-center px-6 py-3 bg-sage/30 hover:bg-sage/40 text-forest transition-colors focus-ring text-center">
                   Mehr erfahren
                 </a>
@@ -80,10 +103,18 @@ const Hero = () => {
             </div>
           </div>
           
+          {/* Desktop image */}
           <div className="hidden lg:block relative w-full max-w-md lg:max-w-lg xl:max-w-xl">
             <div className="aspect-[3/4] overflow-hidden shadow-xl transition-all duration-500 hover:shadow-2xl rounded-lg">
               <div className="image-reveal reveal w-full h-full relative">
-                <OptimizedImage src="/lovable-uploads/7b4f0db6-80ea-4da6-b817-0f33ba7562b5.png" alt="Martina Domeniconi - Mindset Coach" className="w-full h-full object-cover object-center" priority="high" sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" onLoad={() => setImageLoaded(true)} />
+                <OptimizedImage 
+                  src={content.backgroundImage} 
+                  alt="Martina Domeniconi - Mindset Coach" 
+                  className="w-full h-full object-cover object-center" 
+                  priority="high" 
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" 
+                  onLoad={() => setImageLoaded(true)} 
+                />
                 <div className="absolute inset-0 bg-forest/20 rounded-lg"></div>
                 
                 <div className="absolute bottom-4 right-4 z-10">
@@ -98,13 +129,16 @@ const Hero = () => {
         </div>
       </div>
       
-      {!isMobile && <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce max-lg:hidden">
+      {!isMobile && (
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce max-lg:hidden">
           <a href="#services" className="flex flex-col items-center text-forest/70 hover:text-forest transition-colors">
             <span className="text-sm mb-2">Mehr</span>
             <ArrowDown size={20} />
           </a>
-        </div>}
-    </section>;
+        </div>
+      )}
+    </section>
+  );
 };
 
 export default Hero;

@@ -29,7 +29,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
-import { getContentFromStorage, saveContentToStorage, extractContentFromDOM } from '@/utils/contentSync';
+import { saveContentOverride, extractContentFromDOM } from '@/hooks/useContentBridge';
 
 interface Section {
   id: string;
@@ -47,48 +47,41 @@ interface SectionEditorProps {
 const getDefaultContent = (sectionId: string) => {
   switch (sectionId) {
     case 'hero':
+    case 'home':
       return {
         title: "Mindset Coaching für ein glückliches und erfülltes Leben",
-        subtitle: "Entfalte dein volles Potenzial und erschaffe das Leben, von dem du träumst.",
-        backgroundImage: "/lovable-uploads/7b4f0db6-80ea-4da6-b817-0f33ba7562b5.png",
-        buttonText: "Kennenlerngespräch vereinbaren"
+        subtitle: "Entfalte dein volles Potenzial und erschaffe das Leben, von dem du träumst. Mit dem richtigen Mindset sind deinen Möglichkeiten keine Grenzen gesetzt.",
+        additionalText: "Das zentrale Thema bei Mindset Coaching sind deine persönlichen Überzeugungen und Glaubenssätze. Wovon du selber überzeugst bist, verwirklichst du in deinem Leben. In einem persönlichen Coaching lernst du deine negativen Glaubenssätze zu erkennen und abzulegen und stattdessen in jedem Lebensbereich bestärkende Glaubenssätze zu entwickeln. Dazu gehört auch ein positives Selbstbild aufzubauen und in den inneren Frieden mit dir, deinen Mitmenschen, deiner Vergangenheit und deiner Geschichte zu kommen.",
+        buttonText: "Kennenlerngespräch vereinbaren",
+        backgroundImage: "/lovable-uploads/7b4f0db6-80ea-4da6-b817-0f33ba7562b5.png"
       };
     case 'services':
       return {
         title: "Transformiere dein Leben durch Mindset Coaching",
-        description: "In einem 1:1 Coaching lösen wir Blockaden, bringen Klarheit in dein Gedanken-Karussell und richten deinen Fokus auf das, was wirklich zählt.",
-        benefits: [
-          { title: "Persönliches Wachstum", icon: "Brain", description: "Du möchtest ein erfülltes und selbstbestimmtes Leben führen" },
-          { title: "Potenzialentfaltung", icon: "Star", description: "Du willst endlich deine Ziele erreichen und dein volles Potenzial entfalten" },
-          { title: "Selbstbewusstsein", icon: "Heart", description: "Du möchtest mehr Selbstbewusstsein und Vertrauen aufbauen" }
-        ]
+        description: "In einem 1:1 Coaching löst du Blockaden, bringst Klarheit in dein Gedanken-Karussell und richtest deinen Fokus auf das, was wirklich zählt: Deine Träume, Deine Lebenszufriedenheit und Deine innere Ruhe und Gelassenheit.",
+        buttonText: "Kontaktiere mich"
       };
     case 'pricing':
       return {
         title: "Investiere in dein Wohlbefinden",
-        description: "Vor jedem Coaching machen wir zuerst ein kostenloses Kennenlerngespraech online oder per Telefon.",
+        description: "Mir ist wichtig, dass du dich wohlfühlst – deshalb starten wir mit einem kostenlosen Kennenlerngespräch. In einem kurzen Telefonat können wir erste Fragen klären und gemeinsam sehen, ob die Zusammenarbeit für beide Seiten passt.",
         quote: "Unsere wichtigste Entscheidung ist, ob wir das Universum für einen freundlichen oder feindlichen Ort halten.",
         quoteAuthor: "― Albert Einstein",
         price: "CHF 90",
         pricePeriod: "pro Sitzung",
-        packageTitle: "Coaching Einzelsitzung",
-        features: [
-          "Individuelle Betreuung auf deine Bedürfnisse zugeschnitten",
-          "Praktische Übungen und Techniken für den Alltag"
-        ]
+        packageTitle: "Coaching Einzelsitzung"
       };
     case 'about':
       return {
-        title: "Über mich",
-        subtitle: "Ein neuer Blickwinkel für deine Herausforderungen",
-        description: "Als Mindset Coach begleite ich dich dabei, hinderliche Denkmuster zu erkennen und in kraftvolle, positive Gedanken umzuwandeln."
+        title: "Martina Domeniconi – zertifizierter Mindset Coach",
+        subtitle: "Über mich"
       };
     case 'contact':
       return {
-        title: "Kontakt",
-        subtitle: "Lass uns gemeinsam an deinem Mindset arbeiten",
+        title: "Beginne deine Mindset-Reise heute",
+        subtitle: "Der erste Schritt zu einem erfüllteren Leben beginnt mit einem Gespräch. Kontaktiere mich für ein kostenloses Kennenlerngespräch, in dem wir über deine Ziele sprechen und herausfinden, wie ich dich am besten unterstützen kann.",
         email: "info@mindset-coach-martina.ch",
-        phone: "+41 78 840 04 81"
+        phone: "078 840 04 81"
       };
     default:
       return {};
@@ -98,24 +91,21 @@ const getDefaultContent = (sectionId: string) => {
 const SectionEditor = ({ section, onClose }: SectionEditorProps) => {
   const [isOpen, setIsOpen] = useState(true);
   
-  // Try to get content from storage first, then extract from DOM, then use defaults
+  // Get initial content from localStorage or use defaults
   const getInitialContent = () => {
-    let content = getContentFromStorage(section.id);
-    
-    if (!content || Object.keys(content).length === 0) {
-      // Try to extract from current DOM
-      const extractedContent = extractContentFromDOM(section.id);
-      if (extractedContent && Object.keys(extractedContent).length > 0) {
-        content = extractedContent;
-        // Save the extracted content for future use
-        saveContentToStorage(section.id, content);
-      } else {
-        // Fall back to defaults
-        content = getDefaultContent(section.id);
+    try {
+      const adminOverrides = localStorage.getItem('adminContentOverrides');
+      if (adminOverrides) {
+        const overrides = JSON.parse(adminOverrides);
+        if (overrides[section.id]) {
+          return { ...getDefaultContent(section.id), ...overrides[section.id] };
+        }
       }
+    } catch (error) {
+      console.error('Error parsing admin content overrides:', error);
     }
     
-    return content;
+    return getDefaultContent(section.id);
   };
 
   const [content, setContent] = useState(getInitialContent());
@@ -128,21 +118,6 @@ const SectionEditor = ({ section, onClose }: SectionEditorProps) => {
     form.reset(content);
   }, [content, form]);
 
-  useEffect(() => {
-    // Listen for content updates from other parts of the app
-    const handleContentUpdate = (event: CustomEvent) => {
-      if (event.detail.sectionId === section.id) {
-        setContent(event.detail.content);
-        form.reset(event.detail.content);
-      }
-    };
-
-    window.addEventListener('contentUpdated', handleContentUpdate as EventListener);
-    return () => {
-      window.removeEventListener('contentUpdated', handleContentUpdate as EventListener);
-    };
-  }, [section.id, form]);
-
   const handleClose = () => {
     setIsOpen(false);
     setTimeout(onClose, 300);
@@ -151,11 +126,8 @@ const SectionEditor = ({ section, onClose }: SectionEditorProps) => {
   const handleSave = () => {
     const values = form.getValues();
     
-    // Update the content state
-    setContent(values);
-    
-    // Save to localStorage and trigger update event
-    if (saveContentToStorage(section.id, values)) {
+    // Save to localStorage using the content bridge system
+    if (saveContentOverride(section.id, values)) {
       toast.success(`${section.name} section updated successfully`);
       handleClose();
     } else {
@@ -166,6 +138,7 @@ const SectionEditor = ({ section, onClose }: SectionEditorProps) => {
   const renderEditorFields = () => {
     switch (section.id) {
       case 'hero':
+      case 'home':
         return (
           <>
             <FormField
@@ -189,6 +162,19 @@ const SectionEditor = ({ section, onClose }: SectionEditorProps) => {
                   <FormLabel>Subtitle</FormLabel>
                   <FormControl>
                     <Textarea {...field} className="min-h-[60px]" />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="additionalText"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Additional Text</FormLabel>
+                  <FormControl>
+                    <Textarea {...field} className="min-h-[100px]" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -234,6 +220,19 @@ const SectionEditor = ({ section, onClose }: SectionEditorProps) => {
                   <FormLabel>Section Description</FormLabel>
                   <FormControl>
                     <Textarea {...field} className="min-h-[80px]" />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="buttonText"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Button Text</FormLabel>
+                  <FormControl>
+                    <Input {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -325,6 +324,19 @@ const SectionEditor = ({ section, onClose }: SectionEditorProps) => {
                 )}
               />
             </div>
+            <FormField
+              control={form.control}
+              name="packageTitle"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Package Title</FormLabel>
+                  <FormControl>
+                    <Input {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
           </>
         );
         
@@ -357,19 +369,6 @@ const SectionEditor = ({ section, onClose }: SectionEditorProps) => {
                 </FormItem>
               )}
             />
-            <FormField
-              control={form.control}
-              name="description"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Description</FormLabel>
-                  <FormControl>
-                    <Textarea {...field} className="min-h-[100px]" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
           </>
         );
         
@@ -396,7 +395,7 @@ const SectionEditor = ({ section, onClose }: SectionEditorProps) => {
                 <FormItem>
                   <FormLabel>Subtitle</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Textarea {...field} className="min-h-[80px]" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

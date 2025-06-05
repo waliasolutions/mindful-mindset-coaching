@@ -1,12 +1,26 @@
-
 import { useState, useEffect, useRef } from 'react';
 import { AspectRatio } from './ui/aspect-ratio';
 import { MessageSquareQuote, Check, Clock, Users, Phone } from 'lucide-react';
 import OptimizedImage from './OptimizedImage';
+import { useContentBridge } from '@/hooks/useContentBridge';
 
 const PricingWithQuote = () => {
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
+
+  // Default content (original website content)
+  const defaultContent = {
+    title: "Investiere in dein Wohlbefinden",
+    description: "Mir ist wichtig, dass du dich wohlfühlst – deshalb starten wir mit einem kostenlosen Kennenlerngespräch. In einem kurzen Telefonat können wir erste Fragen klären und gemeinsam sehen, ob die Zusammenarbeit für beide Seiten passt.",
+    quote: "Unsere wichtigste Entscheidung ist, ob wir das Universum für einen freundlichen oder feindlichen Ort halten.",
+    quoteAuthor: "― Albert Einstein",
+    price: "CHF 90",
+    pricePeriod: "pro Sitzung",
+    packageTitle: "Coaching Einzelsitzung"
+  };
+
+  // Use content bridge to allow admin overrides
+  const content = useContentBridge('pricing', defaultContent);
 
   useEffect(() => {
     const observer = new IntersectionObserver(([entry]) => {
@@ -29,19 +43,19 @@ const PricingWithQuote = () => {
     };
   }, []);
 
-  return <section id="pricing" ref={sectionRef} className="section-padding relative overflow-hidden text-forest bg-[#e8f1e8]">
+  return (
+    <section id="pricing" ref={sectionRef} className="section-padding relative overflow-hidden text-forest bg-[#e8f1e8]">
       <div className="container mx-auto px-4 md:px-6">
         <div className="max-w-4xl mx-auto mb-12 md:mb-16 reveal-element">
           <div className="flex justify-center mb-2">
             <span className="px-3 py-1 text-xs font-medium bg-moss/20 rounded-full backdrop-blur-sm text-forest">Preise</span>
           </div>
           <h2 className="text-3xl md:text-4xl font-serif font-semibold text-center mb-4 text-forest">
-            Investiere in dein Wohlbefinden
+            {content.title}
           </h2>
           <div className="w-16 h-1 mx-auto mb-6 md:mb-8 bg-[f0f7f0] bg-[#41773a]"></div>
           <p className="text-lg text-center text-forest/90 max-w-2xl mx-auto">
-            Mir ist wichtig, dass du dich wohlfühlst – deshalb starten wir mit einem kostenlosen Kennenlerngespräch. 
-            In einem kurzen Telefonat können wir erste Fragen klären und gemeinsam sehen, ob die Zusammenarbeit für beide Seiten passt.
+            {content.description}
           </p>
         </div>
 
@@ -57,9 +71,9 @@ const PricingWithQuote = () => {
                     <MessageSquareQuote size={24} className="text-forest/80" />
                   </div>
                   <p className="text-lg md:text-xl lg:text-2xl text-forest font-serif mb-3 md:mb-4 lg:mb-6 leading-relaxed text-center italic">
-                    Unsere wichtigste Entscheidung ist, ob wir das Universum für einen freundlichen oder feindlichen Ort halten.
+                    {content.quote}
                   </p>
-                  <p className="text-forest/80 font-medium text-sm md:text-base">― Albert Einstein</p>
+                  <p className="text-forest/80 font-medium text-sm md:text-base">{content.quoteAuthor}</p>
                 </div>
               </div>
             </div>
@@ -69,11 +83,11 @@ const PricingWithQuote = () => {
             <div className="bg-white/90 shadow-xl overflow-hidden border border-forest/10 rounded-lg h-full">
               <div className="h-0.5 bg-forest/20"></div>
               <div className="p-5 md:p-6 lg:p-8 text-forest bg-[#41773a]/20">
-                <h3 className="text-xl md:text-2xl font-serif font-medium mb-2">Coaching Einzelsitzung</h3>
+                <h3 className="text-xl md:text-2xl font-serif font-medium mb-2">{content.packageTitle}</h3>
                 <p className="text-forest/90 mb-4">Individuelle Betreuung für deine Bedürfnisse</p>
                 <div className="flex items-baseline">
-                  <span className="text-3xl md:text-4xl font-bold">CHF 90</span>
-                  <span className="text-forest/90 ml-2">pro Sitzung</span>
+                  <span className="text-3xl md:text-4xl font-bold">{content.price}</span>
+                  <span className="text-forest/90 ml-2">{content.pricePeriod}</span>
                 </div>
               </div>
               
@@ -101,10 +115,12 @@ const PricingWithQuote = () => {
                 </div>
                 
                 <ul className="space-y-2 md:space-y-3 mb-6 md:mb-8">
-                  {["Individuelle Betreuung auf deine Bedürfnisse zugeschnitten", "Praktische Übungen und Techniken für den Alltag", "Fokus auf deine persönlichen Ziele und Herausforderungen", "Flexible Terminvereinbarung"].map((feature, index) => <li key={index} className="flex items-start gap-2 md:gap-3">
+                  {["Individuelle Betreuung auf deine Bedürfnisse zugeschnitten", "Praktische Übungen und Techniken für den Alltag", "Fokus auf deine persönlichen Ziele und Herausforderungen", "Flexible Terminvereinbarung"].map((feature, index) => (
+                    <li key={index} className="flex items-start gap-2 md:gap-3">
                       <Check size={16} className="text-moss flex-shrink-0 mt-1" />
                       <span className="text-sm md:text-base text-forest/80">{feature}</span>
-                    </li>)}
+                    </li>
+                  ))}
                 </ul>
                 
                 <div>
@@ -117,7 +133,8 @@ const PricingWithQuote = () => {
           </div>
         </div>
       </div>
-    </section>;
+    </section>
+  );
 };
 
 export default PricingWithQuote;

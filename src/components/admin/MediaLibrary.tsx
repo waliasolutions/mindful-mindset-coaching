@@ -31,27 +31,6 @@ const MediaLibrary = ({ onSelectImage, selectedImage }: MediaLibraryProps) => {
 
   useEffect(() => {
     loadImages();
-    
-    // Set up realtime subscription for media_library changes
-    const channel = supabase
-      .channel('media-changes')
-      .on(
-        'postgres_changes',
-        {
-          event: '*',
-          schema: 'public',
-          table: 'media_library'
-        },
-        (payload) => {
-          console.log('Media library change:', payload);
-          loadImages(); // Reload images when changes occur
-        }
-      )
-      .subscribe();
-
-    return () => {
-      supabase.removeChannel(channel);
-    };
   }, []);
 
   const loadImages = async () => {
@@ -68,7 +47,7 @@ const MediaLibrary = ({ onSelectImage, selectedImage }: MediaLibraryProps) => {
         console.error('Error loading from media_library:', dbError);
       }
 
-      // Also load from storage to catch any images not in the database
+      // Also check for storage files to catch any images not in the database
       const { data: storageFiles, error: storageError } = await supabase.storage
         .from('media')
         .list('', { limit: 100 });
@@ -142,7 +121,7 @@ const MediaLibrary = ({ onSelectImage, selectedImage }: MediaLibraryProps) => {
         .from('media')
         .getPublicUrl(fileName);
 
-      // Save to media_library table (without user_id since this is admin panel)
+      // Save to media_library table
       const { error: dbError } = await supabase
         .from('media_library')
         .insert({
@@ -158,6 +137,7 @@ const MediaLibrary = ({ onSelectImage, selectedImage }: MediaLibraryProps) => {
       }
 
       toast.success('Image uploaded successfully');
+      loadImages(); // Reload the images
       
       // Clear the input
       e.target.value = '';
@@ -171,14 +151,16 @@ const MediaLibrary = ({ onSelectImage, selectedImage }: MediaLibraryProps) => {
 
   const handleDelete = async (imageToDelete: MediaItem) => {
     try {
-      // Delete from database
-      const { error: dbError } = await supabase
-        .from('media_library')
-        .delete()
-        .eq('id', imageToDelete.id);
+      // Delete from database if it exists there
+      if (imageToDelete.id) {
+        const { error: dbError } = await supabase
+          .from('media_library')
+          .delete()
+          .eq('id', imageToDelete.id);
 
-      if (dbError) {
-        console.error('Database delete error:', dbError);
+        if (dbError) {
+          console.error('Database delete error:', dbError);
+        }
       }
 
       // Try to delete from storage
@@ -194,6 +176,7 @@ const MediaLibrary = ({ onSelectImage, selectedImage }: MediaLibraryProps) => {
       }
 
       toast.success('Image deleted');
+      loadImages(); // Reload the images
     } catch (error) {
       console.error('Delete error:', error);
       toast.error('Failed to delete image');

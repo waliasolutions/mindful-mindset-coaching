@@ -1,10 +1,20 @@
-
 import { useState, useEffect, useRef } from 'react';
 import { Check, Brain, Heart, Star, Lightbulb, Sun } from 'lucide-react';
+import { useContentBridge } from '@/hooks/useContentBridge';
 
 const Services = () => {
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
+
+  // Default content (original website content)
+  const defaultContent = {
+    title: "Transformiere dein Leben durch Mindset Coaching",
+    description: "In einem 1:1 Coaching löst du Blockaden, bringst Klarheit in dein Gedanken-Karussell und richtest deinen Fokus auf das, was wirklich zählt: Deine Träume, Deine Lebenszufriedenheit und Deine innere Ruhe und Gelassenheit.",
+    buttonText: "Kontaktiere mich"
+  };
+
+  // Use content bridge to allow admin overrides
+  const content = useContentBridge('services', defaultContent);
 
   useEffect(() => {
     const observer = new IntersectionObserver(([entry]) => {
@@ -75,11 +85,11 @@ const Services = () => {
             </span>
           </div>
           <h2 id="services-heading" className="text-3xl md:text-4xl font-serif font-semibold text-center mb-4 text-forest">
-            Transformiere dein Leben durch Mindset Coaching
+            {content.title}
           </h2>
           <div className="w-16 h-1 bg-moss mx-auto mb-6 md:mb-8" aria-hidden="true"></div>
           <p className="text-lg text-center text-foreground/80 max-w-2xl mx-auto">
-            In einem 1:1 Coaching löst du Blockaden, bringst Klarheit in dein Gedanken-Karussell und richtest deinen Fokus auf das, was wirklich zählt: Deine Träume, Deine Lebenszufriedenheit und Deine innere Ruhe und Gelassenheit.
+            {content.description}
           </p>
         </div>
 
@@ -110,7 +120,7 @@ const Services = () => {
             className="inline-flex items-center justify-center px-5 md:px-6 py-2.5 md:py-3 bg-forest text-white hover:bg-forest/90 transition-colors shadow-lg font-medium rounded-md text-sm md:text-base"
             aria-label="Kontaktiere mich für Mindset Coaching"
           >
-            Kontaktiere mich
+            {content.buttonText}
           </a>
         </div>
       </div>

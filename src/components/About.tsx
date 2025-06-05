@@ -1,8 +1,20 @@
 import { useState, useEffect, useRef } from 'react';
 import { Award, BookOpen, Users, Leaf } from 'lucide-react';
+import { useContentBridge } from '@/hooks/useContentBridge';
+
 const About = () => {
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
+
+  // Default content (original website content)
+  const defaultContent = {
+    title: "Martina Domeniconi – zertifizierter Mindset Coach",
+    subtitle: "Über mich"
+  };
+
+  // Use content bridge to allow admin overrides
+  const content = useContentBridge('about', defaultContent);
+
   useEffect(() => {
     const observer = new IntersectionObserver(([entry]) => {
       if (entry.isIntersecting) {
@@ -12,16 +24,20 @@ const About = () => {
     }, {
       threshold: 0.1
     });
+
     if (sectionRef.current) {
       observer.observe(sectionRef.current);
     }
+
     return () => {
       if (sectionRef.current) {
         observer.unobserve(sectionRef.current);
       }
     };
   }, []);
-  return <section id="about" ref={sectionRef} className="section-padding relative overflow-hidden bg-mint/30">
+
+  return (
+    <section id="about" ref={sectionRef} className="section-padding relative overflow-hidden bg-mint/30">
       {/* Background texture */}
       <div className="absolute inset-0 bg-pattern-light -z-10"></div>
       
@@ -29,11 +45,11 @@ const About = () => {
         <div className="max-w-4xl mx-auto mb-16 reveal-element">
           <div className="flex justify-center mb-2">
             <span className="px-3 py-1 text-xs font-medium text-forest bg-highlight rounded-full">
-              Über mich
+              {content.subtitle}
             </span>
           </div>
           <h2 className="text-3xl md:text-4xl font-serif font-semibold text-center mb-4 text-forest">
-            Martina Domeniconi – zertifizierter Mindset Coach
+            {content.title}
           </h2>
           <div className="w-16 h-1 bg-moss mx-auto mb-8"></div>
         </div>
@@ -107,6 +123,8 @@ const About = () => {
           </a>
         </div>
       </div>
-    </section>;
+    </section>
+  );
 };
+
 export default About;
