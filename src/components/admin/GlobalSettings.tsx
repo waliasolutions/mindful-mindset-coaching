@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -16,15 +15,35 @@ import { GeneralSection } from './settings/GeneralSection';
 import { NavigationSection } from './settings/NavigationSection';
 import { FooterSection } from './settings/FooterSection';
 
+// Import content extractor
+import { extractNavigationContent } from '@/utils/contentExtractor';
+
 const GlobalSettings = () => {
-  const [settings, setSettings] = useState<GlobalSettingsType>(defaultSettings);
+  const [settings, setSettings] = useState<GlobalSettingsType>(() => {
+    // Initialize with current navigation content
+    const currentNav = extractNavigationContent();
+    return {
+      ...defaultSettings,
+      navigation: currentNav
+    };
+  });
   const [activeTab, setActiveTab] = useState('general');
   const [logoUrl, setLogoUrl] = useState('');
 
   useEffect(() => {
     const savedSettings = localStorage.getItem('globalSettings');
     if (savedSettings) {
-      setSettings(JSON.parse(savedSettings));
+      try {
+        const parsedSettings = JSON.parse(savedSettings);
+        // Always use current navigation content to ensure sync
+        const currentNav = extractNavigationContent();
+        setSettings({
+          ...parsedSettings,
+          navigation: currentNav
+        });
+      } catch (error) {
+        console.error('Error parsing global settings:', error);
+      }
     }
     
     // Load logo URL
@@ -177,7 +196,12 @@ const GlobalSettings = () => {
   };
 
   const handleReset = () => {
-    setSettings(defaultSettings);
+    const currentNav = extractNavigationContent();
+    const resetSettings = {
+      ...defaultSettings,
+      navigation: currentNav
+    };
+    setSettings(resetSettings);
     localStorage.removeItem('globalSettings');
     
     dispatchStorageEvent('globalSettings');

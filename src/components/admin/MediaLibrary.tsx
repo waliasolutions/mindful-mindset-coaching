@@ -25,7 +25,7 @@ interface MediaLibraryProps {
   selectedImage?: string | null;
 }
 
-// Complete list of website images that are currently in use
+// Complete list of website images that are currently in use with correct URLs
 const websiteImages = [
   {
     url: '/lovable-uploads/7b4f0db6-80ea-4da6-b817-0f33ba7562b5.png',
@@ -48,12 +48,12 @@ const websiteImages = [
     fileName: 'favicon.png'
   },
   {
-    url: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&q=80',
+    url: '/lovable-uploads/8a4be257-655e-4d69-b10e-5db95864ae5a.png',
     usage: 'Einstein Quote Image (Pricing)',
-    fileName: 'einstein-quote.jpg'
+    fileName: 'einstein-image.png'
   },
   {
-    url: '/lovable-uploads/8a4be257-655e-4d69-b10e-5db95864ae5a.png',
+    url: '/lovable-uploads/41ccfa7b-2d21-4300-82ac-3cbd2ff728fe.png',
     usage: 'Contact Section Image',
     fileName: 'contact-image.png'
   }

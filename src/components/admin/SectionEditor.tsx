@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { X, Save, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -29,7 +30,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
-import { saveContentOverride, extractContentFromDOM } from '@/hooks/useContentBridge';
+import { saveContentOverride } from '@/hooks/useContentBridge';
+import { extractCurrentContent } from '@/utils/contentExtractor';
 
 interface Section {
   id: string;
@@ -44,82 +46,25 @@ interface SectionEditorProps {
   onClose: () => void;
 }
 
-const getDefaultContent = (sectionId: string) => {
-  switch (sectionId) {
-    case 'hero':
-    case 'home':
-      return {
-        title: "Mindset Coaching für ein glückliches und erfülltes Leben",
-        subtitle: "Entfalte dein volles Potenzial und erschaffe das Leben, von dem du träumst. Mit dem richtigen Mindset sind deinen Möglichkeiten keine Grenzen gesetzt.",
-        additionalText: "Das zentrale Thema bei Mindset Coaching sind deine persönlichen Überzeugungen und Glaubenssätze. Wovon du selber überzeugst bist, verwirklichst du in deinem Leben. In einem persönlichen Coaching lernst du deine negativen Glaubenssätze zu erkennen und abzulegen und stattdessen in jedem Lebensbereich bestärkende Glaubenssätze zu entwickeln. Dazu gehört auch ein positives Selbstbild aufzubauen und in den inneren Frieden mit dir, deinen Mitmenschen, deiner Vergangenheit und deiner Geschichte zu kommen.",
-        buttonText: "Kennenlerngespräch vereinbaren",
-        backgroundImage: "/lovable-uploads/7b4f0db6-80ea-4da6-b817-0f33ba7562b5.png"
-      };
-    case 'services':
-      return {
-        title: "Transformiere dein Leben durch Mindset Coaching",
-        description: "In einem 1:1 Coaching löst du Blockaden, bringst Klarheit in dein Gedanken-Karussell und richtest deinen Fokus auf das, was wirklich zählt: Deine Träume, Deine Lebenszufriedenheit und Deine innere Ruhe und Gelassenheit.",
-        buttonText: "Kontaktiere mich"
-      };
-    case 'pricing':
-      return {
-        title: "Investiere in dein Wohlbefinden",
-        description: "Mir ist wichtig, dass du dich wohlfühlst – deshalb starten wir mit einem kostenlosen Kennenlerngespräch. In einem kurzen Telefonat können wir erste Fragen klären und gemeinsam sehen, ob die Zusammenarbeit für beide Seiten passt.",
-        quote: "Unsere wichtigste Entscheidung ist, ob wir das Universum für einen freundlichen oder feindlichen Ort halten.",
-        quoteAuthor: "― Albert Einstein",
-        quoteImage: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&q=80",
-        price: "CHF 90",
-        pricePeriod: "pro Sitzung",
-        packageTitle: "Coaching Einzelsitzung"
-      };
-    case 'about':
-      return {
-        title: "Martina Domeniconi – zertifizierter Mindset Coach",
-        subtitle: "Über mich",
-        profileImage: "/lovable-uploads/053f601c-1228-481c-9aca-d078fb3d7d8a.png"
-      };
-    case 'contact':
-      return {
-        title: "Beginne deine Mindset-Reise heute",
-        subtitle: "Der erste Schritt zu einem erfüllteren Leben beginnt mit einem Gespräch. Kontaktiere mich für ein kostenloses Kennenlerngespräch, in dem wir über deine Ziele sprechen und herausfinden, wie ich dich am besten unterstützen kann.",
-        email: "info@mindset-coach-martina.ch",
-        phone: "078 840 04 81",
-        sectionImage: "/lovable-uploads/8a4be257-655e-4d69-b10e-5db95864ae5a.png"
-      };
-    default:
-      return {};
-  }
-};
-
 const SectionEditor = ({ section, onClose }: SectionEditorProps) => {
   const [isOpen, setIsOpen] = useState(true);
   
-  // Get initial content from localStorage or use defaults
-  const getInitialContent = () => {
-    try {
-      const adminOverrides = localStorage.getItem('adminContentOverrides');
-      if (adminOverrides) {
-        const overrides = JSON.parse(adminOverrides);
-        if (overrides[section.id]) {
-          return { ...getDefaultContent(section.id), ...overrides[section.id] };
-        }
-      }
-    } catch (error) {
-      console.error('Error parsing admin content overrides:', error);
-    }
-    
-    return getDefaultContent(section.id);
+  // Get real current content using the content extractor
+  const getCurrentContent = () => {
+    return extractCurrentContent(section.id);
   };
 
-  const [content, setContent] = useState(getInitialContent());
+  const [content, setContent] = useState(getCurrentContent());
   
   const form = useForm({
     defaultValues: content
   });
 
   useEffect(() => {
-    form.reset(content);
-  }, [content, form]);
+    const currentContent = getCurrentContent();
+    setContent(currentContent);
+    form.reset(currentContent);
+  }, [section.id, form]);
 
   const handleClose = () => {
     setIsOpen(false);
