@@ -4,7 +4,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "next-themes";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, useLocation, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import { AuthProvider } from "./contexts/AuthContext";
 import Index from "./pages/Index";
@@ -33,11 +33,6 @@ const queryClient = new QueryClient({
     }
   },
 });
-
-// Create an admin redirect page that will help users access the admin panel
-const AdminRedirect = () => {
-  return <Navigate to="/dashboard-management-portal-9a7b2c3d" replace />;
-};
 
 const AppContent = () => {
   const location = useLocation();
@@ -71,7 +66,6 @@ const AppContent = () => {
     <Routes>
       <Route path="/" element={<Index />} />
       <Route path="/dashboard-management-portal-9a7b2c3d" element={<Admin />} />
-      <Route path="/admin" element={<AdminRedirect />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

@@ -6,7 +6,6 @@ import SeoSettings from './SeoSettings';
 import MediaLibrary from './MediaLibrary';
 import ThemeSettings from './ThemeSettings';
 import GlobalSettings from './GlobalSettings';
-import LogoSettings from './LogoSettings';
 import { useNavigate } from 'react-router-dom';
 
 const AdminLayout = ({ children, onLogout }: { children: React.ReactNode; onLogout: () => void }) => {
@@ -48,11 +47,10 @@ const AdminLayout = ({ children, onLogout }: { children: React.ReactNode; onLogo
       
       <main className="container mx-auto px-4 py-8">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
-          <div className="md:col-span-8">
+          <div className="md:col-span-9">
             {renderActivePanel()}
           </div>
-          <div className="md:col-span-4 space-y-6">
-            <LogoSettings />
+          <div className="md:col-span-3 space-y-6">
             <div className="bg-white shadow rounded-lg p-4 h-fit">
               <nav className="space-y-2">
                 <Button

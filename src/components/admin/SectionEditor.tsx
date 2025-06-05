@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { X, Save, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -6,6 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { toast } from 'sonner';
+import ImageSelector from './ImageSelector';
 import {
   Dialog,
   DialogContent,
@@ -67,6 +67,7 @@ const getDefaultContent = (sectionId: string) => {
         description: "Mir ist wichtig, dass du dich wohlfühlst – deshalb starten wir mit einem kostenlosen Kennenlerngespräch. In einem kurzen Telefonat können wir erste Fragen klären und gemeinsam sehen, ob die Zusammenarbeit für beide Seiten passt.",
         quote: "Unsere wichtigste Entscheidung ist, ob wir das Universum für einen freundlichen oder feindlichen Ort halten.",
         quoteAuthor: "― Albert Einstein",
+        quoteImage: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&q=80",
         price: "CHF 90",
         pricePeriod: "pro Sitzung",
         packageTitle: "Coaching Einzelsitzung"
@@ -74,14 +75,16 @@ const getDefaultContent = (sectionId: string) => {
     case 'about':
       return {
         title: "Martina Domeniconi – zertifizierter Mindset Coach",
-        subtitle: "Über mich"
+        subtitle: "Über mich",
+        profileImage: "/lovable-uploads/053f601c-1228-481c-9aca-d078fb3d7d8a.png"
       };
     case 'contact':
       return {
         title: "Beginne deine Mindset-Reise heute",
         subtitle: "Der erste Schritt zu einem erfüllteren Leben beginnt mit einem Gespräch. Kontaktiere mich für ein kostenloses Kennenlerngespräch, in dem wir über deine Ziele sprechen und herausfinden, wie ich dich am besten unterstützen kann.",
         email: "info@mindset-coach-martina.ch",
-        phone: "078 840 04 81"
+        phone: "078 840 04 81",
+        sectionImage: "/lovable-uploads/8a4be257-655e-4d69-b10e-5db95864ae5a.png"
       };
     default:
       return {};
@@ -141,6 +144,23 @@ const SectionEditor = ({ section, onClose }: SectionEditorProps) => {
       case 'home':
         return (
           <>
+            <FormField
+              control={form.control}
+              name="backgroundImage"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Hintergrundbild</FormLabel>
+                  <FormControl>
+                    <ImageSelector
+                      value={field.value}
+                      onChange={field.onChange}
+                      label="Hero Hintergrundbild"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <FormField
               control={form.control}
               name="title"
@@ -272,6 +292,23 @@ const SectionEditor = ({ section, onClose }: SectionEditorProps) => {
             />
             <FormField
               control={form.control}
+              name="quoteImage"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Zitat-Bild</FormLabel>
+                  <FormControl>
+                    <ImageSelector
+                      value={field.value}
+                      onChange={field.onChange}
+                      label="Einstein Zitat Bild"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
               name="quote"
               render={({ field }) => (
                 <FormItem>
@@ -345,6 +382,23 @@ const SectionEditor = ({ section, onClose }: SectionEditorProps) => {
           <>
             <FormField
               control={form.control}
+              name="profileImage"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Profilbild</FormLabel>
+                  <FormControl>
+                    <ImageSelector
+                      value={field.value}
+                      onChange={field.onChange}
+                      label="Über uns Profilbild"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
               name="title"
               render={({ field }) => (
                 <FormItem>
@@ -375,6 +429,23 @@ const SectionEditor = ({ section, onClose }: SectionEditorProps) => {
       case 'contact':
         return (
           <>
+            <FormField
+              control={form.control}
+              name="sectionImage"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Bereich-Bild</FormLabel>
+                  <FormControl>
+                    <ImageSelector
+                      value={field.value}
+                      onChange={field.onChange}
+                      label="Kontakt Bereich Bild"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <FormField
               control={form.control}
               name="title"
