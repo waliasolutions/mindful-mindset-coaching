@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { User, Shield, Edit, Trash2, Plus, UserCheck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -374,7 +373,7 @@ const UserManagement = () => {
                       {userData.role !== 'super_admin' && !isCurrentUser && (
                         <>
                           <Select
-                            value={userData.role}
+                            value={userData.role === 'editor' ? 'editor' : userData.role}
                             onValueChange={(value: 'admin' | 'editor') => handleUpdateUserRole(userData.id, value)}
                           >
                             <SelectTrigger className="w-32">
