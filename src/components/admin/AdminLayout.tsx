@@ -15,11 +15,16 @@ import { useNavigate } from 'react-router-dom';
 const AdminLayout = ({ children, onLogout }: { children: React.ReactNode; onLogout: () => void }) => {
   const [activeTab, setActiveTab] = useState('dashboard');
   
+  // Function to handle navigation from dashboard quick actions
+  const handleNavigate = (tab: string) => {
+    setActiveTab(tab);
+  };
+  
   // Function to render the active panel based on the activeTab state
   const renderActivePanel = () => {
     switch (activeTab) {
       case 'dashboard':
-        return <AdminDashboard />;
+        return <AdminDashboard onNavigate={handleNavigate} />;
       case 'media':
         return <MediaLibrary />;
       case 'theme':
@@ -44,7 +49,7 @@ const AdminLayout = ({ children, onLogout }: { children: React.ReactNode; onLogo
               <h1 className="text-xl font-bold">Admin Dashboard</h1>
               <div className="hidden md:flex items-center space-x-1 bg-forest/20 rounded-lg px-3 py-1">
                 <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                <span className="text-sm">Live</span>
+                <span className="text-sm">Online</span>
               </div>
             </div>
             <div className="flex items-center space-x-4">
@@ -113,7 +118,7 @@ const AdminLayout = ({ children, onLogout }: { children: React.ReactNode; onLogo
                     onClick={() => setActiveTab('performance')}
                   >
                     <BarChart3 className="mr-3 h-4 w-4" />
-                    Performance
+                    Leistung
                   </Button>
                   <Button
                     variant={activeTab === 'settings' ? 'default' : 'ghost'} 
@@ -128,7 +133,7 @@ const AdminLayout = ({ children, onLogout }: { children: React.ReactNode; onLogo
 
               {/* Quick Stats */}
               <div className="bg-white shadow-sm rounded-lg p-4 border border-gray-200">
-                <h3 className="font-semibold text-gray-900 mb-3">Quick Stats</h3>
+                <h3 className="font-semibold text-gray-900 mb-3">Schnellübersicht</h3>
                 <div className="space-y-3">
                   <div className="flex justify-between items-center">
                     <span className="text-sm text-gray-600">Website Status</span>
@@ -138,12 +143,12 @@ const AdminLayout = ({ children, onLogout }: { children: React.ReactNode; onLogo
                     </div>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-sm text-gray-600">Last Update</span>
-                    <span className="text-sm font-medium">Today</span>
+                    <span className="text-sm text-gray-600">Letzte Aktualisierung</span>
+                    <span className="text-sm font-medium">Heute</span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-sm text-gray-600">Performance</span>
-                    <span className="text-sm font-medium text-green-600">Excellent</span>
+                    <span className="text-sm text-gray-600">Leistung</span>
+                    <span className="text-sm font-medium text-green-600">Ausgezeichnet</span>
                   </div>
                 </div>
               </div>

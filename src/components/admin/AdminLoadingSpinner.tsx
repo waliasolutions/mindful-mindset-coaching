@@ -6,7 +6,7 @@ interface AdminLoadingSpinnerProps {
   size?: 'sm' | 'md' | 'lg';
 }
 
-const AdminLoadingSpinner = ({ message = 'Loading...', size = 'md' }: AdminLoadingSpinnerProps) => {
+const AdminLoadingSpinner = ({ message = 'Wird geladen...', size = 'md' }: AdminLoadingSpinnerProps) => {
   const sizeClasses = {
     sm: 'h-4 w-4',
     md: 'h-6 w-6',

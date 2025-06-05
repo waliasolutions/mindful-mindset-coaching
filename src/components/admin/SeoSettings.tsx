@@ -12,15 +12,15 @@ const SeoSettings = () => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>SEO & Analytics Settings</CardTitle>
+        <CardTitle>SEO & Analytics Einstellungen</CardTitle>
         <CardDescription>
-          Configure your website's SEO meta tags and Google Analytics tracking
+          Konfigurieren Sie die SEO Meta-Tags und Google Analytics Tracking Ihrer Website
         </CardDescription>
       </CardHeader>
       <CardContent>
         <Tabs defaultValue="meta">
           <TabsList className="mb-4">
-            <TabsTrigger value="meta">Meta Tags</TabsTrigger>
+            <TabsTrigger value="meta">Meta-Tags</TabsTrigger>
             <TabsTrigger value="analytics">Analytics</TabsTrigger>
           </TabsList>
           
@@ -42,7 +42,7 @@ const SeoSettings = () => {
         
         <div className="mt-6 flex justify-end">
           <Button onClick={handleSave}>
-            Save SEO Settings
+            SEO Einstellungen speichern
           </Button>
         </div>
       </CardContent>
