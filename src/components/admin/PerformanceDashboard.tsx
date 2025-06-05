@@ -126,7 +126,7 @@ const PerformanceDashboard = () => {
               <div>
                 <p className="font-medium">DOM Processing</p>
                 <p className="text-muted-foreground">
-                  {metrics.navigationTiming.domComplete - metrics.navigationTiming.domLoading}ms
+                  {metrics.navigationTiming.domComplete - metrics.navigationTiming.domContentLoadedEventStart}ms
                 </p>
               </div>
               <div>

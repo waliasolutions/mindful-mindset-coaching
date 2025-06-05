@@ -20,8 +20,8 @@ export const usePerformanceMonitor = () => {
     const measurePerformance = () => {
       const navigation = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming;
       
-      const loadTime = navigation.loadEventEnd - navigation.navigationStart;
-      const renderTime = navigation.domContentLoadedEventEnd - navigation.navigationStart;
+      const loadTime = navigation.loadEventEnd - navigation.fetchStart;
+      const renderTime = navigation.domContentLoadedEventEnd - navigation.fetchStart;
       
       // Memory usage (if available)
       const memory = (performance as any).memory;
