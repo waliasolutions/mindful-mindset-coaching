@@ -1,116 +1,128 @@
 
-import React, { useState } from 'react';
-import { Button } from '../ui/button';
-import { Layers, Search, PaintBucket, Image, FileText, Settings, Users, History } from 'lucide-react';
-import SeoSettings from './SeoSettings';
-import MediaLibrary from './MediaLibrary';
-import ThemeSettings from './ThemeSettings';
-import GlobalSettings from './GlobalSettings';
-import LogoSettings from './LogoSettings';
-import ContentVersionManager from './ContentVersionManager';
-import { useNavigate } from 'react-router-dom';
+import React, { ReactNode } from 'react';
+import { LogOut, Settings, FileText, Users, Monitor } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { useAuth } from '@/hooks/useAuth';
 
-const AdminLayout = ({ children, onLogout }: { children: React.ReactNode; onLogout: () => void }) => {
-  const [activeTab, setActiveTab] = useState('sections');
-  
-  // Function to render the active panel based on the activeTab state
-  const renderActivePanel = () => {
-    switch (activeTab) {
-      case 'media':
-        return <MediaLibrary />;
-      case 'theme':
-        return <ThemeSettings />;
-      case 'seo':
-        return <SeoSettings />;
-      case 'settings':
-        return <GlobalSettings />;
-      case 'versions':
-        return <ContentVersionManager />;
+interface AdminLayoutProps {
+  children: ReactNode;
+  onLogout: () => void;
+  activeSection?: string;
+  onSectionChange?: (section: string) => void;
+}
+
+const AdminLayout = ({ children, onLogout, activeSection = 'content', onSectionChange }: AdminLayoutProps) => {
+  const { user, userRole, isSuperAdmin } = useAuth();
+
+  const menuItems = [
+    {
+      id: 'content',
+      label: 'Inhalte verwalten',
+      icon: FileText,
+      description: 'Website-Inhalte und Medien bearbeiten'
+    },
+    ...(isSuperAdmin ? [{
+      id: 'users',
+      label: 'Benutzerverwaltung',
+      icon: Users,
+      description: 'Benutzer und Rollen verwalten'
+    }] : []),
+  ];
+
+  const getRoleDisplay = (role: string | null) => {
+    switch (role) {
+      case 'super_admin':
+        return { label: 'Super Admin', color: 'bg-red-100 text-red-800' };
+      case 'admin':
+        return { label: 'Administrator', color: 'bg-blue-100 text-blue-800' };
       default:
-        return children;
+        return { label: 'Redakteur', color: 'bg-green-100 text-green-800' };
     }
   };
-  
+
+  const roleDisplay = getRoleDisplay(userRole);
+
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="bg-forest text-white shadow-md">
-        <div className="container mx-auto px-4 py-3 flex justify-between items-center">
-          <div className="flex items-center space-x-4">
-            <h1 className="text-xl font-bold">Admin Dashboard</h1>
-          </div>
-          <div className="flex items-center space-x-4">
-            <Button variant="outline" className="text-white border-white hover:bg-white hover:text-forest" asChild>
-              <a href="/" target="_blank">Website ansehen</a>
-            </Button>
-            <Button variant="ghost" onClick={onLogout} className="text-white">
-              Abmelden
-            </Button>
+    <div className="flex h-screen bg-gray-100">
+      {/* Sidebar */}
+      <div className="w-64 bg-white shadow-md">
+        <div className="p-6 border-b">
+          <h1 className="text-xl font-bold text-forest">Admin Portal</h1>
+          <div className="mt-2">
+            <div className="text-sm text-gray-600 truncate">
+              {user?.email}
+            </div>
+            <Badge className={`mt-1 ${roleDisplay.color}`}>
+              {roleDisplay.label}
+            </Badge>
           </div>
         </div>
-      </header>
-      
-      <main className="container mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
-          <div className="md:col-span-8">
-            {renderActivePanel()}
+        
+        <nav className="p-4">
+          <div className="space-y-2">
+            {menuItems.map((item) => {
+              const Icon = item.icon;
+              const isActive = activeSection === item.id;
+              
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => onSectionChange?.(item.id)}
+                  className={`w-full flex items-center gap-3 px-3 py-2 rounded-md text-left transition-colors ${
+                    isActive 
+                      ? 'bg-forest text-white' 
+                      : 'text-gray-700 hover:bg-gray-100'
+                  }`}
+                >
+                  <Icon className="h-5 w-5" />
+                  <div>
+                    <div className="font-medium">{item.label}</div>
+                    <div className={`text-xs ${isActive ? 'text-gray-200' : 'text-gray-500'}`}>
+                      {item.description}
+                    </div>
+                  </div>
+                </button>
+              );
+            })}
           </div>
-          <div className="md:col-span-4 space-y-6">
-            <LogoSettings />
-            <div className="bg-white shadow rounded-lg p-4 h-fit">
-              <nav className="space-y-2">
-                <Button
-                  variant={activeTab === 'sections' ? 'default' : 'ghost'}
-                  className="w-full justify-start"
-                  onClick={() => setActiveTab('sections')}
-                >
-                  <Layers className="mr-2 h-4 w-4" />
-                  Bereiche
-                </Button>
-                <Button
-                  variant={activeTab === 'media' ? 'default' : 'ghost'}
-                  className="w-full justify-start"
-                  onClick={() => setActiveTab('media')}
-                >
-                  <Image className="mr-2 h-4 w-4" />
-                  Medienbibliothek
-                </Button>
-                <Button
-                  variant={activeTab === 'theme' ? 'default' : 'ghost'}
-                  className="w-full justify-start"
-                  onClick={() => setActiveTab('theme')}
-                >
-                  <PaintBucket className="mr-2 h-4 w-4" />
-                  Design
-                </Button>
-                <Button
-                  variant={activeTab === 'seo' ? 'default' : 'ghost'} 
-                  className="w-full justify-start"
-                  onClick={() => setActiveTab('seo')}
-                >
-                  <Search className="mr-2 h-4 w-4" />
-                  SEO & Analyse
-                </Button>
-                <Button
-                  variant={activeTab === 'versions' ? 'default' : 'ghost'} 
-                  className="w-full justify-start"
-                  onClick={() => setActiveTab('versions')}
-                >
-                  <History className="mr-2 h-4 w-4" />
-                  Versionen & Backup
-                </Button>
-                <Button
-                  variant={activeTab === 'settings' ? 'default' : 'ghost'} 
-                  className="w-full justify-start"
-                  onClick={() => setActiveTab('settings')}
-                >
-                  <Settings className="mr-2 h-4 w-4" />
-                  Globale Einstellungen
-                </Button>
-              </nav>
+        </nav>
+        
+        <div className="absolute bottom-4 left-4 right-4">
+          <Button
+            onClick={onLogout}
+            variant="outline"
+            className="w-full flex items-center gap-2 text-gray-700 hover:text-red-600 hover:border-red-300"
+          >
+            <LogOut className="h-4 w-4" />
+            Abmelden
+          </Button>
+        </div>
+      </div>
+      
+      {/* Main Content */}
+      <div className="flex-1 flex flex-col overflow-hidden">
+        <header className="bg-white shadow-sm border-b px-6 py-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <h2 className="text-lg font-semibold text-gray-900">
+                {menuItems.find(item => item.id === activeSection)?.label || 'Dashboard'}
+              </h2>
+              <p className="text-sm text-gray-600">
+                {menuItems.find(item => item.id === activeSection)?.description || 'Willkommen im Admin-Bereich'}
+              </p>
+            </div>
+            <div className="flex items-center gap-2">
+              <Monitor className="h-4 w-4 text-gray-400" />
+              <span className="text-sm text-gray-600">Live-Vorschau aktiv</span>
             </div>
           </div>
-        </div>
-      </main>
+        </header>
+        
+        <main className="flex-1 overflow-auto p-6">
+          {children}
+        </main>
+      </div>
     </div>
   );
 };

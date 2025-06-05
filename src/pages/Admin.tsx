@@ -1,63 +1,79 @@
 
-import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useAuth } from '@/hooks/useAuth';
 import AdminLayout from '../components/admin/AdminLayout';
 import AdminSections from '../components/admin/AdminSections';
-import LoginForm from '../components/admin/LoginForm';
+import AuthLogin from '../components/admin/AuthLogin';
+import UserManagement from '../components/admin/UserManagement';
 import LoadingState from '../components/admin/LoadingState';
-import { useAdminSession } from '@/hooks/useAdminSession';
+import { useState, useEffect } from 'react';
 import { createPreviewIframe, initializeAdminContent } from '@/utils/adminPreview';
 
 const Admin = () => {
-  const {
-    isAuthenticated,
-    setIsAuthenticated,
-    isLoading,
-    loginAttempts,
-    setLoginAttempts,
-    lockedUntil,
-    setLockedUntil,
-    previewLoaded,
-    setPreviewLoaded,
-    handleLogout
-  } = useAdminSession();
-  
-  const navigate = useNavigate();
+  const { user, isLoading, isAdmin, signOut } = useAuth();
+  const [activeSection, setActiveSection] = useState('content');
+  const [previewLoaded, setPreviewLoaded] = useState(false);
 
   // Initialize content synchronization when authenticated
   useEffect(() => {
-    if (isAuthenticated) {
+    if (user && isAdmin) {
       initializeAdminContent();
     }
-  }, [isAuthenticated]);
+  }, [user, isAdmin]);
 
   // Set up preview iframe when authenticated
   useEffect(() => {
-    if (isAuthenticated) {
+    if (user && isAdmin) {
       return createPreviewIframe(setPreviewLoaded);
     }
     return () => {};
-  }, [isAuthenticated, setPreviewLoaded]);
+  }, [user, isAdmin, setPreviewLoaded]);
 
   if (isLoading) {
     return <LoadingState />;
   }
 
-  if (!isAuthenticated) {
+  if (!user) {
+    return <AuthLogin />;
+  }
+
+  if (!isAdmin) {
     return (
-      <LoginForm
-        loginAttempts={loginAttempts}
-        setLoginAttempts={setLoginAttempts}
-        lockedUntil={lockedUntil}
-        setLockedUntil={setLockedUntil}
-        setIsAuthenticated={setIsAuthenticated}
-      />
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold text-gray-900 mb-4">Zugriff verweigert</h1>
+          <p className="text-gray-600 mb-4">Sie haben keine Berechtigung für diesen Bereich.</p>
+          <button 
+            onClick={signOut}
+            className="text-forest hover:underline"
+          >
+            Abmelden
+          </button>
+        </div>
+      </div>
     );
   }
 
+  const handleLogout = async () => {
+    await signOut();
+  };
+
+  const renderContent = () => {
+    switch (activeSection) {
+      case 'users':
+        return <UserManagement />;
+      case 'content':
+      default:
+        return <AdminSections />;
+    }
+  };
+
   return (
-    <AdminLayout onLogout={handleLogout}>
-      <AdminSections />
+    <AdminLayout 
+      onLogout={handleLogout}
+      activeSection={activeSection}
+      onSectionChange={setActiveSection}
+    >
+      {renderContent()}
     </AdminLayout>
   );
 };
