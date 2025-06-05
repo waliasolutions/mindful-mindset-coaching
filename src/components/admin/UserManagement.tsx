@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { User, Shield, Edit, Trash2, Plus, UserCheck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -19,13 +20,13 @@ interface UserProfile {
   email: string;
   full_name: string;
   created_at: string;
-  role: 'super_admin' | 'admin' | 'editor';
+  role: 'super_admin' | 'admin' | 'user';
 }
 
 const newUserSchema = z.object({
   email: z.string().email('Bitte geben Sie eine gültige E-Mail-Adresse ein'),
   fullName: z.string().min(2, 'Der Name muss mindestens 2 Zeichen lang sein'),
-  role: z.enum(['admin', 'editor']),
+  role: z.enum(['admin', 'user']),
 });
 
 const UserManagement = () => {
@@ -39,7 +40,7 @@ const UserManagement = () => {
     defaultValues: {
       email: '',
       fullName: '',
-      role: 'editor' as const,
+      role: 'user' as const,
     },
   });
 
@@ -82,7 +83,7 @@ const UserManagement = () => {
         email: emailMap.get(profile.id) || '',
         full_name: profile.full_name || '',
         created_at: profile.created_at,
-        role: (profile.user_roles as any)?.[0]?.role || 'editor',
+        role: (profile.user_roles as any)?.[0]?.role || 'user',
       })) || [];
 
       setUsers(formattedUsers);
@@ -126,7 +127,7 @@ const UserManagement = () => {
       }
 
       // Update role if not default
-      if (data.role !== 'editor') {
+      if (data.role !== 'user') {
         const { error: roleError } = await supabase
           .from('user_roles')
           .update({ role: data.role })
@@ -139,7 +140,7 @@ const UserManagement = () => {
 
       toast({
         title: 'Benutzer erfolgreich erstellt',
-        description: `${data.fullName} wurde als ${data.role === 'admin' ? 'Administrator' : 'Redakteur'} hinzugefügt`,
+        description: `${data.fullName} wurde als ${data.role === 'admin' ? 'Administrator' : 'Benutzer'} hinzugefügt`,
       });
 
       setIsDialogOpen(false);
@@ -155,7 +156,7 @@ const UserManagement = () => {
     }
   };
 
-  const handleUpdateUserRole = async (userId: string, newRole: 'admin' | 'editor') => {
+  const handleUpdateUserRole = async (userId: string, newRole: 'admin' | 'user') => {
     try {
       const { error } = await supabase
         .from('user_roles')
@@ -227,7 +228,7 @@ const UserManagement = () => {
       case 'admin':
         return { label: 'Administrator', color: 'bg-blue-100 text-blue-800' };
       default:
-        return { label: 'Redakteur', color: 'bg-green-100 text-green-800' };
+        return { label: 'Benutzer', color: 'bg-green-100 text-green-800' };
     }
   };
 
@@ -304,7 +305,7 @@ const UserManagement = () => {
                         </FormControl>
                         <SelectContent>
                           <SelectItem value="admin">Administrator</SelectItem>
-                          <SelectItem value="editor">Redakteur</SelectItem>
+                          <SelectItem value="user">Benutzer</SelectItem>
                         </SelectContent>
                       </Select>
                       <FormMessage />
@@ -373,15 +374,15 @@ const UserManagement = () => {
                       {userData.role !== 'super_admin' && !isCurrentUser && (
                         <>
                           <Select
-                            value={userData.role === 'editor' ? 'editor' : userData.role}
-                            onValueChange={(value: 'admin' | 'editor') => handleUpdateUserRole(userData.id, value)}
+                            value={userData.role === 'user' ? 'user' : userData.role}
+                            onValueChange={(value: 'admin' | 'user') => handleUpdateUserRole(userData.id, value)}
                           >
                             <SelectTrigger className="w-32">
                               <SelectValue />
                             </SelectTrigger>
                             <SelectContent>
                               <SelectItem value="admin">Administrator</SelectItem>
-                              <SelectItem value="editor">Redakteur</SelectItem>
+                              <SelectItem value="user">Benutzer</SelectItem>
                             </SelectContent>
                           </Select>
                           <Button
