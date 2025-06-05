@@ -30,8 +30,6 @@ import {
 } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { saveContentOverride, extractContentFromDOM } from '@/hooks/useContentBridge';
-import { saveImageOverride } from '@/hooks/useImageBridge';
-import ImagePicker from './ImagePicker';
 
 interface Section {
   id: string;
@@ -71,14 +69,12 @@ const getDefaultContent = (sectionId: string) => {
         quoteAuthor: "― Albert Einstein",
         price: "CHF 90",
         pricePeriod: "pro Sitzung",
-        packageTitle: "Coaching Einzelsitzung",
-        einsteinImage: "/lovable-uploads/8a4be257-655e-4d69-b10e-5db95864ae5a.png"
+        packageTitle: "Coaching Einzelsitzung"
       };
     case 'about':
       return {
         title: "Martina Domeniconi – zertifizierter Mindset Coach",
-        subtitle: "Über mich",
-        profileImage: "/lovable-uploads/053f601c-1228-481c-9aca-d078fb3d7d8a.png"
+        subtitle: "Über mich"
       };
     case 'contact':
       return {
@@ -86,26 +82,6 @@ const getDefaultContent = (sectionId: string) => {
         subtitle: "Der erste Schritt zu einem erfüllteren Leben beginnt mit einem Gespräch. Kontaktiere mich für ein kostenloses Kennenlerngespräch, in dem wir über deine Ziele sprechen und herausfinden, wie ich dich am besten unterstützen kann.",
         email: "info@mindset-coach-martina.ch",
         phone: "078 840 04 81"
-      };
-    default:
-      return {};
-  }
-};
-
-const getDefaultImages = (sectionId: string) => {
-  switch (sectionId) {
-    case 'hero':
-    case 'home':
-      return {
-        'hero-background': '/lovable-uploads/7b4f0db6-80ea-4da6-b817-0f33ba7562b5.png'
-      };
-    case 'about':
-      return {
-        'about-profile': '/lovable-uploads/053f601c-1228-481c-9aca-d078fb3d7d8a.png'
-      };
-    case 'pricing':
-      return {
-        'pricing-einstein': '/lovable-uploads/8a4be257-655e-4d69-b10e-5db95864ae5a.png'
       };
     default:
       return {};
@@ -132,22 +108,7 @@ const SectionEditor = ({ section, onClose }: SectionEditorProps) => {
     return getDefaultContent(section.id);
   };
 
-  const getInitialImages = () => {
-    try {
-      const imageOverrides = localStorage.getItem('adminImageOverrides');
-      if (imageOverrides) {
-        const overrides = JSON.parse(imageOverrides);
-        return { ...getDefaultImages(section.id), ...overrides };
-      }
-    } catch (error) {
-      console.error('Error parsing image overrides:', error);
-    }
-    
-    return getDefaultImages(section.id);
-  };
-
   const [content, setContent] = useState(getInitialContent());
-  const [images, setImages] = useState(getInitialImages());
   
   const form = useForm({
     defaultValues: content
@@ -165,21 +126,12 @@ const SectionEditor = ({ section, onClose }: SectionEditorProps) => {
   const handleSave = () => {
     const values = form.getValues();
     
-    // Save content to localStorage using the content bridge system
+    // Save to localStorage using the content bridge system
     if (saveContentOverride(section.id, values)) {
-      toast.success(`${section.name} Bereich erfolgreich aktualisiert`);
+      toast.success(`${section.name} section updated successfully`);
       handleClose();
     } else {
-      toast.error('Fehler beim Speichern des Inhalts');
-    }
-  };
-
-  const handleImageChange = (imageKey: string, imageUrl: string) => {
-    if (saveImageOverride(imageKey, imageUrl)) {
-      setImages(prev => ({ ...prev, [imageKey]: imageUrl }));
-      toast.success('Bild erfolgreich aktualisiert');
-    } else {
-      toast.error('Fehler beim Speichern des Bildes');
+      toast.error('Failed to save content');
     }
   };
 
@@ -240,12 +192,6 @@ const SectionEditor = ({ section, onClose }: SectionEditorProps) => {
                   <FormMessage />
                 </FormItem>
               )}
-            />
-            <ImagePicker
-              currentImage={images['hero-background']}
-              onImageSelect={(url) => handleImageChange('hero-background', url)}
-              label="Hintergrundbild"
-              placeholder="URL für das Hero-Hintergrundbild eingeben"
             />
           </>
         );
@@ -391,12 +337,6 @@ const SectionEditor = ({ section, onClose }: SectionEditorProps) => {
                 </FormItem>
               )}
             />
-            <ImagePicker
-              currentImage={images['pricing-einstein']}
-              onImageSelect={(url) => handleImageChange('pricing-einstein', url)}
-              label="Einstein Bild"
-              placeholder="URL für das Einstein-Bild eingeben"
-            />
           </>
         );
         
@@ -428,12 +368,6 @@ const SectionEditor = ({ section, onClose }: SectionEditorProps) => {
                   <FormMessage />
                 </FormItem>
               )}
-            />
-            <ImagePicker
-              currentImage={images['about-profile']}
-              onImageSelect={(url) => handleImageChange('about-profile', url)}
-              label="Profilbild"
-              placeholder="URL für das Profilbild eingeben"
             />
           </>
         );
@@ -515,7 +449,7 @@ const SectionEditor = ({ section, onClose }: SectionEditorProps) => {
         
         <Tabs defaultValue="content" className="mt-4">
           <TabsList>
-            <TabsTrigger value="content">Inhalt & Bilder</TabsTrigger>
+            <TabsTrigger value="content">Inhalt</TabsTrigger>
           </TabsList>
           <TabsContent value="content" className="py-4">
             <Form {...form}>

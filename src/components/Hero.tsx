@@ -1,75 +1,142 @@
-
-import { useState, useEffect } from 'react';
-import { Button } from './ui/button';
-import { ArrowRight } from 'lucide-react';
+import { ArrowDown, Leaf, Shield } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
+import { useIsMobile } from '../hooks/use-mobile';
+import { Badge } from '@/components/ui/badge';
 import OptimizedImage from './OptimizedImage';
 import { useContentBridge } from '@/hooks/useContentBridge';
-import { useImageBridge } from '@/hooks/useImageBridge';
 
 const Hero = () => {
-  const [isVisible, setIsVisible] = useState(false);
+  const headingRef = useRef<HTMLHeadingElement>(null);
+  const subtitleRef = useRef<HTMLParagraphElement>(null);
+  const additionalTextRef = useRef<HTMLParagraphElement>(null);
+  const ctaRef = useRef<HTMLDivElement>(null);
+  const isMobile = useIsMobile();
+  const [imageLoaded, setImageLoaded] = useState(false);
 
   // Default content (original website content)
   const defaultContent = {
     title: "Mindset Coaching für ein glückliches und erfülltes Leben",
     subtitle: "Entfalte dein volles Potenzial und erschaffe das Leben, von dem du träumst. Mit dem richtigen Mindset sind deinen Möglichkeiten keine Grenzen gesetzt.",
     additionalText: "Das zentrale Thema bei Mindset Coaching sind deine persönlichen Überzeugungen und Glaubenssätze. Wovon du selber überzeugst bist, verwirklichst du in deinem Leben. In einem persönlichen Coaching lernst du deine negativen Glaubenssätze zu erkennen und abzulegen und stattdessen in jedem Lebensbereich bestärkende Glaubenssätze zu entwickeln. Dazu gehört auch ein positives Selbstbild aufzubauen und in den inneren Frieden mit dir, deinen Mitmenschen, deiner Vergangenheit und deiner Geschichte zu kommen.",
-    buttonText: "Kennenlerngespräch vereinbaren"
+    buttonText: "Kennenlerngespräch vereinbaren",
+    backgroundImage: "/lovable-uploads/7b4f0db6-80ea-4da6-b817-0f33ba7562b5.png"
   };
 
   // Use content bridge to allow admin overrides
-  const content = useContentBridge('hero', defaultContent);
-
-  // Use image bridge for the background image
-  const backgroundImageUrl = useImageBridge('hero-background', '/lovable-uploads/7b4f0db6-80ea-4da6-b817-0f33ba7562b5.png');
+  const content = useContentBridge('home', defaultContent);
 
   useEffect(() => {
-    setIsVisible(true);
+    const elements = [headingRef.current, subtitleRef.current, additionalTextRef.current, ctaRef.current];
+    elements.forEach((el, index) => {
+      if (el) {
+        setTimeout(() => {
+          el.classList.add('opacity-100');
+          el.classList.remove('opacity-0', 'translate-y-10');
+        }, 300 * (index + 1));
+      }
+    });
+
+    const domains = ['fonts.googleapis.com', 'fonts.gstatic.com'];
+    domains.forEach(domain => {
+      const link = document.createElement('link');
+      link.rel = 'preconnect';
+      link.href = `https://${domain}`;
+      document.head.appendChild(link);
+    });
   }, []);
 
   return (
-    <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Background Image */}
-      <div className="absolute inset-0 z-0">
-        <OptimizedImage
-          src={backgroundImageUrl}
-          alt="Mindset Coaching Hintergrund"
-          className="w-full h-full object-cover"
-          priority="high"
-        />
-        <div className="absolute inset-0 bg-black/40"></div>
+    <section id="home" className="relative min-h-screen flex items-center pt-20 pb-12 overflow-hidden">
+      <div className="absolute inset-0 bg-beige/60 leaf-pattern -z-10"></div>
+      
+      <div className="absolute top-40 right-10 w-64 h-64 bg-sage/20 rounded-full blur-3xl -z-10"></div>
+      <div className="absolute bottom-20 left-10 w-72 h-72 bg-mauve/20 rounded-full blur-3xl -z-10"></div>
+      
+      <div className="container mx-auto px-4 md:px-6">
+        <div className="flex flex-col lg:flex-row items-center justify-between gap-12">
+          <div className="max-w-2xl w-full text-center lg:text-left">
+            <div className="mb-10">
+              <h1 ref={headingRef} className="font-serif text-3xl md:text-4xl lg:text-5xl font-semibold leading-tight mb-6 transition-all duration-700 ease-out opacity-0 translate-y-10 text-center sm:text-left">
+                <span className="bg-gradient-to-r from-moss via-petrol to-forest bg-clip-text text-transparent">Mindset Coaching</span> für ein glückliches und erfülltes Leben
+              </h1>
+
+              {/* Mobile image */}
+              <div className="block lg:hidden mb-8 text-center">
+                <div className="relative w-full max-w-md mx-auto">
+                  <div className="aspect-[3/4] overflow-hidden shadow-xl transition-all duration-500 hover:shadow-2xl rounded-lg">
+                    <div className="image-reveal reveal w-full h-full relative">
+                      <OptimizedImage 
+                        src={content.backgroundImage} 
+                        alt="Martina Domeniconi - Mindset Coach" 
+                        className="w-full h-full object-cover object-center" 
+                        priority="high" 
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" 
+                        onLoad={() => setImageLoaded(true)} 
+                      />
+                      <div className="absolute inset-0 bg-forest/20 rounded-lg"></div>
+                      
+                      <div className="absolute bottom-4 right-4 z-10">
+                        <Badge variant="default" className="bg-white text-forest flex items-center gap-2 py-2 px-3 shadow-lg">
+                          <Shield size={16} className="text-forest" />
+                          Zertifizierter Mindset Coach
+                        </Badge>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <p ref={subtitleRef} className="text-lg md:text-xl text-foreground/90 mb-8 max-w-xl mx-auto lg:mx-0 text-center lg:text-left transition-all duration-700 ease-out opacity-0 translate-y-10 delay-100">
+                {content.subtitle}
+              </p>
+              <p ref={additionalTextRef} className="text-base text-foreground/80 mb-8 max-w-xl mx-auto lg:mx-0 text-center lg:text-left transition-all duration-700 ease-out opacity-0 translate-y-10 delay-200">
+                {content.additionalText}
+              </p>
+              <div ref={ctaRef} className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start transition-all duration-700 ease-out opacity-0 translate-y-10 delay-200">
+                <a href="#contact" className="inline-flex items-center justify-center px-6 py-3 bg-petrol text-white hover:bg-petrol/90 transition-colors shadow-lg font-medium rounded-md">
+                  {content.buttonText}
+                </a>
+                <a href="#services" className="hidden lg:inline-flex items-center justify-center px-6 py-3 bg-sage/30 hover:bg-sage/40 text-forest transition-colors focus-ring text-center">
+                  Mehr erfahren
+                </a>
+              </div>
+            </div>
+          </div>
+          
+          {/* Desktop image */}
+          <div className="hidden lg:block relative w-full max-w-md lg:max-w-lg xl:max-w-xl">
+            <div className="aspect-[3/4] overflow-hidden shadow-xl transition-all duration-500 hover:shadow-2xl rounded-lg">
+              <div className="image-reveal reveal w-full h-full relative">
+                <OptimizedImage 
+                  src={content.backgroundImage} 
+                  alt="Martina Domeniconi - Mindset Coach" 
+                  className="w-full h-full object-cover object-center" 
+                  priority="high" 
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" 
+                  onLoad={() => setImageLoaded(true)} 
+                />
+                <div className="absolute inset-0 bg-forest/20 rounded-lg"></div>
+                
+                <div className="absolute bottom-4 right-4 z-10">
+                  <Badge variant="default" className="bg-white text-forest flex items-center gap-2 py-2 px-3 shadow-lg">
+                    <Shield size={16} className="text-forest" />
+                    Zertifizierter Mindset Coach
+                  </Badge>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       
-      {/* Content */}
-      <div className="relative z-10 container mx-auto px-4 text-center text-white">
-        <div className={`max-w-4xl mx-auto transition-all duration-1000 ease-out ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-semibold mb-6 leading-tight">
-            {content.title}
-          </h1>
-          
-          <p className="text-xl md:text-2xl mb-8 font-light leading-relaxed max-w-3xl mx-auto">
-            {content.subtitle}
-          </p>
-          
-          <p className="text-lg mb-10 leading-relaxed max-w-4xl mx-auto opacity-90">
-            {content.additionalText}
-          </p>
-          
-          <a href="#contact" className="inline-flex items-center">
-            <Button size="lg" className="bg-beige hover:bg-beige/90 text-forest font-medium px-8 py-4 text-lg">
-              {content.buttonText}
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Button>
+      {!isMobile && (
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce max-lg:hidden">
+          <a href="#services" className="flex flex-col items-center text-forest/70 hover:text-forest transition-colors">
+            <span className="text-sm mb-2">Mehr</span>
+            <ArrowDown size={20} />
           </a>
         </div>
-      </div>
-      
-      {/* Scroll indicator */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-10">
-        <div className="w-6 h-10 border-2 border-white/50 rounded-full flex justify-center">
-          <div className="w-1 h-3 bg-white/70 rounded-full mt-2 animate-bounce"></div>
-        </div>
-      </div>
+      )}
     </section>
   );
 };

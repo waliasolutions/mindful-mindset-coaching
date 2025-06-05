@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Upload, X, Copy, Trash2, ImagePlus, Check, Globe, Edit } from 'lucide-react';
+import { Upload, X, Copy, Trash2, ImagePlus, Check, Globe } from 'lucide-react';
 import { toast } from 'sonner';
 import { Badge } from '@/components/ui/badge';
 import { supabase } from '@/integrations/supabase/client';
@@ -26,7 +26,7 @@ interface MediaLibraryProps {
   selectedImage?: string | null;
 }
 
-// Complete website images that are currently in use
+// Website images that are currently in use
 const websiteImages = [
   {
     url: '/lovable-uploads/7b4f0db6-80ea-4da6-b817-0f33ba7562b5.png',
@@ -42,11 +42,6 @@ const websiteImages = [
     url: '/lovable-uploads/0bacd932-81ec-4c1b-b330-546f5a1116dd.png',
     usage: 'Partner Logo (Footer)',
     fileName: 'organize-my-space-logo.png'
-  },
-  {
-    url: '/lovable-uploads/8a4be257-655e-4d69-b10e-5db95864ae5a.png',
-    usage: 'Einstein Zitat (Preise Bereich)',
-    fileName: 'einstein-sketch.png'
   }
 ];
 
@@ -241,9 +236,6 @@ const MediaLibrary = ({ onSelectImage, selectedImage }: MediaLibraryProps) => {
     <div>
       <div className="mb-6">
         <h2 className="text-lg font-semibold mb-4">Website-Bilder</h2>
-        <p className="text-sm text-gray-600 mb-4">
-          Diese Bilder werden aktuell auf der Website verwendet. Sie können durch neue Bilder ersetzt werden.
-        </p>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mb-6">
           {images.filter(img => img.is_website_image).map((image) => (
             <div 
