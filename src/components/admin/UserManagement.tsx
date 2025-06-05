@@ -375,7 +375,7 @@ const UserManagement = () => {
                         <>
                           <Select
                             value={userData.role}
-                            onValueChange={(value) => handleUpdateUserRole(userData.id, value)}
+                            onValueChange={(value: 'admin' | 'editor') => handleUpdateUserRole(userData.id, value)}
                           >
                             <SelectTrigger className="w-32">
                               <SelectValue />
