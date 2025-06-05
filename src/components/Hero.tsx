@@ -1,3 +1,4 @@
+
 import { ArrowDown, Leaf, Shield } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { useIsMobile } from '../hooks/use-mobile';
@@ -26,22 +27,15 @@ const Hero = () => {
   const content = useContentBridge('home', defaultContent);
 
   useEffect(() => {
+    // Reduce animation delays for faster perceived loading
     const elements = [headingRef.current, subtitleRef.current, additionalTextRef.current, ctaRef.current];
     elements.forEach((el, index) => {
       if (el) {
         setTimeout(() => {
           el.classList.add('opacity-100');
           el.classList.remove('opacity-0', 'translate-y-10');
-        }, 300 * (index + 1));
+        }, 150 * (index + 1)); // Reduced from 300ms to 150ms
       }
-    });
-
-    const domains = ['fonts.googleapis.com', 'fonts.gstatic.com'];
-    domains.forEach(domain => {
-      const link = document.createElement('link');
-      link.rel = 'preconnect';
-      link.href = `https://${domain}`;
-      document.head.appendChild(link);
     });
   }, []);
 
@@ -56,14 +50,14 @@ const Hero = () => {
         <div className="flex flex-col lg:flex-row items-center justify-between gap-12">
           <div className="max-w-2xl w-full text-center lg:text-left">
             <div className="mb-10">
-              <h1 ref={headingRef} className="font-serif text-3xl md:text-4xl lg:text-5xl font-semibold leading-tight mb-6 transition-all duration-700 ease-out opacity-0 translate-y-10 text-center sm:text-left">
+              <h1 ref={headingRef} className="font-serif text-3xl md:text-4xl lg:text-5xl font-semibold leading-tight mb-6 transition-all duration-500 ease-out opacity-0 translate-y-10 text-center sm:text-left">
                 <span className="bg-gradient-to-r from-moss via-petrol to-forest bg-clip-text text-transparent">Mindset Coaching</span> für ein glückliches und erfülltes Leben
               </h1>
 
               {/* Mobile image */}
               <div className="block lg:hidden mb-8 text-center">
                 <div className="relative w-full max-w-md mx-auto">
-                  <div className="aspect-[3/4] overflow-hidden shadow-xl transition-all duration-500 hover:shadow-2xl rounded-lg">
+                  <div className="aspect-[3/4] overflow-hidden shadow-xl transition-all duration-300 hover:shadow-2xl rounded-lg">
                     <div className="image-reveal reveal w-full h-full relative">
                       <OptimizedImage 
                         src={content.backgroundImage} 
@@ -86,13 +80,13 @@ const Hero = () => {
                 </div>
               </div>
 
-              <p ref={subtitleRef} className="text-lg md:text-xl text-foreground/90 mb-8 max-w-xl mx-auto lg:mx-0 text-center lg:text-left transition-all duration-700 ease-out opacity-0 translate-y-10 delay-100">
+              <p ref={subtitleRef} className="text-lg md:text-xl text-foreground/90 mb-8 max-w-xl mx-auto lg:mx-0 text-center lg:text-left transition-all duration-500 ease-out opacity-0 translate-y-10 delay-75">
                 {content.subtitle}
               </p>
-              <p ref={additionalTextRef} className="text-base text-foreground/80 mb-8 max-w-xl mx-auto lg:mx-0 text-center lg:text-left transition-all duration-700 ease-out opacity-0 translate-y-10 delay-200">
+              <p ref={additionalTextRef} className="text-base text-foreground/80 mb-8 max-w-xl mx-auto lg:mx-0 text-center lg:text-left transition-all duration-500 ease-out opacity-0 translate-y-10 delay-150">
                 {content.additionalText}
               </p>
-              <div ref={ctaRef} className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start transition-all duration-700 ease-out opacity-0 translate-y-10 delay-200">
+              <div ref={ctaRef} className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start transition-all duration-500 ease-out opacity-0 translate-y-10 delay-150">
                 <a href="#contact" className="inline-flex items-center justify-center px-6 py-3 bg-petrol text-white hover:bg-petrol/90 transition-colors shadow-lg font-medium rounded-md">
                   {content.buttonText}
                 </a>
@@ -105,7 +99,7 @@ const Hero = () => {
           
           {/* Desktop image */}
           <div className="hidden lg:block relative w-full max-w-md lg:max-w-lg xl:max-w-xl">
-            <div className="aspect-[3/4] overflow-hidden shadow-xl transition-all duration-500 hover:shadow-2xl rounded-lg">
+            <div className="aspect-[3/4] overflow-hidden shadow-xl transition-all duration-300 hover:shadow-2xl rounded-lg">
               <div className="image-reveal reveal w-full h-full relative">
                 <OptimizedImage 
                   src={content.backgroundImage} 

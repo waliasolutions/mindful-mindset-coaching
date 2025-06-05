@@ -15,27 +15,17 @@ const Footer = ({ onTermsClick, onImpressumClick, onDatenschutzClick }: FooterPr
   const globalSettings = useGlobalSettings();
   const navigate = useNavigate();
   
-  // Default German content for the footer
-  const defaultFooterContent = {
-    contactText: 'Kontaktieren Sie uns, um mehr über unsere Coaching-Dienstleistungen zu erfahren',
-    contactEmail: 'info@mindset-coach-martina.ch',
-    contactPhone: '+41 78 840 04 81',
-    address: '6300 Zug, Schweiz',
-    copyrightText: '© 2025 Mindset Coach Martina.',
-    socialLinks: [
-      { id: '1', platform: 'Instagram', url: 'https://instagram.com' },
-      { id: '2', platform: 'Facebook', url: 'https://facebook.com' }
-    ]
-  };
-
-  // Use admin settings if available, otherwise use defaults
+  // Use admin settings with proper fallbacks
   const footerContent = {
-    contactText: globalSettings.footer?.contactText || defaultFooterContent.contactText,
-    contactEmail: globalSettings.contactEmail || defaultFooterContent.contactEmail,
-    contactPhone: globalSettings.contactPhone || defaultFooterContent.contactPhone,
-    address: globalSettings.address || defaultFooterContent.address,
-    copyrightText: globalSettings.footer?.copyrightText || defaultFooterContent.copyrightText,
-    socialLinks: globalSettings.footer?.socialLinks || defaultFooterContent.socialLinks
+    contactText: globalSettings.footer?.contactText || 'Kontaktieren Sie uns, um mehr über unsere Coaching-Dienstleistungen zu erfahren',
+    contactEmail: globalSettings.contactEmail || 'info@mindset-coach-martina.ch',
+    contactPhone: globalSettings.contactPhone || '+41 78 840 04 81',
+    address: globalSettings.address || '6300 Zug, Schweiz',
+    copyrightText: globalSettings.footer?.copyrightText || '© 2025 Mindset Coach Martina.',
+    socialLinks: globalSettings.footer?.socialLinks || [
+      { id: 'instagram', platform: 'Instagram', url: 'https://www.instagram.com/mindset_coach_martina' },
+      { id: 'facebook', platform: 'Facebook', url: 'https://www.facebook.com/mindset.coach.martina' }
+    ]
   };
   
   // Add a hidden admin link that becomes visible when pressing Alt+Shift+A
@@ -97,7 +87,7 @@ const Footer = ({ onTermsClick, onImpressumClick, onDatenschutzClick }: FooterPr
             </div>
           </div>
 
-          {/* Quick Links - Updated heading */}
+          {/* Legal Links */}
           <div>
             <h3 className="text-xl font-semibold mb-4">Rechtliches</h3>
             <ul className="space-y-2">
@@ -128,10 +118,10 @@ const Footer = ({ onTermsClick, onImpressumClick, onDatenschutzClick }: FooterPr
             </ul>
           </div>
 
-          {/* Social Media */}
+          {/* Social Media & Partner */}
           <div>
             <h3 className="text-xl font-semibold mb-4">Folgen Sie uns</h3>
-            <div className="flex space-x-4">
+            <div className="flex space-x-4 mb-6">
               {footerContent.socialLinks?.map((social) => (
                 <a
                   key={social.id}
@@ -145,8 +135,8 @@ const Footer = ({ onTermsClick, onImpressumClick, onDatenschutzClick }: FooterPr
               ))}
             </div>
             
-            {/* Partner Logo - Moved here from the second column */}
-            <div className="mt-6">
+            {/* Partner Logo */}
+            <div>
               <h4 className="text-sm font-medium mb-2">Partner</h4>
               <a 
                 href="https://organize-my-space.ch" 
@@ -166,7 +156,7 @@ const Footer = ({ onTermsClick, onImpressumClick, onDatenschutzClick }: FooterPr
           </div>
         </div>
 
-        {/* Copyright - Updated to remove "All rights reserved" */}
+        {/* Copyright */}
         <div className="border-t border-white/20 mt-8 pt-8 text-center">
           <p>{footerContent.copyrightText}</p>
         </div>

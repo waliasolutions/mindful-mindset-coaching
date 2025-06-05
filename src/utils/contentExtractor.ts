@@ -89,3 +89,39 @@ export const extractNavigationContent = () => {
     { id: 'nav-5', label: 'Contact', url: '#contact' }
   ];
 };
+
+// Extract footer content with proper fallbacks
+export const extractFooterContent = () => {
+  const savedSettings = localStorage.getItem('globalSettings');
+  if (savedSettings) {
+    try {
+      const settings = JSON.parse(savedSettings);
+      return {
+        contactText: settings.footer?.contactText || 'Kontaktieren Sie uns, um mehr über unsere Coaching-Dienstleistungen zu erfahren',
+        socialLinks: settings.footer?.socialLinks || [
+          { id: 'instagram', platform: 'Instagram', url: 'https://www.instagram.com/mindset_coach_martina' },
+          { id: 'facebook', platform: 'Facebook', url: 'https://www.facebook.com/mindset.coach.martina' }
+        ],
+        copyrightText: settings.footer?.copyrightText || '© 2025 Mindset Coach Martina.',
+        contactEmail: settings.contactEmail || 'info@mindset-coach-martina.ch',
+        contactPhone: settings.contactPhone || '+41 78 840 04 81',
+        address: settings.address || '6300 Zug, Schweiz'
+      };
+    } catch (error) {
+      console.error('Error parsing global settings:', error);
+    }
+  }
+  
+  // Return default footer content if no saved settings
+  return {
+    contactText: 'Kontaktieren Sie uns, um mehr über unsere Coaching-Dienstleistungen zu erfahren',
+    socialLinks: [
+      { id: 'instagram', platform: 'Instagram', url: 'https://www.instagram.com/mindset_coach_martina' },
+      { id: 'facebook', platform: 'Facebook', url: 'https://www.facebook.com/mindset.coach.martina' }
+    ],
+    copyrightText: '© 2025 Mindset Coach Martina.',
+    contactEmail: 'info@mindset-coach-martina.ch',
+    contactPhone: '+41 78 840 04 81',
+    address: '6300 Zug, Schweiz'
+  };
+};

@@ -38,7 +38,7 @@ export const defaultSettings: GlobalSettings = {
   siteName: 'Mindset Coach Martina',
   contactEmail: 'info@mindset-coach-martina.ch',
   contactPhone: '+41 78 840 04 81',
-  address: 'Ruedi-Walter-strasse 4, 8050 Zürich',
+  address: '6300 Zug, Schweiz',
   navigation: [
     { id: 'home', label: 'Home', url: '#home' },
     { id: 'services', label: 'Services', url: '#services' },
@@ -50,7 +50,7 @@ export const defaultSettings: GlobalSettings = {
     contactText: 'Kontaktieren Sie uns, um mehr über unsere Coaching-Dienstleistungen zu erfahren',
     socialLinks: [
       { id: 'instagram', platform: 'Instagram', url: 'https://www.instagram.com/mindset_coach_martina', icon: 'Instagram' },
-      { id: 'facebook', platform: 'Facebook', url: 'https://ne-np.facebook.com/organizemyspace.ch/', icon: 'Facebook' }
+      { id: 'facebook', platform: 'Facebook', url: 'https://www.facebook.com/mindset.coach.martina', icon: 'Facebook' }
     ],
     legalLinks: [
       { id: 'privacy', label: 'Datenschutz', url: '/privacy' },
