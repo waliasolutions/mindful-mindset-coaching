@@ -1,19 +1,25 @@
 
 import React, { useState } from 'react';
 import { Button } from '../ui/button';
-import { Layers, Search, PaintBucket, Image, FileText, Settings } from 'lucide-react';
+import { Layers, Search, PaintBucket, Image, FileText, Settings, BarChart3, Bell } from 'lucide-react';
 import SeoSettings from './SeoSettings';
 import MediaLibrary from './MediaLibrary';
 import ThemeSettings from './ThemeSettings';
 import GlobalSettings from './GlobalSettings';
+import AdminDashboard from './AdminDashboard';
+import PerformanceDashboard from './PerformanceDashboard';
+import AdminNotificationCenter from './AdminNotificationCenter';
+import AdminErrorBoundary from './AdminErrorBoundary';
 import { useNavigate } from 'react-router-dom';
 
 const AdminLayout = ({ children, onLogout }: { children: React.ReactNode; onLogout: () => void }) => {
-  const [activeTab, setActiveTab] = useState('sections');
+  const [activeTab, setActiveTab] = useState('dashboard');
   
   // Function to render the active panel based on the activeTab state
   const renderActivePanel = () => {
     switch (activeTab) {
+      case 'dashboard':
+        return <AdminDashboard />;
       case 'media':
         return <MediaLibrary />;
       case 'theme':
@@ -22,83 +28,130 @@ const AdminLayout = ({ children, onLogout }: { children: React.ReactNode; onLogo
         return <SeoSettings />;
       case 'settings':
         return <GlobalSettings />;
+      case 'performance':
+        return <PerformanceDashboard />;
       default:
         return children;
     }
   };
   
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="bg-forest text-white shadow-md">
-        <div className="container mx-auto px-4 py-3 flex justify-between items-center">
-          <div className="flex items-center space-x-4">
-            <h1 className="text-xl font-bold">Admin Dashboard</h1>
-          </div>
-          <div className="flex items-center space-x-4">
-            <Button variant="outline" className="text-white border-white hover:bg-white hover:text-forest" asChild>
-              <a href="/" target="_blank">Website ansehen</a>
-            </Button>
-            <Button variant="ghost" onClick={onLogout} className="text-white">
-              Abmelden
-            </Button>
-          </div>
-        </div>
-      </header>
-      
-      <main className="container mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
-          <div className="md:col-span-9">
-            {renderActivePanel()}
-          </div>
-          <div className="md:col-span-3 space-y-6">
-            <div className="bg-white shadow rounded-lg p-4 h-fit">
-              <nav className="space-y-2">
-                <Button
-                  variant={activeTab === 'sections' ? 'default' : 'ghost'}
-                  className="w-full justify-start"
-                  onClick={() => setActiveTab('sections')}
-                >
-                  <Layers className="mr-2 h-4 w-4" />
-                  Bereiche
-                </Button>
-                <Button
-                  variant={activeTab === 'media' ? 'default' : 'ghost'}
-                  className="w-full justify-start"
-                  onClick={() => setActiveTab('media')}
-                >
-                  <Image className="mr-2 h-4 w-4" />
-                  Medienbibliothek
-                </Button>
-                <Button
-                  variant={activeTab === 'theme' ? 'default' : 'ghost'}
-                  className="w-full justify-start"
-                  onClick={() => setActiveTab('theme')}
-                >
-                  <PaintBucket className="mr-2 h-4 w-4" />
-                  Design
-                </Button>
-                <Button
-                  variant={activeTab === 'seo' ? 'default' : 'ghost'} 
-                  className="w-full justify-start"
-                  onClick={() => setActiveTab('seo')}
-                >
-                  <Search className="mr-2 h-4 w-4" />
-                  SEO & Analyse
-                </Button>
-                <Button
-                  variant={activeTab === 'settings' ? 'default' : 'ghost'} 
-                  className="w-full justify-start"
-                  onClick={() => setActiveTab('settings')}
-                >
-                  <Settings className="mr-2 h-4 w-4" />
-                  Globale Einstellungen
-                </Button>
-              </nav>
+    <AdminErrorBoundary>
+      <div className="min-h-screen bg-gray-50">
+        <header className="bg-forest text-white shadow-md border-b border-forest/20">
+          <div className="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div className="flex items-center space-x-4">
+              <h1 className="text-xl font-bold">Admin Dashboard</h1>
+              <div className="hidden md:flex items-center space-x-1 bg-forest/20 rounded-lg px-3 py-1">
+                <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                <span className="text-sm">Live</span>
+              </div>
+            </div>
+            <div className="flex items-center space-x-4">
+              <AdminNotificationCenter />
+              <Button variant="outline" className="text-white border-white hover:bg-white hover:text-forest transition-colors" asChild>
+                <a href="/" target="_blank" rel="noopener noreferrer">Website ansehen</a>
+              </Button>
+              <Button variant="ghost" onClick={onLogout} className="text-white hover:bg-white/10 transition-colors">
+                Abmelden
+              </Button>
             </div>
           </div>
-        </div>
-      </main>
-    </div>
+        </header>
+        
+        <main className="container mx-auto px-4 py-8">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            <div className="lg:col-span-9">
+              {renderActivePanel()}
+            </div>
+            <div className="lg:col-span-3 space-y-6">
+              <div className="bg-white shadow-sm rounded-lg p-4 border border-gray-200">
+                <nav className="space-y-2">
+                  <Button
+                    variant={activeTab === 'dashboard' ? 'default' : 'ghost'}
+                    className="w-full justify-start text-left"
+                    onClick={() => setActiveTab('dashboard')}
+                  >
+                    <BarChart3 className="mr-3 h-4 w-4" />
+                    Dashboard
+                  </Button>
+                  <Button
+                    variant={activeTab === 'sections' ? 'default' : 'ghost'}
+                    className="w-full justify-start text-left"
+                    onClick={() => setActiveTab('sections')}
+                  >
+                    <Layers className="mr-3 h-4 w-4" />
+                    Bereiche
+                  </Button>
+                  <Button
+                    variant={activeTab === 'media' ? 'default' : 'ghost'}
+                    className="w-full justify-start text-left"
+                    onClick={() => setActiveTab('media')}
+                  >
+                    <Image className="mr-3 h-4 w-4" />
+                    Medienbibliothek
+                  </Button>
+                  <Button
+                    variant={activeTab === 'theme' ? 'default' : 'ghost'}
+                    className="w-full justify-start text-left"
+                    onClick={() => setActiveTab('theme')}
+                  >
+                    <PaintBucket className="mr-3 h-4 w-4" />
+                    Design
+                  </Button>
+                  <Button
+                    variant={activeTab === 'seo' ? 'default' : 'ghost'} 
+                    className="w-full justify-start text-left"
+                    onClick={() => setActiveTab('seo')}
+                  >
+                    <Search className="mr-3 h-4 w-4" />
+                    SEO & Analyse
+                  </Button>
+                  <Button
+                    variant={activeTab === 'performance' ? 'default' : 'ghost'} 
+                    className="w-full justify-start text-left"
+                    onClick={() => setActiveTab('performance')}
+                  >
+                    <BarChart3 className="mr-3 h-4 w-4" />
+                    Performance
+                  </Button>
+                  <Button
+                    variant={activeTab === 'settings' ? 'default' : 'ghost'} 
+                    className="w-full justify-start text-left"
+                    onClick={() => setActiveTab('settings')}
+                  >
+                    <Settings className="mr-3 h-4 w-4" />
+                    Globale Einstellungen
+                  </Button>
+                </nav>
+              </div>
+
+              {/* Quick Stats */}
+              <div className="bg-white shadow-sm rounded-lg p-4 border border-gray-200">
+                <h3 className="font-semibold text-gray-900 mb-3">Quick Stats</h3>
+                <div className="space-y-3">
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm text-gray-600">Website Status</span>
+                    <div className="flex items-center gap-1">
+                      <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                      <span className="text-sm font-medium">Online</span>
+                    </div>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm text-gray-600">Last Update</span>
+                    <span className="text-sm font-medium">Today</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm text-gray-600">Performance</span>
+                    <span className="text-sm font-medium text-green-600">Excellent</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </AdminErrorBoundary>
   );
 };
 

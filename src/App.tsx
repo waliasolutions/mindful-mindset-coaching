@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -12,6 +11,8 @@ import Admin from "./pages/Admin";
 import NotFound from "./pages/NotFound";
 import { HelmetProvider } from "react-helmet-async";
 import { toast } from "@/components/ui/use-toast";
+import { useServiceWorker } from "./hooks/useServiceWorker";
+import { preloadCriticalResources } from "./utils/performance";
 
 // Create a query client with error handling
 const queryClient = new QueryClient({
@@ -20,6 +21,7 @@ const queryClient = new QueryClient({
       retry: 1,
       refetchOnWindowFocus: false,
       staleTime: 5 * 60 * 1000,
+      gcTime: 10 * 60 * 1000, // Cache for 10 minutes
     },
     mutations: {
       onError: (error) => {
@@ -37,7 +39,13 @@ const queryClient = new QueryClient({
 const AppContent = () => {
   const location = useLocation();
 
+  // Initialize service worker
+  useServiceWorker();
+
   useEffect(() => {
+    // Preload critical resources
+    preloadCriticalResources();
+
     // Update page metadata based on route
     const pathname = location.pathname;
     const baseTitle = "Mindset Coaching mit Martina | Persönliche Entwicklung & Transformation";
