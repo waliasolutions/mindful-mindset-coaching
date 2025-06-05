@@ -1,4 +1,12 @@
 
+// Extend Window interface to include Google Analytics properties
+declare global {
+  interface Window {
+    dataLayer: any[];
+    gtag: (...args: any[]) => void;
+  }
+}
+
 interface GA4Config {
   trackingId: string;
   enabled: boolean;
@@ -60,7 +68,7 @@ class GA4Manager {
         gtag('config', trackingId);
         
         // Make gtag globally available
-        (window as any).gtag = gtag;
+        window.gtag = gtag;
         
         resolve();
       };
@@ -85,9 +93,14 @@ class GA4Manager {
       existingConfig.remove();
     }
     
-    // Clear gtag function
-    if ((window as any).gtag) {
-      delete (window as any).gtag;
+    // Clear gtag function safely
+    try {
+      if (window.gtag) {
+        delete window.gtag;
+      }
+    } catch (error) {
+      // Property might be non-configurable, just set to undefined
+      window.gtag = undefined as any;
     }
     
     this.scriptsLoaded = false;
