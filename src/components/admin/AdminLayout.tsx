@@ -37,10 +37,10 @@ const AdminLayout = ({ children, onLogout }: { children: React.ReactNode; onLogo
           </div>
           <div className="flex items-center space-x-4">
             <Button variant="outline" className="text-white border-white hover:bg-white hover:text-forest" asChild>
-              <a href="/" target="_blank">View Site</a>
+              <a href="/" target="_blank">Website ansehen</a>
             </Button>
             <Button variant="ghost" onClick={onLogout} className="text-white">
-              Logout
+              Abmelden
             </Button>
           </div>
         </div>
@@ -61,7 +61,7 @@ const AdminLayout = ({ children, onLogout }: { children: React.ReactNode; onLogo
                   onClick={() => setActiveTab('sections')}
                 >
                   <Layers className="mr-2 h-4 w-4" />
-                  Sections
+                  Bereiche
                 </Button>
                 <Button
                   variant={activeTab === 'media' ? 'default' : 'ghost'}
@@ -69,7 +69,7 @@ const AdminLayout = ({ children, onLogout }: { children: React.ReactNode; onLogo
                   onClick={() => setActiveTab('media')}
                 >
                   <Image className="mr-2 h-4 w-4" />
-                  Media Library
+                  Medienbibliothek
                 </Button>
                 <Button
                   variant={activeTab === 'theme' ? 'default' : 'ghost'}
@@ -77,7 +77,7 @@ const AdminLayout = ({ children, onLogout }: { children: React.ReactNode; onLogo
                   onClick={() => setActiveTab('theme')}
                 >
                   <PaintBucket className="mr-2 h-4 w-4" />
-                  Theme
+                  Design
                 </Button>
                 <Button
                   variant={activeTab === 'seo' ? 'default' : 'ghost'} 
@@ -85,7 +85,7 @@ const AdminLayout = ({ children, onLogout }: { children: React.ReactNode; onLogo
                   onClick={() => setActiveTab('seo')}
                 >
                   <Search className="mr-2 h-4 w-4" />
-                  SEO & Analytics
+                  SEO & Analyse
                 </Button>
                 <Button
                   variant={activeTab === 'settings' ? 'default' : 'ghost'} 
@@ -93,7 +93,7 @@ const AdminLayout = ({ children, onLogout }: { children: React.ReactNode; onLogo
                   onClick={() => setActiveTab('settings')}
                 >
                   <Settings className="mr-2 h-4 w-4" />
-                  Global Settings
+                  Globale Einstellungen
                 </Button>
               </nav>
             </div>

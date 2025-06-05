@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Upload, X, Copy, Trash2, ImagePlus, Check } from 'lucide-react';
+import { Upload, X, Copy, Trash2, ImagePlus, Check, Globe } from 'lucide-react';
 import { toast } from 'sonner';
 import { Badge } from '@/components/ui/badge';
 import { supabase } from '@/integrations/supabase/client';
@@ -17,12 +17,33 @@ interface MediaItem {
   file_type?: string;
   alt_text?: string;
   created_at: string;
+  is_website_image?: boolean;
+  usage_description?: string;
 }
 
 interface MediaLibraryProps {
   onSelectImage?: (imageUrl: string) => void;
   selectedImage?: string | null;
 }
+
+// Website images that are currently in use
+const websiteImages = [
+  {
+    url: '/lovable-uploads/7b4f0db6-80ea-4da6-b817-0f33ba7562b5.png',
+    usage: 'Hintergrundbild Hero-Bereich',
+    fileName: 'hero-background.png'
+  },
+  {
+    url: '/lovable-uploads/053f601c-1228-481c-9aca-d078fb3d7d8a.png',
+    usage: 'Über uns Profilbild',
+    fileName: 'martina-profile.png'
+  },
+  {
+    url: '/lovable-uploads/0bacd932-81ec-4c1b-b330-546f5a1116dd.png',
+    usage: 'Partner Logo (Footer)',
+    fileName: 'organize-my-space-logo.png'
+  }
+];
 
 const MediaLibrary = ({ onSelectImage, selectedImage }: MediaLibraryProps) => {
   const [images, setImages] = useState<MediaItem[]>([]);
@@ -85,10 +106,22 @@ const MediaLibrary = ({ onSelectImage, selectedImage }: MediaLibraryProps) => {
         }
       }
 
-      setImages(combinedImages);
+      // Add website images to the list
+      const websiteImageItems: MediaItem[] = websiteImages.map((img, index) => ({
+        id: `website-${index}`,
+        image_url: img.url,
+        file_name: img.fileName,
+        created_at: new Date().toISOString(),
+        is_website_image: true,
+        usage_description: img.usage
+      }));
+
+      // Combine all images
+      const allImages = [...websiteImageItems, ...combinedImages];
+      setImages(allImages);
     } catch (error) {
       console.error('Error loading media library:', error);
-      toast.error('Failed to load images');
+      toast.error('Bilder konnten nicht geladen werden');
     } finally {
       setIsLoading(false);
     }
@@ -99,7 +132,7 @@ const MediaLibrary = ({ onSelectImage, selectedImage }: MediaLibraryProps) => {
     
     const file = e.target.files[0];
     if (!file.type.startsWith('image/')) {
-      toast.error('Please select an image file');
+      toast.error('Bitte wählen Sie eine Bilddatei');
       return;
     }
 
@@ -136,20 +169,25 @@ const MediaLibrary = ({ onSelectImage, selectedImage }: MediaLibraryProps) => {
         // Continue anyway as the file was uploaded successfully
       }
 
-      toast.success('Image uploaded successfully');
+      toast.success('Bild erfolgreich hochgeladen');
       loadImages(); // Reload the images
       
       // Clear the input
       e.target.value = '';
     } catch (error) {
       console.error('Upload error:', error);
-      toast.error('Failed to upload image');
+      toast.error('Bild konnte nicht hochgeladen werden');
     } finally {
       setIsUploading(false);
     }
   };
 
   const handleDelete = async (imageToDelete: MediaItem) => {
+    if (imageToDelete.is_website_image) {
+      toast.error('Website-Bilder können nicht gelöscht werden');
+      return;
+    }
+
     try {
       // Delete from database if it exists there
       if (imageToDelete.id) {
@@ -175,11 +213,11 @@ const MediaLibrary = ({ onSelectImage, selectedImage }: MediaLibraryProps) => {
         }
       }
 
-      toast.success('Image deleted');
+      toast.success('Bild gelöscht');
       loadImages(); // Reload the images
     } catch (error) {
       console.error('Delete error:', error);
-      toast.error('Failed to delete image');
+      toast.error('Bild konnte nicht gelöscht werden');
     }
   };
 
@@ -188,7 +226,7 @@ const MediaLibrary = ({ onSelectImage, selectedImage }: MediaLibraryProps) => {
       <div className="flex items-center justify-center py-8">
         <div className="text-center">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-forest mx-auto"></div>
-          <p className="mt-2 text-sm text-gray-500">Loading media library...</p>
+          <p className="mt-2 text-sm text-gray-500">Medienbibliothek wird geladen...</p>
         </div>
       </div>
     );
@@ -196,7 +234,63 @@ const MediaLibrary = ({ onSelectImage, selectedImage }: MediaLibraryProps) => {
 
   return (
     <div>
+      <div className="mb-6">
+        <h2 className="text-lg font-semibold mb-4">Website-Bilder</h2>
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mb-6">
+          {images.filter(img => img.is_website_image).map((image) => (
+            <div 
+              key={image.id} 
+              className={`relative group overflow-hidden rounded-md border cursor-pointer ${
+                selectedImage === image.image_url ? 'ring-2 ring-forest ring-offset-2' : ''
+              }`}
+              onClick={() => onSelectImage && onSelectImage(image.image_url)}
+            >
+              <div className="aspect-square bg-gray-100">
+                <img 
+                  src={image.image_url} 
+                  alt={image.usage_description || `Website Bild ${image.id}`}
+                  className="w-full h-full object-cover"
+                  onError={(e) => {
+                    console.error('Image failed to load:', image.image_url);
+                    e.currentTarget.src = '/placeholder.svg';
+                  }}
+                />
+              </div>
+              <div className="absolute top-2 left-2">
+                <Badge variant="secondary" className="text-xs bg-green-100 text-green-800">
+                  <Globe className="h-3 w-3 mr-1" />
+                  Website
+                </Badge>
+              </div>
+              {onSelectImage && selectedImage === image.image_url && (
+                <div className="absolute top-2 right-2 bg-forest text-white rounded-full p-1">
+                  <Check className="h-4 w-4" />
+                </div>
+              )}
+              <div className="absolute bottom-0 left-0 right-0 bg-black/60 text-white p-2">
+                <p className="text-xs truncate">{image.usage_description}</p>
+              </div>
+              <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-center items-center">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="text-white hover:bg-white/20 h-8 w-8"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    navigator.clipboard.writeText(image.image_url);
+                    toast.success('Bild-URL kopiert');
+                  }}
+                >
+                  <Copy className="h-4 w-4" />
+                </Button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
       <div className="mb-4">
+        <h2 className="text-lg font-semibold mb-4">Hochgeladene Bilder</h2>
         <Input 
           id="image-upload" 
           type="file" 
@@ -211,19 +305,19 @@ const MediaLibrary = ({ onSelectImage, selectedImage }: MediaLibraryProps) => {
         >
           <Upload className="h-6 w-6 mx-auto mb-2 text-gray-400" />
           <span className="text-sm text-gray-500">
-            {isUploading ? 'Uploading...' : 'Click to upload an image'}
+            {isUploading ? 'Wird hochgeladen...' : 'Klicken Sie hier, um ein Bild hochzuladen'}
           </span>
         </Label>
       </div>
 
-      {images.length === 0 ? (
+      {images.filter(img => !img.is_website_image).length === 0 ? (
         <div className="text-center py-8 text-gray-500">
           <ImagePlus className="h-12 w-12 mx-auto mb-2 opacity-50" />
-          <p>No images uploaded yet</p>
+          <p>Noch keine Bilder hochgeladen</p>
         </div>
       ) : (
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-          {images.map((image) => (
+          {images.filter(img => !img.is_website_image).map((image) => (
             <div 
               key={image.id} 
               className={`relative group overflow-hidden rounded-md border cursor-pointer ${
@@ -234,7 +328,7 @@ const MediaLibrary = ({ onSelectImage, selectedImage }: MediaLibraryProps) => {
               <div className="aspect-square bg-gray-100">
                 <img 
                   src={image.image_url} 
-                  alt={image.alt_text || `Image ${image.id}`}
+                  alt={image.alt_text || `Bild ${image.id}`}
                   className="w-full h-full object-cover"
                   onError={(e) => {
                     console.error('Image failed to load:', image.image_url);
@@ -255,7 +349,7 @@ const MediaLibrary = ({ onSelectImage, selectedImage }: MediaLibraryProps) => {
                   onClick={(e) => {
                     e.stopPropagation();
                     navigator.clipboard.writeText(image.image_url);
-                    toast.success('Image URL copied');
+                    toast.success('Bild-URL kopiert');
                   }}
                 >
                   <Copy className="h-4 w-4" />

@@ -146,7 +146,7 @@ const SectionEditor = ({ section, onClose }: SectionEditorProps) => {
               name="title"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Title</FormLabel>
+                  <FormLabel>Haupttitel</FormLabel>
                   <FormControl>
                     <Textarea {...field} className="min-h-[60px]" />
                   </FormControl>
@@ -159,7 +159,7 @@ const SectionEditor = ({ section, onClose }: SectionEditorProps) => {
               name="subtitle"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Subtitle</FormLabel>
+                  <FormLabel>Untertitel</FormLabel>
                   <FormControl>
                     <Textarea {...field} className="min-h-[60px]" />
                   </FormControl>
@@ -172,7 +172,7 @@ const SectionEditor = ({ section, onClose }: SectionEditorProps) => {
               name="additionalText"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Additional Text</FormLabel>
+                  <FormLabel>Zusätzlicher Text</FormLabel>
                   <FormControl>
                     <Textarea {...field} className="min-h-[100px]" />
                   </FormControl>
@@ -185,7 +185,7 @@ const SectionEditor = ({ section, onClose }: SectionEditorProps) => {
               name="buttonText"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Button Text</FormLabel>
+                  <FormLabel>Button-Text</FormLabel>
                   <FormControl>
                     <Input {...field} />
                   </FormControl>
@@ -204,7 +204,7 @@ const SectionEditor = ({ section, onClose }: SectionEditorProps) => {
               name="title"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Section Title</FormLabel>
+                  <FormLabel>Bereich-Titel</FormLabel>
                   <FormControl>
                     <Input {...field} />
                   </FormControl>
@@ -217,7 +217,7 @@ const SectionEditor = ({ section, onClose }: SectionEditorProps) => {
               name="description"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Section Description</FormLabel>
+                  <FormLabel>Bereich-Beschreibung</FormLabel>
                   <FormControl>
                     <Textarea {...field} className="min-h-[80px]" />
                   </FormControl>
@@ -230,7 +230,7 @@ const SectionEditor = ({ section, onClose }: SectionEditorProps) => {
               name="buttonText"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Button Text</FormLabel>
+                  <FormLabel>Button-Text</FormLabel>
                   <FormControl>
                     <Input {...field} />
                   </FormControl>
@@ -249,7 +249,7 @@ const SectionEditor = ({ section, onClose }: SectionEditorProps) => {
               name="title"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Section Title</FormLabel>
+                  <FormLabel>Bereich-Titel</FormLabel>
                   <FormControl>
                     <Input {...field} />
                   </FormControl>
@@ -262,7 +262,7 @@ const SectionEditor = ({ section, onClose }: SectionEditorProps) => {
               name="description"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Section Description</FormLabel>
+                  <FormLabel>Bereich-Beschreibung</FormLabel>
                   <FormControl>
                     <Textarea {...field} className="min-h-[80px]" />
                   </FormControl>
@@ -275,7 +275,7 @@ const SectionEditor = ({ section, onClose }: SectionEditorProps) => {
               name="quote"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Quote Text</FormLabel>
+                  <FormLabel>Zitat-Text</FormLabel>
                   <FormControl>
                     <Textarea {...field} className="min-h-[80px]" />
                   </FormControl>
@@ -288,7 +288,7 @@ const SectionEditor = ({ section, onClose }: SectionEditorProps) => {
               name="quoteAuthor"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Quote Author</FormLabel>
+                  <FormLabel>Zitat-Autor</FormLabel>
                   <FormControl>
                     <Input {...field} />
                   </FormControl>
@@ -302,7 +302,7 @@ const SectionEditor = ({ section, onClose }: SectionEditorProps) => {
                 name="price"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Price</FormLabel>
+                    <FormLabel>Preis</FormLabel>
                     <FormControl>
                       <Input {...field} />
                     </FormControl>
@@ -315,7 +315,7 @@ const SectionEditor = ({ section, onClose }: SectionEditorProps) => {
                 name="pricePeriod"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Period</FormLabel>
+                    <FormLabel>Zeitraum</FormLabel>
                     <FormControl>
                       <Input {...field} />
                     </FormControl>
@@ -329,7 +329,7 @@ const SectionEditor = ({ section, onClose }: SectionEditorProps) => {
               name="packageTitle"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Package Title</FormLabel>
+                  <FormLabel>Paket-Titel</FormLabel>
                   <FormControl>
                     <Input {...field} />
                   </FormControl>
@@ -348,7 +348,7 @@ const SectionEditor = ({ section, onClose }: SectionEditorProps) => {
               name="title"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Title</FormLabel>
+                  <FormLabel>Titel</FormLabel>
                   <FormControl>
                     <Input {...field} />
                   </FormControl>
@@ -361,7 +361,7 @@ const SectionEditor = ({ section, onClose }: SectionEditorProps) => {
               name="subtitle"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Subtitle</FormLabel>
+                  <FormLabel>Untertitel</FormLabel>
                   <FormControl>
                     <Input {...field} />
                   </FormControl>
@@ -380,7 +380,7 @@ const SectionEditor = ({ section, onClose }: SectionEditorProps) => {
               name="title"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Title</FormLabel>
+                  <FormLabel>Titel</FormLabel>
                   <FormControl>
                     <Input {...field} />
                   </FormControl>
@@ -393,7 +393,7 @@ const SectionEditor = ({ section, onClose }: SectionEditorProps) => {
               name="subtitle"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Subtitle</FormLabel>
+                  <FormLabel>Untertitel</FormLabel>
                   <FormControl>
                     <Textarea {...field} className="min-h-[80px]" />
                   </FormControl>
@@ -407,7 +407,7 @@ const SectionEditor = ({ section, onClose }: SectionEditorProps) => {
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Email</FormLabel>
+                    <FormLabel>E-Mail</FormLabel>
                     <FormControl>
                       <Input {...field} type="email" />
                     </FormControl>
@@ -420,7 +420,7 @@ const SectionEditor = ({ section, onClose }: SectionEditorProps) => {
                 name="phone"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Phone</FormLabel>
+                    <FormLabel>Telefon</FormLabel>
                     <FormControl>
                       <Input {...field} type="tel" />
                     </FormControl>
@@ -433,7 +433,7 @@ const SectionEditor = ({ section, onClose }: SectionEditorProps) => {
         );
         
       default:
-        return <p>No editable fields available for this section.</p>;
+        return <p>Keine bearbeitbaren Felder für diesen Bereich verfügbar.</p>;
     }
   };
 
@@ -441,15 +441,15 @@ const SectionEditor = ({ section, onClose }: SectionEditorProps) => {
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Edit {section.name} Section</DialogTitle>
+          <DialogTitle>{section.name} Bereich bearbeiten</DialogTitle>
           <DialogDescription>
-            Make changes to the content of this section. Click save when you're done.
+            Nehmen Sie Änderungen am Inhalt dieses Bereichs vor. Klicken Sie auf Speichern, wenn Sie fertig sind.
           </DialogDescription>
         </DialogHeader>
         
         <Tabs defaultValue="content" className="mt-4">
           <TabsList>
-            <TabsTrigger value="content">Content</TabsTrigger>
+            <TabsTrigger value="content">Inhalt</TabsTrigger>
           </TabsList>
           <TabsContent value="content" className="py-4">
             <Form {...form}>
@@ -462,11 +462,11 @@ const SectionEditor = ({ section, onClose }: SectionEditorProps) => {
         
         <DialogFooter>
           <Button variant="outline" onClick={handleClose}>
-            Cancel
+            Abbrechen
           </Button>
           <Button onClick={handleSave}>
             <Save className="mr-2 h-4 w-4" />
-            Save Changes
+            Änderungen speichern
           </Button>
         </DialogFooter>
       </DialogContent>

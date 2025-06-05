@@ -13,8 +13,30 @@ interface FooterProps {
 
 const Footer = ({ onTermsClick, onImpressumClick, onDatenschutzClick }: FooterProps) => {
   const globalSettings = useGlobalSettings();
-  const { footer, contactEmail, contactPhone, address } = globalSettings;
   const navigate = useNavigate();
+  
+  // Default German content for the footer
+  const defaultFooterContent = {
+    contactText: 'Kontaktieren Sie uns, um mehr über unsere Coaching-Dienstleistungen zu erfahren',
+    contactEmail: 'info@mindset-coach-martina.ch',
+    contactPhone: '+41 78 840 04 81',
+    address: '6300 Zug, Schweiz',
+    copyrightText: '© 2025 Mindset Coach Martina.',
+    socialLinks: [
+      { id: '1', platform: 'Instagram', url: 'https://instagram.com' },
+      { id: '2', platform: 'Facebook', url: 'https://facebook.com' }
+    ]
+  };
+
+  // Use admin settings if available, otherwise use defaults
+  const footerContent = {
+    contactText: globalSettings.footer?.contactText || defaultFooterContent.contactText,
+    contactEmail: globalSettings.contactEmail || defaultFooterContent.contactEmail,
+    contactPhone: globalSettings.contactPhone || defaultFooterContent.contactPhone,
+    address: globalSettings.address || defaultFooterContent.address,
+    copyrightText: globalSettings.footer?.copyrightText || defaultFooterContent.copyrightText,
+    socialLinks: globalSettings.footer?.socialLinks || defaultFooterContent.socialLinks
+  };
   
   // Add a hidden admin link that becomes visible when pressing Alt+Shift+A
   useEffect(() => {
@@ -58,19 +80,19 @@ const Footer = ({ onTermsClick, onImpressumClick, onDatenschutzClick }: FooterPr
           {/* Contact Information */}
           <div>
             <h3 className="text-xl font-semibold mb-4">Kontakt</h3>
-            <p className="mb-2">{footer?.contactText || 'Kontaktieren Sie uns, um mehr über unsere Coaching-Dienstleistungen zu erfahren'}</p>
+            <p className="mb-2">{footerContent.contactText}</p>
             <div className="space-y-2 mt-4">
-              <a href={`mailto:${contactEmail}`} className="flex items-center gap-2 hover:text-beige transition-colors">
+              <a href={`mailto:${footerContent.contactEmail}`} className="flex items-center gap-2 hover:text-beige transition-colors">
                 <Mail className="h-4 w-4" />
-                <span>{contactEmail}</span>
+                <span>{footerContent.contactEmail}</span>
               </a>
-              <a href={`tel:${contactPhone}`} className="flex items-center gap-2 hover:text-beige transition-colors">
+              <a href={`tel:${footerContent.contactPhone}`} className="flex items-center gap-2 hover:text-beige transition-colors">
                 <Phone className="h-4 w-4" />
-                <span>+41 78 840 04 81</span>
+                <span>{footerContent.contactPhone}</span>
               </a>
               <div className="flex items-center gap-2">
                 <MapPin className="h-4 w-4" />
-                <span>{address}</span>
+                <span>{footerContent.address}</span>
               </div>
             </div>
           </div>
@@ -110,7 +132,7 @@ const Footer = ({ onTermsClick, onImpressumClick, onDatenschutzClick }: FooterPr
           <div>
             <h3 className="text-xl font-semibold mb-4">Folgen Sie uns</h3>
             <div className="flex space-x-4">
-              {footer?.socialLinks?.map((social) => (
+              {footerContent.socialLinks?.map((social) => (
                 <a
                   key={social.id}
                   href={social.url}
@@ -146,7 +168,7 @@ const Footer = ({ onTermsClick, onImpressumClick, onDatenschutzClick }: FooterPr
 
         {/* Copyright - Updated to remove "All rights reserved" */}
         <div className="border-t border-white/20 mt-8 pt-8 text-center">
-          <p>{footer?.copyrightText || '© 2025 Mindset Coach Martina.'}</p>
+          <p>{footerContent.copyrightText}</p>
         </div>
       </div>
     </footer>

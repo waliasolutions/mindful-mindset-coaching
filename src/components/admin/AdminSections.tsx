@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { Edit, Trash2, ChevronDown, ChevronUp, Grip, Eye, EyeOff, RefreshCw } from 'lucide-react';
@@ -151,7 +150,7 @@ const AdminSections = () => {
     
     setSections(updatedItems);
     localStorage.setItem('sectionOrder', JSON.stringify(updatedItems));
-    toast.success('Section order updated');
+    toast.success('Bereiche-Reihenfolge aktualisiert');
     setSyncedWithPage(false);
   };
 
@@ -163,7 +162,7 @@ const AdminSections = () => {
     localStorage.setItem('sectionOrder', JSON.stringify(updatedSections));
     
     const section = sections.find(s => s.id === id);
-    toast.success(`${section?.name} section ${section?.visible ? 'hidden' : 'visible'}`);
+    toast.success(`${section?.name} Bereich ${section?.visible ? 'versteckt' : 'sichtbar'}`);
     setSyncedWithPage(false);
   };
 
@@ -191,7 +190,7 @@ const AdminSections = () => {
     
     setSections(updatedSections);
     localStorage.setItem('sectionOrder', JSON.stringify(updatedSections));
-    toast.success('Section moved');
+    toast.success('Bereiche verschoben');
     setSyncedWithPage(false);
   };
 
@@ -199,7 +198,7 @@ const AdminSections = () => {
     // Ensure the preview iframe is loaded before opening editor
     // so we can extract content from it
     if (!previewLoaded) {
-      toast.error("Preview not fully loaded yet. Please wait a moment before editing.");
+      toast.error("Vorschau nicht vollständig geladen. Bitte warten Sie einen Moment, bevor Sie bearbeiten.");
       setTimeout(() => {
         handleSyncChanges();
       }, 500);
@@ -221,35 +220,35 @@ const AdminSections = () => {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold text-forest">Website Sections</h1>
+        <h1 className="text-2xl font-bold text-forest">Website-Bereiche</h1>
         <div className="space-x-2">
           {!syncedWithPage && (
             <Button variant="outline" onClick={handleSyncChanges} className="mr-2">
               <RefreshCw className="mr-2 h-4 w-4" />
-              Apply Changes
+              Änderungen anwenden
             </Button>
           )}
           <Button variant="default" onClick={() => {
             localStorage.removeItem('sectionOrder');
             setSections(defaultSections);
-            toast.success('Section order reset to default');
+            toast.success('Bereiche-Reihenfolge auf Standard zurückgesetzt');
             setSyncedWithPage(false);
           }}>
-            Reset Order
+            Reihenfolge zurücksetzen
           </Button>
         </div>
       </div>
       
       <p className="text-gray-600">
-        Drag and drop sections to reorder them on the page. Toggle visibility or edit content for each section.
+        Ziehen Sie die Bereiche per Drag & Drop, um sie auf der Seite neu anzuordnen. Schalten Sie die Sichtbarkeit um oder bearbeiten Sie den Inhalt für jeden Bereich.
         {!previewLoaded && (
           <span className="block mt-2 text-amber-600 font-medium">
-            Loading preview... Content editing will be available shortly.
+            Vorschau wird geladen... Inhaltsbearbeitung wird in Kürze verfügbar sein.
           </span>
         )}
         {!syncedWithPage && (
           <span className="block mt-2 text-amber-600 font-medium">
-            Changes are pending. Click "Apply Changes" to update the page.
+            Änderungen stehen aus. Klicken Sie auf "Änderungen anwenden", um die Seite zu aktualisieren.
           </span>
         )}
       </p>
