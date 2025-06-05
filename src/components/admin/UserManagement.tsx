@@ -156,7 +156,7 @@ const UserManagement = () => {
     }
   };
 
-  const handleUpdateUserRole = async (userId: string, newRole: string) => {
+  const handleUpdateUserRole = async (userId: string, newRole: 'admin' | 'editor') => {
     try {
       const { error } = await supabase
         .from('user_roles')
