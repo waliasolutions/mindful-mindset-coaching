@@ -14,7 +14,7 @@ interface SeoData {
 
 const defaultSeoData: SeoData = {
   title: 'Mindset Coach Martina Zürich | Entfalte dein Potenzial',
-  description: 'Verwandle dein Leben mit Mindset Coaching in Zürich! Coach Martina hilft dir dabei, deine Ziele zu erreichen. Kostenloses Kennenlerngespräch!',
+  description: 'Mindset Coaching mit Martina: Entfalten Sie Ihr Potenzial, stärken Sie Ihr Denken und finden Sie Klarheit – persönliche Online-Sessions aus Zürich.',
   keywords: 'mindset coaching zürich, life coach zürich, ziele erreichen zürich, coach martina, selbstbewusstsein stärken, persönlichkeitsentwicklung, lebensveränderung, mentales training zürich, lebenscoach schweiz, potenzial entfalten',
   ogImage: '/lovable-uploads/eff14ab3-8502-4ea4-9c20-75fe9b485119.png',
   gaTrackingId: 'G-CCD1ZR05L7',

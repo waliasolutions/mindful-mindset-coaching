@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { 
   LayoutDashboard, 
@@ -58,7 +57,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
     { id: 'sections', label: 'Inhalt', icon: FileText },
     { id: 'media', label: 'Medien', icon: Image },
-    { id: 'seo', label: 'SEO', icon: Globe },
+    { id: 'seo', label: 'SEO', icon: Globe, adminOnly: true },
     { id: 'users', label: 'Users', icon: Users, adminOnly: true },
     { id: 'settings', label: 'Einstellungen', icon: Settings },
     { id: 'backups', label: 'Backups', icon: Save },

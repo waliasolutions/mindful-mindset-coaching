@@ -1289,6 +1289,42 @@ export type Database = {
         }
         Relationships: []
       }
+      seo_settings: {
+        Row: {
+          created_at: string | null
+          description: string
+          enable_ga: boolean | null
+          ga_tracking_id: string | null
+          id: string
+          keywords: string | null
+          og_image: string | null
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          description: string
+          enable_ga?: boolean | null
+          ga_tracking_id?: string | null
+          id?: string
+          keywords?: string | null
+          og_image?: string | null
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          description?: string
+          enable_ga?: boolean | null
+          ga_tracking_id?: string | null
+          id?: string
+          keywords?: string | null
+          og_image?: string | null
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       site_settings: {
         Row: {
           created_at: string

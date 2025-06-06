@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { toast } from 'sonner';
 import { ga4Manager } from '@/utils/ga4Manager';
+import { supabase } from '@/integrations/supabase/client';
 
 export interface SeoData {
   title: string;
@@ -14,7 +15,7 @@ export interface SeoData {
 
 const defaultSeoData: SeoData = {
   title: 'Mindset Coach Martina Zürich | Entfalte dein Potenzial',
-  description: 'Verwandle dein Leben mit Mindset Coaching in Zürich! Coach Martina hilft dir dabei, deine Ziele zu erreichen. Kostenloses Kennenlerngespräch!',
+  description: 'Mindset Coaching mit Martina: Entfalten Sie Ihr Potenzial, stärken Sie Ihr Denken und finden Sie Klarheit – persönliche Online-Sessions aus Zürich.',
   keywords: 'mindset coaching zürich, life coach zürich, ziele erreichen zürich, coach martina, selbstbewusstsein stärken, persönlichkeitsentwicklung, lebensveränderung, mentales training zürich, lebenscoach schweiz, potenzial entfalten',
   ogImage: '/lovable-uploads/eff14ab3-8502-4ea4-9c20-75fe9b485119.png',
   gaTrackingId: 'G-CCD1ZR05L7',
@@ -30,18 +31,57 @@ export const useSeoSettings = () => {
     loadSeoSettings();
   }, []);
 
-  const loadSeoSettings = () => {
+  const loadSeoSettings = async () => {
+    try {
+      // First try to load from database
+      const { data, error } = await supabase
+        .from('seo_settings')
+        .select('*')
+        .order('created_at', { ascending: false })
+        .limit(1)
+        .single();
+
+      if (error && error.code !== 'PGRST116') { // PGRST116 = no rows returned
+        console.error('Error loading SEO settings from database:', error);
+        // Fallback to localStorage
+        loadFromLocalStorage();
+        return;
+      }
+
+      if (data) {
+        const dbSeoData: SeoData = {
+          title: data.title,
+          description: data.description,
+          keywords: data.keywords || '',
+          ogImage: data.og_image || defaultSeoData.ogImage,
+          gaTrackingId: data.ga_tracking_id || defaultSeoData.gaTrackingId,
+          enableGa: data.enable_ga !== false
+        };
+        setSeoData(dbSeoData);
+        
+        // Also sync to localStorage for real-time updates
+        localStorage.setItem('seoSettings', JSON.stringify(dbSeoData));
+      } else {
+        // No data in database, use localStorage or defaults
+        loadFromLocalStorage();
+      }
+    } catch (error) {
+      console.error('Error loading SEO settings:', error);
+      loadFromLocalStorage();
+    }
+  };
+
+  const loadFromLocalStorage = () => {
     const savedSeo = localStorage.getItem('seoSettings');
     if (savedSeo) {
       try {
         const parsedData = JSON.parse(savedSeo);
         setSeoData({ ...defaultSeoData, ...parsedData });
       } catch (error) {
-        console.error('Error parsing SEO settings:', error);
+        console.error('Error parsing SEO settings from localStorage:', error);
         setSeoData(defaultSeoData);
       }
     } else {
-      localStorage.setItem('seoSettings', JSON.stringify(defaultSeoData));
       setSeoData(defaultSeoData);
     }
   };
@@ -116,7 +156,25 @@ export const useSeoSettings = () => {
   const handleSave = async () => {
     setIsLoading(true);
     try {
-      // Save to localStorage
+      // Save to database
+      const { error } = await supabase
+        .from('seo_settings')
+        .upsert({
+          title: seoData.title,
+          description: seoData.description,
+          keywords: seoData.keywords,
+          og_image: seoData.ogImage,
+          ga_tracking_id: seoData.gaTrackingId,
+          enable_ga: seoData.enableGa
+        });
+
+      if (error) {
+        console.error('Error saving SEO settings to database:', error);
+        toast.error('Fehler beim Speichern der SEO Einstellungen in der Datenbank');
+        return;
+      }
+
+      // Also save to localStorage for real-time sync
       localStorage.setItem('seoSettings', JSON.stringify(seoData));
 
       // Initialize GA4 with new settings
