@@ -1,26 +1,26 @@
 
-# Mindset Coaching mit Martina - Website Robots configuration
+# Mindset Coaching mit Martina - Optimized for Google indexing
 # https://mindset-coach-martina.ch/
 
-# Allow all web crawlers full access
+# Allow all web crawlers with optimized crawl delays
 User-agent: *
 Allow: /
-Crawl-delay: 1
+Crawl-delay: 0.5
 
-# Individual settings for major search engines
+# Specific settings for major search engines
 User-agent: Googlebot
 Allow: /
-Crawl-delay: 1
+Crawl-delay: 0.2
 
 User-agent: Bingbot
 Allow: /
-Crawl-delay: 2
+Crawl-delay: 0.5
 
 User-agent: Yandexbot
 Allow: /
-Crawl-delay: 2
+Crawl-delay: 1
 
-# Media crawlers
+# Media crawlers for image indexing
 User-agent: Googlebot-Image
 Allow: /*.jpg$
 Allow: /*.jpeg$
@@ -31,32 +31,23 @@ Allow: /*.webp$
 # Social media crawlers
 User-agent: Twitterbot
 Allow: /
-Crawl-delay: 1
 
 User-agent: facebookexternalhit
 Allow: /
-Crawl-delay: 1
 
-# Block sensitive directories and files
+# Block only sensitive areas
+Disallow: /dashboard-management-portal-9a7b2c3d/
 Disallow: /admin/
 Disallow: /wp-admin/
-Disallow: /wp-login/
-Disallow: /wp-includes/
-Disallow: /private/
-Disallow: /tmp/
-Disallow: /cache/
-Disallow: /*.sql$
-Disallow: /*.log$
-Disallow: /*.conf$
-Disallow: /*.config$
-Disallow: /*.env$
-Disallow: /error_log
 Disallow: /.git/
+Disallow: /error_log
+Disallow: /*.log$
+Disallow: /*.env$
 
-# Clean Parameters
-Allow: /*?page=*
+# Clean Parameters - Allow important ones
 Allow: /*?lang=*
-Disallow: /*?*
+Allow: /*?utm_*
+Disallow: /*?*&*
 
 # Sitemap location
 Sitemap: https://mindset-coach-martina.ch/sitemap.xml

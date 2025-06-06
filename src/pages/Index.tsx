@@ -34,6 +34,9 @@ const Index = () => {
   const [isLegalInfoOpen, setIsLegalInfoOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("impressum");
 
+  // Track current section for dynamic SEO
+  const [currentSection, setCurrentSection] = useState<'home' | 'services' | 'about' | 'pricing' | 'contact'>('home');
+
   // Open dialog handlers
   const openTerms = () => setIsTermsOpen(true);
   const closeTerms = () => setIsTermsOpen(false);
@@ -50,6 +53,29 @@ const Index = () => {
   
   const closeLegalInfo = () => setIsLegalInfoOpen(false);
 
+  // Handle section visibility for dynamic SEO
+  const handleSectionInView = (sectionId: string) => {
+    const sectionMap: Record<string, 'home' | 'services' | 'about' | 'pricing' | 'contact'> = {
+      'Hero': 'home',
+      'Services': 'services', 
+      'About': 'about',
+      'PricingWithQuote': 'pricing',
+      'Contact': 'contact'
+    };
+    
+    const pageType = sectionMap[sectionId];
+    if (pageType && pageType !== currentSection) {
+      setCurrentSection(pageType);
+      
+      // Update URL hash without scrolling
+      if (pageType !== 'home') {
+        window.history.replaceState(null, '', `#${pageType}`);
+      } else {
+        window.history.replaceState(null, '', '/');
+      }
+    }
+  };
+
   const renderSections = () => {
     return sections
       .sort((a, b) => a.order - b.order)
@@ -62,6 +88,7 @@ const Index = () => {
             <Component 
               key={section.id} 
               settings={globalSettings}
+              onInView={() => handleSectionInView(section.component)}
             />
           ) : null;
         }
@@ -71,6 +98,7 @@ const Index = () => {
             {(!isAboveTheFold || index < 2) && (
               <Component 
                 settings={globalSettings}
+                onInView={() => handleSectionInView(section.component)}
               />
             )}
           </Suspense>
@@ -80,7 +108,7 @@ const Index = () => {
 
   return (
     <>
-      <SEO />
+      <SEO pageType={currentSection} />
       <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
         <Navbar />
         <main>
