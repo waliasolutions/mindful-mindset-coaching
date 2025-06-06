@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAdminSession } from '@/hooks/useAdminSession';
 import AdminDashboard from './AdminDashboard';
 import SectionEditor from './SectionEditor';
@@ -20,6 +20,14 @@ const AdminSections: React.FC<AdminSectionsProps> = ({ activeTab, onTabChange })
   const [selectedSection, setSelectedSection] = useState<any>(null);
   const [showSectionEditor, setShowSectionEditor] = useState<boolean>(false);
 
+  // Reset state when navigating away from sections tab
+  useEffect(() => {
+    if (activeTab !== 'sections') {
+      setShowSectionEditor(false);
+      setSelectedSection(null);
+    }
+  }, [activeTab]);
+
   const handleSectionSelect = (section: any) => {
     setSelectedSection(section);
     setShowSectionEditor(true);
@@ -27,10 +35,7 @@ const AdminSections: React.FC<AdminSectionsProps> = ({ activeTab, onTabChange })
 
   const handleSectionEditorClose = () => {
     setShowSectionEditor(false);
-    // Don't reset selectedSection immediately to avoid rendering issues
-    setTimeout(() => {
-      setSelectedSection(null);
-    }, 100);
+    setSelectedSection(null);
   };
 
   const renderContent = () => {
@@ -38,8 +43,7 @@ const AdminSections: React.FC<AdminSectionsProps> = ({ activeTab, onTabChange })
       case 'dashboard':
         return <AdminDashboard onNavigate={onTabChange} userRole={userRole} />;
       case 'sections':
-        // Simplified condition - only check showSectionEditor
-        return showSectionEditor && selectedSection ? (
+        return showSectionEditor ? (
           <SectionEditor 
             section={selectedSection} 
             onClose={handleSectionEditorClose} 
