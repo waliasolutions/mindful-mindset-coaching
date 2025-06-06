@@ -69,6 +69,83 @@ export type Database = {
         }
         Relationships: []
       }
+      admin_sessions: {
+        Row: {
+          created_at: string
+          expires_at: string
+          id: string
+          ip_address: unknown | null
+          session_token: string
+          user_agent: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          expires_at: string
+          id?: string
+          ip_address?: unknown | null
+          session_token: string
+          user_agent?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          expires_at?: string
+          id?: string
+          ip_address?: unknown | null
+          session_token?: string
+          user_agent?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "admin_sessions_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "admin_users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      admin_users: {
+        Row: {
+          created_at: string
+          email: string
+          failed_login_attempts: number | null
+          id: string
+          is_active: boolean
+          last_login_at: string | null
+          locked_until: string | null
+          password_hash: string
+          role: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          failed_login_attempts?: number | null
+          id?: string
+          is_active?: boolean
+          last_login_at?: string | null
+          locked_until?: string | null
+          password_hash: string
+          role?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          failed_login_attempts?: number | null
+          id?: string
+          is_active?: boolean
+          last_login_at?: string | null
+          locked_until?: string | null
+          password_hash?: string
+          role?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       agents: {
         Row: {
           active: boolean | null
@@ -1546,6 +1623,24 @@ export type Database = {
       }
     }
     Functions: {
+      admin_login: {
+        Args: {
+          email_input: string
+          password_input: string
+          ip_address_input?: unknown
+          user_agent_input?: string
+        }
+        Returns: {
+          success: boolean
+          message: string
+          user_data: Json
+          session_token: string
+        }[]
+      }
+      admin_logout: {
+        Args: { session_token_input: string }
+        Returns: boolean
+      }
       check_is_admin: {
         Args: Record<PropertyKey, never>
         Returns: boolean
@@ -1593,6 +1688,13 @@ export type Database = {
       is_admin: {
         Args: { user_id: string }
         Returns: boolean
+      }
+      validate_admin_session: {
+        Args: { session_token_input: string }
+        Returns: {
+          valid: boolean
+          user_data: Json
+        }[]
       }
     }
     Enums: {

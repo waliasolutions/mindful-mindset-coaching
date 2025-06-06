@@ -1,7 +1,10 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { toast } from '@/components/ui/use-toast';
-import { SESSION_TIMEOUT, AdminRole, getUserRole } from '@/utils/adminAuth';
+import { adminAuthService } from '@/services/adminAuthService';
+import { AdminRole } from '@/utils/adminAuth';
+
+const SESSION_TIMEOUT = 30 * 60 * 1000; // 30 minutes in milliseconds
 
 export const useAdminSession = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -67,37 +70,31 @@ export const useAdminSession = () => {
 
   // Check for saved authentication state on component mount
   useEffect(() => {
-    const checkAuth = () => {
+    const checkAuth = async () => {
       setIsLoading(true);
       
-      // Get the current timestamp
-      const now = Date.now();
-      
-      // Get the stored auth data
-      const adminAuthData = localStorage.getItem('adminAuthData');
-      
-      if (adminAuthData) {
-        try {
-          const authData = JSON.parse(adminAuthData);
+      try {
+        // Check if we have a session token
+        if (adminAuthService.isAuthenticated()) {
+          // Validate the session with the server
+          const validationResult = await adminAuthService.validateSession();
           
-          // Check if the auth data has expired
-          if (authData.expires && authData.expires > now) {
+          if (validationResult.valid && validationResult.user_data) {
             setIsAuthenticated(true);
-            // Set the user role if available in stored data
-            if (authData.username) {
-              setUserRole(getUserRole(authData.username));
-            }
+            setUserRole(validationResult.user_data.role);
           } else {
-            // Auth data has expired, remove it
-            localStorage.removeItem('adminAuthData');
+            // Session invalid, clear local storage
+            await adminAuthService.logout();
             setIsAuthenticated(false);
           }
-        } catch (error) {
-          // Invalid JSON data, remove it
-          localStorage.removeItem('adminAuthData');
+        } else {
+          // No session token found
           setIsAuthenticated(false);
         }
-      } else {
+      } catch (error) {
+        console.error('Auth validation error:', error);
+        // On error, assume not authenticated
+        await adminAuthService.logout();
         setIsAuthenticated(false);
       }
       
@@ -133,10 +130,16 @@ export const useAdminSession = () => {
     }
   }, []);
 
-  const handleLogout = useCallback(() => {
-    // Clear authentication data
-    localStorage.removeItem('adminAuthData');
+  const handleLogout = useCallback(async () => {
+    try {
+      await adminAuthService.logout();
+    } catch (error) {
+      console.error('Logout error:', error);
+    }
+    
+    // Clear authentication state
     setIsAuthenticated(false);
+    setUserRole('client');
   }, []);
 
   return {

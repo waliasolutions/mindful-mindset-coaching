@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Lock } from 'lucide-react';
 import { toast } from '@/components/ui/use-toast';
@@ -7,29 +8,14 @@ import { Form, FormField, FormItem, FormLabel, FormControl } from '@/components/
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { 
-  hashString, 
-  ADMIN_USERNAME_HASH, 
-  ADMIN_PASSWORD_HASH, 
-  ADMIN_USERNAME, 
-  ADMIN_PASSWORD,
-  MAX_LOGIN_ATTEMPTS,
-  LOCKOUT_DURATION,
-  SESSION_TIMEOUT,
-  AdminRole,
-  dispatchStorageEvent,
-  getUserRole
-} from '@/utils/adminAuth';
+import { adminAuthService } from '@/services/adminAuthService';
+import { AdminRole, getUserRole } from '@/utils/adminAuth';
 
 // Define the credential validator schema
 const loginFormSchema = z.object({
-  username: z.string().min(1, "Username is required"),
+  email: z.string().email("Please enter a valid email address"),
   password: z.string().min(1, "Password is required"),
 });
-
-// Client credentials - more cryptic version
-const CLIENT_USERNAME = "client_8f26e9a3";
-const CLIENT_PASSWORD = "Cx7%Jp2*tR9$mZ4!vL5#";
 
 type FormValues = z.infer<typeof loginFormSchema>;
 
@@ -50,10 +36,12 @@ const LoginForm: React.FC<LoginFormProps> = ({
   setIsAuthenticated,
   setUserRole 
 }) => {
+  const [isLoading, setIsLoading] = useState(false);
+
   const form = useForm<FormValues>({
     resolver: zodResolver(loginFormSchema),
     defaultValues: {
-      username: "",
+      email: "",
       password: "",
     },
   });
@@ -70,58 +58,16 @@ const LoginForm: React.FC<LoginFormProps> = ({
       return;
     }
 
-    try {
-      // First check if we need to use the fallback authentication
-      let isAuthenticated = false;
-      let useFallback = false;
-      
-      // Try using WebCrypto first
-      try {
-        // Hash the provided credentials for secure comparison
-        const usernameHash = await hashString(formValues.username);
-        const passwordHash = await hashString(formValues.password);
-        
-        // Check if the credentials match
-        const isUsernameValid = usernameHash === ADMIN_USERNAME_HASH;
-        const isPasswordValid = passwordHash === ADMIN_PASSWORD_HASH;
-        
-        // If the hash starts with "error_" or "fallback_", WebCrypto failed
-        if (usernameHash.startsWith("error_") || usernameHash.startsWith("fallback_") ||
-            passwordHash.startsWith("error_") || passwordHash.startsWith("fallback_")) {
-          // WebCrypto failed, log and continue to fallback
-          console.warn("WebCrypto authentication failed, using fallback method");
-          useFallback = true;
-        } else {
-          isAuthenticated = isUsernameValid && isPasswordValid;
-        }
-      } catch (error) {
-        // WebCrypto failed completely, continue to fallback
-        console.error("WebCrypto authentication error:", error);
-        useFallback = true;
-      }
+    setIsLoading(true);
 
-      // If WebCrypto authentication didn't work, try direct comparison (fallback)
-      if (!isAuthenticated) {
-        // Direct comparison fallback for environments without WebCrypto
-        isAuthenticated = (formValues.username === ADMIN_USERNAME && formValues.password === ADMIN_PASSWORD) ||
-                          (formValues.username === CLIENT_USERNAME && formValues.password === CLIENT_PASSWORD);
-      }
-      
-      if (isAuthenticated) {
-        // Determine and set user role
-        const role = getUserRole(formValues.username);
+    try {
+      const result = await adminAuthService.login(formValues.email, formValues.password);
+
+      if (result.success && result.user_data) {
+        // Determine and set user role based on the role from database
+        const role = result.user_data.role;
         setUserRole(role);
 
-        // Set expiration time (30 minutes from now)
-        const expires = Date.now() + SESSION_TIMEOUT;
-        
-        // Save authentication state with expiration and username for role determination
-        localStorage.setItem('adminAuthData', JSON.stringify({ 
-          authenticated: true, 
-          expires,
-          username: formValues.username 
-        }));
-        
         // Reset login attempts
         setLoginAttempts(0);
         setLockedUntil(null);
@@ -135,13 +81,13 @@ const LoginForm: React.FC<LoginFormProps> = ({
           description: "Welcome to the admin panel",
         });
       } else {
-        // Increment login attempts
+        // Handle failed login
         const newAttempts = loginAttempts + 1;
         setLoginAttempts(newAttempts);
         
-        // Check if max attempts reached
-        if (newAttempts >= MAX_LOGIN_ATTEMPTS) {
-          const lockoutTime = Date.now() + LOCKOUT_DURATION;
+        // Check if max attempts reached (using client-side tracking for UI)
+        if (newAttempts >= 5) {
+          const lockoutTime = Date.now() + (15 * 60 * 1000);
           setLockedUntil(lockoutTime);
           
           // Store lockout info in localStorage
@@ -157,7 +103,7 @@ const LoginForm: React.FC<LoginFormProps> = ({
         } else {
           toast({
             title: "Login failed",
-            description: `Invalid credentials. ${MAX_LOGIN_ATTEMPTS - newAttempts} attempts remaining.`,
+            description: result.message || `Invalid credentials. ${5 - newAttempts} attempts remaining.`,
             variant: "destructive",
           });
         }
@@ -169,6 +115,8 @@ const LoginForm: React.FC<LoginFormProps> = ({
         description: "An unexpected error occurred. Please try again.",
         variant: "destructive",
       });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -185,15 +133,16 @@ const LoginForm: React.FC<LoginFormProps> = ({
           <form onSubmit={form.handleSubmit(handleFormSubmit)} className="space-y-4">
             <FormField
               control={form.control}
-              name="username"
+              name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Username</FormLabel>
+                  <FormLabel>Email</FormLabel>
                   <FormControl>
                     <Input 
-                      placeholder="Enter your username" 
+                      type="email"
+                      placeholder="Enter your email" 
                       {...field} 
-                      disabled={!!lockedUntil && Date.now() < lockedUntil}
+                      disabled={isLoading || (!!lockedUntil && Date.now() < lockedUntil)}
                     />
                   </FormControl>
                 </FormItem>
@@ -211,7 +160,7 @@ const LoginForm: React.FC<LoginFormProps> = ({
                       type="password" 
                       placeholder="Enter your password" 
                       {...field} 
-                      disabled={!!lockedUntil && Date.now() < lockedUntil}
+                      disabled={isLoading || (!!lockedUntil && Date.now() < lockedUntil)}
                     />
                   </FormControl>
                 </FormItem>
@@ -221,15 +170,21 @@ const LoginForm: React.FC<LoginFormProps> = ({
             <Button 
               type="submit" 
               className="w-full bg-forest hover:bg-forest/90" 
-              disabled={!!lockedUntil && Date.now() < lockedUntil}
+              disabled={isLoading || (!!lockedUntil && Date.now() < lockedUntil)}
             >
-              Sign In
+              {isLoading ? 'Signing In...' : 'Sign In'}
             </Button>
             
             <div className="text-center mt-4">
               <a href="/" className="text-sm text-gray-500 hover:text-forest">
                 Return to homepage
               </a>
+            </div>
+            
+            <div className="text-center pt-2 border-t border-gray-100 mt-4">
+              <p className="text-xs text-gray-500">
+                Test accounts: admin@mindset-coaching.com / Admin123! or client@mindset-coaching.com / Client123!
+              </p>
             </div>
           </form>
         </Form>
