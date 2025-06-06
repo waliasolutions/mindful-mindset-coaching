@@ -19,7 +19,6 @@ export interface LegalLink {
 }
 
 export interface FooterSettings {
-  contactText: string;
   socialLinks: SocialLink[];
   legalLinks: LegalLink[];
   copyrightText: string;
@@ -47,7 +46,6 @@ export const defaultSettings: GlobalSettings = {
     { id: 'contact', label: 'Contact', url: '#contact' }
   ],
   footer: {
-    contactText: 'Kontaktieren Sie uns, um mehr über unsere Coaching-Dienstleistungen zu erfahren',
     socialLinks: [
       { id: 'instagram', platform: 'Instagram', url: 'https://www.instagram.com/mindset_coach_martina', icon: 'Instagram' },
       { id: 'facebook', platform: 'Facebook', url: 'https://www.facebook.com/mindset.coach.martina', icon: 'Facebook' }

@@ -1,3 +1,4 @@
+
 // Utility to extract current content from the website components
 export const extractCurrentContent = (sectionId: string) => {
   // Get admin overrides first
@@ -7,6 +8,7 @@ export const extractCurrentContent = (sectionId: string) => {
   if (adminOverrides) {
     try {
       overrides = JSON.parse(adminOverrides);
+      console.log('Content extractor - loaded overrides:', overrides);
     } catch (error) {
       console.error('Error parsing admin overrides:', error);
     }
@@ -63,7 +65,9 @@ export const extractCurrentContent = (sectionId: string) => {
   const currentOverrides = overrides[sectionId] || {};
   
   // Merge default content with any admin overrides
-  return { ...defaultContent, ...currentOverrides };
+  const result = { ...defaultContent, ...currentOverrides };
+  console.log(`Content extractor - section ${sectionId}:`, result);
+  return result;
 };
 
 // Extract navigation content from global settings
@@ -72,6 +76,7 @@ export const extractNavigationContent = () => {
   if (savedSettings) {
     try {
       const settings = JSON.parse(savedSettings);
+      console.log('Navigation extractor - loaded settings:', settings);
       return settings.navigation || [];
     } catch (error) {
       console.error('Error parsing global settings:', error);
@@ -94,8 +99,8 @@ export const extractFooterContent = () => {
   if (savedSettings) {
     try {
       const settings = JSON.parse(savedSettings);
+      console.log('Footer extractor - loaded settings:', settings);
       return {
-        contactText: settings.footer?.contactText || 'Kontaktieren Sie uns, um mehr über unsere Coaching-Dienstleistungen zu erfahren',
         socialLinks: settings.footer?.socialLinks || [
           { id: 'instagram', platform: 'Instagram', url: 'https://www.instagram.com/mindset_coach_martina' },
           { id: 'facebook', platform: 'Facebook', url: 'https://www.facebook.com/mindset.coach.martina' }
@@ -112,7 +117,6 @@ export const extractFooterContent = () => {
   
   // Return default footer content with correct URLs
   return {
-    contactText: 'Kontaktieren Sie uns, um mehr über unsere Coaching-Dienstleistungen zu erfahren',
     socialLinks: [
       { id: 'instagram', platform: 'Instagram', url: 'https://www.instagram.com/mindset_coach_martina' },
       { id: 'facebook', platform: 'Facebook', url: 'https://www.facebook.com/mindset.coach.martina' }

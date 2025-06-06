@@ -15,21 +15,22 @@ const Footer = ({ onTermsClick, onImpressumClick, onDatenschutzClick }: FooterPr
   const globalSettings = useGlobalSettings();
   const navigate = useNavigate();
   
-  // Use admin settings with proper fallbacks to correct URLs
+  console.log('Footer - Current global settings:', globalSettings);
+  
+  // Use global settings directly for all content
   const footerContent = {
-    contactText: globalSettings.footer?.contactText || 'Kontaktieren Sie uns, um mehr über unsere Coaching-Dienstleistungen zu erfahren',
-    contactEmail: globalSettings.contactEmail || 'info@mindset-coach-martina.ch',
-    contactPhone: globalSettings.contactPhone || '+41 78 840 04 81',
-    address: globalSettings.address || '6300 Zug, Schweiz',
+    contactEmail: globalSettings.contactEmail,
+    contactPhone: globalSettings.contactPhone,
+    address: globalSettings.address,
     copyrightText: globalSettings.footer?.copyrightText || '© 2025 Mindset Coach Martina.',
-    socialLinks: globalSettings.footer?.socialLinks || [
-      { id: 'instagram', platform: 'Instagram', url: 'https://www.instagram.com/mindset_coach_martina' },
-      { id: 'facebook', platform: 'Facebook', url: 'https://www.facebook.com/mindset.coach.martina' }
-    ]
+    socialLinks: globalSettings.footer?.socialLinks || []
   };
 
-  // Debug log to see what URLs we're getting
-  console.log('Footer social links:', footerContent.socialLinks);
+  console.log('Footer - Using contact info:', {
+    email: footerContent.contactEmail,
+    phone: footerContent.contactPhone,
+    address: footerContent.address
+  });
   
   // Add a hidden admin link that becomes visible when pressing Alt+Shift+A
   useEffect(() => {
@@ -73,7 +74,7 @@ const Footer = ({ onTermsClick, onImpressumClick, onDatenschutzClick }: FooterPr
           {/* Contact Information */}
           <div>
             <h3 className="text-xl font-semibold mb-4">Kontakt</h3>
-            <p className="mb-2">{footerContent.contactText}</p>
+            <p className="mb-2">Kontaktieren Sie uns, um mehr über unsere Coaching-Dienstleistungen zu erfahren</p>
             <div className="space-y-2 mt-4">
               <a href={`mailto:${footerContent.contactEmail}`} className="flex items-center gap-2 hover:text-beige transition-colors">
                 <Mail className="h-4 w-4" />
@@ -125,7 +126,7 @@ const Footer = ({ onTermsClick, onImpressumClick, onDatenschutzClick }: FooterPr
           <div>
             <h3 className="text-xl font-semibold mb-4">Folgen Sie uns</h3>
             <div className="flex space-x-4 mb-6">
-              {footerContent.socialLinks?.map((social) => (
+              {footerContent.socialLinks.map((social) => (
                 <a
                   key={social.id}
                   href={social.url}

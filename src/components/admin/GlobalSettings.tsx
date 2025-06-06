@@ -1,11 +1,10 @@
+
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { toast } from 'sonner';
 import ImageSelector from './ImageSelector';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 
 // Import types and default settings
 import { GlobalSettings as GlobalSettingsType, defaultSettings } from './settings/types';
@@ -31,10 +30,12 @@ const GlobalSettings = () => {
   const [logoUrl, setLogoUrl] = useState('');
 
   useEffect(() => {
+    console.log('GlobalSettings: Loading saved settings...');
     const savedSettings = localStorage.getItem('globalSettings');
     if (savedSettings) {
       try {
         const parsedSettings = JSON.parse(savedSettings);
+        console.log('GlobalSettings: Loaded settings:', parsedSettings);
         // Always use current navigation content to ensure sync
         const currentNav = extractNavigationContent();
         setSettings({
@@ -54,6 +55,7 @@ const GlobalSettings = () => {
   }, []);
 
   const handleGeneralChange = (field: string, value: string) => {
+    console.log('GlobalSettings: General field changed:', field, value);
     setSettings({
       ...settings,
       [field]: value
@@ -188,6 +190,7 @@ const GlobalSettings = () => {
   };
 
   const handleSave = () => {
+    console.log('GlobalSettings: Saving settings:', settings);
     localStorage.setItem('globalSettings', JSON.stringify(settings));
     
     dispatchStorageEvent('globalSettings');
@@ -210,6 +213,7 @@ const GlobalSettings = () => {
   };
 
   const dispatchStorageEvent = (key: string) => {
+    console.log('GlobalSettings: Dispatching storage event for key:', key);
     window.dispatchEvent(new CustomEvent('localStorageUpdated', { 
       detail: { key, newValue: JSON.stringify(settings) }
     }));
@@ -220,7 +224,7 @@ const GlobalSettings = () => {
       <CardHeader>
         <CardTitle>Global Settings</CardTitle>
         <CardDescription>
-          Manage site-wide settings and configurations
+          Manage site-wide settings and configurations. Contact information is centralized in the General tab and automatically used throughout the site.
         </CardDescription>
       </CardHeader>
       <CardContent>

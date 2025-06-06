@@ -1,7 +1,5 @@
 
 import React from 'react';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
 import { FooterSettings } from './types';
 import { SocialLinksSection } from './SocialLinksSection';
 import { LegalLinksSection } from './LegalLinksSection';
@@ -9,34 +7,31 @@ import { CopyrightSection } from './CopyrightSection';
 
 interface FooterSectionProps {
   footer: FooterSettings;
-  onFooterChange: (field: string, value: string) => void;
   onSocialLinkChange: (id: string, field: string, value: string) => void;
   onAddSocialLink: () => void;
   onRemoveSocialLink: (id: string) => void;
   onLegalLinkChange: (id: string, field: string, value: string) => void;
   onAddLegalLink: () => void;
   onRemoveLegalLink: (id: string) => void;
+  onFooterChange: (field: string, value: string) => void;
 }
 
 export const FooterSection: React.FC<FooterSectionProps> = ({
   footer,
-  onFooterChange,
   onSocialLinkChange,
   onAddSocialLink,
   onRemoveSocialLink,
   onLegalLinkChange,
   onAddLegalLink,
-  onRemoveLegalLink
+  onRemoveLegalLink,
+  onFooterChange
 }) => {
   return (
     <div className="space-y-4">
-      <div>
-        <Label htmlFor="contact-text">Contact Text</Label>
-        <Textarea 
-          id="contact-text" 
-          value={footer.contactText}
-          onChange={(e) => onFooterChange('contactText', e.target.value)}
-        />
+      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+        <p className="text-sm text-blue-700">
+          <strong>Note:</strong> Contact information (email, phone, address) is managed in the General settings tab and will be automatically displayed in the footer.
+        </p>
       </div>
       
       <SocialLinksSection 
