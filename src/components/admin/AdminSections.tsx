@@ -27,7 +27,10 @@ const AdminSections: React.FC<AdminSectionsProps> = ({ activeTab, onTabChange })
 
   const handleSectionEditorClose = () => {
     setShowSectionEditor(false);
-    setSelectedSection(null);
+    // Don't reset selectedSection immediately to avoid rendering issues
+    setTimeout(() => {
+      setSelectedSection(null);
+    }, 100);
   };
 
   const renderContent = () => {
@@ -35,6 +38,7 @@ const AdminSections: React.FC<AdminSectionsProps> = ({ activeTab, onTabChange })
       case 'dashboard':
         return <AdminDashboard onNavigate={onTabChange} userRole={userRole} />;
       case 'sections':
+        // Simplified condition - only check showSectionEditor
         return showSectionEditor && selectedSection ? (
           <SectionEditor 
             section={selectedSection} 
