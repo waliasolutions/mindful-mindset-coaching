@@ -9,6 +9,7 @@ import MediaLibrary from './MediaLibrary';
 import PerformanceDashboard from './PerformanceDashboard';
 import GlobalSettings from './GlobalSettings';
 import BackupSection from './BackupSection';
+import UserManagement from './UserManagement';
 
 interface AdminSectionsProps {
   activeTab: string;
@@ -55,6 +56,8 @@ const AdminSections: React.FC<AdminSectionsProps> = ({ activeTab, onTabChange })
         return <MediaLibrary />;
       case 'seo':
         return <SeoSettings />;
+      case 'users':
+        return <UserManagement />;
       case 'performance':
         return <PerformanceDashboard />;
       case 'settings':

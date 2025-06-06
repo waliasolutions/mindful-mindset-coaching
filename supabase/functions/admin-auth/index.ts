@@ -19,7 +19,7 @@ serve(async (req) => {
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     )
 
-    const { action, email, password, sessionToken } = await req.json()
+    const { action, email, password, sessionToken, newUserEmail, newUserPassword, newUserRole } = await req.json()
 
     if (action === 'login') {
       // Get client IP and user agent for security logging
@@ -28,7 +28,6 @@ serve(async (req) => {
 
       console.log(`Login attempt for email: ${email} from IP: ${clientIP}`)
 
-      // Call the admin_login function
       const { data, error } = await supabase.rpc('admin_login', {
         email_input: email,
         password_input: password,
@@ -90,6 +89,92 @@ serve(async (req) => {
 
       return new Response(
         JSON.stringify({ success: true }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      )
+    }
+
+    if (action === 'register') {
+      // Validate session first
+      const { data: sessionData, error: sessionError } = await supabase.rpc('validate_admin_session', {
+        session_token_input: sessionToken
+      })
+
+      if (sessionError || !sessionData || !sessionData[0]?.valid) {
+        return new Response(
+          JSON.stringify({ success: false, message: 'Unauthorized' }),
+          { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 401 }
+        )
+      }
+
+      const currentUser = sessionData[0].user_data
+      if (currentUser.role !== 'admin') {
+        return new Response(
+          JSON.stringify({ success: false, message: 'Admin access required' }),
+          { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 403 }
+        )
+      }
+
+      // Register new user
+      const { data, error } = await supabase
+        .from('admin_users')
+        .insert({
+          email: newUserEmail,
+          password_hash: `crypt('${newUserPassword}', gen_salt('bf'))`,
+          role: newUserRole || 'client'
+        })
+        .select()
+
+      if (error) {
+        console.error('User registration error:', error)
+        return new Response(
+          JSON.stringify({ success: false, message: 'Failed to create user' }),
+          { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 500 }
+        )
+      }
+
+      return new Response(
+        JSON.stringify({ success: true, message: 'User created successfully', user: data[0] }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      )
+    }
+
+    if (action === 'getUsers') {
+      // Validate session and admin role
+      const { data: sessionData, error: sessionError } = await supabase.rpc('validate_admin_session', {
+        session_token_input: sessionToken
+      })
+
+      if (sessionError || !sessionData || !sessionData[0]?.valid) {
+        return new Response(
+          JSON.stringify({ success: false, message: 'Unauthorized' }),
+          { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 401 }
+        )
+      }
+
+      const currentUser = sessionData[0].user_data
+      if (currentUser.role !== 'admin') {
+        return new Response(
+          JSON.stringify({ success: false, message: 'Admin access required' }),
+          { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 403 }
+        )
+      }
+
+      // Get all users
+      const { data, error } = await supabase
+        .from('admin_users')
+        .select('id, email, role, is_active, created_at, last_login_at')
+        .order('created_at', { ascending: false })
+
+      if (error) {
+        console.error('Get users error:', error)
+        return new Response(
+          JSON.stringify({ success: false, message: 'Failed to fetch users' }),
+          { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 500 }
+        )
+      }
+
+      return new Response(
+        JSON.stringify({ success: true, users: data }),
         { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       )
     }

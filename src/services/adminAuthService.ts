@@ -1,10 +1,15 @@
-
 import { supabase } from '@/integrations/supabase/client';
 
 export interface AdminUser {
   id: string;
   email: string;
   role: 'admin' | 'client';
+}
+
+export interface AdminUserWithDetails extends AdminUser {
+  is_active: boolean;
+  created_at: string;
+  last_login_at: string | null;
 }
 
 export interface LoginResponse {
@@ -19,11 +24,22 @@ export interface SessionValidationResponse {
   user_data?: AdminUser;
 }
 
+export interface RegisterUserResponse {
+  success: boolean;
+  message: string;
+  user?: AdminUserWithDetails;
+}
+
+export interface GetUsersResponse {
+  success: boolean;
+  users?: AdminUserWithDetails[];
+  message?: string;
+}
+
 class AdminAuthService {
   private sessionToken: string | null = null;
 
   constructor() {
-    // Load session token from localStorage on initialization
     this.sessionToken = localStorage.getItem('admin_session_token');
   }
 
@@ -97,7 +113,6 @@ class AdminAuthService {
         console.error('Logout error:', error);
       }
 
-      // Clear local storage regardless of server response
       this.sessionToken = null;
       localStorage.removeItem('admin_session_token');
       localStorage.removeItem('admin_user_data');
@@ -105,11 +120,63 @@ class AdminAuthService {
       return data?.success || true;
     } catch (error) {
       console.error('Logout error:', error);
-      // Clear local storage even if server request fails
       this.sessionToken = null;
       localStorage.removeItem('admin_session_token');
       localStorage.removeItem('admin_user_data');
       return true;
+    }
+  }
+
+  async registerUser(email: string, password: string, role: 'admin' | 'client' = 'client'): Promise<RegisterUserResponse> {
+    if (!this.sessionToken) {
+      return { success: false, message: 'Not authenticated' };
+    }
+
+    try {
+      const { data, error } = await supabase.functions.invoke('admin-auth', {
+        body: {
+          action: 'register',
+          sessionToken: this.sessionToken,
+          newUserEmail: email,
+          newUserPassword: password,
+          newUserRole: role
+        }
+      });
+
+      if (error) {
+        console.error('User registration error:', error);
+        return { success: false, message: 'Registration failed' };
+      }
+
+      return data;
+    } catch (error) {
+      console.error('User registration error:', error);
+      return { success: false, message: 'Network error occurred' };
+    }
+  }
+
+  async getUsers(): Promise<GetUsersResponse> {
+    if (!this.sessionToken) {
+      return { success: false, message: 'Not authenticated' };
+    }
+
+    try {
+      const { data, error } = await supabase.functions.invoke('admin-auth', {
+        body: {
+          action: 'getUsers',
+          sessionToken: this.sessionToken
+        }
+      });
+
+      if (error) {
+        console.error('Get users error:', error);
+        return { success: false, message: 'Failed to fetch users' };
+      }
+
+      return data;
+    } catch (error) {
+      console.error('Get users error:', error);
+      return { success: false, message: 'Network error occurred' };
     }
   }
 

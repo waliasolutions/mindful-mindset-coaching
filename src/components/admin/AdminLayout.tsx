@@ -9,7 +9,8 @@ import {
   Activity, 
   LogOut,
   Save,
-  Menu
+  Menu,
+  Users
 } from 'lucide-react';
 import {
   Sheet,
@@ -58,6 +59,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({
     { id: 'sections', label: 'Inhalt', icon: FileText },
     { id: 'media', label: 'Medien', icon: Image },
     { id: 'seo', label: 'SEO', icon: Globe },
+    { id: 'users', label: 'Users', icon: Users, adminOnly: true },
     { id: 'settings', label: 'Einstellungen', icon: Settings },
     { id: 'backups', label: 'Backups', icon: Save },
     { id: 'performance', label: 'Leistung', icon: Activity, adminOnly: true },
