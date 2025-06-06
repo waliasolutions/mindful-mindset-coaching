@@ -7,6 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { toast } from 'sonner';
 import ImageSelector from './ImageSelector';
+import BenefitsEditor from './BenefitsEditor';
 import {
   Dialog,
   DialogContent,
@@ -73,7 +74,6 @@ const SectionEditor = ({ section, onClose }: SectionEditorProps) => {
 
   const handleClose = () => {
     setIsOpen(false);
-    // Call the parent's onClose immediately - no setTimeout
     onClose();
   };
 
@@ -220,6 +220,12 @@ const SectionEditor = ({ section, onClose }: SectionEditorProps) => {
                 </FormItem>
               )}
             />
+            <div className="mt-6">
+              <BenefitsEditor
+                benefits={form.watch('benefits') || []}
+                onChange={(benefits) => form.setValue('benefits', benefits)}
+              />
+            </div>
           </>
         );
         

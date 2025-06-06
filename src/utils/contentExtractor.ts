@@ -29,7 +29,45 @@ export const extractCurrentContent = (sectionId: string) => {
         return {
           title: "Transformiere dein Leben durch Mindset Coaching",
           description: "In einem 1:1 Coaching löst du Blockaden, bringst Klarheit in dein Gedanken-Karussell und richtest deinen Fokus auf das, was wirklich zählt: Deine Träume, Deine Lebenszufriedenheit und Deine innere Ruhe und Gelassenheit.",
-          buttonText: "Kontaktiere mich"
+          buttonText: "Kontaktiere mich",
+          benefits: [
+            {
+              id: 'benefit-1',
+              title: "Persönliches Wachstum",
+              description: "Du möchtest ein erfülltes und selbstbestimmtes Leben führen",
+              icon: "Brain"
+            },
+            {
+              id: 'benefit-2',
+              title: "Potenzialentfaltung",
+              description: "Du willst endlich deine Ziele erreichen und dein volles Potenzial entfalten",
+              icon: "Star"
+            },
+            {
+              id: 'benefit-3',
+              title: "Selbstbewusstsein",
+              description: "Du möchtest mehr Selbstbewusstsein und Vertrauen aufbauen",
+              icon: "Heart"
+            },
+            {
+              id: 'benefit-4',
+              title: "Klarheit & Gelassenheit",
+              description: "Du sehnst dich nach mehr Klarheit, Gelassenheit und Lebensfreude",
+              icon: "Lightbulb"
+            },
+            {
+              id: 'benefit-5',
+              title: "Beziehungen",
+              description: "Du willst eine liebevolle Beziehung führen",
+              icon: "Heart"
+            },
+            {
+              id: 'benefit-6',
+              title: "Gesunde Routinen",
+              description: "Du möchtest gesunde Routinen und Gewohnheiten entwickeln",
+              icon: "Sun"
+            }
+          ]
         };
       case 'pricing':
         return {
