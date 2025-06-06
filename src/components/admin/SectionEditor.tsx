@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { X, Save, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -50,6 +51,9 @@ const SectionEditor = ({ section, onClose }: SectionEditorProps) => {
   
   // Get real current content using the content extractor
   const getCurrentContent = () => {
+    if (!section || !section.id) {
+      return {};
+    }
     return extractCurrentContent(section.id);
   };
 
@@ -60,18 +64,26 @@ const SectionEditor = ({ section, onClose }: SectionEditorProps) => {
   });
 
   useEffect(() => {
-    const currentContent = getCurrentContent();
-    setContent(currentContent);
-    form.reset(currentContent);
-  }, [section.id, form]);
+    if (section && section.id) {
+      const currentContent = getCurrentContent();
+      setContent(currentContent);
+      form.reset(currentContent);
+    }
+  }, [section?.id, form]);
 
   const handleClose = () => {
     setIsOpen(false);
-    setTimeout(onClose, 300);
+    // Call the parent's onClose immediately - no setTimeout
+    onClose();
   };
 
   const handleSave = () => {
     const values = form.getValues();
+    
+    if (!section || !section.id) {
+      toast.error('No section selected');
+      return;
+    }
     
     // Save to localStorage using the content bridge system
     if (saveContentOverride(section.id, values)) {
@@ -81,6 +93,11 @@ const SectionEditor = ({ section, onClose }: SectionEditorProps) => {
       toast.error('Failed to save content');
     }
   };
+
+  // If no section provided, don't render anything
+  if (!section) {
+    return null;
+  }
 
   const renderEditorFields = () => {
     switch (section.id) {
@@ -457,10 +474,12 @@ const SectionEditor = ({ section, onClose }: SectionEditorProps) => {
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+    <Dialog open={isOpen} onOpenChange={(open) => {
+      if (!open) handleClose();
+    }}>
       <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>{section.name} Bereich bearbeiten</DialogTitle>
+          <DialogTitle>{section?.name || 'Bereich'} bearbeiten</DialogTitle>
           <DialogDescription>
             Nehmen Sie Änderungen am Inhalt dieses Bereichs vor. Klicken Sie auf Speichern, wenn Sie fertig sind.
           </DialogDescription>
