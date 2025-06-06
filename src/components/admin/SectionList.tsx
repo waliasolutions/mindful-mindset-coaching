@@ -4,7 +4,8 @@ import { useSections } from '@/hooks/use-sections';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Edit, Eye, EyeOff, FileText, Users, Mail, DollarSign, User } from 'lucide-react';
+import { Edit, Eye, EyeOff, FileText, Users, Mail, DollarSign, User, Upload } from 'lucide-react';
+import ContentImportDialog from './ContentImportDialog';
 
 interface Section {
   id: string;
@@ -20,6 +21,7 @@ interface SectionListProps {
 
 const SectionList = ({ onSectionSelect }: SectionListProps) => {
   const { sections } = useSections();
+  const [showImportDialog, setShowImportDialog] = useState(false);
 
   const getSectionIcon = (sectionId: string) => {
     switch (sectionId) {
@@ -57,11 +59,17 @@ const SectionList = ({ onSectionSelect }: SectionListProps) => {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold mb-2">Inhalt verwalten</h1>
-        <p className="text-gray-600">
-          Wählen Sie einen Bereich aus, um den Inhalt zu bearbeiten.
-        </p>
+      <div className="flex justify-between items-start">
+        <div>
+          <h1 className="text-3xl font-bold mb-2">Inhalt verwalten</h1>
+          <p className="text-gray-600">
+            Wählen Sie einen Bereich aus, um den Inhalt zu bearbeiten.
+          </p>
+        </div>
+        <Button onClick={() => setShowImportDialog(true)} variant="outline">
+          <Upload className="h-4 w-4 mr-2" />
+          Content Tools
+        </Button>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -98,6 +106,11 @@ const SectionList = ({ onSectionSelect }: SectionListProps) => {
           </Card>
         ))}
       </div>
+
+      <ContentImportDialog 
+        isOpen={showImportDialog}
+        onClose={() => setShowImportDialog(false)}
+      />
     </div>
   );
 };
