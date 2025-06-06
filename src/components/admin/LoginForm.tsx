@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Lock } from 'lucide-react';
 import { toast } from '@/components/ui/use-toast';
@@ -179,12 +178,6 @@ const LoginForm: React.FC<LoginFormProps> = ({
               <a href="/" className="text-sm text-gray-500 hover:text-forest">
                 Return to homepage
               </a>
-            </div>
-            
-            <div className="text-center pt-2 border-t border-gray-100 mt-4">
-              <p className="text-xs text-gray-500">
-                Test accounts: admin@mindset-coaching.com / Admin123! or client@mindset-coaching.com / Client123!
-              </p>
             </div>
           </form>
         </Form>
