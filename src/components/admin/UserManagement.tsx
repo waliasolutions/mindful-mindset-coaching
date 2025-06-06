@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -9,13 +8,15 @@ import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { toast } from '@/components/ui/use-toast';
 import { adminAuthService, AdminUserWithDetails } from '@/services/adminAuthService';
-import { Plus, User, Mail, Calendar, Clock } from 'lucide-react';
+import { Plus, User, Mail, Calendar, Clock, Edit } from 'lucide-react';
 import { format } from 'date-fns';
+import EditUserDialog from './EditUserDialog';
 
 const UserManagement: React.FC = () => {
   const [users, setUsers] = useState<AdminUserWithDetails[]>([]);
   const [loading, setLoading] = useState(true);
   const [showAddForm, setShowAddForm] = useState(false);
+  const [editingUser, setEditingUser] = useState<AdminUserWithDetails | null>(null);
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -106,6 +107,14 @@ const UserManagement: React.FC = () => {
     } finally {
       setIsSubmitting(false);
     }
+  };
+
+  const handleEditUser = (user: AdminUserWithDetails) => {
+    setEditingUser(user);
+  };
+
+  const handleCloseEditDialog = () => {
+    setEditingUser(null);
   };
 
   const formatDate = (dateString: string | null) => {
@@ -223,6 +232,7 @@ const UserManagement: React.FC = () => {
                 <TableHead>Status</TableHead>
                 <TableHead>Created</TableHead>
                 <TableHead>Last Login</TableHead>
+                <TableHead>Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -250,12 +260,32 @@ const UserManagement: React.FC = () => {
                     <Clock className="h-4 w-4 text-gray-400" />
                     {formatDate(user.last_login_at)}
                   </TableCell>
+                  <TableCell>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => handleEditUser(user)}
+                      className="flex items-center gap-1"
+                    >
+                      <Edit className="h-3 w-3" />
+                      Edit
+                    </Button>
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
         </CardContent>
       </Card>
+
+      {editingUser && (
+        <EditUserDialog
+          user={editingUser}
+          open={!!editingUser}
+          onClose={handleCloseEditDialog}
+          onUserUpdated={loadUsers}
+        />
+      )}
     </div>
   );
 };

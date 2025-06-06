@@ -30,10 +30,23 @@ export interface RegisterUserResponse {
   user?: AdminUserWithDetails;
 }
 
+export interface UpdateUserResponse {
+  success: boolean;
+  message: string;
+  user?: AdminUserWithDetails;
+}
+
 export interface GetUsersResponse {
   success: boolean;
   users?: AdminUserWithDetails[];
   message?: string;
+}
+
+export interface UpdateUserData {
+  email?: string;
+  role?: 'admin' | 'client';
+  is_active?: boolean;
+  password?: string;
 }
 
 class AdminAuthService {
@@ -151,6 +164,33 @@ class AdminAuthService {
       return data;
     } catch (error) {
       console.error('User registration error:', error);
+      return { success: false, message: 'Network error occurred' };
+    }
+  }
+
+  async updateUser(userId: string, updateData: UpdateUserData): Promise<UpdateUserResponse> {
+    if (!this.sessionToken) {
+      return { success: false, message: 'Not authenticated' };
+    }
+
+    try {
+      const { data, error } = await supabase.functions.invoke('admin-auth', {
+        body: {
+          action: 'updateUser',
+          sessionToken: this.sessionToken,
+          userId,
+          updateData
+        }
+      });
+
+      if (error) {
+        console.error('User update error:', error);
+        return { success: false, message: 'Update failed' };
+      }
+
+      return data;
+    } catch (error) {
+      console.error('User update error:', error);
       return { success: false, message: 'Network error occurred' };
     }
   }

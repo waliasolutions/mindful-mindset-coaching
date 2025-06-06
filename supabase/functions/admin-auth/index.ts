@@ -40,7 +40,7 @@ serve(async (req) => {
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     )
 
-    const { action, email, password, sessionToken, newUserEmail, newUserPassword, newUserRole } = await req.json()
+    const { action, email, password, sessionToken, newUserEmail, newUserPassword, newUserRole, userId, updateData } = await req.json()
 
     if (action === 'login') {
       // Get client IP and user agent for security logging
@@ -156,6 +156,84 @@ serve(async (req) => {
 
       return new Response(
         JSON.stringify({ success: true, message: 'User created successfully', user: data[0] }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      )
+    }
+
+    if (action === 'updateUser') {
+      // Validate session and admin role
+      const { data: sessionData, error: sessionError } = await supabase.rpc('validate_admin_session', {
+        session_token_input: sessionToken
+      })
+
+      if (sessionError || !sessionData || !sessionData[0]?.valid) {
+        return new Response(
+          JSON.stringify({ success: false, message: 'Unauthorized' }),
+          { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 401 }
+        )
+      }
+
+      const currentUser = sessionData[0].user_data
+      if (currentUser.role !== 'admin') {
+        return new Response(
+          JSON.stringify({ success: false, message: 'Admin access required' }),
+          { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 403 }
+        )
+      }
+
+      // Build update query based on provided data
+      let updateQuery = 'UPDATE admin_users SET updated_at = NOW()'
+      const params = [userId]
+      let paramIndex = 2
+
+      if (updateData.email) {
+        updateQuery += `, email = $${paramIndex}`
+        params.push(updateData.email)
+        paramIndex++
+      }
+
+      if (updateData.role) {
+        updateQuery += `, role = $${paramIndex}`
+        params.push(updateData.role)
+        paramIndex++
+      }
+
+      if (updateData.hasOwnProperty('is_active')) {
+        updateQuery += `, is_active = $${paramIndex}`
+        params.push(updateData.is_active)
+        paramIndex++
+      }
+
+      if (updateData.password) {
+        updateQuery += `, password_hash = crypt($${paramIndex}, gen_salt('bf'))`
+        params.push(updateData.password)
+        paramIndex++
+      }
+
+      updateQuery += ' WHERE id = $1 RETURNING id, email, role, is_active, created_at, last_login_at'
+
+      const { data, error } = await supabase.rpc('sql', {
+        query: updateQuery,
+        params: params
+      })
+
+      if (error) {
+        console.error('User update error:', error)
+        return new Response(
+          JSON.stringify({ success: false, message: 'Failed to update user' }),
+          { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 500 }
+        )
+      }
+
+      if (!data || data.length === 0) {
+        return new Response(
+          JSON.stringify({ success: false, message: 'User not found' }),
+          { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 404 }
+        )
+      }
+
+      return new Response(
+        JSON.stringify({ success: true, message: 'User updated successfully', user: data[0] }),
         { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       )
     }
