@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { X, Save, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -100,6 +99,7 @@ const SectionEditor = ({ section, onClose }: SectionEditorProps) => {
                       value={field.value}
                       onChange={field.onChange}
                       label="Hero Hintergrundbild"
+                      imageType="hero_background"
                     />
                   </FormControl>
                   <FormMessage />
@@ -246,6 +246,7 @@ const SectionEditor = ({ section, onClose }: SectionEditorProps) => {
                       value={field.value}
                       onChange={field.onChange}
                       label="Einstein Zitat Bild"
+                      imageType="quote_image"
                     />
                   </FormControl>
                   <FormMessage />
@@ -336,6 +337,7 @@ const SectionEditor = ({ section, onClose }: SectionEditorProps) => {
                       value={field.value}
                       onChange={field.onChange}
                       label="Über uns Profilbild"
+                      imageType="profile"
                     />
                   </FormControl>
                   <FormMessage />
@@ -385,6 +387,7 @@ const SectionEditor = ({ section, onClose }: SectionEditorProps) => {
                       value={field.value}
                       onChange={field.onChange}
                       label="Kontakt Bereich Bild"
+                      imageType="section_image"
                     />
                   </FormControl>
                   <FormMessage />

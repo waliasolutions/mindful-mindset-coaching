@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -25,6 +24,14 @@ interface MediaItem {
 interface MediaLibraryProps {
   onSelectImage?: (imageUrl: string) => void;
   selectedImage?: string | null;
+  imageRequirements?: {
+    width: number;
+    height: number;
+    aspectRatio: string;
+    maxFileSize: number;
+    formats: string[];
+    description: string;
+  };
 }
 
 // Complete list of website images that are currently in use with correct URLs
@@ -74,7 +81,7 @@ const checkImageAccessibility = (url: string): Promise<boolean> => {
   });
 };
 
-const MediaLibrary = ({ onSelectImage, selectedImage }: MediaLibraryProps) => {
+const MediaLibrary = ({ onSelectImage, selectedImage, imageRequirements }: MediaLibraryProps) => {
   const [images, setImages] = useState<MediaItem[]>([]);
   const [isUploading, setIsUploading] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -178,6 +185,13 @@ const MediaLibrary = ({ onSelectImage, selectedImage }: MediaLibraryProps) => {
       return;
     }
 
+    // File size validation based on requirements
+    const maxSize = imageRequirements ? imageRequirements.maxFileSize : 5; // Default 5MB
+    if (file.size > maxSize * 1024 * 1024) {
+      toast.error(`Datei ist zu groß. Maximum: ${maxSize}MB`);
+      return;
+    }
+
     setIsUploading(true);
     
     try {
@@ -271,6 +285,19 @@ const MediaLibrary = ({ onSelectImage, selectedImage }: MediaLibraryProps) => {
       
       {showUpload && (
         <div className="mb-4">
+          {/* Upload guidelines */}
+          {imageRequirements && (
+            <div className="mb-3 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+              <h4 className="text-sm font-medium text-blue-800 mb-2">Upload-Richtlinien:</h4>
+              <div className="text-xs text-blue-700 space-y-1">
+                <p>• Optimale Größe: {imageRequirements.width}×{imageRequirements.height}px ({imageRequirements.aspectRatio})</p>
+                <p>• Max. Dateigröße: {imageRequirements.maxFileSize}MB</p>
+                <p>• Unterstützte Formate: {imageRequirements.formats.join(', ')}</p>
+                <p>• {imageRequirements.description}</p>
+              </div>
+            </div>
+          )}
+          
           <Input 
             id="image-upload" 
             type="file" 
@@ -287,6 +314,11 @@ const MediaLibrary = ({ onSelectImage, selectedImage }: MediaLibraryProps) => {
             <span className="text-sm text-gray-500">
               {isUploading ? 'Wird hochgeladen...' : 'Klicken Sie hier, um ein Bild hochzuladen'}
             </span>
+            {imageRequirements && (
+              <div className="mt-1 text-xs text-gray-400">
+                Max. {imageRequirements.maxFileSize}MB • {imageRequirements.aspectRatio} empfohlen
+              </div>
+            )}
           </Label>
         </div>
       )}
