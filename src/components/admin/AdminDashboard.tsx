@@ -3,8 +3,9 @@ import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Activity, Users, FileText, Image, Globe, TrendingUp } from 'lucide-react';
+import { Activity, Users, FileText, Image, Globe, TrendingUp, Trash, X } from 'lucide-react';
 import { AdminRole } from '@/utils/adminAuth';
+import { toast } from '@/components/ui/use-toast';
 
 interface DashboardStats {
   totalSections: number;
@@ -18,6 +19,13 @@ interface AdminDashboardProps {
   userRole: AdminRole;
 }
 
+interface ActivityItem {
+  id: string;
+  type: 'blue' | 'green' | 'purple';
+  text: string;
+  time: string;
+}
+
 const AdminDashboard = ({ onNavigate, userRole }: AdminDashboardProps) => {
   const [stats] = useState<DashboardStats>({
     totalSections: 5,
@@ -25,6 +33,28 @@ const AdminDashboard = ({ onNavigate, userRole }: AdminDashboardProps) => {
     lastUpdated: new Date().toLocaleDateString('de-DE'),
     websiteViews: 0
   });
+
+  // Convert hardcoded activities to state
+  const [activities, setActivities] = useState<ActivityItem[]>([
+    {
+      id: '1',
+      type: 'blue',
+      text: 'Hero-Bereich aktualisiert',
+      time: 'vor 2 Stunden'
+    },
+    {
+      id: '2',
+      type: 'green',
+      text: 'Neues Bild hochgeladen',
+      time: 'vor 1 Tag'
+    },
+    {
+      id: '3',
+      type: 'purple',
+      text: 'SEO-Einstellungen optimiert',
+      time: 'vor 3 Tagen'
+    }
+  ]);
 
   const isAdmin = userRole === 'admin';
 
@@ -40,6 +70,24 @@ const AdminDashboard = ({ onNavigate, userRole }: AdminDashboardProps) => {
     if (onNavigate) {
       onNavigate(action);
     }
+  };
+
+  // Handler to delete a single activity
+  const handleDeleteActivity = (id: string) => {
+    setActivities(activities.filter(activity => activity.id !== id));
+    toast({
+      title: "Aktivität gelöscht",
+      description: "Die Aktivität wurde erfolgreich entfernt."
+    });
+  };
+
+  // Handler to delete all activities
+  const handleDeleteAllActivities = () => {
+    setActivities([]);
+    toast({
+      title: "Alle Aktivitäten gelöscht",
+      description: "Alle Aktivitäten wurden erfolgreich entfernt."
+    });
   };
 
   return (
@@ -131,33 +179,49 @@ const AdminDashboard = ({ onNavigate, userRole }: AdminDashboardProps) => {
 
       {/* Recent Activity */}
       <Card>
-        <CardHeader>
+        <CardHeader className="flex flex-row items-center justify-between">
           <CardTitle className="text-lg">Letzte Aktivitäten</CardTitle>
+          {activities.length > 0 && (
+            <Button 
+              variant="outline" 
+              size="sm" 
+              className="text-red-500 hover:bg-red-50 hover:text-red-600 border-red-200"
+              onClick={handleDeleteAllActivities}
+            >
+              <Trash className="h-4 w-4 mr-1" />
+              Alle löschen
+            </Button>
+          )}
         </CardHeader>
         <CardContent>
-          <div className="space-y-3">
-            <div className="flex items-center justify-between py-2 border-b border-gray-100 last:border-0">
-              <div className="flex items-center gap-3">
-                <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                <span className="text-sm">Hero-Bereich aktualisiert</span>
-              </div>
-              <span className="text-xs text-gray-500">vor 2 Stunden</span>
+          {activities.length === 0 ? (
+            <p className="text-sm text-gray-500 italic text-center py-4">Keine Aktivitäten vorhanden</p>
+          ) : (
+            <div className="space-y-3">
+              {activities.map((activity) => (
+                <div key={activity.id} className="flex items-center justify-between py-2 border-b border-gray-100 last:border-0">
+                  <div className="flex items-center gap-3">
+                    <div className={`w-2 h-2 rounded-full ${
+                      activity.type === 'blue' ? 'bg-blue-500' : 
+                      activity.type === 'green' ? 'bg-green-500' : 'bg-purple-500'
+                    }`}></div>
+                    <span className="text-sm">{activity.text}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs text-gray-500">{activity.time}</span>
+                    <Button 
+                      variant="ghost" 
+                      size="icon" 
+                      className="h-6 w-6 text-gray-400 hover:text-red-500"
+                      onClick={() => handleDeleteActivity(activity.id)}
+                    >
+                      <X className="h-3 w-3" />
+                    </Button>
+                  </div>
+                </div>
+              ))}
             </div>
-            <div className="flex items-center justify-between py-2 border-b border-gray-100 last:border-0">
-              <div className="flex items-center gap-3">
-                <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                <span className="text-sm">Neues Bild hochgeladen</span>
-              </div>
-              <span className="text-xs text-gray-500">vor 1 Tag</span>
-            </div>
-            <div className="flex items-center justify-between py-2 border-b border-gray-100 last:border-0">
-              <div className="flex items-center gap-3">
-                <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
-                <span className="text-sm">SEO-Einstellungen optimiert</span>
-              </div>
-              <span className="text-xs text-gray-500">vor 3 Tagen</span>
-            </div>
-          </div>
+          )}
         </CardContent>
       </Card>
     </div>
