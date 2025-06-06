@@ -1,9 +1,8 @@
-
 import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Activity, Users, FileText, Image, Globe, TrendingUp, Trash, X } from 'lucide-react';
+import { Activity, Users, FileText, Image, Globe, TrendingUp, Trash, X, Save } from 'lucide-react';
 import { AdminRole } from '@/utils/adminAuth';
 import { toast } from '@/components/ui/use-toast';
 
@@ -63,6 +62,7 @@ const AdminDashboard = ({ onNavigate, userRole }: AdminDashboardProps) => {
     { icon: FileText, label: 'Inhalte bearbeiten', action: 'sections' },
     { icon: Image, label: 'Medienbibliothek', action: 'media' },
     { icon: Globe, label: 'SEO Einstellungen', action: 'seo' },
+    { icon: Save, label: 'Backup erstellen', action: 'backups' },
     ...(isAdmin ? [{ icon: Activity, label: 'Leistung', action: 'performance' }] : [])
   ];
 

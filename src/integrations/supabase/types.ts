@@ -1387,6 +1387,39 @@ export type Database = {
         }
         Relationships: []
       }
+      website_backups: {
+        Row: {
+          backup_data: Json
+          created_at: string
+          created_by: string | null
+          description: string | null
+          file_size: number | null
+          id: string
+          name: string
+          version: string | null
+        }
+        Insert: {
+          backup_data: Json
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          file_size?: number | null
+          id?: string
+          name: string
+          version?: string | null
+        }
+        Update: {
+          backup_data?: Json
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          file_size?: number | null
+          id?: string
+          name?: string
+          version?: string | null
+        }
+        Relationships: []
+      }
       websites: {
         Row: {
           body_script: string | null

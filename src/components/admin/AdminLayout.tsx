@@ -1,15 +1,33 @@
-
-import React, { useState } from 'react';
-import { Button } from '../ui/button';
-import { Layers, Search, PaintBucket, Image, FileText, Settings, BarChart3, Bell } from 'lucide-react';
-import SeoSettings from './SeoSettings';
-import MediaLibrary from './MediaLibrary';
-import ThemeSettings from './ThemeSettings';
-import GlobalSettings from './GlobalSettings';
-import AdminDashboard from './AdminDashboard';
-import PerformanceDashboard from './PerformanceDashboard';
-import AdminNotificationCenter from './AdminNotificationCenter';
-import AdminErrorBoundary from './AdminErrorBoundary';
+import React, { useState, useEffect } from 'react';
+import { 
+  LayoutDashboard, 
+  FileText, 
+  Image, 
+  Settings, 
+  Globe, 
+  Activity, 
+  LogOut,
+  Save,
+} from 'lucide-react';
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { useAdminSession } from '@/hooks/useAdminSession';
+import { Button } from '@/components/ui/button';
+import { Separator } from "@/components/ui/separator"
+import { ScrollArea } from "@/components/ui/scroll-area"
+import { ModeToggle } from "@/components/ui/mode-toggle"
+import { Switch } from "@/components/ui/switch"
+import { Label } from "@/components/ui/label"
+import { Link } from 'react-router-dom';
+import { toast } from '@/components/ui/use-toast';
 import { AdminRole } from '@/utils/adminAuth';
 
 interface AdminLayoutProps {
@@ -18,161 +36,139 @@ interface AdminLayoutProps {
   userRole: AdminRole;
 }
 
-const AdminLayout = ({ children, onLogout, userRole }: AdminLayoutProps) => {
+const AdminLayout: React.FC<AdminLayoutProps> = ({ children, onLogout, userRole }) => {
   const [activeTab, setActiveTab] = useState('dashboard');
-  
-  const isAdmin = userRole === 'admin';
-  
-  // Function to handle navigation from dashboard quick actions
-  const handleNavigate = (tab: string) => {
-    // Prevent clients from accessing the performance tab
-    if (tab === 'performance' && !isAdmin) {
-      return;
-    }
-    setActiveTab(tab);
+
+  // Function to determine if a menu item should be shown based on role
+  const isAdminOnly = (item: { adminOnly?: boolean }) => {
+    return item.adminOnly ? userRole === 'admin' : true;
   };
-  
-  // Function to render the active panel based on the activeTab state
-  const renderActivePanel = () => {
-    switch (activeTab) {
-      case 'dashboard':
-        return <AdminDashboard onNavigate={handleNavigate} userRole={userRole} />;
-      case 'media':
-        return <MediaLibrary />;
-      case 'theme':
-        return <ThemeSettings />;
-      case 'seo':
-        return <SeoSettings />;
-      case 'settings':
-        return <GlobalSettings />;
-      case 'performance':
-        // Only show performance dashboard to admins
-        return isAdmin ? <PerformanceDashboard /> : <AdminDashboard onNavigate={handleNavigate} userRole={userRole} />;
-      default:
-        return children;
-    }
+
+  // Navigation items
+  const navItems = [
+    { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
+    { id: 'sections', label: 'Inhalt', icon: FileText },
+    { id: 'media', label: 'Medien', icon: Image },
+    { id: 'seo', label: 'SEO', icon: Globe },
+    { id: 'settings', label: 'Einstellungen', icon: Settings },
+    { id: 'backups', label: 'Backups', icon: Save },
+    { id: 'performance', label: 'Leistung', icon: Activity, adminOnly: true },
+  ];
+
+  const renderTab = (tabId: string) => {
+    setActiveTab(tabId);
   };
   
   return (
-    <AdminErrorBoundary>
-      <div className="min-h-screen bg-gray-50">
-        <header className="bg-forest text-white shadow-md border-b border-forest/20">
-          <div className="container mx-auto px-4 py-3 flex justify-between items-center">
-            <div className="flex items-center space-x-4">
-              <h1 className="text-xl font-bold">Admin Dashboard</h1>
-              <div className="hidden md:flex items-center space-x-1 bg-forest/20 rounded-lg px-3 py-1">
-                <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                <span className="text-sm">Online</span>
+    <div className="flex h-screen bg-gray-100 text-gray-700">
+      {/* Sidebar */}
+      <Sheet>
+        <SheetTrigger asChild>
+          <Button variant="ghost" size="icon" className="md:hidden">
+            <LayoutDashboard className="h-4 w-4" />
+          </Button>
+        </SheetTrigger>
+        <SheetContent className="w-full sm:w-64 dark:bg-gray-900 bg-white border-r">
+          <SheetHeader className="text-left">
+            <SheetTitle>Admin Panel</SheetTitle>
+            <SheetDescription>
+              Manage your website content and settings.
+            </SheetDescription>
+          </SheetHeader>
+          <ScrollArea className="h-[calc(100vh-10rem)]">
+            <div className="py-4">
+              <div className="px-3 py-2">
+                {navItems.map((item) =>
+                  isAdminOnly(item) ? (
+                    <Button
+                      key={item.id}
+                      variant="ghost"
+                      className={`w-full justify-start font-normal ${
+                        activeTab === item.id ? "bg-gray-100 dark:bg-gray-800" : ""
+                      }`}
+                      onClick={() => renderTab(item.id)}
+                    >
+                      <item.icon className="mr-2 h-4 w-4" />
+                      <span>{item.label}</span>
+                    </Button>
+                  ) : null
+                )}
               </div>
             </div>
-            <div className="flex items-center space-x-4">
-              <AdminNotificationCenter />
-              <Button variant="outline" className="text-white border-white hover:bg-white hover:text-forest transition-colors" asChild>
-                <a href="/" target="_blank" rel="noopener noreferrer">Website ansehen</a>
-              </Button>
-              <Button variant="ghost" onClick={onLogout} className="text-white hover:bg-white/10 transition-colors">
-                Abmelden
-              </Button>
-            </div>
+          </ScrollArea>
+          <Separator />
+          <div className="p-4">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="gap-2 w-full">
+                  <Avatar className="h-8 w-8">
+                    <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+                    <AvatarFallback>SC</AvatarFallback>
+                  </Avatar>
+                  <span className="text-sm">
+                    Admin User
+                  </span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem>
+                  Settings
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={onLogout}>
+                  Log out
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+        </SheetContent>
+      </Sheet>
+
+      {/* Main Content */}
+      <div className="flex-1 flex flex-col overflow-hidden">
+        {/* Header */}
+        <header className="flex items-center justify-between h-16 px-6 border-b dark:bg-gray-800 bg-white">
+          <div className="flex items-center">
+            <Button variant="ghost" size="icon" className="mr-4 md:hidden">
+              <LayoutDashboard className="h-4 w-4" />
+            </Button>
+            <h1 className="text-xl font-semibold">Admin Panel</h1>
+          </div>
+          <div className="flex items-center gap-4">
+            <ModeToggle />
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="gap-2">
+                  <Avatar className="h-8 w-8">
+                    <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+                    <AvatarFallback>SC</AvatarFallback>
+                  </Avatar>
+                  <span className="text-sm">
+                    Admin User
+                  </span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem>
+                  Settings
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={onLogout}>
+                  Log out
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </header>
-        
-        <main className="container mx-auto px-4 py-8">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-            <div className="lg:col-span-9">
-              {renderActivePanel()}
-            </div>
-            <div className="lg:col-span-3 space-y-6">
-              <div className="bg-white shadow-sm rounded-lg p-4 border border-gray-200">
-                <nav className="space-y-2">
-                  <Button
-                    variant={activeTab === 'dashboard' ? 'default' : 'ghost'}
-                    className="w-full justify-start text-left"
-                    onClick={() => setActiveTab('dashboard')}
-                  >
-                    <BarChart3 className="mr-3 h-4 w-4" />
-                    Dashboard
-                  </Button>
-                  <Button
-                    variant={activeTab === 'sections' ? 'default' : 'ghost'}
-                    className="w-full justify-start text-left"
-                    onClick={() => setActiveTab('sections')}
-                  >
-                    <Layers className="mr-3 h-4 w-4" />
-                    Bereiche
-                  </Button>
-                  <Button
-                    variant={activeTab === 'media' ? 'default' : 'ghost'}
-                    className="w-full justify-start text-left"
-                    onClick={() => setActiveTab('media')}
-                  >
-                    <Image className="mr-3 h-4 w-4" />
-                    Medienbibliothek
-                  </Button>
-                  <Button
-                    variant={activeTab === 'theme' ? 'default' : 'ghost'}
-                    className="w-full justify-start text-left"
-                    onClick={() => setActiveTab('theme')}
-                  >
-                    <PaintBucket className="mr-3 h-4 w-4" />
-                    Design
-                  </Button>
-                  <Button
-                    variant={activeTab === 'seo' ? 'default' : 'ghost'} 
-                    className="w-full justify-start text-left"
-                    onClick={() => setActiveTab('seo')}
-                  >
-                    <Search className="mr-3 h-4 w-4" />
-                    SEO & Analyse
-                  </Button>
-                  {/* Only show the Performance button to admins */}
-                  {isAdmin && (
-                    <Button
-                      variant={activeTab === 'performance' ? 'default' : 'ghost'} 
-                      className="w-full justify-start text-left"
-                      onClick={() => setActiveTab('performance')}
-                    >
-                      <BarChart3 className="mr-3 h-4 w-4" />
-                      Leistung
-                    </Button>
-                  )}
-                  <Button
-                    variant={activeTab === 'settings' ? 'default' : 'ghost'} 
-                    className="w-full justify-start text-left"
-                    onClick={() => setActiveTab('settings')}
-                  >
-                    <Settings className="mr-3 h-4 w-4" />
-                    Globale Einstellungen
-                  </Button>
-                </nav>
-              </div>
 
-              {/* Quick Stats */}
-              <div className="bg-white shadow-sm rounded-lg p-4 border border-gray-200">
-                <h3 className="font-semibold text-gray-900 mb-3">Schnellübersicht</h3>
-                <div className="space-y-3">
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-gray-600">Website Status</span>
-                    <div className="flex items-center gap-1">
-                      <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                      <span className="text-sm font-medium">Online</span>
-                    </div>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-gray-600">Letzte Aktualisierung</span>
-                    <span className="text-sm font-medium">Heute</span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-gray-600">Leistung</span>
-                    <span className="text-sm font-medium text-green-600">Ausgezeichnet</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+        {/* Content Area */}
+        <main className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-100 dark:bg-gray-700">
+          {children}
         </main>
       </div>
-    </AdminErrorBoundary>
+    </div>
   );
 };
 
