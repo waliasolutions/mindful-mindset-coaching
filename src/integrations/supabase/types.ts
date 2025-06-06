@@ -1681,6 +1681,18 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: boolean
       }
+      create_admin_user: {
+        Args: {
+          email_input: string
+          password_input: string
+          role_input?: string
+        }
+        Returns: {
+          success: boolean
+          message: string
+          user_data: Json
+        }[]
+      }
       duplicate_website: {
         Args: {
           source_website_id: string
@@ -1724,6 +1736,20 @@ export type Database = {
       is_admin: {
         Args: { user_id: string }
         Returns: boolean
+      }
+      update_admin_user: {
+        Args: {
+          user_id_input: string
+          email_input?: string
+          password_input?: string
+          role_input?: string
+          is_active_input?: boolean
+        }
+        Returns: {
+          success: boolean
+          message: string
+          user_data: Json
+        }[]
       }
       validate_admin_session: {
         Args: { session_token_input: string }

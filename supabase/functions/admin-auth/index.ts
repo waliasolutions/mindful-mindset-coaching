@@ -1,3 +1,4 @@
+
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 
@@ -135,16 +136,12 @@ serve(async (req) => {
         )
       }
 
-      // Register new user using raw SQL to properly hash password
-      const { data, error } = await supabase
-        .rpc('sql', {
-          query: `
-            INSERT INTO admin_users (email, password_hash, role) 
-            VALUES ($1, crypt($2, gen_salt('bf')), $3) 
-            RETURNING id, email, role, is_active, created_at
-          `,
-          params: [newUserEmail, newUserPassword, newUserRole || 'client']
-        })
+      // Create new user using the database function
+      const { data, error } = await supabase.rpc('create_admin_user', {
+        email_input: newUserEmail,
+        password_input: newUserPassword,
+        role_input: newUserRole || 'client'
+      })
 
       if (error) {
         console.error('User registration error:', error)
@@ -154,8 +151,20 @@ serve(async (req) => {
         )
       }
 
+      const result = data[0]
+      if (!result.success) {
+        return new Response(
+          JSON.stringify({ success: false, message: result.message }),
+          { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 400 }
+        )
+      }
+
       return new Response(
-        JSON.stringify({ success: true, message: 'User created successfully', user: data[0] }),
+        JSON.stringify({ 
+          success: true, 
+          message: result.message, 
+          user: result.user_data 
+        }),
         { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       )
     }
@@ -181,40 +190,13 @@ serve(async (req) => {
         )
       }
 
-      // Build update query based on provided data
-      let updateQuery = 'UPDATE admin_users SET updated_at = NOW()'
-      const params = [userId]
-      let paramIndex = 2
-
-      if (updateData.email) {
-        updateQuery += `, email = $${paramIndex}`
-        params.push(updateData.email)
-        paramIndex++
-      }
-
-      if (updateData.role) {
-        updateQuery += `, role = $${paramIndex}`
-        params.push(updateData.role)
-        paramIndex++
-      }
-
-      if (updateData.hasOwnProperty('is_active')) {
-        updateQuery += `, is_active = $${paramIndex}`
-        params.push(updateData.is_active)
-        paramIndex++
-      }
-
-      if (updateData.password) {
-        updateQuery += `, password_hash = crypt($${paramIndex}, gen_salt('bf'))`
-        params.push(updateData.password)
-        paramIndex++
-      }
-
-      updateQuery += ' WHERE id = $1 RETURNING id, email, role, is_active, created_at, last_login_at'
-
-      const { data, error } = await supabase.rpc('sql', {
-        query: updateQuery,
-        params: params
+      // Update user using the database function
+      const { data, error } = await supabase.rpc('update_admin_user', {
+        user_id_input: userId,
+        email_input: updateData.email || null,
+        password_input: updateData.password || null,
+        role_input: updateData.role || null,
+        is_active_input: updateData.hasOwnProperty('is_active') ? updateData.is_active : null
       })
 
       if (error) {
@@ -225,15 +207,20 @@ serve(async (req) => {
         )
       }
 
-      if (!data || data.length === 0) {
+      const result = data[0]
+      if (!result.success) {
         return new Response(
-          JSON.stringify({ success: false, message: 'User not found' }),
+          JSON.stringify({ success: false, message: result.message }),
           { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 404 }
         )
       }
 
       return new Response(
-        JSON.stringify({ success: true, message: 'User updated successfully', user: data[0] }),
+        JSON.stringify({ 
+          success: true, 
+          message: result.message, 
+          user: result.user_data 
+        }),
         { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       )
     }
