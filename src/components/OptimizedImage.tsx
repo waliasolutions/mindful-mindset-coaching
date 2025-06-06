@@ -13,6 +13,7 @@ interface OptimizedImageProps {
   onClick?: () => void;
   onLoad?: () => void;
   sizes?: string;
+  title?: string;
 }
 
 const OptimizedImage = ({
@@ -26,6 +27,7 @@ const OptimizedImage = ({
   onClick,
   onLoad,
   sizes = '100vw',
+  title,
 }: OptimizedImageProps) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [error, setError] = useState(false);
@@ -73,6 +75,7 @@ const OptimizedImage = ({
         alt={alt}
         width={width}
         height={height}
+        title={title}
         loading={loading}
         fetchPriority={fetchPriority as any}
         className={`transition-opacity duration-200 ${objectFitClass} ${className} ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
