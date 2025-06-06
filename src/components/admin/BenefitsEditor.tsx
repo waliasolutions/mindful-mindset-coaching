@@ -1,5 +1,5 @@
 
-import { useState, useCallback, useMemo } from 'react';
+import React, { useState, useCallback, useMemo, memo } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Plus, Trash2, GripVertical } from 'lucide-react';
 import IconSelector from './IconSelector';
 import * as LucideIcons from 'lucide-react';
+import { useDebouncedCallback } from '@/hooks/useDebounced';
 
 interface Benefit {
   id: string;
@@ -20,8 +21,19 @@ interface BenefitsEditorProps {
   onChange: (benefits: Benefit[]) => void;
 }
 
-const BenefitsEditor = ({ benefits, onChange }: BenefitsEditorProps) => {
+const BenefitsEditor = memo(({ benefits, onChange }: BenefitsEditorProps) => {
   const [editingId, setEditingId] = useState<string | null>(null);
+  const [localBenefits, setLocalBenefits] = useState<Benefit[]>(benefits);
+
+  // Debounced update to parent to prevent cascading re-renders
+  const debouncedOnChange = useDebouncedCallback((newBenefits: Benefit[]) => {
+    onChange(newBenefits);
+  }, 500);
+
+  // Update local state when props change
+  React.useEffect(() => {
+    setLocalBenefits(benefits);
+  }, [benefits]);
 
   const addBenefit = useCallback(() => {
     const newBenefit: Benefit = {
@@ -30,24 +42,31 @@ const BenefitsEditor = ({ benefits, onChange }: BenefitsEditorProps) => {
       description: 'Beschreibung des Vorteils',
       icon: 'Star'
     };
-    onChange([...benefits, newBenefit]);
+    const newBenefits = [...localBenefits, newBenefit];
+    setLocalBenefits(newBenefits);
     setEditingId(newBenefit.id);
-  }, [benefits, onChange]);
+    // Immediate update for additions
+    onChange(newBenefits);
+  }, [localBenefits, onChange]);
 
   const updateBenefit = useCallback((id: string, updates: Partial<Benefit>) => {
-    const updatedBenefits = benefits.map(benefit => 
+    const updatedBenefits = localBenefits.map(benefit => 
       benefit.id === id ? { ...benefit, ...updates } : benefit
     );
-    onChange(updatedBenefits);
-  }, [benefits, onChange]);
+    setLocalBenefits(updatedBenefits);
+    // Debounced update for text changes
+    debouncedOnChange(updatedBenefits);
+  }, [localBenefits, debouncedOnChange]);
 
   const deleteBenefit = useCallback((id: string) => {
-    const filteredBenefits = benefits.filter(benefit => benefit.id !== id);
-    onChange(filteredBenefits);
+    const filteredBenefits = localBenefits.filter(benefit => benefit.id !== id);
+    setLocalBenefits(filteredBenefits);
     if (editingId === id) {
       setEditingId(null);
     }
-  }, [benefits, onChange, editingId]);
+    // Immediate update for deletions
+    onChange(filteredBenefits);
+  }, [localBenefits, onChange, editingId]);
 
   const toggleEditing = useCallback((id: string) => {
     setEditingId(current => current === id ? null : id);
@@ -60,7 +79,7 @@ const BenefitsEditor = ({ benefits, onChange }: BenefitsEditorProps) => {
   }, []);
 
   const benefitItems = useMemo(() => {
-    return benefits.map((benefit) => (
+    return localBenefits.map((benefit) => (
       <Card key={benefit.id} className="relative">
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between">
@@ -116,7 +135,7 @@ const BenefitsEditor = ({ benefits, onChange }: BenefitsEditorProps) => {
         )}
       </Card>
     ));
-  }, [benefits, editingId, renderIcon, toggleEditing, deleteBenefit, updateBenefit]);
+  }, [localBenefits, editingId, renderIcon, toggleEditing, deleteBenefit, updateBenefit]);
 
   return (
     <div className="space-y-4">
@@ -132,7 +151,7 @@ const BenefitsEditor = ({ benefits, onChange }: BenefitsEditorProps) => {
         {benefitItems}
       </div>
 
-      {benefits.length === 0 && (
+      {localBenefits.length === 0 && (
         <div className="text-center py-8 text-gray-500">
           <p>Noch keine Vorteile hinzugefügt.</p>
           <Button onClick={addBenefit} className="mt-2">
@@ -142,6 +161,20 @@ const BenefitsEditor = ({ benefits, onChange }: BenefitsEditorProps) => {
       )}
     </div>
   );
-};
+}, (prevProps, nextProps) => {
+  // Custom comparison to prevent unnecessary re-renders
+  return (
+    prevProps.benefits.length === nextProps.benefits.length &&
+    prevProps.benefits.every((benefit, index) => {
+      const nextBenefit = nextProps.benefits[index];
+      return benefit.id === nextBenefit?.id &&
+             benefit.title === nextBenefit.title &&
+             benefit.description === nextBenefit.description &&
+             benefit.icon === nextBenefit.icon;
+    })
+  );
+});
+
+BenefitsEditor.displayName = 'BenefitsEditor';
 
 export default BenefitsEditor;

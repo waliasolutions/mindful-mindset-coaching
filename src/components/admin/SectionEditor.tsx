@@ -61,8 +61,8 @@ const SectionEditor = ({ section, onClose }: SectionEditorProps) => {
     defaultValues: initialContent
   });
 
-  // Memoize form values to prevent unnecessary updates
-  const formValues = form.watch();
+  // Get benefits specifically for the benefits editor to prevent unnecessary re-renders
+  const benefitsValue = form.watch('benefits');
 
   useEffect(() => {
     if (section && section.id) {
@@ -93,9 +93,9 @@ const SectionEditor = ({ section, onClose }: SectionEditorProps) => {
     }
   }, [section, form, handleClose]);
 
-  // Memoized benefits change handler to prevent recreation
+  // Stable benefits change handler with useCallback and dependencies
   const handleBenefitsChange = useCallback((benefits: any[]) => {
-    form.setValue('benefits', benefits, { shouldValidate: false });
+    form.setValue('benefits', benefits, { shouldValidate: false, shouldDirty: true });
   }, [form]);
 
   // If no section provided, don't render anything
@@ -226,7 +226,7 @@ const SectionEditor = ({ section, onClose }: SectionEditorProps) => {
             />
             <div className="mt-6">
               <BenefitsEditor
-                benefits={formValues.benefits || []}
+                benefits={benefitsValue || []}
                 onChange={handleBenefitsChange}
               />
             </div>

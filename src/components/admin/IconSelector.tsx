@@ -1,5 +1,5 @@
 
-import { useState, useCallback, useMemo } from 'react';
+import React, { useState, useCallback, useMemo, memo } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -7,6 +7,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Search, ChevronDown } from 'lucide-react';
 import * as LucideIcons from 'lucide-react';
+import { useDebounced } from '@/hooks/useDebounced';
 
 interface IconSelectorProps {
   value?: string;
@@ -14,9 +15,12 @@ interface IconSelectorProps {
   label?: string;
 }
 
-const IconSelector = ({ value, onChange, label = "Icon" }: IconSelectorProps) => {
+const IconSelector = memo(({ value, onChange, label = "Icon" }: IconSelectorProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
+  
+  // Debounce search to improve performance
+  const debouncedSearchTerm = useDebounced(searchTerm, 200);
 
   // Memoize available icons to prevent recalculation
   const availableIcons = useMemo(() => {
@@ -30,15 +34,21 @@ const IconSelector = ({ value, onChange, label = "Icon" }: IconSelectorProps) =>
   }, []);
 
   const filteredIcons = useMemo(() => {
+    if (!debouncedSearchTerm) return availableIcons;
     return availableIcons.filter(iconName =>
-      iconName.toLowerCase().includes(searchTerm.toLowerCase())
+      iconName.toLowerCase().includes(debouncedSearchTerm.toLowerCase())
     );
-  }, [availableIcons, searchTerm]);
+  }, [availableIcons, debouncedSearchTerm]);
 
   const renderIcon = useCallback((iconName: string) => {
-    const IconComponent = LucideIcons[iconName as keyof typeof LucideIcons] as any;
-    if (!IconComponent) return null;
-    return <IconComponent size={20} />;
+    try {
+      const IconComponent = LucideIcons[iconName as keyof typeof LucideIcons] as any;
+      if (!IconComponent) return null;
+      return <IconComponent size={20} />;
+    } catch (error) {
+      console.warn(`Failed to render icon: ${iconName}`, error);
+      return null;
+    }
   }, []);
 
   const getDisplayName = useCallback((iconName: string) => {
@@ -52,17 +62,24 @@ const IconSelector = ({ value, onChange, label = "Icon" }: IconSelectorProps) =>
   const handleIconSelect = useCallback((iconName: string) => {
     onChange(iconName);
     setIsOpen(false);
-    setSearchTerm(''); // Reset search when closing
+    setSearchTerm('');
   }, [onChange]);
 
   const handleSearchChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
   }, []);
 
+  const handleOpenChange = useCallback((open: boolean) => {
+    setIsOpen(open);
+    if (!open) {
+      setSearchTerm('');
+    }
+  }, []);
+
   return (
     <div className="space-y-2">
       <Label>{label}</Label>
-      <Popover open={isOpen} onOpenChange={setIsOpen}>
+      <Popover open={isOpen} onOpenChange={handleOpenChange}>
         <PopoverTrigger asChild>
           <Button
             variant="outline"
@@ -110,6 +127,10 @@ const IconSelector = ({ value, onChange, label = "Icon" }: IconSelectorProps) =>
       </Popover>
     </div>
   );
-};
+}, (prevProps, nextProps) => {
+  return prevProps.value === nextProps.value && prevProps.label === nextProps.label;
+});
+
+IconSelector.displayName = 'IconSelector';
 
 export default IconSelector;
