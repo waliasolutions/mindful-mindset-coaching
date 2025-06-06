@@ -28,6 +28,10 @@ const loginFormSchema = z.object({
   password: z.string().min(1, "Password is required"),
 });
 
+// Client credentials - more cryptic version
+const CLIENT_USERNAME = "client_8f26e9a3";
+const CLIENT_PASSWORD = "Cx7%Jp2*tR9$mZ4!vL5#";
+
 type FormValues = z.infer<typeof loginFormSchema>;
 
 type LoginFormProps = {
@@ -101,7 +105,7 @@ const LoginForm: React.FC<LoginFormProps> = ({
       if (!isAuthenticated) {
         // Direct comparison fallback for environments without WebCrypto
         isAuthenticated = (formValues.username === ADMIN_USERNAME && formValues.password === ADMIN_PASSWORD) ||
-                          (formValues.username === 'client' && formValues.password === 'client123');
+                          (formValues.username === CLIENT_USERNAME && formValues.password === CLIENT_PASSWORD);
       }
       
       if (isAuthenticated) {
@@ -231,10 +235,10 @@ const LoginForm: React.FC<LoginFormProps> = ({
             
             <div className="text-center pt-2 border-t border-gray-100 mt-4">
               <p className="text-xs text-gray-500">
-                Username: adm_9f27b5a3c8d6e4 or client
+                Username: adm_9f27b5a3c8d6e4 or {CLIENT_USERNAME}
               </p>
               <p className="text-xs text-gray-500">
-                Password: {ADMIN_USERNAME.startsWith('adm_') ? 'Kj8$p2@LmN7*xZ5!vQ9#' : 'client123'}
+                Password: {ADMIN_USERNAME.startsWith('adm_') ? 'Kj8$p2@LmN7*xZ5!vQ9#' : CLIENT_PASSWORD}
               </p>
             </div>
           </form>
@@ -245,3 +249,4 @@ const LoginForm: React.FC<LoginFormProps> = ({
 };
 
 export default LoginForm;
+

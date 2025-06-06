@@ -53,3 +53,4 @@ export const isAdminUser = (username: string): boolean => {
 export const getUserRole = (username: string): AdminRole => {
   return isAdminUser(username) ? 'admin' : 'client';
 };
+
