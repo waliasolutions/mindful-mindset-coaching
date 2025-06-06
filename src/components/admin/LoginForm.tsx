@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Lock } from 'lucide-react';
 import { toast } from '@/components/ui/use-toast';
@@ -232,15 +231,6 @@ const LoginForm: React.FC<LoginFormProps> = ({
                 Return to homepage
               </a>
             </div>
-            
-            <div className="text-center pt-2 border-t border-gray-100 mt-4">
-              <p className="text-xs text-gray-500">
-                Username: adm_9f27b5a3c8d6e4 or {CLIENT_USERNAME}
-              </p>
-              <p className="text-xs text-gray-500">
-                Password: {ADMIN_USERNAME.startsWith('adm_') ? 'Kj8$p2@LmN7*xZ5!vQ9#' : CLIENT_PASSWORD}
-              </p>
-            </div>
           </form>
         </Form>
       </div>
@@ -249,4 +239,3 @@ const LoginForm: React.FC<LoginFormProps> = ({
 };
 
 export default LoginForm;
-
