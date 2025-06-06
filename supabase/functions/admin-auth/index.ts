@@ -1,10 +1,31 @@
-
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+}
+
+// Helper function to parse IP address from headers
+function parseClientIP(req: Request): string {
+  const forwardedFor = req.headers.get('x-forwarded-for');
+  const realIP = req.headers.get('x-real-ip');
+  
+  // If x-forwarded-for exists, split by comma and take the first IP
+  if (forwardedFor) {
+    const firstIP = forwardedFor.split(',')[0].trim();
+    if (firstIP) {
+      return firstIP;
+    }
+  }
+  
+  // Fallback to x-real-ip
+  if (realIP) {
+    return realIP.trim();
+  }
+  
+  // Final fallback
+  return '127.0.0.1';
 }
 
 serve(async (req) => {
@@ -23,7 +44,7 @@ serve(async (req) => {
 
     if (action === 'login') {
       // Get client IP and user agent for security logging
-      const clientIP = req.headers.get('x-forwarded-for') || req.headers.get('x-real-ip') || '127.0.0.1'
+      const clientIP = parseClientIP(req);
       const userAgent = req.headers.get('user-agent') || ''
 
       console.log(`Login attempt for email: ${email} from IP: ${clientIP}`)
