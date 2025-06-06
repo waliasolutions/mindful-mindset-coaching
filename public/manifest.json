@@ -1,0 +1,66 @@
+
+{
+  "name": "Mindset Coaching mit Martina - Persönliche Entwicklung & Transformation",
+  "short_name": "Mindset Coach Martina",
+  "description": "Professionelles Mindset Coaching für persönliche Entwicklung und Transformation in Zürich",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#41773a",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "de-CH",
+  "dir": "ltr",
+  "categories": ["lifestyle", "health", "productivity"],
+  "icons": [
+    {
+      "src": "/lovable-uploads/abb0bc70-ae8b-43ce-867f-d7beece5a8a2.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/lovable-uploads/abb0bc70-ae8b-43ce-867f-d7beece5a8a2.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/lovable-uploads/eff14ab3-8502-4ea4-9c20-75fe9b485119.png",
+      "sizes": "1200x630",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Mindset Coaching Homepage"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Coaching Services",
+      "short_name": "Services",
+      "description": "View our coaching services",
+      "url": "/#services",
+      "icons": [
+        {
+          "src": "/lovable-uploads/abb0bc70-ae8b-43ce-867f-d7beece5a8a2.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Contact",
+      "short_name": "Kontakt",
+      "description": "Get in touch with Martina",
+      "url": "/#contact",
+      "icons": [
+        {
+          "src": "/lovable-uploads/abb0bc70-ae8b-43ce-867f-d7beece5a8a2.png",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false
+}

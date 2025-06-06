@@ -1,5 +1,6 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react';
+import { updateSitemapOnContentChange } from '../utils/dynamicSitemapGenerator';
 
 interface ContentOverrides {
   [sectionId: string]: {
@@ -113,7 +114,7 @@ export const useContentBridge = (sectionId: string, defaultContent: any) => {
   return content;
 };
 
-// Enhanced save function with better error handling and performance
+// Enhanced save function with better error handling, performance, and sitemap updates
 export const saveContentOverride = (sectionId: string, overrides: any) => {
   try {
     // Get existing overrides with better error handling
@@ -140,6 +141,9 @@ export const saveContentOverride = (sectionId: string, overrides: any) => {
     const mergedContent = { ...cached, ...overrides };
     contentCache.set(cacheKey, mergedContent);
     cacheExpiry.set(cacheKey, Date.now() + CACHE_DURATION);
+    
+    // Update sitemap when content changes
+    updateSitemapOnContentChange();
     
     // Dispatch custom event for same-tab communication with improved debouncing
     const eventKey = `localStorageUpdated_${sectionId}`;
