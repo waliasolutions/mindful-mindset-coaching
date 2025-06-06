@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { useAdminSession } from '@/hooks/useAdminSession';
 import AdminDashboard from './AdminDashboard';
-import GenericSectionEditor from './GenericSectionEditor';
+import SectionEditor from './SectionEditor';
 import SectionList from './SectionList';
 import SeoSettings from './SeoSettings';
 import MediaLibrary from './MediaLibrary';
@@ -45,7 +45,7 @@ const AdminSections: React.FC<AdminSectionsProps> = ({ activeTab, onTabChange })
         return <AdminDashboard onNavigate={onTabChange} userRole={userRole} />;
       case 'sections':
         return showSectionEditor ? (
-          <GenericSectionEditor 
+          <SectionEditor 
             section={selectedSection} 
             onClose={handleSectionEditorClose} 
           />

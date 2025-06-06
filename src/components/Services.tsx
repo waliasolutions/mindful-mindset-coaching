@@ -1,76 +1,127 @@
-
-import { Button } from '@/components/ui/button';
-import { useUnifiedContent } from '@/hooks/useUnifiedContent';
+import { useState, useEffect, useRef } from 'react';
+import { Check, Brain, Heart, Star, Lightbulb, Sun } from 'lucide-react';
+import { useContentBridge } from '@/hooks/useContentBridge';
 
 const Services = () => {
-  const { content } = useUnifiedContent('services', {
+  const [isVisible, setIsVisible] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
+
+  // Default content (original website content)
+  const defaultContent = {
     title: "Transformiere dein Leben durch Mindset Coaching",
     description: "In einem 1:1 Coaching löst du Blockaden, bringst Klarheit in dein Gedanken-Karussell und richtest deinen Fokus auf das, was wirklich zählt: Deine Träume, Deine Lebenszufriedenheit und Deine innere Ruhe und Gelassenheit.",
     buttonText: "Kontaktiere mich"
-  });
+  };
 
-  const benefits = [
-    {
-      title: "Blockaden lösen",
-      description: "Erkenne und überwinde mentale Barrieren, die dich davon abhalten, dein volles Potenzial zu entfalten."
-    },
-    {
-      title: "Klarheit gewinnen",
-      description: "Bringe Ordnung in dein Gedanken-Karussell und entwickle einen klaren Fokus auf deine Ziele."
-    },
-    {
-      title: "Selbstvertrauen stärken",
-      description: "Baue ein starkes Selbstbild auf und entwickle das Vertrauen in deine eigenen Fähigkeiten."
-    },
-    {
-      title: "Inneren Frieden finden",
-      description: "Komme in Harmonie mit dir selbst, deinen Mitmenschen und deiner Vergangenheit."
-    },
-    {
-      title: "Glaubenssätze transformieren",
-      description: "Wandle negative Überzeugungen in kraftvolle, unterstützende Glaubenssätze um."
-    },
-    {
-      title: "Lebensfreude steigern",
-      description: "Entdecke neue Wege zu mehr Zufriedenheit und Erfüllung in allen Lebensbereichen."
+  // Use content bridge to allow admin overrides
+  const content = useContentBridge('services', defaultContent);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        setIsVisible(true);
+        observer.unobserve(entry.target);
+      }
+    }, {
+      threshold: 0.1
+    });
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
     }
-  ];
+
+    return () => {
+      if (sectionRef.current) {
+        observer.unobserve(sectionRef.current);
+      }
+    };
+  }, []);
+
+  const benefits = [{
+    icon: <Brain size={20} className="text-white" aria-hidden="true" />,
+    title: "Persönliches Wachstum",
+    description: "Du möchtest ein erfülltes und selbstbestimmtes Leben führen"
+  }, {
+    icon: <Star size={20} className="text-white" aria-hidden="true" />,
+    title: "Potenzialentfaltung",
+    description: "Du willst endlich deine Ziele erreichen und dein volles Potenzial entfalten"
+  }, {
+    icon: <Heart size={20} className="text-white" aria-hidden="true" />,
+    title: "Selbstbewusstsein",
+    description: "Du möchtest mehr Selbstbewusstsein und Vertrauen aufbauen"
+  }, {
+    icon: <Lightbulb size={20} className="text-white" aria-hidden="true" />,
+    title: "Klarheit & Gelassenheit",
+    description: "Du sehnst dich nach mehr Klarheit, Gelassenheit und Lebensfreude"
+  }, {
+    icon: <Heart size={20} className="text-white" aria-hidden="true" />,
+    title: "Beziehungen",
+    description: "Du willst eine liebevolle Beziehung führen"
+  }, {
+    icon: <Sun size={20} className="text-white" aria-hidden="true" />,
+    title: "Gesunde Routinen",
+    description: "Du möchtest gesunde Routinen und Gewohnheiten entwickeln"
+  }];
 
   return (
-    <section id="services" className="py-20 bg-sage/5">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-forest mb-6">
+    <section 
+      id="services" 
+      ref={sectionRef} 
+      className="section-padding relative overflow-hidden bg-white"
+      aria-labelledby="services-heading"
+    >
+      {/* Background pattern */}
+      <div className="absolute inset-0 bg-gradient-to-b from-mint to-white/30 -z-10" aria-hidden="true"></div>
+      
+      {/* Decorative elements */}
+      <div className="absolute top-1/4 left-0 w-80 h-80 bg-forest/5 rounded-full blur-3xl -z-10" aria-hidden="true"></div>
+      <div className="absolute bottom-1/4 right-0 w-96 h-96 bg-moss/5 rounded-full blur-3xl -z-10" aria-hidden="true"></div>
+      
+      <div className="container mx-auto px-4 md:px-6">
+        <div className="max-w-4xl mx-auto mb-12 md:mb-16 reveal-element">
+          <div className="flex justify-center mb-2">
+            <span className="px-3 py-1 text-xs font-medium text-forest bg-highlight rounded-full">
+              Mindset Coaching
+            </span>
+          </div>
+          <h2 id="services-heading" className="text-3xl md:text-4xl font-serif font-semibold text-center mb-4 text-forest">
             {content.title}
           </h2>
-          <p className="text-lg text-forest/80 max-w-3xl mx-auto leading-relaxed">
+          <div className="w-16 h-1 bg-moss mx-auto mb-6 md:mb-8" aria-hidden="true"></div>
+          <p className="text-lg text-center text-foreground/80 max-w-2xl mx-auto">
             {content.description}
           </p>
         </div>
-        
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+
+        <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mb-12 md:mb-16" role="list">
           {benefits.map((benefit, index) => (
-            <div key={index} className="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow">
-              <h3 className="text-xl font-semibold text-forest mb-3">
-                {benefit.title}
-              </h3>
-              <p className="text-forest/70 leading-relaxed">
-                {benefit.description}
-              </p>
-            </div>
+            <li 
+              key={index} 
+              className={`reveal-element transition-all duration-500 ease-out delay-${index * 100}`}
+            >
+              <article className="bg-white shadow-lg p-5 md:p-6 h-full flex flex-col hover:shadow-xl transition-all duration-300 border-t-2 border-moss rounded-md">
+                <div className="w-10 h-10 rounded-full bg-forest flex items-center justify-center mb-4">
+                  {benefit.icon}
+                </div>
+                <h3 className="text-lg md:text-xl font-serif font-medium mb-2 md:mb-3 text-forest">
+                  {benefit.title}
+                </h3>
+                <p className="text-sm md:text-base text-foreground/80">
+                  {benefit.description}
+                </p>
+              </article>
+            </li>
           ))}
-        </div>
-        
-        <div className="text-center">
-          <Button 
-            size="lg" 
-            className="bg-sage hover:bg-sage/90 text-white font-semibold px-8 py-4"
-            asChild
+        </ul>
+
+        <div className="flex justify-center mt-6 md:mt-8">
+          <a 
+            href="#contact" 
+            className="inline-flex items-center justify-center px-5 md:px-6 py-2.5 md:py-3 bg-forest text-white hover:bg-forest/90 transition-colors shadow-lg font-medium rounded-md text-sm md:text-base"
+            aria-label="Kontaktiere mich für Mindset Coaching"
           >
-            <a href="#contact">
-              {content.buttonText}
-            </a>
-          </Button>
+            {content.buttonText}
+          </a>
         </div>
       </div>
     </section>
