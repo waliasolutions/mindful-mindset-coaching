@@ -1,5 +1,5 @@
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AdminLayout from '../components/admin/AdminLayout';
 import AdminSections from '../components/admin/AdminSections';
@@ -24,6 +24,7 @@ const Admin = () => {
     handleLogout
   } = useAdminSession();
   
+  const [activeTab, setActiveTab] = useState('dashboard');
   const navigate = useNavigate();
 
   // Initialize content synchronization when authenticated
@@ -59,8 +60,16 @@ const Admin = () => {
   }
 
   return (
-    <AdminLayout onLogout={handleLogout} userRole={userRole}>
-      <AdminSections />
+    <AdminLayout 
+      onLogout={handleLogout} 
+      userRole={userRole}
+      activeTab={activeTab}
+      onTabChange={setActiveTab}
+    >
+      <AdminSections 
+        activeTab={activeTab}
+        onTabChange={setActiveTab}
+      />
     </AdminLayout>
   );
 };

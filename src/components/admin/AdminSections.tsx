@@ -9,9 +9,13 @@ import PerformanceDashboard from './PerformanceDashboard';
 import GlobalSettings from './GlobalSettings';
 import BackupSection from './BackupSection';
 
-const AdminSections = () => {
+interface AdminSectionsProps {
+  activeTab: string;
+  onTabChange: (tab: string) => void;
+}
+
+const AdminSections: React.FC<AdminSectionsProps> = ({ activeTab, onTabChange }) => {
   const { userRole } = useAdminSession();
-  const [activeTab, setActiveTab] = useState<string>('dashboard');
   const [selectedSection, setSelectedSection] = useState<any>(null);
   const [showSectionEditor, setShowSectionEditor] = useState<boolean>(false);
 
@@ -28,7 +32,7 @@ const AdminSections = () => {
   const renderContent = () => {
     switch (activeTab) {
       case 'dashboard':
-        return <AdminDashboard onNavigate={setActiveTab} userRole={userRole} />;
+        return <AdminDashboard onNavigate={onTabChange} userRole={userRole} />;
       case 'sections':
         return showSectionEditor && selectedSection ? (
           <SectionEditor 
@@ -53,7 +57,7 @@ const AdminSections = () => {
       case 'backups':
         return <BackupSection userRole={userRole} />;
       default:
-        return <AdminDashboard onNavigate={setActiveTab} userRole={userRole} />;
+        return <AdminDashboard onNavigate={onTabChange} userRole={userRole} />;
     }
   };
 

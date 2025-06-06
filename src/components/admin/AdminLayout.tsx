@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { 
   LayoutDashboard, 
@@ -34,11 +35,17 @@ interface AdminLayoutProps {
   children: React.ReactNode;
   onLogout: () => void;
   userRole: AdminRole;
+  activeTab: string;
+  onTabChange: (tab: string) => void;
 }
 
-const AdminLayout: React.FC<AdminLayoutProps> = ({ children, onLogout, userRole }) => {
-  const [activeTab, setActiveTab] = useState('dashboard');
-
+const AdminLayout: React.FC<AdminLayoutProps> = ({ 
+  children, 
+  onLogout, 
+  userRole, 
+  activeTab, 
+  onTabChange 
+}) => {
   // Function to determine if a menu item should be shown based on role
   const isAdminOnly = (item: { adminOnly?: boolean }) => {
     return item.adminOnly ? userRole === 'admin' : true;
@@ -55,8 +62,8 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, onLogout, userRole 
     { id: 'performance', label: 'Leistung', icon: Activity, adminOnly: true },
   ];
 
-  const renderTab = (tabId: string) => {
-    setActiveTab(tabId);
+  const handleTabClick = (tabId: string) => {
+    onTabChange(tabId);
   };
   
   return (
@@ -86,7 +93,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, onLogout, userRole 
                       className={`w-full justify-start font-normal ${
                         activeTab === item.id ? "bg-gray-100 dark:bg-gray-800" : ""
                       }`}
-                      onClick={() => renderTab(item.id)}
+                      onClick={() => handleTabClick(item.id)}
                     >
                       <item.icon className="mr-2 h-4 w-4" />
                       <span>{item.label}</span>
@@ -125,6 +132,61 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, onLogout, userRole 
         </SheetContent>
       </Sheet>
 
+      {/* Desktop Sidebar */}
+      <div className="hidden md:flex w-64 bg-white dark:bg-gray-900 border-r">
+        <div className="flex flex-col w-full">
+          <div className="p-6 border-b">
+            <h2 className="text-lg font-semibold">Admin Panel</h2>
+            <p className="text-sm text-gray-600 dark:text-gray-400">
+              Manage your website content
+            </p>
+          </div>
+          
+          <ScrollArea className="flex-1 py-4">
+            <div className="px-3 space-y-1">
+              {navItems.map((item) =>
+                isAdminOnly(item) ? (
+                  <Button
+                    key={item.id}
+                    variant="ghost"
+                    className={`w-full justify-start font-normal ${
+                      activeTab === item.id ? "bg-gray-100 dark:bg-gray-800" : ""
+                    }`}
+                    onClick={() => handleTabClick(item.id)}
+                  >
+                    <item.icon className="mr-2 h-4 w-4" />
+                    <span>{item.label}</span>
+                  </Button>
+                ) : null
+              )}
+            </div>
+          </ScrollArea>
+
+          <div className="p-4 border-t">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="gap-2 w-full">
+                  <Avatar className="h-8 w-8">
+                    <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+                    <AvatarFallback>AU</AvatarFallback>
+                  </Avatar>
+                  <span className="text-sm">
+                    Admin User
+                  </span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={onLogout}>
+                  Log out
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+        </div>
+      </div>
+
       {/* Main Content */}
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Header */}
@@ -142,7 +204,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, onLogout, userRole 
                 <Button variant="ghost" className="gap-2">
                   <Avatar className="h-8 w-8">
                     <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-                    <AvatarFallback>SC</AvatarFallback>
+                    <AvatarFallback>AU</AvatarFallback>
                   </Avatar>
                   <span className="text-sm">
                     Admin User
@@ -152,9 +214,6 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, onLogout, userRole 
               <DropdownMenuContent align="end">
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>
-                  Settings
-                </DropdownMenuItem>
                 <DropdownMenuItem onClick={onLogout}>
                   Log out
                 </DropdownMenuItem>
