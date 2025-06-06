@@ -4,6 +4,7 @@ import Navbar from '../components/Navbar';
 import Services from '../components/Services';
 import Footer from '../components/Footer';
 import Breadcrumbs from '../components/Breadcrumbs';
+import ContentErrorBoundary from '../components/ContentErrorBoundary';
 import { useState } from 'react';
 import Terms from '../components/Terms';
 import LegalInfo from '../components/LegalInfo';
@@ -41,7 +42,9 @@ const ServicesPage = () => {
           <div className="container mx-auto px-4">
             <Breadcrumbs />
           </div>
-          <Services />
+          <ContentErrorBoundary sectionName="Services">
+            <Services />
+          </ContentErrorBoundary>
         </main>
         <Footer 
           onTermsClick={openTerms}
