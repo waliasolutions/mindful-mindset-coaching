@@ -252,13 +252,17 @@ const UserManagement: React.FC = () => {
                       {user.is_active ? 'Active' : 'Inactive'}
                     </Badge>
                   </TableCell>
-                  <TableCell className="flex items-center gap-2">
-                    <Calendar className="h-4 w-4 text-gray-400" />
-                    {formatDate(user.created_at)}
+                  <TableCell>
+                    <div className="flex items-center gap-2">
+                      <Calendar className="h-4 w-4 text-gray-400" />
+                      {formatDate(user.created_at)}
+                    </div>
                   </TableCell>
-                  <TableCell className="flex items-center gap-2">
-                    <Clock className="h-4 w-4 text-gray-400" />
-                    {formatDate(user.last_login_at)}
+                  <TableCell>
+                    <div className="flex items-center gap-2">
+                      <Clock className="h-4 w-4 text-gray-400" />
+                      {formatDate(user.last_login_at)}
+                    </div>
                   </TableCell>
                   <TableCell>
                     <Button
