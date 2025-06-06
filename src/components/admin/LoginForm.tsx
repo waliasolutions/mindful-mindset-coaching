@@ -1,4 +1,5 @@
-import React from 'react';
+
+import React, { useState } from 'react';
 import { Lock } from 'lucide-react';
 import { toast } from '@/components/ui/use-toast';
 import { Input } from '@/components/ui/input';
@@ -15,7 +16,10 @@ import {
   ADMIN_PASSWORD,
   MAX_LOGIN_ATTEMPTS,
   LOCKOUT_DURATION,
-  SESSION_TIMEOUT
+  SESSION_TIMEOUT,
+  AdminRole,
+  dispatchStorageEvent,
+  getUserRole
 } from '@/utils/adminAuth';
 
 // Define the credential validator schema
@@ -23,6 +27,8 @@ const loginFormSchema = z.object({
   username: z.string().min(1, "Username is required"),
   password: z.string().min(1, "Password is required"),
 });
+
+type FormValues = z.infer<typeof loginFormSchema>;
 
 type LoginFormProps = {
   loginAttempts: number;
@@ -41,7 +47,7 @@ const LoginForm: React.FC<LoginFormProps> = ({
   setIsAuthenticated,
   setUserRole 
 }) => {
-  const form = useForm({
+  const form = useForm<FormValues>({
     resolver: zodResolver(loginFormSchema),
     defaultValues: {
       username: "",
@@ -49,9 +55,7 @@ const LoginForm: React.FC<LoginFormProps> = ({
     },
   });
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
+  const handleFormSubmit = async (formValues: FormValues) => {
     // Check if user is locked out
     if (lockedUntil && Date.now() < lockedUntil) {
       const minutesLeft = Math.ceil((lockedUntil - Date.now()) / 1000 / 60);
@@ -66,12 +70,13 @@ const LoginForm: React.FC<LoginFormProps> = ({
     try {
       // First check if we need to use the fallback authentication
       let isAuthenticated = false;
+      let useFallback = false;
       
       // Try using WebCrypto first
       try {
         // Hash the provided credentials for secure comparison
-        const usernameHash = await hashString(data.username);
-        const passwordHash = await hashString(data.password);
+        const usernameHash = await hashString(formValues.username);
+        const passwordHash = await hashString(formValues.password);
         
         // Check if the credentials match
         const isUsernameValid = usernameHash === ADMIN_USERNAME_HASH;
@@ -82,26 +87,37 @@ const LoginForm: React.FC<LoginFormProps> = ({
             passwordHash.startsWith("error_") || passwordHash.startsWith("fallback_")) {
           // WebCrypto failed, log and continue to fallback
           console.warn("WebCrypto authentication failed, using fallback method");
+          useFallback = true;
         } else {
           isAuthenticated = isUsernameValid && isPasswordValid;
         }
       } catch (error) {
         // WebCrypto failed completely, continue to fallback
         console.error("WebCrypto authentication error:", error);
+        useFallback = true;
       }
 
       // If WebCrypto authentication didn't work, try direct comparison (fallback)
       if (!isAuthenticated) {
         // Direct comparison fallback for environments without WebCrypto
-        isAuthenticated = (data.username === ADMIN_USERNAME && data.password === ADMIN_PASSWORD);
+        isAuthenticated = (formValues.username === ADMIN_USERNAME && formValues.password === ADMIN_PASSWORD) ||
+                          (formValues.username === 'client' && formValues.password === 'client123');
       }
       
       if (isAuthenticated) {
+        // Determine and set user role
+        const role = getUserRole(formValues.username);
+        setUserRole(role);
+
         // Set expiration time (30 minutes from now)
         const expires = Date.now() + SESSION_TIMEOUT;
         
-        // Save authentication state with expiration
-        localStorage.setItem('adminAuthData', JSON.stringify({ authenticated: true, expires }));
+        // Save authentication state with expiration and username for role determination
+        localStorage.setItem('adminAuthData', JSON.stringify({ 
+          authenticated: true, 
+          expires,
+          username: formValues.username 
+        }));
         
         // Reset login attempts
         setLoginAttempts(0);
@@ -163,7 +179,7 @@ const LoginForm: React.FC<LoginFormProps> = ({
         </div>
         
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
+          <form onSubmit={form.handleSubmit(handleFormSubmit)} className="space-y-4">
             <FormField
               control={form.control}
               name="username"
@@ -215,10 +231,10 @@ const LoginForm: React.FC<LoginFormProps> = ({
             
             <div className="text-center pt-2 border-t border-gray-100 mt-4">
               <p className="text-xs text-gray-500">
-                Username: adm_9f27b5a3c8d6e4
+                Username: adm_9f27b5a3c8d6e4 or client
               </p>
               <p className="text-xs text-gray-500">
-                Password: Kj8$p2@LmN7*xZ5!vQ9#
+                Password: {ADMIN_USERNAME.startsWith('adm_') ? 'Kj8$p2@LmN7*xZ5!vQ9#' : 'client123'}
               </p>
             </div>
           </form>
