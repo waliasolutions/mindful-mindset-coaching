@@ -23,15 +23,6 @@
   }
 }
 
-/* Optimize font loading */
-@font-face {
-  font-family: 'Inter';
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-  src: url('https://fonts.gstatic.com/s/inter/v12/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiA.woff2') format('woff2');
-}
-
 /* Reduce motion for better performance on low-end devices */
 @media (prefers-reduced-motion: reduce) {
   *,
