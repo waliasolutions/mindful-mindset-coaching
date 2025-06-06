@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -18,6 +19,7 @@ interface MediaItem {
   created_at: string;
   is_website_image?: boolean;
   usage_description?: string;
+  is_accessible?: boolean;
 }
 
 interface MediaLibraryProps {
@@ -43,7 +45,7 @@ const websiteImages = [
     fileName: 'organize-my-space-logo.png'
   },
   {
-    url: '/lovable-uploads/abb0bc70-ae8b-43ce-867f-d7beece5a8a2.png',
+    url: '/lovable-uploads/08e0eec6-35ce-426a-86e7-bc5626f9f9d1.png',
     usage: 'Website Favicon',
     fileName: 'favicon.png'
   },
@@ -58,6 +60,19 @@ const websiteImages = [
     fileName: 'contact-image.png'
   }
 ];
+
+// Helper function to check if an image URL is accessible
+const checkImageAccessibility = (url: string): Promise<boolean> => {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.onload = () => resolve(true);
+    img.onerror = () => resolve(false);
+    img.src = url;
+    
+    // Set a timeout to avoid hanging
+    setTimeout(() => resolve(false), 5000);
+  });
+};
 
 const MediaLibrary = ({ onSelectImage, selectedImage }: MediaLibraryProps) => {
   const [images, setImages] = useState<MediaItem[]>([]);
@@ -97,7 +112,10 @@ const MediaLibrary = ({ onSelectImage, selectedImage }: MediaLibraryProps) => {
 
       // Add database images first
       if (dbImages) {
-        combinedImages.push(...dbImages);
+        combinedImages.push(...dbImages.map(img => ({
+          ...img,
+          is_accessible: true // Assume db images are accessible initially
+        })));
       }
 
       // Add storage files that aren't in the database
@@ -114,23 +132,33 @@ const MediaLibrary = ({ onSelectImage, selectedImage }: MediaLibraryProps) => {
               file_name: file.name,
               file_size: file.metadata?.size,
               file_type: file.metadata?.mimetype,
-              created_at: file.created_at || new Date().toISOString()
+              created_at: file.created_at || new Date().toISOString(),
+              is_accessible: true // Assume storage files are accessible initially
             });
           }
         }
       }
 
-      // Add website images to the list
-      const websiteImageItems: MediaItem[] = websiteImages.map((img, index) => ({
-        id: `website-${index}`,
-        image_url: img.url,
-        file_name: img.fileName,
-        created_at: new Date().toISOString(),
-        is_website_image: true,
-        usage_description: img.usage
-      }));
+      // Check accessibility of website images and only include accessible ones
+      const websiteImageItems: MediaItem[] = [];
+      for (const [index, img] of websiteImages.entries()) {
+        const isAccessible = await checkImageAccessibility(img.url);
+        if (isAccessible) {
+          websiteImageItems.push({
+            id: `website-${index}`,
+            image_url: img.url,
+            file_name: img.fileName,
+            created_at: new Date().toISOString(),
+            is_website_image: true,
+            usage_description: img.usage,
+            is_accessible: true
+          });
+        } else {
+          console.warn(`Website image not accessible: ${img.url}`);
+        }
+      }
 
-      // Combine all images
+      // Combine all accessible images
       const allImages = [...websiteImageItems, ...combinedImages];
       setImages(allImages);
     } catch (error) {
@@ -237,7 +265,9 @@ const MediaLibrary = ({ onSelectImage, selectedImage }: MediaLibraryProps) => {
 
   const renderImageGrid = (imagesList: MediaItem[], title: string, showUpload: boolean = false) => (
     <div className="mb-8">
-      <h3 className="text-lg font-semibold mb-4">{title}</h3>
+      <h3 className="text-lg font-semibold mb-4">
+        {title} ({imagesList.length})
+      </h3>
       
       {showUpload && (
         <div className="mb-4">
@@ -354,7 +384,7 @@ const MediaLibrary = ({ onSelectImage, selectedImage }: MediaLibraryProps) => {
     );
   }
 
-  const websiteImagesList = images.filter(img => img.is_website_image);
+  const websiteImagesList = images.filter(img => img.is_website_image && img.is_accessible !== false);
   const uploadedImagesList = images.filter(img => !img.is_website_image);
 
   return (
