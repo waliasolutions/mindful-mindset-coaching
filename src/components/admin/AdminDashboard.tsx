@@ -1,4 +1,5 @@
-import { useState } from 'react';
+
+import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -25,6 +26,30 @@ interface ActivityItem {
   time: string;
 }
 
+const ACTIVITIES_STORAGE_KEY = 'adminDashboardActivities';
+
+// Default activities for new installations
+const defaultActivities: ActivityItem[] = [
+  {
+    id: '1',
+    type: 'blue',
+    text: 'Hero-Bereich aktualisiert',
+    time: 'vor 2 Stunden'
+  },
+  {
+    id: '2',
+    type: 'green',
+    text: 'Neues Bild hochgeladen',
+    time: 'vor 1 Tag'
+  },
+  {
+    id: '3',
+    type: 'purple',
+    text: 'SEO-Einstellungen optimiert',
+    time: 'vor 3 Tagen'
+  }
+];
+
 const AdminDashboard = ({ onNavigate, userRole }: AdminDashboardProps) => {
   const [stats] = useState<DashboardStats>({
     totalSections: 5,
@@ -33,27 +58,27 @@ const AdminDashboard = ({ onNavigate, userRole }: AdminDashboardProps) => {
     websiteViews: 0
   });
 
-  // Convert hardcoded activities to state
-  const [activities, setActivities] = useState<ActivityItem[]>([
-    {
-      id: '1',
-      type: 'blue',
-      text: 'Hero-Bereich aktualisiert',
-      time: 'vor 2 Stunden'
-    },
-    {
-      id: '2',
-      type: 'green',
-      text: 'Neues Bild hochgeladen',
-      time: 'vor 1 Tag'
-    },
-    {
-      id: '3',
-      type: 'purple',
-      text: 'SEO-Einstellungen optimiert',
-      time: 'vor 3 Tagen'
+  // Initialize activities from localStorage or use defaults
+  const [activities, setActivities] = useState<ActivityItem[]>(() => {
+    try {
+      const stored = localStorage.getItem(ACTIVITIES_STORAGE_KEY);
+      if (stored) {
+        return JSON.parse(stored);
+      }
+    } catch (error) {
+      console.error('Error loading activities from localStorage:', error);
     }
-  ]);
+    return defaultActivities;
+  });
+
+  // Save activities to localStorage whenever they change
+  useEffect(() => {
+    try {
+      localStorage.setItem(ACTIVITIES_STORAGE_KEY, JSON.stringify(activities));
+    } catch (error) {
+      console.error('Error saving activities to localStorage:', error);
+    }
+  }, [activities]);
 
   const isAdmin = userRole === 'admin';
 
