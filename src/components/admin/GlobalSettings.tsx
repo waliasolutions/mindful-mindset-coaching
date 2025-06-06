@@ -1,223 +1,17 @@
 
-import { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { toast } from 'sonner';
-import ImageSelector from './ImageSelector';
+import { GlobalSettingsProvider, useGlobalSettingsContext } from './settings/GlobalSettingsProvider';
+import { GeneralTab } from './settings/GeneralTab';
+import { BrandingTab } from './settings/BrandingTab';
+import { NavigationTab } from './settings/NavigationTab';
+import { FooterTab } from './settings/FooterTab';
 
-// Import types and default settings
-import { GlobalSettings as GlobalSettingsType, defaultSettings } from './settings/types';
-
-// Import section components
-import { GeneralSection } from './settings/GeneralSection';
-import { NavigationSection } from './settings/NavigationSection';
-import { FooterSection } from './settings/FooterSection';
-
-// Import content extractor
-import { extractNavigationContent } from '@/utils/contentExtractor';
-
-const GlobalSettings = () => {
-  const [settings, setSettings] = useState<GlobalSettingsType>(() => {
-    // Initialize with current navigation content
-    const currentNav = extractNavigationContent();
-    return {
-      ...defaultSettings,
-      navigation: currentNav
-    };
-  });
+const GlobalSettingsContent: React.FC = () => {
   const [activeTab, setActiveTab] = useState('general');
-  const [logoUrl, setLogoUrl] = useState('');
-
-  useEffect(() => {
-    console.log('GlobalSettings: Loading saved settings...');
-    const savedSettings = localStorage.getItem('globalSettings');
-    if (savedSettings) {
-      try {
-        const parsedSettings = JSON.parse(savedSettings);
-        console.log('GlobalSettings: Loaded settings:', parsedSettings);
-        // Always use current navigation content to ensure sync
-        const currentNav = extractNavigationContent();
-        setSettings({
-          ...parsedSettings,
-          navigation: currentNav
-        });
-      } catch (error) {
-        console.error('Error parsing global settings:', error);
-      }
-    }
-    
-    // Load logo URL
-    const savedLogo = localStorage.getItem('websiteLogo');
-    if (savedLogo) {
-      setLogoUrl(savedLogo);
-    }
-  }, []);
-
-  const handleGeneralChange = (field: string, value: string) => {
-    console.log('GlobalSettings: General field changed:', field, value);
-    setSettings({
-      ...settings,
-      [field]: value
-    });
-  };
-
-  const handleNavigationChange = (id: string, field: string, value: string) => {
-    const updatedNavigation = settings.navigation.map(item => 
-      item.id === id ? { ...item, [field]: value } : item
-    );
-    
-    setSettings({
-      ...settings,
-      navigation: updatedNavigation
-    });
-  };
-
-  const addNavigationItem = () => {
-    const newId = `nav-${Date.now()}`;
-    setSettings({
-      ...settings,
-      navigation: [
-        ...settings.navigation,
-        { id: newId, label: 'New Item', url: '#' }
-      ]
-    });
-  };
-
-  const removeNavigationItem = (id: string) => {
-    setSettings({
-      ...settings,
-      navigation: settings.navigation.filter(item => item.id !== id)
-    });
-  };
-
-  const handleFooterChange = (field: string, value: string) => {
-    setSettings({
-      ...settings,
-      footer: {
-        ...settings.footer,
-        [field]: value
-      }
-    });
-  };
-
-  const handleSocialLinkChange = (id: string, field: string, value: string) => {
-    const updatedSocialLinks = settings.footer.socialLinks.map(link => 
-      link.id === id ? { ...link, [field]: value } : link
-    );
-    
-    setSettings({
-      ...settings,
-      footer: {
-        ...settings.footer,
-        socialLinks: updatedSocialLinks
-      }
-    });
-  };
-
-  const addSocialLink = () => {
-    const newId = `social-${Date.now()}`;
-    setSettings({
-      ...settings,
-      footer: {
-        ...settings.footer,
-        socialLinks: [
-          ...settings.footer.socialLinks,
-          { id: newId, platform: 'New Platform', url: '#', icon: 'Link' }
-        ]
-      }
-    });
-  };
-
-  const removeSocialLink = (id: string) => {
-    setSettings({
-      ...settings,
-      footer: {
-        ...settings.footer,
-        socialLinks: settings.footer.socialLinks.filter(link => link.id !== id)
-      }
-    });
-  };
-
-  const handleLegalLinkChange = (id: string, field: string, value: string) => {
-    const updatedLegalLinks = settings.footer.legalLinks.map(link => 
-      link.id === id ? { ...link, [field]: value } : link
-    );
-    
-    setSettings({
-      ...settings,
-      footer: {
-        ...settings.footer,
-        legalLinks: updatedLegalLinks
-      }
-    });
-  };
-
-  const addLegalLink = () => {
-    const newId = `legal-${Date.now()}`;
-    setSettings({
-      ...settings,
-      footer: {
-        ...settings.footer,
-        legalLinks: [
-          ...settings.footer.legalLinks,
-          { id: newId, label: 'New Legal Link', url: '#' }
-        ]
-      }
-    });
-  };
-
-  const removeLegalLink = (id: string) => {
-    setSettings({
-      ...settings,
-      footer: {
-        ...settings.footer,
-        legalLinks: settings.footer.legalLinks.filter(link => link.id !== id)
-      }
-    });
-  };
-
-  const handleLogoChange = (newLogoUrl: string) => {
-    setLogoUrl(newLogoUrl);
-    localStorage.setItem('websiteLogo', newLogoUrl);
-    
-    // Dispatch storage event for logo change
-    window.dispatchEvent(new CustomEvent('localStorageUpdated', { 
-      detail: { key: 'websiteLogo', newValue: newLogoUrl }
-    }));
-    
-    toast.success('Logo updated successfully');
-  };
-
-  const handleSave = () => {
-    console.log('GlobalSettings: Saving settings:', settings);
-    localStorage.setItem('globalSettings', JSON.stringify(settings));
-    
-    dispatchStorageEvent('globalSettings');
-    
-    toast.success('Global settings saved successfully');
-  };
-
-  const handleReset = () => {
-    const currentNav = extractNavigationContent();
-    const resetSettings = {
-      ...defaultSettings,
-      navigation: currentNav
-    };
-    setSettings(resetSettings);
-    localStorage.removeItem('globalSettings');
-    
-    dispatchStorageEvent('globalSettings');
-    
-    toast.success('Settings reset to default');
-  };
-
-  const dispatchStorageEvent = (key: string) => {
-    console.log('GlobalSettings: Dispatching storage event for key:', key);
-    window.dispatchEvent(new CustomEvent('localStorageUpdated', { 
-      detail: { key, newValue: JSON.stringify(settings) }
-    }));
-  };
+  const { handleSave, handleReset } = useGlobalSettingsContext();
 
   return (
     <Card>
@@ -237,53 +31,19 @@ const GlobalSettings = () => {
           </TabsList>
           
           <TabsContent value="general" className="space-y-4">
-            <GeneralSection 
-              settings={settings}
-              onGeneralChange={handleGeneralChange}
-            />
+            <GeneralTab />
           </TabsContent>
           
           <TabsContent value="branding" className="space-y-4">
-            <div className="space-y-4">
-              <h3 className="text-lg font-semibold">Logo & Branding</h3>
-              <ImageSelector
-                value={logoUrl}
-                onChange={handleLogoChange}
-                label="Website Logo"
-              />
-              {logoUrl && (
-                <div className="p-4 border rounded-lg bg-gray-50">
-                  <p className="text-sm text-gray-600 mb-2">Current Logo Preview:</p>
-                  <img 
-                    src={logoUrl} 
-                    alt="Website Logo" 
-                    className="max-h-16 object-contain"
-                  />
-                </div>
-              )}
-            </div>
+            <BrandingTab />
           </TabsContent>
           
           <TabsContent value="navigation" className="space-y-4">
-            <NavigationSection 
-              navigation={settings.navigation}
-              onNavigationChange={handleNavigationChange}
-              onAddItem={addNavigationItem}
-              onRemoveItem={removeNavigationItem}
-            />
+            <NavigationTab />
           </TabsContent>
           
           <TabsContent value="footer" className="space-y-4">
-            <FooterSection 
-              footer={settings.footer}
-              onFooterChange={handleFooterChange}
-              onSocialLinkChange={handleSocialLinkChange}
-              onAddSocialLink={addSocialLink}
-              onRemoveSocialLink={removeSocialLink}
-              onLegalLinkChange={handleLegalLinkChange}
-              onAddLegalLink={addLegalLink}
-              onRemoveLegalLink={removeLegalLink}
-            />
+            <FooterTab />
           </TabsContent>
         </Tabs>
         
@@ -297,6 +57,14 @@ const GlobalSettings = () => {
         </div>
       </CardContent>
     </Card>
+  );
+};
+
+const GlobalSettings: React.FC = () => {
+  return (
+    <GlobalSettingsProvider>
+      <GlobalSettingsContent />
+    </GlobalSettingsProvider>
   );
 };
 
