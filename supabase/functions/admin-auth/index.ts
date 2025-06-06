@@ -135,15 +135,16 @@ serve(async (req) => {
         )
       }
 
-      // Register new user
+      // Register new user using raw SQL to properly hash password
       const { data, error } = await supabase
-        .from('admin_users')
-        .insert({
-          email: newUserEmail,
-          password_hash: `crypt('${newUserPassword}', gen_salt('bf'))`,
-          role: newUserRole || 'client'
+        .rpc('sql', {
+          query: `
+            INSERT INTO admin_users (email, password_hash, role) 
+            VALUES ($1, crypt($2, gen_salt('bf')), $3) 
+            RETURNING id, email, role, is_active, created_at
+          `,
+          params: [newUserEmail, newUserPassword, newUserRole || 'client']
         })
-        .select()
 
       if (error) {
         console.error('User registration error:', error)
