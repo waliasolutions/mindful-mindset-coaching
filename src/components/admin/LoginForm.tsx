@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Lock } from 'lucide-react';
 import { toast } from '@/components/ui/use-toast';
@@ -27,10 +26,11 @@ const loginFormSchema = z.object({
 
 type LoginFormProps = {
   loginAttempts: number;
-  setLoginAttempts: React.Dispatch<React.SetStateAction<number>>;
+  setLoginAttempts: (attempts: number) => void;
   lockedUntil: number | null;
-  setLockedUntil: React.Dispatch<React.SetStateAction<number | null>>;
-  setIsAuthenticated: React.Dispatch<React.SetStateAction<boolean>>;
+  setLockedUntil: (until: number | null) => void;
+  setIsAuthenticated: (isAuthenticated: boolean) => void;
+  setUserRole: (role: AdminRole) => void;
 };
 
 const LoginForm: React.FC<LoginFormProps> = ({ 
@@ -38,7 +38,8 @@ const LoginForm: React.FC<LoginFormProps> = ({
   setLoginAttempts, 
   lockedUntil, 
   setLockedUntil, 
-  setIsAuthenticated 
+  setIsAuthenticated,
+  setUserRole 
 }) => {
   const form = useForm({
     resolver: zodResolver(loginFormSchema),
@@ -48,7 +49,9 @@ const LoginForm: React.FC<LoginFormProps> = ({
     },
   });
 
-  const handleLogin = async (data: z.infer<typeof loginFormSchema>) => {
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
     // Check if user is locked out
     if (lockedUntil && Date.now() < lockedUntil) {
       const minutesLeft = Math.ceil((lockedUntil - Date.now()) / 1000 / 60);
@@ -160,7 +163,7 @@ const LoginForm: React.FC<LoginFormProps> = ({
         </div>
         
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(handleLogin)} className="space-y-4">
+          <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
             <FormField
               control={form.control}
               name="username"

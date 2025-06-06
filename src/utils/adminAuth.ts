@@ -40,3 +40,16 @@ export const dispatchStorageEvent = (key: string, newValue?: string) => {
     detail: { key, newValue }
   }));
 };
+
+// Role types for the admin portal
+export type AdminRole = 'admin' | 'client';
+
+// Check if a user is an admin based on username
+export const isAdminUser = (username: string): boolean => {
+  return username.startsWith('adm_');
+};
+
+// Determine role based on username
+export const getUserRole = (username: string): AdminRole => {
+  return isAdminUser(username) ? 'admin' : 'client';
+};

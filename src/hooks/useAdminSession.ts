@@ -1,7 +1,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { toast } from '@/components/ui/use-toast';
-import { SESSION_TIMEOUT } from '@/utils/adminAuth';
+import { SESSION_TIMEOUT, AdminRole, getUserRole } from '@/utils/adminAuth';
 
 export const useAdminSession = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -10,6 +10,7 @@ export const useAdminSession = () => {
   const [lockedUntil, setLockedUntil] = useState<number | null>(null);
   const [lastActivity, setLastActivity] = useState(Date.now());
   const [previewLoaded, setPreviewLoaded] = useState(false);
+  const [userRole, setUserRole] = useState<AdminRole>('client');
 
   // Update last activity timestamp
   const updateLastActivity = useCallback(() => {
@@ -82,6 +83,10 @@ export const useAdminSession = () => {
           // Check if the auth data has expired
           if (authData.expires && authData.expires > now) {
             setIsAuthenticated(true);
+            // Set the user role if available in stored data
+            if (authData.username) {
+              setUserRole(getUserRole(authData.username));
+            }
           } else {
             // Auth data has expired, remove it
             localStorage.removeItem('adminAuthData');
@@ -145,6 +150,8 @@ export const useAdminSession = () => {
     lastActivity,
     previewLoaded,
     setPreviewLoaded,
+    userRole,
+    setUserRole,
     handleLogout
   };
 };

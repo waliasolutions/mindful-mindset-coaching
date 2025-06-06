@@ -19,6 +19,8 @@ const Admin = () => {
     setLockedUntil,
     previewLoaded,
     setPreviewLoaded,
+    userRole,
+    setUserRole,
     handleLogout
   } = useAdminSession();
   
@@ -51,12 +53,13 @@ const Admin = () => {
         lockedUntil={lockedUntil}
         setLockedUntil={setLockedUntil}
         setIsAuthenticated={setIsAuthenticated}
+        setUserRole={setUserRole}
       />
     );
   }
 
   return (
-    <AdminLayout onLogout={handleLogout}>
+    <AdminLayout onLogout={handleLogout} userRole={userRole}>
       <AdminSections />
     </AdminLayout>
   );

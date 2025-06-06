@@ -10,13 +10,25 @@ import AdminDashboard from './AdminDashboard';
 import PerformanceDashboard from './PerformanceDashboard';
 import AdminNotificationCenter from './AdminNotificationCenter';
 import AdminErrorBoundary from './AdminErrorBoundary';
-import { useNavigate } from 'react-router-dom';
+import { AdminRole } from '@/utils/adminAuth';
 
-const AdminLayout = ({ children, onLogout }: { children: React.ReactNode; onLogout: () => void }) => {
+interface AdminLayoutProps {
+  children: React.ReactNode;
+  onLogout: () => void;
+  userRole: AdminRole;
+}
+
+const AdminLayout = ({ children, onLogout, userRole }: AdminLayoutProps) => {
   const [activeTab, setActiveTab] = useState('dashboard');
+  
+  const isAdmin = userRole === 'admin';
   
   // Function to handle navigation from dashboard quick actions
   const handleNavigate = (tab: string) => {
+    // Prevent clients from accessing the performance tab
+    if (tab === 'performance' && !isAdmin) {
+      return;
+    }
     setActiveTab(tab);
   };
   
@@ -24,7 +36,7 @@ const AdminLayout = ({ children, onLogout }: { children: React.ReactNode; onLogo
   const renderActivePanel = () => {
     switch (activeTab) {
       case 'dashboard':
-        return <AdminDashboard onNavigate={handleNavigate} />;
+        return <AdminDashboard onNavigate={handleNavigate} userRole={userRole} />;
       case 'media':
         return <MediaLibrary />;
       case 'theme':
@@ -34,7 +46,8 @@ const AdminLayout = ({ children, onLogout }: { children: React.ReactNode; onLogo
       case 'settings':
         return <GlobalSettings />;
       case 'performance':
-        return <PerformanceDashboard />;
+        // Only show performance dashboard to admins
+        return isAdmin ? <PerformanceDashboard /> : <AdminDashboard onNavigate={handleNavigate} userRole={userRole} />;
       default:
         return children;
     }
@@ -112,14 +125,17 @@ const AdminLayout = ({ children, onLogout }: { children: React.ReactNode; onLogo
                     <Search className="mr-3 h-4 w-4" />
                     SEO & Analyse
                   </Button>
-                  <Button
-                    variant={activeTab === 'performance' ? 'default' : 'ghost'} 
-                    className="w-full justify-start text-left"
-                    onClick={() => setActiveTab('performance')}
-                  >
-                    <BarChart3 className="mr-3 h-4 w-4" />
-                    Leistung
-                  </Button>
+                  {/* Only show the Performance button to admins */}
+                  {isAdmin && (
+                    <Button
+                      variant={activeTab === 'performance' ? 'default' : 'ghost'} 
+                      className="w-full justify-start text-left"
+                      onClick={() => setActiveTab('performance')}
+                    >
+                      <BarChart3 className="mr-3 h-4 w-4" />
+                      Leistung
+                    </Button>
+                  )}
                   <Button
                     variant={activeTab === 'settings' ? 'default' : 'ghost'} 
                     className="w-full justify-start text-left"

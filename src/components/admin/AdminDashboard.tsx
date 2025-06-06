@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Activity, Users, FileText, Image, Globe, TrendingUp } from 'lucide-react';
+import { AdminRole } from '@/utils/adminAuth';
 
 interface DashboardStats {
   totalSections: number;
@@ -14,9 +15,10 @@ interface DashboardStats {
 
 interface AdminDashboardProps {
   onNavigate?: (tab: string) => void;
+  userRole: AdminRole;
 }
 
-const AdminDashboard = ({ onNavigate }: AdminDashboardProps) => {
+const AdminDashboard = ({ onNavigate, userRole }: AdminDashboardProps) => {
   const [stats] = useState<DashboardStats>({
     totalSections: 5,
     imagesUploaded: 8,
@@ -24,11 +26,14 @@ const AdminDashboard = ({ onNavigate }: AdminDashboardProps) => {
     websiteViews: 0
   });
 
+  const isAdmin = userRole === 'admin';
+
+  // Filter quick actions based on role
   const quickActions = [
     { icon: FileText, label: 'Inhalte bearbeiten', action: 'sections' },
     { icon: Image, label: 'Medienbibliothek', action: 'media' },
     { icon: Globe, label: 'SEO Einstellungen', action: 'seo' },
-    { icon: Activity, label: 'Leistung', action: 'performance' }
+    ...(isAdmin ? [{ icon: Activity, label: 'Leistung', action: 'performance' }] : [])
   ];
 
   const handleQuickAction = (action: string) => {
