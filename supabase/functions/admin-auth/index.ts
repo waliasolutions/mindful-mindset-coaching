@@ -50,6 +50,50 @@ serve(async (req) => {
 
       console.log(`Login attempt for email: ${email} from IP: ${clientIP}`)
 
+      // First check if user exists and get basic info for debugging
+      const { data: userCheck, error: userCheckError } = await supabase
+        .from('admin_users')
+        .select('id, email, role, is_active, failed_login_attempts, locked_until')
+        .eq('email', email)
+        .single()
+
+      if (userCheckError || !userCheck) {
+        console.log(`User not found: ${email}`)
+        return new Response(
+          JSON.stringify({ 
+            success: false, 
+            message: 'Invalid credentials',
+            user_data: null,
+            session_token: null
+          }),
+          { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        )
+      }
+
+      console.log(`User found: ${JSON.stringify({
+        id: userCheck.id,
+        email: userCheck.email,
+        role: userCheck.role,
+        is_active: userCheck.is_active,
+        failed_attempts: userCheck.failed_login_attempts,
+        locked_until: userCheck.locked_until
+      })}`)
+
+      // Check if account is locked
+      if (userCheck.locked_until && new Date(userCheck.locked_until) > new Date()) {
+        console.log(`Account locked until: ${userCheck.locked_until}`)
+        return new Response(
+          JSON.stringify({ 
+            success: false, 
+            message: 'Account temporarily locked due to too many failed attempts',
+            user_data: null,
+            session_token: null
+          }),
+          { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        )
+      }
+
+      // Now call the admin_login function
       const { data, error } = await supabase.rpc('admin_login', {
         email_input: email,
         password_input: password,
@@ -60,13 +104,18 @@ serve(async (req) => {
       if (error) {
         console.error('Login function error:', error)
         return new Response(
-          JSON.stringify({ success: false, message: 'Authentication failed' }),
+          JSON.stringify({ 
+            success: false, 
+            message: 'Authentication failed',
+            user_data: null,
+            session_token: null
+          }),
           { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 500 }
         )
       }
 
       const result = data[0]
-      console.log('Login result:', result)
+      console.log('Login result:', JSON.stringify(result, null, 2))
 
       return new Response(
         JSON.stringify(result),
