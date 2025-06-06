@@ -4,13 +4,11 @@ import Navbar from '../components/Navbar';
 import PricingWithQuote from '../components/PricingWithQuote';
 import Footer from '../components/Footer';
 import Breadcrumbs from '../components/Breadcrumbs';
-import { useGlobalSettings } from '../hooks/use-global-settings';
 import { useState } from 'react';
 import Terms from '../components/Terms';
 import LegalInfo from '../components/LegalInfo';
 
 const PricingPage = () => {
-  const globalSettings = useGlobalSettings();
   const [isTermsOpen, setIsTermsOpen] = useState(false);
   const [isLegalInfoOpen, setIsLegalInfoOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("impressum");
@@ -43,7 +41,7 @@ const PricingPage = () => {
           <div className="container mx-auto px-4">
             <Breadcrumbs />
           </div>
-          <PricingWithQuote settings={globalSettings} />
+          <PricingWithQuote />
         </main>
         <Footer 
           onTermsClick={openTerms}
