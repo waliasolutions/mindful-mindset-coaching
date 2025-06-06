@@ -24,10 +24,12 @@ const Admin = () => {
     handleLogout
   } = useAdminSession();
   
+  // Set default tab only once when user first authenticates
   const [activeTab, setActiveTab] = useState('dashboard');
+  const [hasSetInitialTab, setHasSetInitialTab] = useState(false);
   const navigate = useNavigate();
 
-  // Navigation items to determine default tab
+  // Navigation items to determine available tabs
   const navItems = [
     { id: 'dashboard', label: 'Dashboard', adminOnly: false },
     { id: 'sections', label: 'Inhalt', adminOnly: false },
@@ -39,9 +41,9 @@ const Admin = () => {
     { id: 'performance', label: 'Leistung', adminOnly: true },
   ];
 
-  // Set default tab based on user role when authenticated
+  // Set default tab based on user role ONLY on initial authentication
   useEffect(() => {
-    if (isAuthenticated && userRole) {
+    if (isAuthenticated && userRole && !hasSetInitialTab) {
       const availableTabs = navItems.filter(item => 
         !item.adminOnly || userRole === 'admin'
       );
@@ -50,8 +52,9 @@ const Admin = () => {
       if (availableTabs.length > 0) {
         setActiveTab(availableTabs[0].id);
       }
+      setHasSetInitialTab(true);
     }
-  }, [isAuthenticated, userRole]);
+  }, [isAuthenticated, userRole, hasSetInitialTab]);
 
   // Initialize content synchronization when authenticated
   useEffect(() => {
