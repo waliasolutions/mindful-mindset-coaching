@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useAdminSession } from '@/hooks/useAdminSession';
 import AdminDashboard from './AdminDashboard';
 import SectionEditor from './SectionEditor';
+import SectionList from './SectionList';
 import SeoSettings from './SeoSettings';
 import MediaLibrary from './MediaLibrary';
 import PerformanceDashboard from './PerformanceDashboard';
@@ -40,11 +41,7 @@ const AdminSections: React.FC<AdminSectionsProps> = ({ activeTab, onTabChange })
             onClose={handleSectionEditorClose} 
           />
         ) : (
-          <div className="space-y-6">
-            <h1 className="text-3xl font-bold">Content Sections</h1>
-            <p>Select a section to edit</p>
-            {/* Placeholder for section selection UI */}
-          </div>
+          <SectionList onSectionSelect={handleSectionSelect} />
         );
       case 'media':
         return <MediaLibrary />;
