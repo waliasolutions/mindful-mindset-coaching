@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -18,32 +18,46 @@ const IconSelector = ({ value, onChange, label = "Icon" }: IconSelectorProps) =>
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
 
-  // Get all available icons (excluding React components and other non-icon exports)
-  const availableIcons = Object.keys(LucideIcons).filter(
-    (name) => 
-      name !== 'default' && 
-      name !== 'createLucideIcon' && 
-      name !== 'Icon' &&
-      typeof LucideIcons[name as keyof typeof LucideIcons] === 'function'
-  );
+  // Memoize available icons to prevent recalculation
+  const availableIcons = useMemo(() => {
+    return Object.keys(LucideIcons).filter(
+      (name) => 
+        name !== 'default' && 
+        name !== 'createLucideIcon' && 
+        name !== 'Icon' &&
+        typeof LucideIcons[name as keyof typeof LucideIcons] === 'function'
+    );
+  }, []);
 
-  const filteredIcons = availableIcons.filter(iconName =>
-    iconName.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredIcons = useMemo(() => {
+    return availableIcons.filter(iconName =>
+      iconName.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  }, [availableIcons, searchTerm]);
 
-  const renderIcon = (iconName: string) => {
+  const renderIcon = useCallback((iconName: string) => {
     const IconComponent = LucideIcons[iconName as keyof typeof LucideIcons] as any;
     if (!IconComponent) return null;
     return <IconComponent size={20} />;
-  };
+  }, []);
 
-  const getDisplayName = (iconName: string) => {
+  const getDisplayName = useCallback((iconName: string) => {
     return iconName
       .split(/(?=[A-Z])/)
       .join(' ')
       .toLowerCase()
       .replace(/^\w/, c => c.toUpperCase());
-  };
+  }, []);
+
+  const handleIconSelect = useCallback((iconName: string) => {
+    onChange(iconName);
+    setIsOpen(false);
+    setSearchTerm(''); // Reset search when closing
+  }, [onChange]);
+
+  const handleSearchChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+  }, []);
 
   return (
     <div className="space-y-2">
@@ -70,7 +84,7 @@ const IconSelector = ({ value, onChange, label = "Icon" }: IconSelectorProps) =>
               <Input
                 placeholder="Search icons..."
                 value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
+                onChange={handleSearchChange}
                 className="pl-8"
               />
             </div>
@@ -82,10 +96,7 @@ const IconSelector = ({ value, onChange, label = "Icon" }: IconSelectorProps) =>
                   key={iconName}
                   variant={value === iconName ? "default" : "ghost"}
                   className="justify-start h-auto p-2"
-                  onClick={() => {
-                    onChange(iconName);
-                    setIsOpen(false);
-                  }}
+                  onClick={() => handleIconSelect(iconName)}
                 >
                   <div className="flex items-center gap-2">
                     {renderIcon(iconName)}

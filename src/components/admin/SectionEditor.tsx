@@ -1,5 +1,4 @@
-
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { X, Save, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -50,34 +49,34 @@ interface SectionEditorProps {
 const SectionEditor = ({ section, onClose }: SectionEditorProps) => {
   const [isOpen, setIsOpen] = useState(true);
   
-  // Get real current content using the content extractor
-  const getCurrentContent = () => {
+  // Memoize initial content to prevent unnecessary recalculations
+  const initialContent = useMemo(() => {
     if (!section || !section.id) {
       return {};
     }
     return extractCurrentContent(section.id);
-  };
+  }, [section?.id]);
 
-  const [content, setContent] = useState(getCurrentContent());
-  
   const form = useForm({
-    defaultValues: content
+    defaultValues: initialContent
   });
+
+  // Memoize form values to prevent unnecessary updates
+  const formValues = form.watch();
 
   useEffect(() => {
     if (section && section.id) {
-      const currentContent = getCurrentContent();
-      setContent(currentContent);
+      const currentContent = extractCurrentContent(section.id);
       form.reset(currentContent);
     }
   }, [section?.id, form]);
 
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     setIsOpen(false);
     onClose();
-  };
+  }, [onClose]);
 
-  const handleSave = () => {
+  const handleSave = useCallback(() => {
     const values = form.getValues();
     
     if (!section || !section.id) {
@@ -92,7 +91,12 @@ const SectionEditor = ({ section, onClose }: SectionEditorProps) => {
     } else {
       toast.error('Failed to save content');
     }
-  };
+  }, [section, form, handleClose]);
+
+  // Memoized benefits change handler to prevent recreation
+  const handleBenefitsChange = useCallback((benefits: any[]) => {
+    form.setValue('benefits', benefits, { shouldValidate: false });
+  }, [form]);
 
   // If no section provided, don't render anything
   if (!section) {
@@ -222,8 +226,8 @@ const SectionEditor = ({ section, onClose }: SectionEditorProps) => {
             />
             <div className="mt-6">
               <BenefitsEditor
-                benefits={form.watch('benefits') || []}
-                onChange={(benefits) => form.setValue('benefits', benefits)}
+                benefits={formValues.benefits || []}
+                onChange={handleBenefitsChange}
               />
             </div>
           </>

@@ -1,5 +1,5 @@
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 
 interface ContentOverrides {
   [sectionId: string]: {
@@ -11,6 +11,9 @@ interface ContentOverrides {
 const contentCache = new Map<string, any>();
 const cacheExpiry = new Map<string, number>();
 const CACHE_DURATION = 5000; // 5 seconds
+
+// Debounce map for preventing rapid updates
+const debounceTimers = new Map<string, NodeJS.Timeout>();
 
 export const useContentBridge = (sectionId: string, defaultContent: any) => {
   const [content, setContent] = useState(() => {
@@ -46,7 +49,9 @@ export const useContentBridge = (sectionId: string, defaultContent: any) => {
     return defaultContent;
   });
 
-  const updateContent = useCallback((newOverrides: any) => {
+  const updateContentRef = useRef<(newOverrides: any) => void>();
+
+  updateContentRef.current = useCallback((newOverrides: any) => {
     const mergedContent = { ...defaultContent, ...newOverrides };
     setContent(mergedContent);
     
@@ -57,24 +62,31 @@ export const useContentBridge = (sectionId: string, defaultContent: any) => {
   }, [defaultContent, sectionId]);
 
   useEffect(() => {
-    // Listen for admin content updates with debouncing
-    let debounceTimer: NodeJS.Timeout;
-    
+    // Listen for admin content updates with enhanced debouncing
     const handleStorageChange = (event: CustomEvent) => {
       if (event.detail.key === 'adminContentOverrides') {
-        clearTimeout(debounceTimer);
-        debounceTimer = setTimeout(() => {
+        // Clear existing debounce timer
+        const timerId = debounceTimers.get(sectionId);
+        if (timerId) {
+          clearTimeout(timerId);
+        }
+        
+        // Set new debounced update
+        const newTimerId = setTimeout(() => {
           try {
             const overrides: ContentOverrides = JSON.parse(event.detail.newValue || '{}');
             if (overrides[sectionId]) {
-              updateContent(overrides[sectionId]);
+              updateContentRef.current?.(overrides[sectionId]);
             } else {
-              updateContent({});
+              updateContentRef.current?.({});
             }
           } catch (error) {
             console.error('Error parsing admin content overrides:', error);
           }
-        }, 100); // 100ms debounce
+          debounceTimers.delete(sectionId);
+        }, 200); // Increased debounce time for stability
+        
+        debounceTimers.set(sectionId, newTimerId);
       }
     };
 
@@ -82,35 +94,53 @@ export const useContentBridge = (sectionId: string, defaultContent: any) => {
     
     return () => {
       window.removeEventListener('localStorageUpdated', handleStorageChange as EventListener);
-      clearTimeout(debounceTimer);
+      // Clean up debounce timer
+      const timerId = debounceTimers.get(sectionId);
+      if (timerId) {
+        clearTimeout(timerId);
+        debounceTimers.delete(sectionId);
+      }
     };
-  }, [sectionId, updateContent]);
+  }, [sectionId]);
 
   return content;
 };
 
-// Helper function to save admin content overrides with caching
+// Enhanced save function with better error handling and batching
 export const saveContentOverride = (sectionId: string, overrides: any) => {
   try {
+    // Batch updates to prevent rapid localStorage writes
     const existingOverrides = localStorage.getItem('adminContentOverrides');
     const currentOverrides: ContentOverrides = existingOverrides ? JSON.parse(existingOverrides) : {};
     
-    currentOverrides[sectionId] = overrides;
+    // Deep clone to prevent reference issues
+    currentOverrides[sectionId] = JSON.parse(JSON.stringify(overrides));
     
     const newValue = JSON.stringify(currentOverrides);
     localStorage.setItem('adminContentOverrides', newValue);
     
     // Update cache immediately
     const cacheKey = `content_${sectionId}`;
-    const defaultContent = contentCache.get(cacheKey) || {};
-    const mergedContent = { ...defaultContent, ...overrides };
+    const cached = contentCache.get(cacheKey) || {};
+    const mergedContent = { ...cached, ...overrides };
     contentCache.set(cacheKey, mergedContent);
     cacheExpiry.set(cacheKey, Date.now() + CACHE_DURATION);
     
-    // Dispatch custom event for same-tab communication
-    window.dispatchEvent(new CustomEvent('localStorageUpdated', { 
-      detail: { key: 'adminContentOverrides', newValue }
-    }));
+    // Dispatch custom event for same-tab communication with debouncing
+    const eventKey = 'localStorageUpdated';
+    const existingTimer = debounceTimers.get(eventKey);
+    if (existingTimer) {
+      clearTimeout(existingTimer);
+    }
+    
+    const timer = setTimeout(() => {
+      window.dispatchEvent(new CustomEvent('localStorageUpdated', { 
+        detail: { key: 'adminContentOverrides', newValue }
+      }));
+      debounceTimers.delete(eventKey);
+    }, 100);
+    
+    debounceTimers.set(eventKey, timer);
     
     return true;
   } catch (error) {
@@ -123,4 +153,7 @@ export const saveContentOverride = (sectionId: string, overrides: any) => {
 export const clearContentCache = () => {
   contentCache.clear();
   cacheExpiry.clear();
+  // Clear all debounce timers
+  debounceTimers.forEach(timer => clearTimeout(timer));
+  debounceTimers.clear();
 };
