@@ -1,17 +1,20 @@
 
-import { useState } from 'react';
+import { lazy, Suspense, useState } from 'react';
 import Navbar from '../components/Navbar';
 import Hero from '../components/Hero';
-import About from '../components/About';
-import Services from '../components/Services';
-import PricingWithQuote from '../components/PricingWithQuote';
-import Contact from '../components/Contact';
 import Footer from '../components/Footer';
+import SectionLoader from '../components/SectionLoader';
 import { useSections } from '../hooks/use-sections';
 import { useGlobalSettings } from '../hooks/use-global-settings';
+import { useAboveFold } from '../hooks/use-above-fold';
 import { SEO } from '../components/SEO';
 import Terms from '../components/Terms';
 import LegalInfo from '../components/LegalInfo';
+
+const About = lazy(() => import('../components/About'));
+const Services = lazy(() => import('../components/Services'));
+const PricingWithQuote = lazy(() => import('../components/PricingWithQuote'));
+const Contact = lazy(() => import('../components/Contact'));
 
 const componentMap: Record<string, React.ComponentType<any>> = {
   Hero,
@@ -24,6 +27,7 @@ const componentMap: Record<string, React.ComponentType<any>> = {
 const Index = () => {
   const { sections } = useSections();
   const globalSettings = useGlobalSettings();
+  const isAboveTheFold = useAboveFold();
   
   // Dialog states for legal popups
   const [isTermsOpen, setIsTermsOpen] = useState(false);
@@ -76,15 +80,28 @@ const Index = () => {
     return sections
       .sort((a, b) => a.order - b.order)
       .filter(section => section.visible)
-      .map((section) => {
+      .map((section, index) => {
         const Component = componentMap[section.component];
         
+        if (index === 0) {
+          return Component ? (
+            <Component 
+              key={section.id} 
+              settings={globalSettings}
+              onInView={() => handleSectionInView(section.component)}
+            />
+          ) : null;
+        }
+        
         return Component ? (
-          <Component 
-            key={section.id} 
-            settings={globalSettings}
-            onInView={() => handleSectionInView(section.component)}
-          />
+          <Suspense key={section.id} fallback={<SectionLoader />}>
+            {(!isAboveTheFold || index < 2) && (
+              <Component 
+                settings={globalSettings}
+                onInView={() => handleSectionInView(section.component)}
+              />
+            )}
+          </Suspense>
         ) : null;
       });
   };

@@ -8,10 +8,6 @@ import { Routes, Route, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import { AuthProvider } from "./contexts/AuthContext";
 import Index from "./pages/Index";
-import ServicesPage from "./pages/ServicesPage";
-import AboutPage from "./pages/AboutPage";
-import PricingPage from "./pages/PricingPage";
-import ContactPage from "./pages/ContactPage";
 import Admin from "./pages/Admin";
 import NotFound from "./pages/NotFound";
 import { HelmetProvider } from "react-helmet-async";
@@ -86,15 +82,7 @@ const AppContent = () => {
     const baseTitle = "Mindset Coaching mit Martina | Persönliche Entwicklung & Transformation";
     
     // Update document title based on current route
-    const routeTitles = {
-      '/': baseTitle,
-      '/services': 'Services | Mindset Coaching mit Martina',
-      '/about': 'Über Martina | Mindset Coaching mit Martina',
-      '/pricing': 'Preise | Mindset Coaching mit Martina',
-      '/contact': 'Kontakt | Mindset Coaching mit Martina'
-    };
-    
-    document.title = routeTitles[pathname as keyof typeof routeTitles] || baseTitle;
+    document.title = pathname === "/" ? baseTitle : `${pathname.slice(1)} | ${baseTitle}`;
     
     // Add hotkey for admin access (Alt+Shift+A)
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -116,10 +104,6 @@ const AppContent = () => {
   return (
     <Routes>
       <Route path="/" element={<Index />} />
-      <Route path="/services" element={<ServicesPage />} />
-      <Route path="/about" element={<AboutPage />} />
-      <Route path="/pricing" element={<PricingPage />} />
-      <Route path="/contact" element={<ContactPage />} />
       <Route path="/dashboard-management-portal-9a7b2c3d" element={<Admin />} />
       <Route path="*" element={<NotFound />} />
     </Routes>

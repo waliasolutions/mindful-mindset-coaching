@@ -17,15 +17,12 @@ const debounceTimers = new Map<string, NodeJS.Timeout>();
 
 export const useContentBridge = (sectionId: string, defaultContent: any) => {
   const [content, setContent] = useState(() => {
-    console.log(`[ContentBridge] Initializing ${sectionId} with default:`, defaultContent);
-    
     // Check cache first
     const cacheKey = `content_${sectionId}`;
     const cached = contentCache.get(cacheKey);
     const expiry = cacheExpiry.get(cacheKey);
     
     if (cached && expiry && Date.now() < expiry) {
-      console.log(`[ContentBridge] Using cached content for ${sectionId}:`, cached);
       return cached;
     }
     
@@ -36,7 +33,6 @@ export const useContentBridge = (sectionId: string, defaultContent: any) => {
         const overrides: ContentOverrides = JSON.parse(adminOverrides);
         if (overrides[sectionId]) {
           const mergedContent = { ...defaultContent, ...overrides[sectionId] };
-          console.log(`[ContentBridge] Using admin overrides for ${sectionId}:`, mergedContent);
           // Cache the result
           contentCache.set(cacheKey, mergedContent);
           cacheExpiry.set(cacheKey, Date.now() + CACHE_DURATION);
@@ -44,18 +40,16 @@ export const useContentBridge = (sectionId: string, defaultContent: any) => {
         }
       }
     } catch (error) {
-      console.error(`[ContentBridge] Error parsing admin content overrides for ${sectionId}:`, error);
+      console.error('Error parsing admin content overrides:', error);
       // Clear corrupted localStorage
       try {
         localStorage.removeItem('adminContentOverrides');
-        console.log('[ContentBridge] Cleared corrupted localStorage');
       } catch (e) {
-        console.error('[ContentBridge] Failed to clear corrupted localStorage:', e);
+        console.error('Failed to clear corrupted localStorage:', e);
       }
     }
     
     // Cache default content
-    console.log(`[ContentBridge] Using default content for ${sectionId}:`, defaultContent);
     contentCache.set(cacheKey, defaultContent);
     cacheExpiry.set(cacheKey, Date.now() + CACHE_DURATION);
     return defaultContent;
@@ -65,7 +59,6 @@ export const useContentBridge = (sectionId: string, defaultContent: any) => {
 
   updateContentRef.current = useCallback((newOverrides: any) => {
     const mergedContent = { ...defaultContent, ...newOverrides };
-    console.log(`[ContentBridge] Updating content for ${sectionId}:`, mergedContent);
     setContent(mergedContent);
     
     // Update cache
@@ -94,7 +87,7 @@ export const useContentBridge = (sectionId: string, defaultContent: any) => {
               updateContentRef.current?.({});
             }
           } catch (error) {
-            console.error(`[ContentBridge] Error parsing admin content overrides in storage change for ${sectionId}:`, error);
+            console.error('Error parsing admin content overrides in storage change:', error);
             // Don't update content if parsing fails
           }
           debounceTimers.delete(sectionId);
@@ -117,22 +110,12 @@ export const useContentBridge = (sectionId: string, defaultContent: any) => {
     };
   }, [sectionId]);
 
-  // Add validation to ensure content is not empty
-  useEffect(() => {
-    if (!content || Object.keys(content).length === 0) {
-      console.warn(`[ContentBridge] Empty content detected for ${sectionId}, using defaults`);
-      setContent(defaultContent);
-    }
-  }, [content, defaultContent, sectionId]);
-
   return content;
 };
 
 // Enhanced save function with better error handling and performance
 export const saveContentOverride = (sectionId: string, overrides: any) => {
   try {
-    console.log(`[ContentBridge] Saving content override for ${sectionId}:`, overrides);
-    
     // Get existing overrides with better error handling
     let currentOverrides: ContentOverrides = {};
     try {
@@ -141,7 +124,7 @@ export const saveContentOverride = (sectionId: string, overrides: any) => {
         currentOverrides = JSON.parse(existingOverrides);
       }
     } catch (error) {
-      console.error('[ContentBridge] Error parsing existing overrides, starting fresh:', error);
+      console.error('Error parsing existing overrides, starting fresh:', error);
       currentOverrides = {};
     }
     
@@ -176,30 +159,16 @@ export const saveContentOverride = (sectionId: string, overrides: any) => {
     
     return true;
   } catch (error) {
-    console.error('[ContentBridge] Error saving content override:', error);
+    console.error('Error saving content override:', error);
     return false;
   }
 };
 
 // Clear cache function for admin use
 export const clearContentCache = () => {
-  console.log('[ContentBridge] Clearing content cache');
   contentCache.clear();
   cacheExpiry.clear();
   // Clear all debounce timers
   debounceTimers.forEach(timer => clearTimeout(timer));
   debounceTimers.clear();
-};
-
-// Reset function to clear corrupted data
-export const resetContentOverrides = () => {
-  try {
-    localStorage.removeItem('adminContentOverrides');
-    clearContentCache();
-    console.log('[ContentBridge] Reset content overrides and cache');
-    // Reload the page to ensure fresh content
-    window.location.reload();
-  } catch (error) {
-    console.error('[ContentBridge] Error resetting content overrides:', error);
-  }
 };
