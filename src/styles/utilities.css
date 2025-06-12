@@ -1,7 +1,7 @@
 
 @layer utilities {
   .section-padding {
-    @apply py-16 sm:py-20 md:py-24 lg:py-32 xl:py-40;
+    @apply py-16 sm:py-20 md:py-24 lg:py-32;
   }
   
   .hero-text-gradient {
@@ -142,7 +142,7 @@
 
   /* Enhanced spacing utilities */
   .section-margin-bottom {
-    @apply mb-16 sm:mb-20 md:mb-24 lg:mb-28 xl:mb-32;
+    @apply mb-16 sm:mb-20 md:mb-24 lg:mb-28;
   }
 
   .content-spacing {
@@ -179,14 +179,14 @@
   }
 }
 
-/* Ultra-wide screen optimizations */
+/* Reasonable ultra-wide screen optimizations */
 @media (min-width: 1440px) {
   .container {
     max-width: 1400px;
   }
   
   .section-padding {
-    @apply py-44;
+    @apply py-36;
   }
 }
 

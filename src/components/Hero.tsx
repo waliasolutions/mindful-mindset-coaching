@@ -40,7 +40,7 @@ const Hero = () => {
   }, []);
 
   return (
-    <section id="hero" className="relative min-h-screen flex items-center pt-28 sm:pt-32 md:pt-36 pb-20 sm:pb-24 md:pb-28 lg:pb-32 xl:pb-40 overflow-hidden">
+    <section id="hero" className="relative min-h-screen flex items-center pt-28 sm:pt-32 md:pt-36 pb-20 sm:pb-24 md:pb-28 lg:pb-32 overflow-hidden">
       <div className="absolute inset-0 bg-beige/60 leaf-pattern -z-10"></div>
       
       {/* Reduced decorative elements for better performance */}
