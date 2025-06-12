@@ -1,69 +1,103 @@
-# Welcome to your Lovable project
 
-## Project info
+# Mindset Coaching Website
 
-**URL**: https://lovable.dev/projects/5d4f86ea-3662-46b0-a5ae-1b9fc1681d1b
+A modern, responsive website for professional mindset coaching services built with React and TypeScript.
 
-## How can I edit this code?
+## Features
 
-There are several ways of editing your application.
+- 🎨 Modern, responsive design with Tailwind CSS
+- ⚡ Fast loading with Vite build system
+- 📱 Mobile-first approach with PWA capabilities
+- 🔍 SEO optimized with structured data
+- 🎯 Google Tag Manager integration
+- 🛡️ Security headers and best practices
+- 🎭 Component-based architecture with shadcn/ui
+- 🔧 Admin dashboard for content management
 
-**Use Lovable**
+## Technologies Used
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/5d4f86ea-3662-46b0-a5ae-1b9fc1681d1b) and start prompting.
+- **Frontend**: React 18, TypeScript, Tailwind CSS
+- **Build Tool**: Vite
+- **UI Components**: shadcn/ui, Radix UI
+- **Backend**: Supabase
+- **State Management**: React Query
+- **Styling**: Tailwind CSS with custom design system
+- **Icons**: Lucide React
+- **Analytics**: Google Tag Manager
 
-Changes made via Lovable will be committed automatically to this repo.
+## Getting Started
 
-**Use your preferred IDE**
+### Prerequisites
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+- Node.js (v18 or higher)
+- npm or yarn
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+### Installation
 
-Follow these steps:
+1. Clone the repository:
+```bash
+git clone <repository-url>
+cd <project-name>
+```
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+2. Install dependencies:
+```bash
+npm install
+```
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+3. Start the development server:
+```bash
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+4. Open [http://localhost:8080](http://localhost:8080) in your browser.
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## Project Structure
 
-**Use GitHub Codespaces**
+```
+src/
+├── components/          # Reusable UI components
+│   ├── ui/             # shadcn/ui components
+│   └── admin/          # Admin dashboard components
+├── hooks/              # Custom React hooks
+├── pages/              # Route components
+├── styles/             # CSS and styling files
+├── utils/              # Utility functions
+└── main.tsx           # Application entry point
+```
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## Building for Production
 
-## What technologies are used for this project?
+```bash
+npm run build
+```
 
-This project is built with .
+The built files will be in the `dist` directory.
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+## Deployment
 
-## How can I deploy this project?
+This project is configured for deployment on Netlify with:
+- Automatic builds from Git
+- Security headers
+- SPA routing support
+- Performance optimizations
 
-Simply open [Lovable](https://lovable.dev/projects/5d4f86ea-3662-46b0-a5ae-1b9fc1681d1b) and click on Share -> Publish.
+## Admin Dashboard
 
-## I want to use a custom domain - is that possible?
+Access the admin dashboard at `/dashboard-management-portal-9a7b2c3d` to manage:
+- Content sections
+- SEO settings
+- Global settings
+- Media library
+- User management
 
-We don't support custom domains (yet). If you want to deploy your project under your own domain then we recommend using Netlify. Visit our docs for more details: [Custom domains](https://docs.lovable.dev/tips-tricks/custom-domain/)
+## Contributing
+
+1. Create a feature branch
+2. Make your changes
+3. Test thoroughly
+4. Submit a pull request
+
+## License
+
+This project is proprietary software. All rights reserved.

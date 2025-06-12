@@ -6,7 +6,7 @@ const PARTNER_LOGO_ID = '6c375a0d-f89a-4b9c-a79c-43b8f5c93bca';
 
 export async function uploadPartnerLogo() {
   // Read the logo file
-  const response = await fetch('/lovable-uploads/0bacd932-81ec-4c1b-b330-546f5a1116dd.png');
+  const response = await fetch('/assets/images/partner-logo.png');
   const blob = await response.blob();
   
   // Generate a unique filename

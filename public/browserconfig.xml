@@ -3,7 +3,7 @@
 <browserconfig>
     <msapplication>
         <tile>
-            <square150x150logo src="/lovable-uploads/abb0bc70-ae8b-43ce-867f-d7beece5a8a2.png"/>
+            <square150x150logo src="/assets/images/icon-150.png"/>
             <TileColor>#41773a</TileColor>
         </tile>
     </msapplication>
