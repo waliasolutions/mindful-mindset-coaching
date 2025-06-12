@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useRef } from 'react';
 import { AspectRatio } from './ui/aspect-ratio';
 import { MessageSquareQuote, Check, Clock, Users, Phone } from 'lucide-react';
@@ -45,7 +46,7 @@ const PricingWithQuote = () => {
   }, []);
 
   return (
-    <section id="pricing" ref={sectionRef} className="py-12 sm:py-16 md:py-20 lg:py-24 xl:py-28 relative overflow-hidden text-forest bg-[#e8f1e8]">
+    <section id="pricing" ref={sectionRef} className="py-12 sm:py-16 md:py-20 lg:py-24 xl:py-28 relative overflow-hidden text-forest bg-mint">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 xl:px-12">
         <div className="max-w-4xl mx-auto mb-8 sm:mb-12 md:mb-16 lg:mb-20 reveal-element">
           <div className="flex justify-center mb-2 sm:mb-3">
@@ -63,7 +64,7 @@ const PricingWithQuote = () => {
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 sm:gap-8 md:gap-10 lg:gap-12 max-w-7xl mx-auto">
           <div className={`lg:col-span-2 transition-all duration-1000 ease-out ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
             <div className="h-full flex items-center justify-center">
-              <div className="backdrop-blur-sm p-4 sm:p-5 md:p-6 lg:p-8 border border-transparent rounded-xl h-full flex items-center justify-center shadow-2xl transition-all duration-300 w-full max-w-md lg:max-w-none bg-[#f0f7f0]">
+              <div className="backdrop-blur-sm p-4 sm:p-5 md:p-6 lg:p-8 border border-transparent rounded-xl h-full flex items-center justify-center shadow-2xl transition-all duration-300 w-full max-w-md lg:max-w-none bg-card">
                 <div className="flex flex-col items-center">
                   <div className="w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 lg:w-56 lg:h-56 xl:w-64 xl:h-64 mb-4 sm:mb-5 md:mb-6 lg:mb-8 rounded-xl bg-transparent">
                     <OptimizedImage 
@@ -87,7 +88,7 @@ const PricingWithQuote = () => {
           </div>
 
           <div className="lg:col-span-3">
-            <div className="bg-white/90 shadow-xl overflow-hidden border border-forest/10 rounded-lg h-full">
+            <div className="bg-card shadow-xl overflow-hidden border border-forest/10 rounded-lg h-full">
               <div className="h-0.5 bg-forest/20"></div>
               <div className="p-4 sm:p-5 md:p-6 lg:p-8 text-forest bg-[#41773a]/20">
                 <h3 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-serif font-medium mb-2">

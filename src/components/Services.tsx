@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useRef } from 'react';
 import { Check, Brain, Heart, Star, Lightbulb, Sun } from 'lucide-react';
 import { useContentBridge } from '@/hooks/useContentBridge';
@@ -96,11 +97,11 @@ const Services = () => {
     <section 
       id="services" 
       ref={sectionRef} 
-      className="py-12 sm:py-16 md:py-20 lg:py-24 xl:py-28 relative overflow-hidden bg-white"
+      className="py-12 sm:py-16 md:py-20 lg:py-24 xl:py-28 relative overflow-hidden bg-background"
       aria-labelledby="services-heading"
     >
       {/* Background pattern */}
-      <div className="absolute inset-0 bg-gradient-to-b from-mint to-white/30 -z-10" aria-hidden="true"></div>
+      <div className="absolute inset-0 bg-gradient-to-b from-mint to-background/30 -z-10" aria-hidden="true"></div>
       
       {/* Decorative elements */}
       <div className="absolute top-1/4 left-0 w-64 h-64 md:w-80 md:h-80 bg-forest/5 rounded-full blur-3xl -z-10" aria-hidden="true"></div>
@@ -128,7 +129,7 @@ const Services = () => {
               key={benefit.id} 
               className={`reveal-element transition-all duration-500 ease-out delay-${index * 100}`}
             >
-              <article className="bg-white shadow-lg p-4 sm:p-5 md:p-6 lg:p-7 h-full flex flex-col hover:shadow-xl transition-all duration-300 border-t-2 border-moss rounded-md group">
+              <article className="bg-card shadow-lg p-4 sm:p-5 md:p-6 lg:p-7 h-full flex flex-col hover:shadow-xl transition-all duration-300 border-t-2 border-moss rounded-md group">
                 <div className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-full bg-forest flex items-center justify-center mb-3 sm:mb-4 group-hover:scale-110 transition-transform duration-300">
                   {renderIcon(benefit.icon)}
                 </div>

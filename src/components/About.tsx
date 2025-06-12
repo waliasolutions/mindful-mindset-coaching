@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useRef } from 'react';
 import { Award, BookOpen, Users, Leaf } from 'lucide-react';
 import { useContentBridge } from '@/hooks/useContentBridge';
@@ -81,7 +82,7 @@ const About = () => {
             
             <p className="text-base sm:text-lg md:text-xl text-foreground/80 leading-relaxed">Seit 2019 bin ich als Ordnungs-Coach tätig. Beim Ordnungs-Coaching geht es vorrangig um die äußere Ordnung – darum, Dinge loszulassen, die keinen Mehrwert mehr bieten. Durch diese Tätigkeit wurde mir zunehmend bewusst, dass Unordnung nicht nur im Aussen existiert – sondern auch im Innern: in unseren Gedanken.</p>
             
-            <div className="p-4 sm:p-5 md:p-6 bg-white backdrop-blur-sm shadow-sm border-l-2 border-moss rounded-r-md">
+            <div className="p-4 sm:p-5 md:p-6 bg-card backdrop-blur-sm shadow-sm border-l-2 border-moss rounded-r-md">
               <div className="flex items-start gap-3 sm:gap-4">
                 <Leaf size={20} className="text-forest flex-shrink-0 mt-1" />
                 <p className="text-forest font-medium text-sm sm:text-base md:text-lg leading-relaxed">
@@ -94,7 +95,7 @@ const About = () => {
         
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 md:gap-10 mt-12 sm:mt-16 md:mt-20">
           <div className="reveal-element">
-            <div className="bg-white p-4 sm:p-5 md:p-6 lg:p-7 shadow-md h-full flex flex-col items-center text-center rounded-md border-b-2 border-moss hover:shadow-lg transition-shadow duration-300">
+            <div className="bg-card p-4 sm:p-5 md:p-6 lg:p-7 shadow-md h-full flex flex-col items-center text-center rounded-md border-b-2 border-moss hover:shadow-lg transition-shadow duration-300">
               <Award size={28} className="text-forest mb-3 sm:mb-4" />
               <h3 className="text-lg sm:text-xl md:text-2xl font-serif font-medium mb-2 sm:mb-3 leading-tight">Zertifizierte Ausbildung</h3>
               <p className="text-foreground/70 text-sm sm:text-base leading-relaxed">20-monatige Mindset Coach Ausbildung nach Christian Bischoff</p>
@@ -102,7 +103,7 @@ const About = () => {
           </div>
           
           <div className="reveal-element delay-100">
-            <div className="bg-white p-4 sm:p-5 md:p-6 lg:p-7 shadow-md h-full flex flex-col items-center text-center rounded-md border-b-2 border-moss hover:shadow-lg transition-shadow duration-300">
+            <div className="bg-card p-4 sm:p-5 md:p-6 lg:p-7 shadow-md h-full flex flex-col items-center text-center rounded-md border-b-2 border-moss hover:shadow-lg transition-shadow duration-300">
               <BookOpen size={28} className="text-forest mb-3 sm:mb-4" />
               <h3 className="text-lg sm:text-xl md:text-2xl font-serif font-medium mb-2 sm:mb-3 leading-tight">Erfahrung</h3>
               <p className="text-foreground/70 text-sm sm:text-base leading-relaxed">Seit 2019 als Ordnungs-Coach tätig mit Fokus auf ganzheitliches Wohlbefinden</p>
@@ -110,7 +111,7 @@ const About = () => {
           </div>
           
           <div className="reveal-element delay-200">
-            <div className="bg-white p-4 sm:p-5 md:p-6 lg:p-7 shadow-md h-full flex flex-col items-center text-center rounded-md border-b-2 border-moss hover:shadow-lg transition-shadow duration-300">
+            <div className="bg-card p-4 sm:p-5 md:p-6 lg:p-7 shadow-md h-full flex flex-col items-center text-center rounded-md border-b-2 border-moss hover:shadow-lg transition-shadow duration-300">
               <Users size={28} className="text-forest mb-3 sm:mb-4" />
               <h3 className="text-lg sm:text-xl md:text-2xl font-serif font-medium mb-2 sm:mb-3 leading-tight">Persönliche Betreuung</h3>
               <p className="text-foreground/70 text-sm sm:text-base leading-relaxed">Individuelles Coaching für deine einzigartigen Bedürfnisse und Ziele</p>
