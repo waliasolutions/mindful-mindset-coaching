@@ -61,12 +61,35 @@ const collectWebsiteData = async (): Promise<Record<string, any>> => {
   };
 };
 
+// Check if user is authenticated
+const checkAuth = async () => {
+  const { data: { session } } = await supabase.auth.getSession();
+  if (!session) {
+    toast({
+      title: "Authentifizierung erforderlich",
+      description: "Sie müssen angemeldet sein, um Backups zu erstellen.",
+      variant: "destructive",
+    });
+    return false;
+  }
+  return true;
+};
+
 // Create a new backup and store it in Supabase
 export const createBackup = async (options: CreateBackupOptions): Promise<WebsiteBackup | null> => {
   try {
+    // Check authentication first
+    if (!(await checkAuth())) {
+      return null;
+    }
+
+    console.log('Creating backup with options:', options);
+    
     const websiteData = await collectWebsiteData();
     const serializedData = JSON.stringify(websiteData);
     const fileSize = new Blob([serializedData]).size;
+    
+    console.log('Backup data collected, size:', fileSize);
     
     const { data, error } = await supabase
       .from('website_backups')
@@ -75,6 +98,7 @@ export const createBackup = async (options: CreateBackupOptions): Promise<Websit
         description: options.description || null,
         backup_data: websiteData,
         file_size: fileSize,
+        version: '1.0'
       })
       .select()
       .single();
@@ -88,6 +112,8 @@ export const createBackup = async (options: CreateBackupOptions): Promise<Websit
       });
       return null;
     }
+    
+    console.log('Backup created successfully:', data);
     
     toast({
       title: "Backup erstellt",
@@ -110,6 +136,13 @@ export const createBackup = async (options: CreateBackupOptions): Promise<Websit
 // Get all backups for the current user
 export const getBackups = async (): Promise<WebsiteBackup[]> => {
   try {
+    // Check authentication first
+    if (!(await checkAuth())) {
+      return [];
+    }
+
+    console.log('Fetching backups...');
+    
     const { data, error } = await supabase
       .from('website_backups')
       .select('*')
@@ -117,10 +150,16 @@ export const getBackups = async (): Promise<WebsiteBackup[]> => {
     
     if (error) {
       console.error('Error fetching backups:', error);
+      toast({
+        title: "Fehler beim Laden",
+        description: `Fehler beim Laden der Backups: ${error.message}`,
+        variant: "destructive",
+      });
       return [];
     }
     
-    return data as WebsiteBackup[];
+    console.log('Backups fetched successfully:', data?.length || 0, 'items');
+    return data as WebsiteBackup[] || [];
   } catch (error) {
     console.error('Error in getBackups:', error);
     return [];
