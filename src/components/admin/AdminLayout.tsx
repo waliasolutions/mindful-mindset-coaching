@@ -60,7 +60,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({
     { id: 'seo', label: 'SEO', icon: Globe, adminOnly: true },
     { id: 'users', label: 'Users', icon: Users, adminOnly: true },
     { id: 'settings', label: 'Einstellungen', icon: Settings },
-    { id: 'backups', label: 'Backups', icon: Save },
+    { id: 'backups', label: 'Backups', icon: Save, adminOnly: true },
     { id: 'performance', label: 'Leistung', icon: Activity, adminOnly: true },
   ];
 
