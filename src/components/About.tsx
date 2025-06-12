@@ -56,15 +56,15 @@ const About = () => {
           <div className="w-12 sm:w-16 h-1 bg-moss mx-auto mb-8 sm:mb-10"></div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 sm:gap-12 md:gap-16 lg:gap-20 items-center section-margin-bottom">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 sm:gap-12 md:gap-14 lg:gap-16 items-center section-margin-bottom">
           <div className={`relative reveal-left ${isVisible ? 'revealed' : ''}`}>
-            <div className="aspect-[4/5] relative z-10 overflow-hidden rounded-lg max-w-sm sm:max-w-md md:max-w-lg mx-auto lg:mx-0">
+            <div className="aspect-[3/4] relative z-10 overflow-hidden rounded-lg max-w-sm sm:max-w-md mx-auto lg:mx-0">
               <div className="image-reveal reveal w-full h-full">
                 <img src={content.profileImage} alt="Martina Domeniconi - Mindset Coach" className="w-full h-full object-cover object-center" loading="lazy" />
                 <div className="absolute inset-0 bg-gradient-to-t from-forest/20 to-transparent"></div>
               </div>
             </div>
-            <div className="absolute w-full h-full top-4 sm:top-5 left-4 sm:left-5 border-2 border-moss -z-10 rounded-lg max-w-sm sm:max-w-md md:max-w-lg mx-auto lg:mx-0"></div>
+            <div className="absolute w-full h-full top-4 sm:top-5 left-4 sm:left-5 border-2 border-moss -z-10 rounded-lg max-w-sm sm:max-w-md mx-auto lg:mx-0"></div>
           </div>
           
           <div className={`reveal-right ${isVisible ? 'revealed' : ''} content-spacing`}>

@@ -1,7 +1,7 @@
 
 @layer utilities {
   .section-padding {
-    @apply py-16 sm:py-20 md:py-24 lg:py-32;
+    @apply py-16 sm:py-20 md:py-24 lg:py-28;
   }
   
   .hero-text-gradient {
@@ -142,19 +142,19 @@
 
   /* Enhanced spacing utilities */
   .section-margin-bottom {
-    @apply mb-16 sm:mb-20 md:mb-24 lg:mb-28;
+    @apply mb-12 sm:mb-16 md:mb-20 lg:mb-24;
   }
 
   .content-spacing {
-    @apply space-y-8 sm:space-y-10 md:space-y-12 lg:space-y-16;
+    @apply space-y-6 sm:space-y-8 md:space-y-10 lg:space-y-12;
   }
 
   .card-padding {
-    @apply p-8 sm:p-9 md:p-10 lg:p-12;
+    @apply p-6 sm:p-7 md:p-8 lg:p-10;
   }
 
   .hero-spacing {
-    @apply space-y-10 sm:space-y-12 md:space-y-16 lg:space-y-20;
+    @apply space-y-8 sm:space-y-10 md:space-y-12 lg:space-y-16;
   }
 }
 
@@ -171,7 +171,7 @@
 
 @media (min-width: 768px) and (max-width: 1024px) {
   .section-padding {
-    @apply py-28;
+    @apply py-24;
   }
 
   .container {
@@ -186,7 +186,7 @@
   }
   
   .section-padding {
-    @apply py-36;
+    @apply py-32;
   }
 }
 
