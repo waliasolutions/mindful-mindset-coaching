@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -12,7 +13,6 @@ import { Loader2, Save, Trash, RefreshCcw, FileText, AlertTriangle, Info } from 
 import { toast } from '@/components/ui/use-toast';
 import { Badge } from '@/components/ui/badge';
 import { AdminRole } from '@/utils/adminAuth';
-import { supabase } from '@/integrations/supabase/client';
 
 interface BackupManagerProps {
   userRole: AdminRole;
@@ -23,7 +23,6 @@ const BackupManager: React.FC<BackupManagerProps> = ({ userRole }) => {
   const [loading, setLoading] = useState(true);
   const [creating, setCreating] = useState(false);
   const [restoring, setRestoring] = useState(false);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [previewBackup, setPreviewBackup] = useState<WebsiteBackup | null>(null);
   const [restoreConfirmOpen, setRestoreConfirmOpen] = useState(false);
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
@@ -33,41 +32,15 @@ const BackupManager: React.FC<BackupManagerProps> = ({ userRole }) => {
   const [backupName, setBackupName] = useState('');
   const [backupDescription, setBackupDescription] = useState('');
   
-  // Check authentication status
+  // Load backups on component mount
   useEffect(() => {
-    const checkAuth = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      setIsAuthenticated(!!session);
-      console.log('Authentication status:', !!session);
-    };
-    
-    checkAuth();
-    
-    // Listen for auth state changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      setIsAuthenticated(!!session);
-      console.log('Auth state changed:', event, !!session);
-    });
-    
-    return () => subscription.unsubscribe();
+    loadBackups();
   }, []);
-  
-  // Load backups on component mount and when authentication changes
-  useEffect(() => {
-    if (isAuthenticated) {
-      loadBackups();
-    } else {
-      setBackups([]);
-      setLoading(false);
-    }
-  }, [isAuthenticated]);
   
   const loadBackups = async () => {
     setLoading(true);
     try {
-      console.log('Loading backups...');
       const data = await getBackups();
-      console.log('Loaded backups:', data);
       setBackups(data);
     } catch (error) {
       console.error('Error loading backups:', error);
@@ -188,28 +161,6 @@ const BackupManager: React.FC<BackupManagerProps> = ({ userRole }) => {
       minute: '2-digit'
     });
   };
-  
-  // Show authentication required message if not authenticated
-  if (!isAuthenticated) {
-    return (
-      <Card className="mb-8">
-        <CardHeader>
-          <CardTitle>Website-Backups</CardTitle>
-          <CardDescription>
-            Erstellen und verwalten Sie Backups Ihrer Website
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Alert>
-            <AlertTriangle className="h-4 w-4" />
-            <AlertDescription>
-              Sie müssen angemeldet sein, um Backups zu erstellen und zu verwalten. Bitte melden Sie sich zuerst an.
-            </AlertDescription>
-          </Alert>
-        </CardContent>
-      </Card>
-    );
-  }
   
   return (
     <Card className="mb-8">

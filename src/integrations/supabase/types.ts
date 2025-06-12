@@ -1737,10 +1737,6 @@ export type Database = {
         Args: { user_id: string }
         Returns: boolean
       }
-      is_user_admin: {
-        Args: { user_id: string }
-        Returns: boolean
-      }
       update_admin_user: {
         Args: {
           user_id_input: string

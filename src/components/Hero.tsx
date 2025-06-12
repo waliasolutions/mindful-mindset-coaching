@@ -1,4 +1,3 @@
-
 import { ArrowDown, Leaf, Shield } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { useIsMobile } from '../hooks/use-mobile';
@@ -40,23 +39,23 @@ const Hero = () => {
   }, []);
 
   return (
-    <section id="hero" className="relative min-h-screen flex items-center pt-28 sm:pt-32 md:pt-36 pb-20 sm:pb-24 md:pb-28 lg:pb-32 overflow-hidden">
+    <section id="hero" className="relative min-h-screen flex items-center pt-16 sm:pt-20 md:pt-24 pb-8 sm:pb-12 overflow-hidden">
       <div className="absolute inset-0 bg-beige/60 leaf-pattern -z-10"></div>
       
       {/* Reduced decorative elements for better performance */}
       <div className="absolute top-32 sm:top-40 right-4 sm:right-10 w-24 h-24 sm:w-32 sm:h-32 bg-sage/10 rounded-full blur-2xl -z-10"></div>
       <div className="absolute bottom-16 sm:bottom-20 left-4 sm:left-10 w-24 h-24 sm:w-32 sm:h-32 bg-mauve/10 rounded-full blur-2xl -z-10"></div>
       
-      <div className="container mx-auto px-6 sm:px-8 lg:px-12 xl:px-16">
-        <div className="flex flex-col lg:flex-row items-center justify-between gap-12 sm:gap-16 lg:gap-20">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 xl:px-12">
+        <div className="flex flex-col lg:flex-row items-center justify-between gap-8 sm:gap-12 lg:gap-16">
           <div className="max-w-2xl w-full text-center lg:text-left">
-            <div className="hero-spacing">
-              <h1 ref={headingRef} className="font-serif text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-semibold leading-tight mb-6 sm:mb-8 transition-all duration-300 ease-out opacity-0 translate-y-10 text-center lg:text-left">
+            <div className="mb-6 sm:mb-8 md:mb-10">
+              <h1 ref={headingRef} className="font-serif text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-semibold leading-tight mb-4 sm:mb-6 transition-all duration-300 ease-out opacity-0 translate-y-10 text-center lg:text-left">
                 <span className="bg-gradient-to-r from-moss via-petrol to-forest bg-clip-text text-transparent">Mindset Coaching</span> für ein glückliches und erfülltes Leben
               </h1>
 
               {/* Mobile image - optimized loading */}
-              <div className="block lg:hidden mb-8 sm:mb-10 text-center">
+              <div className="block lg:hidden mb-6 sm:mb-8 text-center">
                 <div className="relative w-full max-w-xs sm:max-w-sm md:max-w-md mx-auto">
                   <div className="aspect-[3/4] overflow-hidden shadow-xl transition-all duration-200 hover:shadow-2xl rounded-lg">
                     <div className="image-reveal reveal w-full h-full relative">
@@ -70,8 +69,8 @@ const Hero = () => {
                       />
                       <div className="absolute inset-0 bg-forest/20 rounded-lg"></div>
                       
-                      <div className="absolute bottom-4 sm:bottom-5 right-4 sm:right-5 z-10">
-                        <Badge variant="default" className="bg-white text-forest flex items-center gap-2 py-2 sm:py-2.5 px-3 sm:px-4 shadow-lg text-xs sm:text-sm">
+                      <div className="absolute bottom-3 sm:bottom-4 right-3 sm:right-4 z-10">
+                        <Badge variant="default" className="bg-white text-forest flex items-center gap-1 sm:gap-2 py-1.5 sm:py-2 px-2 sm:px-3 shadow-lg text-xs sm:text-sm">
                           <Shield size={14} className="text-forest" />
                           <span className="hidden sm:inline">Zertifizierter</span> Mindset Coach
                         </Badge>
@@ -81,17 +80,17 @@ const Hero = () => {
                 </div>
               </div>
 
-              <p ref={subtitleRef} className="text-base sm:text-lg md:text-xl lg:text-2xl text-foreground/90 mb-6 sm:mb-8 md:mb-10 max-w-2xl mx-auto lg:mx-0 text-center lg:text-left transition-all duration-300 ease-out opacity-0 translate-y-10 delay-50 leading-relaxed">
+              <p ref={subtitleRef} className="text-base sm:text-lg md:text-xl lg:text-2xl text-foreground/90 mb-4 sm:mb-6 md:mb-8 max-w-2xl mx-auto lg:mx-0 text-center lg:text-left transition-all duration-300 ease-out opacity-0 translate-y-10 delay-50 leading-relaxed">
                 {content.subtitle}
               </p>
-              <p ref={additionalTextRef} className="text-sm sm:text-base md:text-lg text-foreground/80 mb-8 sm:mb-10 max-w-xl mx-auto lg:mx-0 text-center lg:text-left transition-all duration-300 ease-out opacity-0 translate-y-10 delay-100 leading-relaxed">
+              <p ref={additionalTextRef} className="text-sm sm:text-base md:text-lg text-foreground/80 mb-6 sm:mb-8 max-w-xl mx-auto lg:mx-0 text-center lg:text-left transition-all duration-300 ease-out opacity-0 translate-y-10 delay-100 leading-relaxed">
                 {content.additionalText}
               </p>
-              <div ref={ctaRef} className="flex flex-col sm:flex-row gap-4 sm:gap-5 justify-center lg:justify-start transition-all duration-300 ease-out opacity-0 translate-y-10 delay-150">
-                <a href="#contact" className="inline-flex items-center justify-center px-6 sm:px-7 md:px-8 lg:px-10 py-3 sm:py-3.5 md:py-4 bg-petrol text-white hover:bg-petrol/90 transition-colors shadow-lg font-medium rounded-md text-sm sm:text-base md:text-lg min-h-[48px] touch-manipulation">
+              <div ref={ctaRef} className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center lg:justify-start transition-all duration-300 ease-out opacity-0 translate-y-10 delay-150">
+                <a href="#contact" className="inline-flex items-center justify-center px-4 sm:px-5 md:px-6 lg:px-8 py-2.5 sm:py-3 md:py-3.5 bg-petrol text-white hover:bg-petrol/90 transition-colors shadow-lg font-medium rounded-md text-sm sm:text-base md:text-lg min-h-[44px] touch-manipulation">
                   {content.buttonText}
                 </a>
-                <a href="#services" className="hidden lg:inline-flex items-center justify-center px-6 sm:px-7 md:px-8 lg:px-10 py-3 sm:py-3.5 md:py-4 bg-sage/30 hover:bg-sage/40 text-forest transition-colors focus-ring text-center rounded-md text-sm sm:text-base md:text-lg min-h-[48px] touch-manipulation">
+                <a href="#services" className="hidden lg:inline-flex items-center justify-center px-4 sm:px-5 md:px-6 lg:px-8 py-2.5 sm:py-3 md:py-3.5 bg-sage/30 hover:bg-sage/40 text-forest transition-colors focus-ring text-center rounded-md text-sm sm:text-base md:text-lg min-h-[44px] touch-manipulation">
                   Mehr erfahren
                 </a>
               </div>
@@ -112,8 +111,8 @@ const Hero = () => {
                 />
                 <div className="absolute inset-0 bg-forest/20 rounded-lg"></div>
                 
-                <div className="absolute bottom-5 right-5 z-10">
-                  <Badge variant="default" className="bg-white text-forest flex items-center gap-2 py-2.5 px-4 shadow-lg">
+                <div className="absolute bottom-4 right-4 z-10">
+                  <Badge variant="default" className="bg-white text-forest flex items-center gap-2 py-2 px-3 shadow-lg">
                     <Shield size={16} className="text-forest" />
                     Zertifizierter Mindset Coach
                   </Badge>
@@ -125,7 +124,7 @@ const Hero = () => {
       </div>
       
       {!isMobile && (
-        <div className="absolute bottom-8 sm:bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce max-lg:hidden">
+        <div className="absolute bottom-6 sm:bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce max-lg:hidden">
           <a href="#services" className="flex flex-col items-center text-forest/70 hover:text-forest transition-colors">
             <span className="text-xs sm:text-sm mb-2">Mehr</span>
             <ArrowDown size={18} />
