@@ -26,6 +26,20 @@ export interface CreateBackupOptions {
   description?: string;
 }
 
+// Helper to check if user is authenticated
+const checkAuthentication = async (): Promise<boolean> => {
+  const { data: { session } } = await supabase.auth.getSession();
+  if (!session?.user) {
+    toast({
+      title: "Anmeldung erforderlich",
+      description: "Sie müssen angemeldet sein, um Backups zu erstellen oder zu verwalten.",
+      variant: "destructive",
+    });
+    return false;
+  }
+  return true;
+};
+
 // Helper to collect all website data that needs to be backed up
 const collectWebsiteData = async (): Promise<Record<string, any>> => {
   // Collect all data from localStorage
@@ -64,6 +78,11 @@ const collectWebsiteData = async (): Promise<Record<string, any>> => {
 // Create a new backup and store it in Supabase
 export const createBackup = async (options: CreateBackupOptions): Promise<WebsiteBackup | null> => {
   try {
+    // Check authentication first
+    if (!(await checkAuthentication())) {
+      return null;
+    }
+
     const websiteData = await collectWebsiteData();
     const serializedData = JSON.stringify(websiteData);
     const fileSize = new Blob([serializedData]).size;
@@ -81,11 +100,21 @@ export const createBackup = async (options: CreateBackupOptions): Promise<Websit
     
     if (error) {
       console.error('Error creating backup:', error);
-      toast({
-        title: "Backup fehlgeschlagen",
-        description: `Fehler beim Erstellen des Backups: ${error.message}`,
-        variant: "destructive",
-      });
+      
+      // Provide more specific error messages
+      if (error.code === 'PGRST116') {
+        toast({
+          title: "Backup fehlgeschlagen",
+          description: "Sie sind nicht berechtigt, Backups zu erstellen. Bitte melden Sie sich an.",
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "Backup fehlgeschlagen",
+          description: `Fehler beim Erstellen des Backups: ${error.message}`,
+          variant: "destructive",
+        });
+      }
       return null;
     }
     
@@ -110,6 +139,11 @@ export const createBackup = async (options: CreateBackupOptions): Promise<Websit
 // Get all backups for the current user
 export const getBackups = async (): Promise<WebsiteBackup[]> => {
   try {
+    // Check authentication first
+    if (!(await checkAuthentication())) {
+      return [];
+    }
+
     const { data, error } = await supabase
       .from('website_backups')
       .select('*')
@@ -117,6 +151,14 @@ export const getBackups = async (): Promise<WebsiteBackup[]> => {
     
     if (error) {
       console.error('Error fetching backups:', error);
+      
+      if (error.code === 'PGRST116') {
+        toast({
+          title: "Zugriff verweigert",
+          description: "Sie sind nicht berechtigt, Backups anzuzeigen. Bitte melden Sie sich an.",
+          variant: "destructive",
+        });
+      }
       return [];
     }
     
@@ -130,6 +172,11 @@ export const getBackups = async (): Promise<WebsiteBackup[]> => {
 // Get a single backup by ID
 export const getBackupById = async (id: string): Promise<WebsiteBackup | null> => {
   try {
+    // Check authentication first
+    if (!(await checkAuthentication())) {
+      return null;
+    }
+
     const { data, error } = await supabase
       .from('website_backups')
       .select('*')
@@ -151,6 +198,11 @@ export const getBackupById = async (id: string): Promise<WebsiteBackup | null> =
 // Delete a backup by ID
 export const deleteBackup = async (id: string): Promise<boolean> => {
   try {
+    // Check authentication first
+    if (!(await checkAuthentication())) {
+      return false;
+    }
+
     const { error } = await supabase
       .from('website_backups')
       .delete()
@@ -158,11 +210,20 @@ export const deleteBackup = async (id: string): Promise<boolean> => {
     
     if (error) {
       console.error('Error deleting backup:', error);
-      toast({
-        title: "Löschen fehlgeschlagen",
-        description: `Fehler beim Löschen des Backups: ${error.message}`,
-        variant: "destructive",
-      });
+      
+      if (error.code === 'PGRST116') {
+        toast({
+          title: "Löschen fehlgeschlagen",
+          description: "Sie sind nicht berechtigt, dieses Backup zu löschen.",
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "Löschen fehlgeschlagen",
+          description: `Fehler beim Löschen des Backups: ${error.message}`,
+          variant: "destructive",
+        });
+      }
       return false;
     }
     
@@ -187,6 +248,11 @@ export const deleteBackup = async (id: string): Promise<boolean> => {
 // Restore website from a backup
 export const restoreFromBackup = async (backup: WebsiteBackup): Promise<boolean> => {
   try {
+    // Check authentication first
+    if (!(await checkAuthentication())) {
+      return false;
+    }
+
     // Create a backup before restoring as a safety measure
     await createBackup({
       name: `Auto-Backup vor Wiederherstellung (${new Date().toLocaleString('de-DE')})`,
@@ -261,6 +327,11 @@ export const restoreFromBackup = async (backup: WebsiteBackup): Promise<boolean>
     });
     return false;
   }
+};
+
+// Check if user is authenticated and can access backups
+export const checkBackupAccess = async (): Promise<boolean> => {
+  return await checkAuthentication();
 };
 
 // Format file size for display

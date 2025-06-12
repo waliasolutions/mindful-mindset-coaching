@@ -8,21 +8,24 @@ import { Label } from '@/components/ui/label';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { WebsiteBackup, getBackups, createBackup, deleteBackup, restoreFromBackup, formatFileSize } from '@/utils/backupManager';
-import { Loader2, Save, Trash, RefreshCcw, FileText, AlertTriangle, Info } from 'lucide-react';
+import { WebsiteBackup, getBackups, createBackup, deleteBackup, restoreFromBackup, formatFileSize, checkBackupAccess } from '@/utils/backupManager';
+import { Loader2, Save, Trash, RefreshCcw, FileText, AlertTriangle, Info, Lock } from 'lucide-react';
 import { toast } from '@/components/ui/use-toast';
 import { Badge } from '@/components/ui/badge';
 import { AdminRole } from '@/utils/adminAuth';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface BackupManagerProps {
   userRole: AdminRole;
 }
 
 const BackupManager: React.FC<BackupManagerProps> = ({ userRole }) => {
+  const { user, isLoading: authLoading } = useAuth();
   const [backups, setBackups] = useState<WebsiteBackup[]>([]);
   const [loading, setLoading] = useState(true);
   const [creating, setCreating] = useState(false);
   const [restoring, setRestoring] = useState(false);
+  const [hasAccess, setHasAccess] = useState(false);
   const [previewBackup, setPreviewBackup] = useState<WebsiteBackup | null>(null);
   const [restoreConfirmOpen, setRestoreConfirmOpen] = useState(false);
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
@@ -32,12 +35,34 @@ const BackupManager: React.FC<BackupManagerProps> = ({ userRole }) => {
   const [backupName, setBackupName] = useState('');
   const [backupDescription, setBackupDescription] = useState('');
   
-  // Load backups on component mount
+  // Check authentication and load backups on component mount
   useEffect(() => {
-    loadBackups();
-  }, []);
+    const initializeBackups = async () => {
+      if (authLoading) return;
+      
+      setLoading(true);
+      try {
+        const accessGranted = await checkBackupAccess();
+        setHasAccess(accessGranted);
+        
+        if (accessGranted) {
+          const data = await getBackups();
+          setBackups(data);
+        }
+      } catch (error) {
+        console.error('Error initializing backups:', error);
+        setHasAccess(false);
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    initializeBackups();
+  }, [authLoading, user]);
   
   const loadBackups = async () => {
+    if (!hasAccess) return;
+    
     setLoading(true);
     try {
       const data = await getBackups();
@@ -59,6 +84,15 @@ const BackupManager: React.FC<BackupManagerProps> = ({ userRole }) => {
       toast({
         title: 'Fehlende Informationen',
         description: 'Bitte geben Sie einen Namen für das Backup ein.',
+        variant: 'destructive',
+      });
+      return;
+    }
+    
+    if (!hasAccess) {
+      toast({
+        title: 'Zugriff verweigert',
+        description: 'Sie müssen angemeldet sein, um Backups zu erstellen.',
         variant: 'destructive',
       });
       return;
@@ -96,7 +130,7 @@ const BackupManager: React.FC<BackupManagerProps> = ({ userRole }) => {
   };
   
   const confirmDeleteBackup = async () => {
-    if (!selectedBackupId) return;
+    if (!selectedBackupId || !hasAccess) return;
     
     try {
       const success = await deleteBackup(selectedBackupId);
@@ -117,12 +151,21 @@ const BackupManager: React.FC<BackupManagerProps> = ({ userRole }) => {
   };
   
   const handleRestoreBackup = (backup: WebsiteBackup) => {
+    if (!hasAccess) {
+      toast({
+        title: 'Zugriff verweigert',
+        description: 'Sie müssen angemeldet sein, um Backups wiederherzustellen.',
+        variant: 'destructive',
+      });
+      return;
+    }
+    
     setPreviewBackup(backup);
     setRestoreConfirmOpen(true);
   };
   
   const confirmRestoreBackup = async () => {
-    if (!previewBackup) return;
+    if (!previewBackup || !hasAccess) return;
     
     setRestoring(true);
     try {
@@ -161,6 +204,47 @@ const BackupManager: React.FC<BackupManagerProps> = ({ userRole }) => {
       minute: '2-digit'
     });
   };
+
+  // Show authentication required message if user is not logged in
+  if (!authLoading && !user) {
+    return (
+      <Card className="mb-8">
+        <CardHeader>
+          <CardTitle>Website-Backups</CardTitle>
+          <CardDescription>
+            Erstellen und verwalten Sie Backups Ihrer Website
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Alert>
+            <Lock className="h-4 w-4" />
+            <AlertDescription>
+              Sie müssen angemeldet sein, um Backups zu erstellen oder zu verwalten. Bitte melden Sie sich zuerst an.
+            </AlertDescription>
+          </Alert>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  // Show loading state while checking authentication
+  if (authLoading || (loading && !hasAccess)) {
+    return (
+      <Card className="mb-8">
+        <CardHeader>
+          <CardTitle>Website-Backups</CardTitle>
+          <CardDescription>
+            Erstellen und verwalten Sie Backups Ihrer Website
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="flex justify-center items-center py-8">
+            <Loader2 className="h-8 w-8 animate-spin text-forest" />
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
   
   return (
     <Card className="mb-8">
@@ -212,6 +296,7 @@ const BackupManager: React.FC<BackupManagerProps> = ({ userRole }) => {
                         size="sm"
                         className="text-blue-600 hover:text-blue-700 hover:bg-blue-50"
                         onClick={() => handleRestoreBackup(backup)}
+                        disabled={!hasAccess}
                       >
                         <RefreshCcw className="h-4 w-4 mr-1" />
                         Wiederherstellen
@@ -222,6 +307,7 @@ const BackupManager: React.FC<BackupManagerProps> = ({ userRole }) => {
                         size="sm" 
                         className="text-red-500 hover:text-red-600 hover:bg-red-50"
                         onClick={() => handleDeleteBackup(backup.id)}
+                        disabled={!hasAccess}
                       >
                         <Trash className="h-4 w-4 mr-1" />
                         Löschen
@@ -251,6 +337,7 @@ const BackupManager: React.FC<BackupManagerProps> = ({ userRole }) => {
                     value={backupName}
                     onChange={(e) => setBackupName(e.target.value)}
                     className="mt-1"
+                    disabled={!hasAccess}
                   />
                 </div>
                 
@@ -263,12 +350,13 @@ const BackupManager: React.FC<BackupManagerProps> = ({ userRole }) => {
                     onChange={(e) => setBackupDescription(e.target.value)}
                     className="mt-1"
                     rows={3}
+                    disabled={!hasAccess}
                   />
                 </div>
                 
                 <Button 
                   onClick={handleCreateBackup} 
-                  disabled={creating || !backupName.trim()}
+                  disabled={creating || !backupName.trim() || !hasAccess}
                   className="mt-4"
                 >
                   {creating ? (
