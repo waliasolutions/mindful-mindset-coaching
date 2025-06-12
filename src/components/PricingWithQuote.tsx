@@ -46,17 +46,17 @@ const PricingWithQuote = () => {
   }, []);
 
   return (
-    <section id="pricing" ref={sectionRef} className="py-12 sm:py-16 md:py-20 lg:py-24 xl:py-28 relative overflow-hidden text-forest bg-mint">
+    <section id="pricing" ref={sectionRef} className="py-12 sm:py-16 md:py-20 lg:py-24 xl:py-28 relative overflow-hidden text-primary bg-mint">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 xl:px-12">
         <div className="max-w-4xl mx-auto mb-8 sm:mb-12 md:mb-16 lg:mb-20 reveal-element">
           <div className="flex justify-center mb-2 sm:mb-3">
-            <span className="px-3 py-1 text-xs sm:text-sm font-medium bg-moss/20 rounded-full backdrop-blur-sm text-forest">Preise</span>
+            <span className="px-3 py-1 text-xs sm:text-sm font-medium bg-moss/20 rounded-full backdrop-blur-sm text-primary">Preise</span>
           </div>
-          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-serif font-semibold text-center mb-3 sm:mb-4 md:mb-6 text-forest leading-tight">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-serif font-semibold text-center mb-3 sm:mb-4 md:mb-6 text-primary leading-tight">
             {content.title}
           </h2>
-          <div className="w-12 sm:w-16 h-1 mx-auto mb-4 sm:mb-6 md:mb-8 bg-[#41773a]"></div>
-          <p className="text-base sm:text-lg md:text-xl text-center text-forest/90 max-w-3xl mx-auto leading-relaxed">
+          <div className="w-12 sm:w-16 h-1 mx-auto mb-4 sm:mb-6 md:mb-8 bg-moss"></div>
+          <p className="text-base sm:text-lg md:text-xl text-center text-primary/90 max-w-3xl mx-auto leading-relaxed">
             {content.description}
           </p>
         </div>
@@ -76,50 +76,50 @@ const PricingWithQuote = () => {
                     />
                   </div>
                   <div className="flex items-center mb-3 sm:mb-4 md:mb-6">
-                    <MessageSquareQuote size={20} className="text-forest/80" />
+                    <MessageSquareQuote size={20} className="text-primary/80" />
                   </div>
-                  <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-forest font-serif mb-3 sm:mb-4 md:mb-6 leading-relaxed text-center italic">
+                  <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-primary font-serif mb-3 sm:mb-4 md:mb-6 leading-relaxed text-center italic">
                     {content.quote}
                   </p>
-                  <p className="text-forest/80 font-medium text-xs sm:text-sm md:text-base">{content.quoteAuthor}</p>
+                  <p className="text-primary/80 font-medium text-xs sm:text-sm md:text-base">{content.quoteAuthor}</p>
                 </div>
               </div>
             </div>
           </div>
 
           <div className="lg:col-span-3">
-            <div className="bg-card shadow-xl overflow-hidden border border-forest/10 rounded-lg h-full">
-              <div className="h-0.5 bg-forest/20"></div>
-              <div className="p-4 sm:p-5 md:p-6 lg:p-8 text-forest bg-[#41773a]/20">
+            <div className="bg-card shadow-xl overflow-hidden border border-primary/10 rounded-lg h-full">
+              <div className="h-0.5 bg-primary/20"></div>
+              <div className="p-4 sm:p-5 md:p-6 lg:p-8 text-primary bg-secondary/20">
                 <h3 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-serif font-medium mb-2">
                   {content.packageTitle}
                 </h3>
-                <p className="text-forest/90 mb-3 sm:mb-4 text-sm sm:text-base">Individuelle Betreuung für deine Bedürfnisse</p>
+                <p className="text-primary/90 mb-3 sm:mb-4 text-sm sm:text-base">Individuelle Betreuung für deine Bedürfnisse</p>
                 <div className="flex items-baseline">
                   <span className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold">{content.price}</span>
-                  <span className="text-forest/90 ml-2 text-sm sm:text-base">{content.pricePeriod}</span>
+                  <span className="text-primary/90 ml-2 text-sm sm:text-base">{content.pricePeriod}</span>
                 </div>
               </div>
               
-              <div className="p-4 sm:p-5 md:p-6 lg:p-8 text-forest">
+              <div className="p-4 sm:p-5 md:p-6 lg:p-8 text-primary">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4 md:gap-6 mb-4 sm:mb-6 md:mb-8">
                   <div className="flex items-center gap-2 sm:gap-3 md:gap-4">
                     <div className="flex-shrink-0 w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 bg-moss/20 rounded-full flex items-center justify-center">
-                      <Clock size={16} className="text-forest" />
+                      <Clock size={16} className="text-primary" />
                     </div>
                     <div>
                       <p className="font-medium mb-0.5 text-sm sm:text-base">Dauer</p>
-                      <p className="text-xs sm:text-sm md:text-base text-forest/70">45 Min – 60 Min</p>
+                      <p className="text-xs sm:text-sm md:text-base text-primary/70">45 Min – 60 Min</p>
                     </div>
                   </div>
                   
                   <div className="flex items-center gap-2 sm:gap-3 md:gap-4">
                     <div className="flex-shrink-0 w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 bg-moss/20 rounded-full flex items-center justify-center">
-                      <Users size={16} className="text-forest" />
+                      <Users size={16} className="text-primary" />
                     </div>
                     <div>
                       <p className="font-medium mb-0.5 text-sm sm:text-base">Format</p>
-                      <p className="text-xs sm:text-sm md:text-base text-forest/70">Online</p>
+                      <p className="text-xs sm:text-sm md:text-base text-primary/70">Online</p>
                     </div>
                   </div>
                 </div>
@@ -128,13 +128,13 @@ const PricingWithQuote = () => {
                   {["Individuelle Betreuung auf deine Bedürfnisse zugeschnitten", "Praktische Übungen und Techniken für den Alltag", "Fokus auf deine persönlichen Ziele und Herausforderungen", "Flexible Terminvereinbarung"].map((feature, index) => (
                     <li key={index} className="flex items-start gap-2 sm:gap-3">
                       <Check size={14} className="text-moss flex-shrink-0 mt-1" />
-                      <span className="text-xs sm:text-sm md:text-base text-forest/80 leading-relaxed">{feature}</span>
+                      <span className="text-xs sm:text-sm md:text-base text-primary/80 leading-relaxed">{feature}</span>
                     </li>
                   ))}
                 </ul>
                 
                 <div>
-                  <a href="#contact" className="bg-forest hover:bg-forest/90 text-white w-full flex justify-center py-2.5 sm:py-3 md:py-3.5 px-4 rounded-md transition-all text-sm sm:text-base md:text-lg font-medium min-h-[44px] touch-manipulation">
+                  <a href="#contact" className="bg-primary hover:bg-primary/90 text-primary-foreground w-full flex justify-center py-2.5 sm:py-3 md:py-3.5 px-4 rounded-md transition-all text-sm sm:text-base md:text-lg font-medium min-h-[44px] touch-manipulation">
                     Jetzt buchen
                   </a>
                 </div>

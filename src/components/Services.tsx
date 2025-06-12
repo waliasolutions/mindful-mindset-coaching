@@ -88,16 +88,16 @@ const Services = () => {
     const IconComponent = LucideIcons[iconName as keyof typeof LucideIcons] as any;
     if (!IconComponent) {
       // Fallback to Star icon if the specified icon doesn't exist
-      return <Star size={20} className="text-white" aria-hidden="true" />;
+      return <Star size={20} className="text-primary-foreground" aria-hidden="true" />;
     }
-    return <IconComponent size={20} className="text-white" aria-hidden="true" />;
+    return <IconComponent size={20} className="text-primary-foreground" aria-hidden="true" />;
   };
 
   return (
     <section 
       id="services" 
       ref={sectionRef} 
-      className="py-12 sm:py-16 md:py-20 lg:py-24 xl:py-28 relative overflow-hidden bg-background"
+      className="py-12 sm:py-16 md:py-20 lg:py-24 xl:py-28 relative overflow-hidden bg-mint"
       aria-labelledby="services-heading"
     >
       {/* Background pattern */}
@@ -110,11 +110,11 @@ const Services = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 xl:px-12">
         <div className="max-w-4xl mx-auto mb-8 sm:mb-12 md:mb-16 lg:mb-20 reveal-element">
           <div className="flex justify-center mb-2 sm:mb-3">
-            <span className="px-3 py-1 text-xs sm:text-sm font-medium text-forest bg-highlight rounded-full">
+            <span className="px-3 py-1 text-xs sm:text-sm font-medium text-primary bg-highlight rounded-full">
               Mindset Coaching
             </span>
           </div>
-          <h2 id="services-heading" className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-serif font-semibold text-center mb-3 sm:mb-4 md:mb-6 text-forest leading-tight">
+          <h2 id="services-heading" className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-serif font-semibold text-center mb-3 sm:mb-4 md:mb-6 text-primary leading-tight">
             {content.title}
           </h2>
           <div className="w-12 sm:w-16 h-1 bg-moss mx-auto mb-4 sm:mb-6 md:mb-8" aria-hidden="true"></div>
@@ -130,10 +130,10 @@ const Services = () => {
               className={`reveal-element transition-all duration-500 ease-out delay-${index * 100}`}
             >
               <article className="bg-card shadow-lg p-4 sm:p-5 md:p-6 lg:p-7 h-full flex flex-col hover:shadow-xl transition-all duration-300 border-t-2 border-moss rounded-md group">
-                <div className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-full bg-forest flex items-center justify-center mb-3 sm:mb-4 group-hover:scale-110 transition-transform duration-300">
+                <div className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-full bg-primary flex items-center justify-center mb-3 sm:mb-4 group-hover:scale-110 transition-transform duration-300">
                   {renderIcon(benefit.icon)}
                 </div>
-                <h3 className="text-base sm:text-lg md:text-xl lg:text-2xl font-serif font-medium mb-2 sm:mb-3 text-forest leading-tight">
+                <h3 className="text-base sm:text-lg md:text-xl lg:text-2xl font-serif font-medium mb-2 sm:mb-3 text-primary leading-tight">
                   {benefit.title}
                 </h3>
                 <p className="text-sm sm:text-base md:text-lg text-foreground/80 leading-relaxed flex-1">
@@ -147,7 +147,7 @@ const Services = () => {
         <div className="flex justify-center mt-4 sm:mt-6 md:mt-8">
           <a 
             href="#contact" 
-            className="inline-flex items-center justify-center px-4 sm:px-5 md:px-6 lg:px-8 py-2 sm:py-2.5 md:py-3 lg:py-4 bg-forest text-white hover:bg-forest/90 transition-colors shadow-lg font-medium rounded-md text-sm sm:text-base md:text-lg min-h-[44px] touch-manipulation"
+            className="inline-flex items-center justify-center px-4 sm:px-5 md:px-6 lg:px-8 py-2 sm:py-2.5 md:py-3 lg:py-4 bg-primary text-primary-foreground hover:bg-primary/90 transition-colors shadow-lg font-medium rounded-md text-sm sm:text-base md:text-lg min-h-[44px] touch-manipulation"
             aria-label="Kontaktiere mich für Mindset Coaching"
           >
             {content.buttonText}
