@@ -116,7 +116,7 @@ const Footer = ({ onTermsClick, onImpressumClick, onDatenschutzClick }: FooterPr
 
           {/* Social Media & Partner */}
           <div>
-            <h3 className="text-xl font-semibold mb-4">Folgen Sie uns</h3>
+            <h3 className="text-xl font-semibold mb-4">Folgen Sie mir auf</h3>
             <div className="flex space-x-4 mb-6">
               {footerContent.socialLinks.map((social) => (
                 <a
