@@ -56,11 +56,14 @@ export const useCoreWebVitals = () => {
     }
 
     // Send to Console for debugging
-    console.log(`Core Web Vital - ${metric.toUpperCase()}:`, {
-      value: Math.round(value),
-      rating,
-      threshold: THRESHOLDS[metric as keyof VitalsThresholds]
-    });
+    // Log Core Web Vitals in development only
+    if (import.meta.env.DEV) {
+      console.log(`Core Web Vital - ${metric.toUpperCase()}:`, {
+        value: Math.round(value),
+        rating,
+        threshold: THRESHOLDS[metric as keyof VitalsThresholds]
+      });
+    }
   };
 
   useEffect(() => {

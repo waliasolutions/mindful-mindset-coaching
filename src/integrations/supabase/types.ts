@@ -7,6 +7,11 @@ export type Json =
   | Json[]
 
 export type Database = {
+  // Allows to automatically instanciate createClient with right options
+  // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
+  __InternalSupabase: {
+    PostgrestVersion: "12.2.3 (519615d)"
+  }
   public: {
     Tables: {
       activities: {
@@ -173,6 +178,72 @@ export type Database = {
         }
         Relationships: []
       }
+      assessments: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          id: string
+          is_completed: boolean | null
+          is_public: boolean | null
+          mission_statement: string | null
+          overall_score: number
+          participant_email: string | null
+          participant_name: string | null
+          partner_name: string | null
+          responses: Json
+          results: Json
+          selected_bible_verse: string | null
+          session_id: string | null
+          share_token: string
+          updated_at: string
+          user_id: string | null
+          vision_mapping_data: Json | null
+          vision_statement: string | null
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          is_completed?: boolean | null
+          is_public?: boolean | null
+          mission_statement?: string | null
+          overall_score: number
+          participant_email?: string | null
+          participant_name?: string | null
+          partner_name?: string | null
+          responses: Json
+          results: Json
+          selected_bible_verse?: string | null
+          session_id?: string | null
+          share_token?: string
+          updated_at?: string
+          user_id?: string | null
+          vision_mapping_data?: Json | null
+          vision_statement?: string | null
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          is_completed?: boolean | null
+          is_public?: boolean | null
+          mission_statement?: string | null
+          overall_score?: number
+          participant_email?: string | null
+          participant_name?: string | null
+          partner_name?: string | null
+          responses?: Json
+          results?: Json
+          selected_bible_verse?: string | null
+          session_id?: string | null
+          share_token?: string
+          updated_at?: string
+          user_id?: string | null
+          vision_mapping_data?: Json | null
+          vision_statement?: string | null
+        }
+        Relationships: []
+      }
       assignment_history: {
         Row: {
           assigned_at: string
@@ -293,6 +364,157 @@ export type Database = {
           },
         ]
       }
+      client_activities: {
+        Row: {
+          activity_type: string
+          billable: boolean
+          category: string | null
+          client_id: string
+          created_at: string | null
+          duration: number
+          employee_id: string
+          id: string
+          notes: string
+          tags: string[] | null
+          timestamp: string
+          updated_at: string | null
+        }
+        Insert: {
+          activity_type: string
+          billable?: boolean
+          category?: string | null
+          client_id: string
+          created_at?: string | null
+          duration: number
+          employee_id: string
+          id?: string
+          notes: string
+          tags?: string[] | null
+          timestamp: string
+          updated_at?: string | null
+        }
+        Update: {
+          activity_type?: string
+          billable?: boolean
+          category?: string | null
+          client_id?: string
+          created_at?: string | null
+          duration?: number
+          employee_id?: string
+          id?: string
+          notes?: string
+          tags?: string[] | null
+          timestamp?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "client_activities_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "client_activities_employee_id_fkey"
+            columns: ["employee_id"]
+            isOneToOne: false
+            referencedRelation: "employee_roles_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "client_activities_employee_id_fkey"
+            columns: ["employee_id"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      clients: {
+        Row: {
+          address: string
+          city: string | null
+          company_name: string | null
+          company_type: string | null
+          contact_person: string
+          contingent_hours: number
+          country: string | null
+          created_at: string | null
+          email: string
+          firstname: string | null
+          iban: string | null
+          id: string
+          lastname: string | null
+          name: string
+          notes: string | null
+          phone: string
+          postal_code: string | null
+          remaining_hours: number
+          start_date: string
+          status: string
+          street_address: string | null
+          tax_canton: string | null
+          uid: string | null
+          updated_at: string | null
+          vat_number: string | null
+        }
+        Insert: {
+          address: string
+          city?: string | null
+          company_name?: string | null
+          company_type?: string | null
+          contact_person: string
+          contingent_hours?: number
+          country?: string | null
+          created_at?: string | null
+          email: string
+          firstname?: string | null
+          iban?: string | null
+          id?: string
+          lastname?: string | null
+          name: string
+          notes?: string | null
+          phone: string
+          postal_code?: string | null
+          remaining_hours?: number
+          start_date: string
+          status?: string
+          street_address?: string | null
+          tax_canton?: string | null
+          uid?: string | null
+          updated_at?: string | null
+          vat_number?: string | null
+        }
+        Update: {
+          address?: string
+          city?: string | null
+          company_name?: string | null
+          company_type?: string | null
+          contact_person?: string
+          contingent_hours?: number
+          country?: string | null
+          created_at?: string | null
+          email?: string
+          firstname?: string | null
+          iban?: string | null
+          id?: string
+          lastname?: string | null
+          name?: string
+          notes?: string | null
+          phone?: string
+          postal_code?: string | null
+          remaining_hours?: number
+          start_date?: string
+          status?: string
+          street_address?: string | null
+          tax_canton?: string | null
+          uid?: string | null
+          updated_at?: string | null
+          vat_number?: string | null
+        }
+        Relationships: []
+      }
       collages: {
         Row: {
           created_at: string
@@ -394,6 +616,122 @@ export type Database = {
           },
         ]
       }
+      contingent_history: {
+        Row: {
+          action: string
+          change: number
+          client_id: string
+          created_at: string
+          id: string
+          new_contingent: number
+          old_contingent: number
+          processed_by: string | null
+          reason: string | null
+        }
+        Insert: {
+          action: string
+          change: number
+          client_id: string
+          created_at?: string
+          id?: string
+          new_contingent: number
+          old_contingent: number
+          processed_by?: string | null
+          reason?: string | null
+        }
+        Update: {
+          action?: string
+          change?: number
+          client_id?: string
+          created_at?: string
+          id?: string
+          new_contingent?: number
+          old_contingent?: number
+          processed_by?: string | null
+          reason?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "contingent_history_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "contingent_history_processed_by_fkey"
+            columns: ["processed_by"]
+            isOneToOne: false
+            referencedRelation: "employee_roles_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "contingent_history_processed_by_fkey"
+            columns: ["processed_by"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      contingent_requests: {
+        Row: {
+          client_id: string
+          created_at: string
+          id: string
+          processed_at: string | null
+          processed_by: string | null
+          reason: string | null
+          requested_hours: number
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          client_id: string
+          created_at?: string
+          id?: string
+          processed_at?: string | null
+          processed_by?: string | null
+          reason?: string | null
+          requested_hours: number
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          client_id?: string
+          created_at?: string
+          id?: string
+          processed_at?: string | null
+          processed_by?: string | null
+          reason?: string | null
+          requested_hours?: number
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "contingent_requests_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "contingent_requests_processed_by_fkey"
+            columns: ["processed_by"]
+            isOneToOne: false
+            referencedRelation: "employee_roles_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "contingent_requests_processed_by_fkey"
+            columns: ["processed_by"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       contracts: {
         Row: {
           created_at: string | null
@@ -471,6 +809,45 @@ export type Database = {
           },
         ]
       }
+      downloads: {
+        Row: {
+          created_at: string
+          description: string | null
+          display_order: number | null
+          file_name: string
+          file_size: number | null
+          file_url: string
+          id: string
+          is_active: boolean
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          display_order?: number | null
+          file_name: string
+          file_size?: number | null
+          file_url: string
+          id?: string
+          is_active?: boolean
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          display_order?: number | null
+          file_name?: string
+          file_size?: number | null
+          file_url?: string
+          id?: string
+          is_active?: boolean
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       email_settings: {
         Row: {
           created_at: string
@@ -495,6 +872,301 @@ export type Database = {
           report_email?: string
           schedule_type?: string | null
           user_id?: string | null
+        }
+        Relationships: []
+      }
+      employee_client_assignments: {
+        Row: {
+          assigned_at: string | null
+          client_id: string
+          employee_id: string
+          id: string
+        }
+        Insert: {
+          assigned_at?: string | null
+          client_id: string
+          employee_id: string
+          id?: string
+        }
+        Update: {
+          assigned_at?: string | null
+          client_id?: string
+          employee_id?: string
+          id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "employee_client_assignments_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "employee_client_assignments_employee_id_fkey"
+            columns: ["employee_id"]
+            isOneToOne: false
+            referencedRelation: "employee_roles_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "employee_client_assignments_employee_id_fkey"
+            columns: ["employee_id"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      employee_default_availability: {
+        Row: {
+          created_at: string | null
+          day_of_week: number
+          employee_id: string
+          end_hour: number
+          id: string
+          is_available: boolean
+          start_hour: number
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          day_of_week: number
+          employee_id: string
+          end_hour: number
+          id?: string
+          is_available?: boolean
+          start_hour: number
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          day_of_week?: number
+          employee_id?: string
+          end_hour?: number
+          id?: string
+          is_available?: boolean
+          start_hour?: number
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "employee_default_availability_employee_id_fkey"
+            columns: ["employee_id"]
+            isOneToOne: false
+            referencedRelation: "employee_roles_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "employee_default_availability_employee_id_fkey"
+            columns: ["employee_id"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      employee_status: {
+        Row: {
+          created_at: string | null
+          employee_id: string
+          id: string
+          last_activity: string | null
+          status: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          employee_id: string
+          id?: string
+          last_activity?: string | null
+          status: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          employee_id?: string
+          id?: string
+          last_activity?: string | null
+          status?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "employee_status_employee_id_fkey"
+            columns: ["employee_id"]
+            isOneToOne: true
+            referencedRelation: "employee_roles_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "employee_status_employee_id_fkey"
+            columns: ["employee_id"]
+            isOneToOne: true
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      employees: {
+        Row: {
+          accident_insurance_number: string | null
+          address: string | null
+          ahv_number: string | null
+          avatar_url: string | null
+          bank_clearing_number: string | null
+          bank_name: string | null
+          birth_date: string | null
+          city: string | null
+          contract_type: string | null
+          country: string | null
+          created_at: string | null
+          department: string | null
+          email: string
+          emergency_contact_name: string | null
+          emergency_contact_phone: string | null
+          emergency_contact_relation: string | null
+          employment_end_date: string | null
+          employment_start_date: string | null
+          firstname: string | null
+          gender: string | null
+          has_children: boolean | null
+          health_insurance_provider: string | null
+          hourly_rate: number | null
+          iban: string | null
+          id: string
+          kinderzulagen_eligible: boolean | null
+          last_active: string | null
+          last_seen: string | null
+          lastname: string | null
+          marital_status: string | null
+          monthly_salary: number | null
+          name: string
+          nationality: string | null
+          pension_fund_number: string | null
+          phone: string | null
+          position: string | null
+          postal_code: string | null
+          responsibilities: string | null
+          role: string
+          salary_type: string | null
+          skills: string[] | null
+          status: string
+          street_address: string | null
+          tax_canton: string | null
+          tax_municipality: string | null
+          updated_at: string | null
+          vacation_days_per_year: number | null
+          work_permit_expires: string | null
+          work_permit_type: string | null
+          work_type: string
+          working_hours_per_week: number | null
+        }
+        Insert: {
+          accident_insurance_number?: string | null
+          address?: string | null
+          ahv_number?: string | null
+          avatar_url?: string | null
+          bank_clearing_number?: string | null
+          bank_name?: string | null
+          birth_date?: string | null
+          city?: string | null
+          contract_type?: string | null
+          country?: string | null
+          created_at?: string | null
+          department?: string | null
+          email: string
+          emergency_contact_name?: string | null
+          emergency_contact_phone?: string | null
+          emergency_contact_relation?: string | null
+          employment_end_date?: string | null
+          employment_start_date?: string | null
+          firstname?: string | null
+          gender?: string | null
+          has_children?: boolean | null
+          health_insurance_provider?: string | null
+          hourly_rate?: number | null
+          iban?: string | null
+          id?: string
+          kinderzulagen_eligible?: boolean | null
+          last_active?: string | null
+          last_seen?: string | null
+          lastname?: string | null
+          marital_status?: string | null
+          monthly_salary?: number | null
+          name: string
+          nationality?: string | null
+          pension_fund_number?: string | null
+          phone?: string | null
+          position?: string | null
+          postal_code?: string | null
+          responsibilities?: string | null
+          role: string
+          salary_type?: string | null
+          skills?: string[] | null
+          status?: string
+          street_address?: string | null
+          tax_canton?: string | null
+          tax_municipality?: string | null
+          updated_at?: string | null
+          vacation_days_per_year?: number | null
+          work_permit_expires?: string | null
+          work_permit_type?: string | null
+          work_type?: string
+          working_hours_per_week?: number | null
+        }
+        Update: {
+          accident_insurance_number?: string | null
+          address?: string | null
+          ahv_number?: string | null
+          avatar_url?: string | null
+          bank_clearing_number?: string | null
+          bank_name?: string | null
+          birth_date?: string | null
+          city?: string | null
+          contract_type?: string | null
+          country?: string | null
+          created_at?: string | null
+          department?: string | null
+          email?: string
+          emergency_contact_name?: string | null
+          emergency_contact_phone?: string | null
+          emergency_contact_relation?: string | null
+          employment_end_date?: string | null
+          employment_start_date?: string | null
+          firstname?: string | null
+          gender?: string | null
+          has_children?: boolean | null
+          health_insurance_provider?: string | null
+          hourly_rate?: number | null
+          iban?: string | null
+          id?: string
+          kinderzulagen_eligible?: boolean | null
+          last_active?: string | null
+          last_seen?: string | null
+          lastname?: string | null
+          marital_status?: string | null
+          monthly_salary?: number | null
+          name?: string
+          nationality?: string | null
+          pension_fund_number?: string | null
+          phone?: string | null
+          position?: string | null
+          postal_code?: string | null
+          responsibilities?: string | null
+          role?: string
+          salary_type?: string | null
+          skills?: string[] | null
+          status?: string
+          street_address?: string | null
+          tax_canton?: string | null
+          tax_municipality?: string | null
+          updated_at?: string | null
+          vacation_days_per_year?: number | null
+          work_permit_expires?: string | null
+          work_permit_type?: string | null
+          work_type?: string
+          working_hours_per_week?: number | null
         }
         Relationships: []
       }
@@ -585,6 +1257,33 @@ export type Database = {
         }
         Relationships: []
       }
+      global_settings: {
+        Row: {
+          created_at: string | null
+          id: string
+          setting_key: string
+          setting_value: Json
+          updated_at: string | null
+          updated_by: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          setting_key: string
+          setting_value: Json
+          updated_at?: string | null
+          updated_by?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          setting_key?: string
+          setting_value?: Json
+          updated_at?: string | null
+          updated_by?: string | null
+        }
+        Relationships: []
+      }
       guestbook_entries: {
         Row: {
           created_at: string
@@ -672,6 +1371,53 @@ export type Database = {
             columns: ["image_id"]
             isOneToOne: false
             referencedRelation: "media_library"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      lead_activities: {
+        Row: {
+          activity_type: string
+          completed_at: string | null
+          created_at: string
+          created_by: string | null
+          description: string | null
+          id: string
+          lead_id: string
+          metadata: Json | null
+          scheduled_at: string | null
+          title: string
+        }
+        Insert: {
+          activity_type: string
+          completed_at?: string | null
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          lead_id: string
+          metadata?: Json | null
+          scheduled_at?: string | null
+          title: string
+        }
+        Update: {
+          activity_type?: string
+          completed_at?: string | null
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          lead_id?: string
+          metadata?: Json | null
+          scheduled_at?: string | null
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "lead_activities_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "unified_leads"
             referencedColumns: ["id"]
           },
         ]
@@ -861,34 +1607,43 @@ export type Database = {
         Row: {
           alt_text: string | null
           created_at: string | null
+          dimensions: Json | null
           file_name: string | null
           file_size: number | null
           file_type: string | null
           id: string
           image_url: string
+          optimized_url: string | null
           updated_at: string | null
+          usage_context: string[] | null
           user_id: string | null
         }
         Insert: {
           alt_text?: string | null
           created_at?: string | null
+          dimensions?: Json | null
           file_name?: string | null
           file_size?: number | null
           file_type?: string | null
           id?: string
           image_url: string
+          optimized_url?: string | null
           updated_at?: string | null
+          usage_context?: string[] | null
           user_id?: string | null
         }
         Update: {
           alt_text?: string | null
           created_at?: string | null
+          dimensions?: Json | null
           file_name?: string | null
           file_size?: number | null
           file_type?: string | null
           id?: string
           image_url?: string
+          optimized_url?: string | null
           updated_at?: string | null
+          usage_context?: string[] | null
           user_id?: string | null
         }
         Relationships: []
@@ -973,6 +1728,60 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      notifications: {
+        Row: {
+          created_at: string | null
+          id: string
+          message: string
+          read: boolean
+          related_id: string | null
+          related_type: string | null
+          title: string
+          type: string
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          message: string
+          read?: boolean
+          related_id?: string | null
+          related_type?: string | null
+          title: string
+          type?: string
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          message?: string
+          read?: boolean
+          related_id?: string | null
+          related_type?: string | null
+          title?: string
+          type?: string
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "notifications_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "employee_roles_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "notifications_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       offer_requests: {
         Row: {
@@ -1113,6 +1922,42 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      partners: {
+        Row: {
+          created_at: string
+          description: string | null
+          display_order: number | null
+          id: string
+          is_active: boolean
+          logo_url: string
+          name: string
+          updated_at: string
+          website_url: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          display_order?: number | null
+          id?: string
+          is_active?: boolean
+          logo_url: string
+          name: string
+          updated_at?: string
+          website_url: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          display_order?: number | null
+          id?: string
+          is_active?: boolean
+          logo_url?: string
+          name?: string
+          updated_at?: string
+          website_url?: string
+        }
+        Relationships: []
       }
       profiles: {
         Row: {
@@ -1289,6 +2134,136 @@ export type Database = {
         }
         Relationships: []
       }
+      schedule_change_requests: {
+        Row: {
+          admin_notes: string | null
+          created_at: string | null
+          employee_id: string
+          id: string
+          reason: string | null
+          requested_changes: Json
+          reviewed_at: string | null
+          reviewed_by: string | null
+          schedule_id: string
+          status: string
+          updated_at: string | null
+        }
+        Insert: {
+          admin_notes?: string | null
+          created_at?: string | null
+          employee_id: string
+          id?: string
+          reason?: string | null
+          requested_changes: Json
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          schedule_id: string
+          status?: string
+          updated_at?: string | null
+        }
+        Update: {
+          admin_notes?: string | null
+          created_at?: string | null
+          employee_id?: string
+          id?: string
+          reason?: string | null
+          requested_changes?: Json
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          schedule_id?: string
+          status?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "schedule_change_requests_employee_id_fkey"
+            columns: ["employee_id"]
+            isOneToOne: false
+            referencedRelation: "employee_roles_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "schedule_change_requests_employee_id_fkey"
+            columns: ["employee_id"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "schedule_change_requests_reviewed_by_fkey"
+            columns: ["reviewed_by"]
+            isOneToOne: false
+            referencedRelation: "employee_roles_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "schedule_change_requests_reviewed_by_fkey"
+            columns: ["reviewed_by"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "schedule_change_requests_schedule_id_fkey"
+            columns: ["schedule_id"]
+            isOneToOne: false
+            referencedRelation: "weekly_schedules"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      schedule_comments: {
+        Row: {
+          comment: string
+          created_at: string | null
+          employee_id: string
+          id: string
+          is_admin_comment: boolean
+          schedule_id: string
+          updated_at: string | null
+        }
+        Insert: {
+          comment: string
+          created_at?: string | null
+          employee_id: string
+          id?: string
+          is_admin_comment?: boolean
+          schedule_id: string
+          updated_at?: string | null
+        }
+        Update: {
+          comment?: string
+          created_at?: string | null
+          employee_id?: string
+          id?: string
+          is_admin_comment?: boolean
+          schedule_id?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "schedule_comments_employee_id_fkey"
+            columns: ["employee_id"]
+            isOneToOne: false
+            referencedRelation: "employee_roles_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "schedule_comments_employee_id_fkey"
+            columns: ["employee_id"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "schedule_comments_schedule_id_fkey"
+            columns: ["schedule_id"]
+            isOneToOne: false
+            referencedRelation: "weekly_schedules"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       seo_settings: {
         Row: {
           created_at: string | null
@@ -1379,6 +2354,30 @@ export type Database = {
         }
         Relationships: []
       }
+      swiss_cantons: {
+        Row: {
+          code: string
+          name_de: string
+          name_en: string | null
+          name_fr: string | null
+          name_it: string | null
+        }
+        Insert: {
+          code: string
+          name_de: string
+          name_en?: string | null
+          name_fr?: string | null
+          name_it?: string | null
+        }
+        Update: {
+          code?: string
+          name_de?: string
+          name_en?: string | null
+          name_fr?: string | null
+          name_it?: string | null
+        }
+        Relationships: []
+      }
       time_entries: {
         Row: {
           created_at: string
@@ -1422,6 +2421,75 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      unified_leads: {
+        Row: {
+          assigned_to: string | null
+          budget_range: string | null
+          company_name: string | null
+          created_at: string
+          email: string
+          form_data: Json | null
+          id: string
+          last_contact_at: string | null
+          magnet_type: string | null
+          message: string | null
+          name: string
+          original_submission_id: string | null
+          original_table: string | null
+          phone: string | null
+          project_type: string | null
+          score: number | null
+          source: Database["public"]["Enums"]["lead_source"]
+          status: Database["public"]["Enums"]["lead_status"]
+          timeline: string | null
+          updated_at: string
+        }
+        Insert: {
+          assigned_to?: string | null
+          budget_range?: string | null
+          company_name?: string | null
+          created_at?: string
+          email: string
+          form_data?: Json | null
+          id?: string
+          last_contact_at?: string | null
+          magnet_type?: string | null
+          message?: string | null
+          name: string
+          original_submission_id?: string | null
+          original_table?: string | null
+          phone?: string | null
+          project_type?: string | null
+          score?: number | null
+          source: Database["public"]["Enums"]["lead_source"]
+          status?: Database["public"]["Enums"]["lead_status"]
+          timeline?: string | null
+          updated_at?: string
+        }
+        Update: {
+          assigned_to?: string | null
+          budget_range?: string | null
+          company_name?: string | null
+          created_at?: string
+          email?: string
+          form_data?: Json | null
+          id?: string
+          last_contact_at?: string | null
+          magnet_type?: string | null
+          message?: string | null
+          name?: string
+          original_submission_id?: string | null
+          original_table?: string | null
+          phone?: string | null
+          project_type?: string | null
+          score?: number | null
+          source?: Database["public"]["Enums"]["lead_source"]
+          status?: Database["public"]["Enums"]["lead_status"]
+          timeline?: string | null
+          updated_at?: string
+        }
+        Relationships: []
       }
       user_messages: {
         Row: {
@@ -1475,6 +2543,54 @@ export type Database = {
             columns: ["to_user_id"]
             isOneToOne: false
             referencedRelation: "profiles_with_email"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_preferences: {
+        Row: {
+          assignment_notifications: boolean
+          comment_notifications: boolean
+          created_at: string | null
+          email_notifications: boolean
+          employee_id: string
+          id: string
+          schedule_change_notifications: boolean
+          updated_at: string | null
+        }
+        Insert: {
+          assignment_notifications?: boolean
+          comment_notifications?: boolean
+          created_at?: string | null
+          email_notifications?: boolean
+          employee_id: string
+          id?: string
+          schedule_change_notifications?: boolean
+          updated_at?: string | null
+        }
+        Update: {
+          assignment_notifications?: boolean
+          comment_notifications?: boolean
+          created_at?: string | null
+          email_notifications?: boolean
+          employee_id?: string
+          id?: string
+          schedule_change_notifications?: boolean
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_preferences_employee_id_fkey"
+            columns: ["employee_id"]
+            isOneToOne: true
+            referencedRelation: "employee_roles_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_preferences_employee_id_fkey"
+            columns: ["employee_id"]
+            isOneToOne: true
+            referencedRelation: "employees"
             referencedColumns: ["id"]
           },
         ]
@@ -1586,6 +2702,67 @@ export type Database = {
           },
         ]
       }
+      weekly_schedules: {
+        Row: {
+          client_id: string
+          created_at: string | null
+          day_of_week: number
+          employee_id: string
+          end_hour: number
+          id: string
+          is_auto_assigned: boolean | null
+          notes: string | null
+          start_hour: number
+          updated_at: string | null
+        }
+        Insert: {
+          client_id: string
+          created_at?: string | null
+          day_of_week: number
+          employee_id: string
+          end_hour: number
+          id?: string
+          is_auto_assigned?: boolean | null
+          notes?: string | null
+          start_hour: number
+          updated_at?: string | null
+        }
+        Update: {
+          client_id?: string
+          created_at?: string | null
+          day_of_week?: number
+          employee_id?: string
+          end_hour?: number
+          id?: string
+          is_auto_assigned?: boolean | null
+          notes?: string | null
+          start_hour?: number
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "weekly_schedules_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "weekly_schedules_employee_id_fkey"
+            columns: ["employee_id"]
+            isOneToOne: false
+            referencedRelation: "employee_roles_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "weekly_schedules_employee_id_fkey"
+            columns: ["employee_id"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       work_shifts: {
         Row: {
           buffer_time_mins: number
@@ -1642,6 +2819,24 @@ export type Database = {
       }
     }
     Views: {
+      employee_roles_view: {
+        Row: {
+          email: string | null
+          id: string | null
+          role: string | null
+        }
+        Insert: {
+          email?: string | null
+          id?: string | null
+          role?: string | null
+        }
+        Update: {
+          email?: string | null
+          id?: string | null
+          role?: string | null
+        }
+        Relationships: []
+      }
       profiles_with_email: {
         Row: {
           avatar_url: string | null
@@ -1677,9 +2872,23 @@ export type Database = {
         Args: { session_token_input: string }
         Returns: boolean
       }
+      calculate_lead_score: {
+        Args: {
+          p_source: Database["public"]["Enums"]["lead_source"]
+          p_budget_range: string
+          p_company_name: string
+          p_project_type: string
+          p_timeline: string
+        }
+        Returns: number
+      }
       check_is_admin: {
         Args: Record<PropertyKey, never>
         Returns: boolean
+      }
+      cleanup_duplicate_available_sessions: {
+        Args: Record<PropertyKey, never>
+        Returns: number
       }
       create_admin_user: {
         Args: {
@@ -1699,6 +2908,18 @@ export type Database = {
           new_domain: string
           new_user_id: string
         }
+        Returns: string
+      }
+      get_available_roles: {
+        Args: Record<PropertyKey, never>
+        Returns: Database["public"]["Enums"]["user_role"][]
+      }
+      get_current_employee: {
+        Args: Record<PropertyKey, never>
+        Returns: string
+      }
+      get_current_user_role: {
+        Args: Record<PropertyKey, never>
         Returns: string
       }
       get_user_time_entries: {
@@ -1737,6 +2958,22 @@ export type Database = {
         Args: { user_id: string }
         Returns: boolean
       }
+      is_admin_or_supervisor: {
+        Args: Record<PropertyKey, never>
+        Returns: boolean
+      }
+      is_admin_or_supervisor_secure: {
+        Args: Record<PropertyKey, never>
+        Returns: boolean
+      }
+      is_admin_user: {
+        Args: Record<PropertyKey, never>
+        Returns: boolean
+      }
+      is_current_user_admin: {
+        Args: Record<PropertyKey, never>
+        Returns: boolean
+      }
       is_user_admin: {
         Args: { user_id: string }
         Returns: boolean
@@ -1755,6 +2992,17 @@ export type Database = {
           user_data: Json
         }[]
       }
+      update_employee_status: {
+        Args: { emp_id: string; new_status: string }
+        Returns: undefined
+      }
+      update_user_role: {
+        Args: {
+          target_user_id: string
+          new_role: Database["public"]["Enums"]["user_role"]
+        }
+        Returns: boolean
+      }
       validate_admin_session: {
         Args: { session_token_input: string }
         Returns: {
@@ -1762,12 +3010,32 @@ export type Database = {
           user_data: Json
         }[]
       }
+      validate_ahv_number: {
+        Args: { ahv_number: string }
+        Returns: boolean
+      }
+      validate_swiss_postal_code: {
+        Args: { postal_code: string }
+        Returns: boolean
+      }
     }
     Enums: {
+      gender_type: "male" | "female" | "other" | "prefer_not_to_say"
       lead_magnet_type_enum:
         | "roi_report"
         | "crm_readiness_guide"
         | "crm_vs_excel_comparison"
+      lead_source:
+        | "website_contact_form"
+        | "crm_contact_form"
+        | "navbar_contact_form"
+        | "roi_guide_download"
+        | "checklist_download"
+        | "exit_intent_popup"
+        | "offer_request"
+        | "direct_inquiry"
+        | "geo_readiness_checker"
+        | "roi_calculator_access"
       lead_status:
         | "new"
         | "call_scheduled"
@@ -1775,7 +3043,14 @@ export type Database = {
         | "contacted"
         | "not-reached"
         | "archived"
+      marital_status_type:
+        | "single"
+        | "married"
+        | "divorced"
+        | "widowed"
+        | "registered_partnership"
       user_role: "admin" | "user"
+      work_permit_type: "B" | "C" | "G" | "L" | "not_required"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -1783,21 +3058,25 @@ export type Database = {
   }
 }
 
-type DefaultSchema = Database[Extract<keyof Database, "public">]
+type DatabaseWithoutInternals = Omit<Database, "__InternalSupabase">
+
+type DefaultSchema = DatabaseWithoutInternals[Extract<keyof Database, "public">]
 
 export type Tables<
   DefaultSchemaTableNameOrOptions extends
     | keyof (DefaultSchema["Tables"] & DefaultSchema["Views"])
-    | { schema: keyof Database },
+    | { schema: keyof DatabaseWithoutInternals },
   TableName extends DefaultSchemaTableNameOrOptions extends {
-    schema: keyof Database
+    schema: keyof DatabaseWithoutInternals
   }
-    ? keyof (Database[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
-        Database[DefaultSchemaTableNameOrOptions["schema"]]["Views"])
+    ? keyof (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
+        DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])
     : never = never,
-> = DefaultSchemaTableNameOrOptions extends { schema: keyof Database }
-  ? (Database[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
-      Database[DefaultSchemaTableNameOrOptions["schema"]]["Views"])[TableName] extends {
+> = DefaultSchemaTableNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
+      DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])[TableName] extends {
       Row: infer R
     }
     ? R
@@ -1815,14 +3094,16 @@ export type Tables<
 export type TablesInsert<
   DefaultSchemaTableNameOrOptions extends
     | keyof DefaultSchema["Tables"]
-    | { schema: keyof Database },
+    | { schema: keyof DatabaseWithoutInternals },
   TableName extends DefaultSchemaTableNameOrOptions extends {
-    schema: keyof Database
+    schema: keyof DatabaseWithoutInternals
   }
-    ? keyof Database[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
+    ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
     : never = never,
-> = DefaultSchemaTableNameOrOptions extends { schema: keyof Database }
-  ? Database[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
+> = DefaultSchemaTableNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
       Insert: infer I
     }
     ? I
@@ -1838,14 +3119,16 @@ export type TablesInsert<
 export type TablesUpdate<
   DefaultSchemaTableNameOrOptions extends
     | keyof DefaultSchema["Tables"]
-    | { schema: keyof Database },
+    | { schema: keyof DatabaseWithoutInternals },
   TableName extends DefaultSchemaTableNameOrOptions extends {
-    schema: keyof Database
+    schema: keyof DatabaseWithoutInternals
   }
-    ? keyof Database[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
+    ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
     : never = never,
-> = DefaultSchemaTableNameOrOptions extends { schema: keyof Database }
-  ? Database[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
+> = DefaultSchemaTableNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
       Update: infer U
     }
     ? U
@@ -1861,14 +3144,16 @@ export type TablesUpdate<
 export type Enums<
   DefaultSchemaEnumNameOrOptions extends
     | keyof DefaultSchema["Enums"]
-    | { schema: keyof Database },
+    | { schema: keyof DatabaseWithoutInternals },
   EnumName extends DefaultSchemaEnumNameOrOptions extends {
-    schema: keyof Database
+    schema: keyof DatabaseWithoutInternals
   }
-    ? keyof Database[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"]
+    ? keyof DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"]
     : never = never,
-> = DefaultSchemaEnumNameOrOptions extends { schema: keyof Database }
-  ? Database[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"][EnumName]
+> = DefaultSchemaEnumNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"][EnumName]
   : DefaultSchemaEnumNameOrOptions extends keyof DefaultSchema["Enums"]
     ? DefaultSchema["Enums"][DefaultSchemaEnumNameOrOptions]
     : never
@@ -1876,14 +3161,16 @@ export type Enums<
 export type CompositeTypes<
   PublicCompositeTypeNameOrOptions extends
     | keyof DefaultSchema["CompositeTypes"]
-    | { schema: keyof Database },
+    | { schema: keyof DatabaseWithoutInternals },
   CompositeTypeName extends PublicCompositeTypeNameOrOptions extends {
-    schema: keyof Database
+    schema: keyof DatabaseWithoutInternals
   }
-    ? keyof Database[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
+    ? keyof DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
     : never = never,
-> = PublicCompositeTypeNameOrOptions extends { schema: keyof Database }
-  ? Database[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"][CompositeTypeName]
+> = PublicCompositeTypeNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"][CompositeTypeName]
   : PublicCompositeTypeNameOrOptions extends keyof DefaultSchema["CompositeTypes"]
     ? DefaultSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
     : never
@@ -1891,10 +3178,23 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
+      gender_type: ["male", "female", "other", "prefer_not_to_say"],
       lead_magnet_type_enum: [
         "roi_report",
         "crm_readiness_guide",
         "crm_vs_excel_comparison",
+      ],
+      lead_source: [
+        "website_contact_form",
+        "crm_contact_form",
+        "navbar_contact_form",
+        "roi_guide_download",
+        "checklist_download",
+        "exit_intent_popup",
+        "offer_request",
+        "direct_inquiry",
+        "geo_readiness_checker",
+        "roi_calculator_access",
       ],
       lead_status: [
         "new",
@@ -1904,7 +3204,15 @@ export const Constants = {
         "not-reached",
         "archived",
       ],
+      marital_status_type: [
+        "single",
+        "married",
+        "divorced",
+        "widowed",
+        "registered_partnership",
+      ],
       user_role: ["admin", "user"],
+      work_permit_type: ["B", "C", "G", "L", "not_required"],
     },
   },
 } as const

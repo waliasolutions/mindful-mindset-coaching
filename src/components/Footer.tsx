@@ -15,8 +15,6 @@ const Footer = ({ onTermsClick, onImpressumClick, onDatenschutzClick }: FooterPr
   const globalSettings = useGlobalSettings();
   const navigate = useNavigate();
   
-  console.log('Footer - Current global settings:', globalSettings);
-  
   // Use global settings directly for all content
   const footerContent = {
     contactEmail: globalSettings.contactEmail,
@@ -25,12 +23,6 @@ const Footer = ({ onTermsClick, onImpressumClick, onDatenschutzClick }: FooterPr
     copyrightText: globalSettings.footer?.copyrightText || '© 2025 Mindset Coach Martina.',
     socialLinks: globalSettings.footer?.socialLinks || []
   };
-
-  console.log('Footer - Using contact info:', {
-    email: footerContent.contactEmail,
-    phone: footerContent.contactPhone,
-    address: footerContent.address
-  });
   
   // Add a hidden admin link that becomes visible when pressing Alt+Shift+A
   useEffect(() => {

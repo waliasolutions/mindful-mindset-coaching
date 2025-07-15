@@ -90,7 +90,7 @@ export const SEO = ({ pageType = 'home', customTitle, customDescription }: SEOPr
     const handleSeoUpdate = (event: CustomEvent) => {
       const newSeoData = event.detail;
       setSeoData(newSeoData);
-      console.log('SEO.tsx: Received real-time SEO update', newSeoData);
+      // SEO data updated
     };
 
     // Listen for localStorage changes from admin
@@ -106,7 +106,7 @@ export const SEO = ({ pageType = 'home', customTitle, customDescription }: SEOPr
             enabled: newData.enableGa
           });
           
-          console.log('SEO.tsx: Updated from localStorage change', newData);
+          // Updated from localStorage change
         } catch (error) {
           console.error('Error parsing updated SEO settings:', error);
         }

@@ -8,7 +8,7 @@ export const extractCurrentContent = (sectionId: string) => {
   if (adminOverrides) {
     try {
       overrides = JSON.parse(adminOverrides);
-      console.log('Content extractor - loaded overrides:', overrides);
+      // Content extractor loaded overrides
     } catch (error) {
       console.error('Error parsing admin overrides:', error);
     }
@@ -104,7 +104,7 @@ export const extractCurrentContent = (sectionId: string) => {
   
   // Merge default content with any admin overrides
   const result = { ...defaultContent, ...currentOverrides };
-  console.log(`Content extractor - section ${sectionId}:`, result);
+  // Content extracted for section
   return result;
 };
 
@@ -114,7 +114,7 @@ export const extractNavigationContent = () => {
   if (savedSettings) {
     try {
       const settings = JSON.parse(savedSettings);
-      console.log('Navigation extractor - loaded settings:', settings);
+      // Navigation settings loaded
       return settings.navigation || [];
     } catch (error) {
       console.error('Error parsing global settings:', error);
@@ -137,7 +137,7 @@ export const extractFooterContent = () => {
   if (savedSettings) {
     try {
       const settings = JSON.parse(savedSettings);
-      console.log('Footer extractor - loaded settings:', settings);
+      // Footer settings loaded
       return {
         socialLinks: settings.footer?.socialLinks || [
           { id: 'instagram', platform: 'Instagram', url: 'https://www.instagram.com/mindset_coach_martina' },

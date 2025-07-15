@@ -36,12 +36,10 @@ export const GlobalSettingsProvider: React.FC<GlobalSettingsProviderProps> = ({ 
   });
 
   useEffect(() => {
-    console.log('GlobalSettings: Loading saved settings...');
     const savedSettings = localStorage.getItem('globalSettings');
     if (savedSettings) {
       try {
         const parsedSettings = JSON.parse(savedSettings);
-        console.log('GlobalSettings: Loaded settings:', parsedSettings);
         const currentNav = extractNavigationContent();
         setSettings({
           ...parsedSettings,
@@ -54,14 +52,12 @@ export const GlobalSettingsProvider: React.FC<GlobalSettingsProviderProps> = ({ 
   }, []);
 
   const dispatchStorageEvent = (key: string) => {
-    console.log('GlobalSettings: Dispatching storage event for key:', key);
     window.dispatchEvent(new CustomEvent('localStorageUpdated', { 
       detail: { key, newValue: JSON.stringify(settings) }
     }));
   };
 
   const handleSave = () => {
-    console.log('GlobalSettings: Saving settings:', settings);
     localStorage.setItem('globalSettings', JSON.stringify(settings));
     dispatchStorageEvent('globalSettings');
     toast.success('Global settings saved successfully');

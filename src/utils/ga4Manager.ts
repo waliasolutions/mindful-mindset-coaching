@@ -27,13 +27,13 @@ class GA4Manager {
   }
 
   async initialize(config: GA4Config): Promise<boolean> {
-    console.log('GA4Manager: Initializing with config', config);
+    // Initialize GA4 with config
     
     // Clean up existing scripts first
     this.cleanup();
     
     if (!config.enabled || !config.trackingId) {
-      console.log('GA4Manager: GA4 disabled or no tracking ID');
+      // GA4 disabled or no tracking ID
       return true;
     }
 
@@ -41,7 +41,9 @@ class GA4Manager {
       await this.loadGoogleAnalytics(config.trackingId);
       this.currentConfig = config;
       this.scriptsLoaded = true;
-      console.log(`GA4Manager: Successfully initialized with ID: ${config.trackingId}`);
+      if (import.meta.env.DEV) {
+        console.log(`GA4Manager: Successfully initialized with ID: ${config.trackingId}`);
+      }
       return true;
     } catch (error) {
       console.error('GA4Manager: Failed to initialize:', error);
@@ -106,7 +108,7 @@ class GA4Manager {
     this.scriptsLoaded = false;
     this.currentConfig = null;
     
-    console.log('GA4Manager: Cleaned up existing scripts');
+    // Cleaned up existing scripts
   }
 
   getCurrentConfig(): GA4Config | null {
