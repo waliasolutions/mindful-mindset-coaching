@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Menu, X, Leaf } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { useSmoothScroll } from '@/hooks/use-smooth-scroll';
 
 const Navbar = () => {
@@ -75,7 +75,11 @@ const Navbar = () => {
             onClick={(e) => handleSmoothScroll(e, 'services')}
             className="flex items-center gap-2"
           >
-            <Leaf size={32} className="text-petrol" />
+            <img 
+              src="/lovable-uploads/08e0eec6-35ce-426a-86e7-bc5626f9f9d1.png" 
+              alt="Mindset Coach Martina Logo" 
+              className="w-8 h-8 object-contain"
+            />
             <span className="text-forest font-serif text-2xl md:text-3xl lg:text-4xl font-medium">
               Mindset <span className="text-petrol">Coach Martina</span>
             </span>

@@ -10,9 +10,7 @@ const IMAGE_CACHE = 'images-v3';
 const STATIC_ASSETS = [
   '/',
   '/manifest.json',
-  '/assets/images/icon-192.png',
-  '/assets/images/icon-512.png',
-  '/assets/images/favicon.png',
+  '/lovable-uploads/08e0eec6-35ce-426a-86e7-bc5626f9f9d1.png',
   '/assets/images/og-image.png'
 ];
 
@@ -20,8 +18,7 @@ const STATIC_ASSETS = [
 const CRITICAL_IMAGES = [
   '/assets/images/og-image.png',
   '/assets/images/martina-profile.png',
-  '/assets/images/icon-192.png',
-  '/assets/images/icon-512.png'
+  '/lovable-uploads/08e0eec6-35ce-426a-86e7-bc5626f9f9d1.png'
 ];
 
 // Install event - cache critical assets
@@ -107,7 +104,7 @@ self.addEventListener('fetch', (event) => {
           return fetchResponse;
         }).catch(() => {
           // Return a placeholder or cached fallback
-          return caches.match('/assets/images/favicon.png');
+          return caches.match('/lovable-uploads/08e0eec6-35ce-426a-86e7-bc5626f9f9d1.png');
         });
       })
     );
@@ -165,8 +162,8 @@ self.addEventListener('push', (event) => {
   
   const options = {
     body: event.data.text(),
-    icon: '/assets/images/icon-192.png',
-    badge: '/assets/images/icon-96.png',
+    icon: '/lovable-uploads/08e0eec6-35ce-426a-86e7-bc5626f9f9d1.png',
+    badge: '/lovable-uploads/08e0eec6-35ce-426a-86e7-bc5626f9f9d1.png',
     data: {
       url: '/'
     }
