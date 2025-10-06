@@ -100,7 +100,7 @@ export const preloadCriticalResources = () => {
     link.rel = 'preload';
     link.as = resource.as;
     link.href = resource.href;
-    link.fetchPriority = resource.priority;
+    link.fetchPriority = resource.priority as "auto" | "high" | "low";
     if (resource.type) {
       link.type = resource.type;
     }

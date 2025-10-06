@@ -118,7 +118,7 @@ const Footer = ({ onTermsClick, onImpressumClick, onDatenschutzClick }: FooterPr
           <div>
             <h3 className="text-xl font-semibold mb-4">Folgen Sie mir auf</h3>
             <div className="flex space-x-4 mb-6">
-              {footerContent.socialLinks.map((social) => (
+              {footerContent.socialLinks.filter((social) => social.platform !== 'Facebook').map((social) => (
                 <a
                   key={social.id}
                   href={social.url}
