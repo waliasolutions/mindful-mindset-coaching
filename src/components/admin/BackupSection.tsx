@@ -11,8 +11,8 @@ interface BackupSectionProps {
 }
 
 const BackupSection: React.FC<BackupSectionProps> = ({ userRole }) => {
-  // Show access denied for client users
-  if (userRole === 'client') {
+  // Show access denied for non-admin users
+  if (userRole === 'user') {
     return (
       <div className="space-y-6">
         <div>

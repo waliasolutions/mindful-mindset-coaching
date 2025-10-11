@@ -45,7 +45,7 @@ const AdminSections: React.FC<AdminSectionsProps> = ({ activeTab, onTabChange })
   // Check if current tab requires admin access
   const adminOnlyTabs = ['seo', 'users', 'performance', 'backups'];
   const isAdminOnlyTab = adminOnlyTabs.includes(activeTab);
-  const isClientUser = userRole === 'client';
+  const isClientUser = userRole === 'user';
 
   // Show access denied for client users trying to access admin-only sections
   if (isAdminOnlyTab && isClientUser) {

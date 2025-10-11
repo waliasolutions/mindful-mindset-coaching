@@ -13,7 +13,7 @@ export const useAdminSession = () => {
   const [lockedUntil, setLockedUntil] = useState<number | null>(null);
   const [lastActivity, setLastActivity] = useState(Date.now());
   const [previewLoaded, setPreviewLoaded] = useState(false);
-  const [userRole, setUserRole] = useState<AdminRole>('client');
+  const [userRole, setUserRole] = useState<AdminRole>('user');
 
   // Update last activity timestamp
   const updateLastActivity = useCallback(() => {
@@ -126,7 +126,7 @@ export const useAdminSession = () => {
     
     // Clear authentication state
     setIsAuthenticated(false);
-    setUserRole('client');
+    setUserRole('user');
   }, []);
 
   return {
