@@ -20,7 +20,7 @@ const UserManagement: React.FC = () => {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
-    role: 'client' as 'admin' | 'client'
+    role: 'user' as 'admin' | 'user'
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -87,7 +87,7 @@ const UserManagement: React.FC = () => {
           title: "Success",
           description: "User created successfully",
         });
-        setFormData({ email: '', password: '', role: 'client' });
+        setFormData({ email: '', password: '', role: 'user' });
         setShowAddForm(false);
         loadUsers();
       } else {
@@ -171,12 +171,12 @@ const UserManagement: React.FC = () => {
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="role">Role</Label>
-                  <Select value={formData.role} onValueChange={(value: 'admin' | 'client') => setFormData(prev => ({ ...prev, role: value }))}>
+                  <Select value={formData.role} onValueChange={(value: 'admin' | 'user') => setFormData(prev => ({ ...prev, role: value }))}>
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="client">Client</SelectItem>
+                      <SelectItem value="user">User</SelectItem>
                       <SelectItem value="admin">Admin</SelectItem>
                     </SelectContent>
                   </Select>
@@ -228,10 +228,9 @@ const UserManagement: React.FC = () => {
             <TableHeader>
               <TableRow>
                 <TableHead>Email</TableHead>
+                <TableHead>Full Name</TableHead>
                 <TableHead>Role</TableHead>
-                <TableHead>Status</TableHead>
                 <TableHead>Created</TableHead>
-                <TableHead>Last Login</TableHead>
                 <TableHead>Actions</TableHead>
               </TableRow>
             </TableHeader>
@@ -242,26 +241,16 @@ const UserManagement: React.FC = () => {
                     <Mail className="h-4 w-4 text-gray-400" />
                     {user.email}
                   </TableCell>
+                  <TableCell>{user.full_name || '-'}</TableCell>
                   <TableCell>
                     <Badge variant={getRoleBadgeVariant(user.role)}>
                       {user.role}
                     </Badge>
                   </TableCell>
                   <TableCell>
-                    <Badge variant={user.is_active ? "default" : "secondary"}>
-                      {user.is_active ? 'Active' : 'Inactive'}
-                    </Badge>
-                  </TableCell>
-                  <TableCell>
                     <div className="flex items-center gap-2">
                       <Calendar className="h-4 w-4 text-gray-400" />
                       {formatDate(user.created_at)}
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex items-center gap-2">
-                      <Clock className="h-4 w-4 text-gray-400" />
-                      {formatDate(user.last_login_at)}
                     </div>
                   </TableCell>
                   <TableCell>

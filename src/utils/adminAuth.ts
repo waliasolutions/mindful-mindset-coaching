@@ -1,5 +1,5 @@
 // Role types for the admin portal
-export type AdminRole = 'admin' | 'client';
+export type AdminRole = 'admin' | 'user';
 
 // Check if a user is an admin based on email domain or role
 export const isAdminUser = (email: string): boolean => {
@@ -9,7 +9,7 @@ export const isAdminUser = (email: string): boolean => {
 // Determine role based on user data from database
 export const getUserRole = (email: string): AdminRole => {
   // This is now handled by the database, but we keep this for compatibility
-  return email.includes('admin') ? 'admin' : 'client';
+  return email.includes('admin') ? 'admin' : 'user';
 };
 
 // Authentication constants

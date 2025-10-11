@@ -74,26 +74,19 @@ export const useAdminSession = () => {
       setIsLoading(true);
       
       try {
-        // Check if we have a session token
-        if (adminAuthService.isAuthenticated()) {
-          // Validate the session with the server
-          const validationResult = await adminAuthService.validateSession();
-          
-          if (validationResult.valid && validationResult.user_data) {
-            setIsAuthenticated(true);
-            setUserRole(validationResult.user_data.role);
-          } else {
-            // Session invalid, clear local storage
-            await adminAuthService.logout();
-            setIsAuthenticated(false);
-          }
+        // Validate session with Supabase
+        const validationResult = await adminAuthService.validateSession();
+        
+        if (validationResult.valid && validationResult.user_data) {
+          setIsAuthenticated(true);
+          setUserRole(validationResult.user_data.role);
         } else {
-          // No session token found
+          // Session invalid
+          await adminAuthService.logout();
           setIsAuthenticated(false);
         }
       } catch (error) {
         console.error('Auth validation error:', error);
-        // On error, assume not authenticated
         await adminAuthService.logout();
         setIsAuthenticated(false);
       }
@@ -102,12 +95,6 @@ export const useAdminSession = () => {
     };
     
     checkAuth();
-
-    // Display admin URL notification
-    toast({
-      title: "Admin Portal",
-      description: "You are at the admin login page. Use your admin credentials to log in.",
-    });
   }, []);
 
   // Check for lockout state in local storage
