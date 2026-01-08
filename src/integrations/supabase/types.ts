@@ -7,7 +7,7 @@ export type Json =
   | Json[]
 
 export type Database = {
-  // Allows to automatically instanciate createClient with right options
+  // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
     PostgrestVersion: "12.2.3 (519615d)"
@@ -79,7 +79,7 @@ export type Database = {
           created_at: string
           expires_at: string
           id: string
-          ip_address: unknown | null
+          ip_address: unknown
           session_token: string
           user_agent: string | null
           user_id: string
@@ -88,7 +88,7 @@ export type Database = {
           created_at?: string
           expires_at: string
           id?: string
-          ip_address?: unknown | null
+          ip_address?: unknown
           session_token: string
           user_agent?: string | null
           user_id: string
@@ -97,7 +97,7 @@ export type Database = {
           created_at?: string
           expires_at?: string
           id?: string
-          ip_address?: unknown | null
+          ip_address?: unknown
           session_token?: string
           user_agent?: string | null
           user_id?: string
@@ -288,6 +288,7 @@ export type Database = {
       }
       bookings: {
         Row: {
+          batch_id: string | null
           comment: string | null
           created_at: string
           date: string
@@ -299,6 +300,7 @@ export type Database = {
           id: string
           last_email_attempt: string | null
           name: string
+          phone: string | null
           profile_id: string | null
           rejection_message: string | null
           status: string
@@ -308,6 +310,7 @@ export type Database = {
           verification_token: string | null
         }
         Insert: {
+          batch_id?: string | null
           comment?: string | null
           created_at?: string
           date: string
@@ -319,6 +322,7 @@ export type Database = {
           id?: string
           last_email_attempt?: string | null
           name: string
+          phone?: string | null
           profile_id?: string | null
           rejection_message?: string | null
           status?: string
@@ -328,6 +332,7 @@ export type Database = {
           verification_token?: string | null
         }
         Update: {
+          batch_id?: string | null
           comment?: string | null
           created_at?: string
           date?: string
@@ -339,6 +344,7 @@ export type Database = {
           id?: string
           last_email_attempt?: string | null
           name?: string
+          phone?: string | null
           profile_id?: string | null
           rejection_message?: string | null
           status?: string
@@ -360,6 +366,56 @@ export type Database = {
             columns: ["profile_id"]
             isOneToOne: false
             referencedRelation: "profiles_with_email"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      canton_defaults: {
+        Row: {
+          canton_code: string
+          created_at: string
+          default_rate_percent: number
+          effective_from: string
+          effective_to: string | null
+          id: string
+          insurance_type_id: string
+          max_age: number | null
+          min_age: number | null
+          salary_threshold: number | null
+          updated_at: string
+        }
+        Insert: {
+          canton_code: string
+          created_at?: string
+          default_rate_percent: number
+          effective_from?: string
+          effective_to?: string | null
+          id?: string
+          insurance_type_id: string
+          max_age?: number | null
+          min_age?: number | null
+          salary_threshold?: number | null
+          updated_at?: string
+        }
+        Update: {
+          canton_code?: string
+          created_at?: string
+          default_rate_percent?: number
+          effective_from?: string
+          effective_to?: string | null
+          id?: string
+          insurance_type_id?: string
+          max_age?: number | null
+          min_age?: number | null
+          salary_threshold?: number | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "canton_defaults_insurance_type_id_fkey"
+            columns: ["insurance_type_id"]
+            isOneToOne: false
+            referencedRelation: "swiss_insurance_types"
             referencedColumns: ["id"]
           },
         ]
@@ -427,6 +483,54 @@ export type Database = {
             columns: ["employee_id"]
             isOneToOne: false
             referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      client_product_preferences: {
+        Row: {
+          created_at: string
+          customer_id: string
+          id: string
+          last_purchased_at: string | null
+          notes: string | null
+          preference_score: number | null
+          product_id: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          customer_id: string
+          id?: string
+          last_purchased_at?: string | null
+          notes?: string | null
+          preference_score?: number | null
+          product_id: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          customer_id?: string
+          id?: string
+          last_purchased_at?: string | null
+          notes?: string | null
+          preference_score?: number | null
+          product_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "client_product_preferences_customer_id_fkey"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "customers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "client_product_preferences_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
             referencedColumns: ["id"]
           },
         ]
@@ -535,6 +639,110 @@ export type Database = {
           user_id?: string | null
         }
         Relationships: []
+      }
+      company_overrides: {
+        Row: {
+          company_address: string | null
+          company_city: string | null
+          company_country: string | null
+          company_name: string | null
+          company_postal_code: string | null
+          created_at: string
+          effective_from: string
+          effective_to: string | null
+          employee_id: string
+          id: string
+          updated_at: string
+        }
+        Insert: {
+          company_address?: string | null
+          company_city?: string | null
+          company_country?: string | null
+          company_name?: string | null
+          company_postal_code?: string | null
+          created_at?: string
+          effective_from?: string
+          effective_to?: string | null
+          employee_id: string
+          id?: string
+          updated_at?: string
+        }
+        Update: {
+          company_address?: string | null
+          company_city?: string | null
+          company_country?: string | null
+          company_name?: string | null
+          company_postal_code?: string | null
+          created_at?: string
+          effective_from?: string
+          effective_to?: string | null
+          employee_id?: string
+          id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "company_overrides_employee_id_fkey"
+            columns: ["employee_id"]
+            isOneToOne: true
+            referencedRelation: "employee_roles_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "company_overrides_employee_id_fkey"
+            columns: ["employee_id"]
+            isOneToOne: true
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      consultations: {
+        Row: {
+          consultant_id: string | null
+          consultation_type: string
+          created_at: string
+          customer_id: string
+          duration_minutes: number
+          follow_up_date: string | null
+          id: string
+          notes: string | null
+          outcome: string | null
+          updated_at: string
+        }
+        Insert: {
+          consultant_id?: string | null
+          consultation_type: string
+          created_at?: string
+          customer_id: string
+          duration_minutes: number
+          follow_up_date?: string | null
+          id?: string
+          notes?: string | null
+          outcome?: string | null
+          updated_at?: string
+        }
+        Update: {
+          consultant_id?: string | null
+          consultation_type?: string
+          created_at?: string
+          customer_id?: string
+          duration_minutes?: number
+          follow_up_date?: string | null
+          id?: string
+          notes?: string | null
+          outcome?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "consultations_customer_id_fkey"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "customers"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       contact_form_submissions: {
         Row: {
@@ -765,6 +973,95 @@ export type Database = {
         }
         Relationships: []
       }
+      customer_contacts: {
+        Row: {
+          created_at: string
+          customer_id: string
+          email: string | null
+          first_name: string
+          id: string
+          is_primary: boolean | null
+          last_name: string
+          phone: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          customer_id: string
+          email?: string | null
+          first_name: string
+          id?: string
+          is_primary?: boolean | null
+          last_name: string
+          phone?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          customer_id?: string
+          email?: string | null
+          first_name?: string
+          id?: string
+          is_primary?: boolean | null
+          last_name?: string
+          phone?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "customer_contacts_customer_id_fkey"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "customers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      customers: {
+        Row: {
+          address: string
+          city: string
+          company_name: string
+          country: string
+          created_at: string
+          customer_type: string
+          id: string
+          postal_code: string
+          preferred_language: string | null
+          sage_id: string | null
+          tags: string[] | null
+          updated_at: string
+        }
+        Insert: {
+          address: string
+          city: string
+          company_name: string
+          country?: string
+          created_at?: string
+          customer_type: string
+          id?: string
+          postal_code: string
+          preferred_language?: string | null
+          sage_id?: string | null
+          tags?: string[] | null
+          updated_at?: string
+        }
+        Update: {
+          address?: string
+          city?: string
+          company_name?: string
+          country?: string
+          created_at?: string
+          customer_type?: string
+          id?: string
+          postal_code?: string
+          preferred_language?: string | null
+          sage_id?: string | null
+          tags?: string[] | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       dns_records: {
         Row: {
           created_at: string | null
@@ -805,6 +1102,95 @@ export type Database = {
             columns: ["website_id"]
             isOneToOne: false
             referencedRelation: "websites"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      documents: {
+        Row: {
+          created_at: string
+          customer_id: string | null
+          description: string | null
+          document_type: string
+          file_path: string
+          file_size: number | null
+          id: string
+          is_public: boolean
+          mime_type: string | null
+          name: string
+          order_id: string | null
+          parent_document_id: string | null
+          quote_id: string | null
+          tags: string[] | null
+          updated_at: string
+          uploaded_by: string | null
+          version: number | null
+        }
+        Insert: {
+          created_at?: string
+          customer_id?: string | null
+          description?: string | null
+          document_type: string
+          file_path: string
+          file_size?: number | null
+          id?: string
+          is_public?: boolean
+          mime_type?: string | null
+          name: string
+          order_id?: string | null
+          parent_document_id?: string | null
+          quote_id?: string | null
+          tags?: string[] | null
+          updated_at?: string
+          uploaded_by?: string | null
+          version?: number | null
+        }
+        Update: {
+          created_at?: string
+          customer_id?: string | null
+          description?: string | null
+          document_type?: string
+          file_path?: string
+          file_size?: number | null
+          id?: string
+          is_public?: boolean
+          mime_type?: string | null
+          name?: string
+          order_id?: string | null
+          parent_document_id?: string | null
+          quote_id?: string | null
+          tags?: string[] | null
+          updated_at?: string
+          uploaded_by?: string | null
+          version?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "documents_customer_id_fkey"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "customers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "documents_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "documents_parent_document_id_fkey"
+            columns: ["parent_document_id"]
+            isOneToOne: false
+            referencedRelation: "documents"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "documents_quote_id_fkey"
+            columns: ["quote_id"]
+            isOneToOne: false
+            referencedRelation: "quotes"
             referencedColumns: ["id"]
           },
         ]
@@ -966,6 +1352,141 @@ export type Database = {
           },
         ]
       }
+      employee_insurance_settings: {
+        Row: {
+          created_at: string
+          custom_rate_percent: number | null
+          effective_from: string
+          effective_to: string | null
+          employee_id: string
+          id: string
+          insurance_type_id: string
+          is_enabled: boolean
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          custom_rate_percent?: number | null
+          effective_from?: string
+          effective_to?: string | null
+          employee_id: string
+          id?: string
+          insurance_type_id: string
+          is_enabled?: boolean
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          custom_rate_percent?: number | null
+          effective_from?: string
+          effective_to?: string | null
+          employee_id?: string
+          id?: string
+          insurance_type_id?: string
+          is_enabled?: boolean
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "employee_insurance_settings_employee_id_fkey"
+            columns: ["employee_id"]
+            isOneToOne: false
+            referencedRelation: "employee_roles_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "employee_insurance_settings_employee_id_fkey"
+            columns: ["employee_id"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "employee_insurance_settings_insurance_type_id_fkey"
+            columns: ["insurance_type_id"]
+            isOneToOne: false
+            referencedRelation: "swiss_insurance_types"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      employee_payroll_overrides: {
+        Row: {
+          active: boolean
+          created_at: string
+          created_by: string | null
+          effective_from: string
+          effective_to: string | null
+          employee_id: string
+          exclude_tax: boolean
+          id: string
+          include_insurance_codes: string[]
+          notes: string | null
+          payslip_minimal: boolean
+          target_net_amount: number
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          created_at?: string
+          created_by?: string | null
+          effective_from?: string
+          effective_to?: string | null
+          employee_id: string
+          exclude_tax?: boolean
+          id?: string
+          include_insurance_codes?: string[]
+          notes?: string | null
+          payslip_minimal?: boolean
+          target_net_amount: number
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          created_at?: string
+          created_by?: string | null
+          effective_from?: string
+          effective_to?: string | null
+          employee_id?: string
+          exclude_tax?: boolean
+          id?: string
+          include_insurance_codes?: string[]
+          notes?: string | null
+          payslip_minimal?: boolean
+          target_net_amount?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "employee_payroll_overrides_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "employee_roles_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "employee_payroll_overrides_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "employee_payroll_overrides_employee_id_fkey"
+            columns: ["employee_id"]
+            isOneToOne: false
+            referencedRelation: "employee_roles_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "employee_payroll_overrides_employee_id_fkey"
+            columns: ["employee_id"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       employee_status: {
         Row: {
           created_at: string | null
@@ -1001,6 +1522,57 @@ export type Database = {
           },
           {
             foreignKeyName: "employee_status_employee_id_fkey"
+            columns: ["employee_id"]
+            isOneToOne: true
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      employee_vacation_settings: {
+        Row: {
+          annual_days: number | null
+          created_at: string
+          effective_from: string
+          effective_to: string | null
+          employee_id: string
+          id: string
+          percentage_rate: number | null
+          updated_at: string
+          vacation_model: string
+        }
+        Insert: {
+          annual_days?: number | null
+          created_at?: string
+          effective_from?: string
+          effective_to?: string | null
+          employee_id: string
+          id?: string
+          percentage_rate?: number | null
+          updated_at?: string
+          vacation_model: string
+        }
+        Update: {
+          annual_days?: number | null
+          created_at?: string
+          effective_from?: string
+          effective_to?: string | null
+          employee_id?: string
+          id?: string
+          percentage_rate?: number | null
+          updated_at?: string
+          vacation_model?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "employee_vacation_settings_employee_id_fkey"
+            columns: ["employee_id"]
+            isOneToOne: true
+            referencedRelation: "employee_roles_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "employee_vacation_settings_employee_id_fkey"
             columns: ["employee_id"]
             isOneToOne: true
             referencedRelation: "employees"
@@ -1846,6 +2418,135 @@ export type Database = {
         }
         Relationships: []
       }
+      order_items: {
+        Row: {
+          created_at: string
+          discount_percent: number | null
+          id: string
+          line_total: number
+          order_id: string
+          product_code: string | null
+          product_id: string | null
+          product_name: string
+          quantity: number
+          unit_price: number
+        }
+        Insert: {
+          created_at?: string
+          discount_percent?: number | null
+          id?: string
+          line_total: number
+          order_id: string
+          product_code?: string | null
+          product_id?: string | null
+          product_name: string
+          quantity: number
+          unit_price: number
+        }
+        Update: {
+          created_at?: string
+          discount_percent?: number | null
+          id?: string
+          line_total?: number
+          order_id?: string
+          product_code?: string | null
+          product_id?: string | null
+          product_name?: string
+          quantity?: number
+          unit_price?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "order_items_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "order_items_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      orders: {
+        Row: {
+          created_at: string
+          currency: string
+          customer_id: string
+          delivery_address: string | null
+          delivery_date: string | null
+          discount_amount: number
+          id: string
+          notes: string | null
+          order_date: string
+          order_number: string
+          payment_terms: string | null
+          quote_id: string | null
+          sage_order_id: string | null
+          status: string
+          tax_amount: number
+          total_amount: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          currency?: string
+          customer_id: string
+          delivery_address?: string | null
+          delivery_date?: string | null
+          discount_amount?: number
+          id?: string
+          notes?: string | null
+          order_date?: string
+          order_number: string
+          payment_terms?: string | null
+          quote_id?: string | null
+          sage_order_id?: string | null
+          status?: string
+          tax_amount?: number
+          total_amount?: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          currency?: string
+          customer_id?: string
+          delivery_address?: string | null
+          delivery_date?: string | null
+          discount_amount?: number
+          id?: string
+          notes?: string | null
+          order_date?: string
+          order_number?: string
+          payment_terms?: string | null
+          quote_id?: string | null
+          sage_order_id?: string | null
+          status?: string
+          tax_amount?: number
+          total_amount?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "orders_customer_id_fkey"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "customers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "orders_quote_id_fkey"
+            columns: ["quote_id"]
+            isOneToOne: false
+            referencedRelation: "quotes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       page_content: {
         Row: {
           content_key: string
@@ -1959,6 +2660,416 @@ export type Database = {
         }
         Relationships: []
       }
+      payroll_audit_logs: {
+        Row: {
+          action: string
+          created_at: string
+          id: string
+          ip_address: unknown
+          new_values: Json | null
+          old_values: Json | null
+          resource_id: string
+          resource_type: string
+          user_agent: string | null
+          user_id: string
+        }
+        Insert: {
+          action: string
+          created_at?: string
+          id?: string
+          ip_address?: unknown
+          new_values?: Json | null
+          old_values?: Json | null
+          resource_id: string
+          resource_type: string
+          user_agent?: string | null
+          user_id: string
+        }
+        Update: {
+          action?: string
+          created_at?: string
+          id?: string
+          ip_address?: unknown
+          new_values?: Json | null
+          old_values?: Json | null
+          resource_id?: string
+          resource_type?: string
+          user_agent?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      payroll_calculations: {
+        Row: {
+          approved_at: string | null
+          approved_by: string | null
+          base_salary: number | null
+          calculated_at: string | null
+          calculation_status: string
+          created_at: string
+          employee_id: string
+          gross_salary: number
+          hours_worked: number | null
+          id: string
+          net_salary: number
+          payment_model: string
+          payroll_period_id: string
+          total_deductions: number
+          updated_at: string
+          vacation_days_earned: number | null
+          vacation_days_taken: number | null
+          vacation_pay_included: boolean | null
+        }
+        Insert: {
+          approved_at?: string | null
+          approved_by?: string | null
+          base_salary?: number | null
+          calculated_at?: string | null
+          calculation_status?: string
+          created_at?: string
+          employee_id: string
+          gross_salary: number
+          hours_worked?: number | null
+          id?: string
+          net_salary: number
+          payment_model: string
+          payroll_period_id: string
+          total_deductions?: number
+          updated_at?: string
+          vacation_days_earned?: number | null
+          vacation_days_taken?: number | null
+          vacation_pay_included?: boolean | null
+        }
+        Update: {
+          approved_at?: string | null
+          approved_by?: string | null
+          base_salary?: number | null
+          calculated_at?: string | null
+          calculation_status?: string
+          created_at?: string
+          employee_id?: string
+          gross_salary?: number
+          hours_worked?: number | null
+          id?: string
+          net_salary?: number
+          payment_model?: string
+          payroll_period_id?: string
+          total_deductions?: number
+          updated_at?: string
+          vacation_days_earned?: number | null
+          vacation_days_taken?: number | null
+          vacation_pay_included?: boolean | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "payroll_calculations_employee_id_fkey"
+            columns: ["employee_id"]
+            isOneToOne: false
+            referencedRelation: "employee_roles_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "payroll_calculations_employee_id_fkey"
+            columns: ["employee_id"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "payroll_calculations_payroll_period_id_fkey"
+            columns: ["payroll_period_id"]
+            isOneToOne: false
+            referencedRelation: "payroll_periods"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      payroll_deductions: {
+        Row: {
+          base_amount: number | null
+          created_at: string
+          deduction_amount: number
+          deduction_type: string
+          description: string
+          id: string
+          insurance_type_id: string | null
+          payroll_calculation_id: string
+          rate_percent: number | null
+        }
+        Insert: {
+          base_amount?: number | null
+          created_at?: string
+          deduction_amount: number
+          deduction_type: string
+          description: string
+          id?: string
+          insurance_type_id?: string | null
+          payroll_calculation_id: string
+          rate_percent?: number | null
+        }
+        Update: {
+          base_amount?: number | null
+          created_at?: string
+          deduction_amount?: number
+          deduction_type?: string
+          description?: string
+          id?: string
+          insurance_type_id?: string | null
+          payroll_calculation_id?: string
+          rate_percent?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "payroll_deductions_insurance_type_id_fkey"
+            columns: ["insurance_type_id"]
+            isOneToOne: false
+            referencedRelation: "swiss_insurance_types"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "payroll_deductions_payroll_calculation_id_fkey"
+            columns: ["payroll_calculation_id"]
+            isOneToOne: false
+            referencedRelation: "payroll_calculations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      payroll_notifications: {
+        Row: {
+          created_at: string
+          email_address: string
+          email_sent: boolean
+          employee_id: string
+          error_message: string | null
+          id: string
+          notification_type: string
+          sent_at: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          email_address: string
+          email_sent?: boolean
+          employee_id: string
+          error_message?: string | null
+          id?: string
+          notification_type: string
+          sent_at?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          email_address?: string
+          email_sent?: boolean
+          employee_id?: string
+          error_message?: string | null
+          id?: string
+          notification_type?: string
+          sent_at?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      payroll_periods: {
+        Row: {
+          created_at: string
+          end_date: string
+          id: string
+          period_month: number
+          period_type: string
+          period_year: number
+          processed_at: string | null
+          processed_by: string | null
+          start_date: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          end_date: string
+          id?: string
+          period_month: number
+          period_type?: string
+          period_year: number
+          processed_at?: string | null
+          processed_by?: string | null
+          start_date: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          end_date?: string
+          id?: string
+          period_month?: number
+          period_type?: string
+          period_year?: number
+          processed_at?: string | null
+          processed_by?: string | null
+          start_date?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      product_categories: {
+        Row: {
+          created_at: string
+          description: string | null
+          display_order: number | null
+          id: string
+          is_active: boolean
+          name: string
+          parent_category_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          display_order?: number | null
+          id?: string
+          is_active?: boolean
+          name: string
+          parent_category_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          display_order?: number | null
+          id?: string
+          is_active?: boolean
+          name?: string
+          parent_category_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "product_categories_parent_category_id_fkey"
+            columns: ["parent_category_id"]
+            isOneToOne: false
+            referencedRelation: "product_categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      product_translations: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          language_code: string
+          name: string
+          product_id: string
+          short_description: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          language_code: string
+          name: string
+          product_id: string
+          short_description?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          language_code?: string
+          name?: string
+          product_id?: string
+          short_description?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "product_translations_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      products: {
+        Row: {
+          brand: string | null
+          category: string
+          cost_price: number | null
+          created_at: string
+          currency: string
+          description: string | null
+          dimensions_cm: string | null
+          id: string
+          is_active: boolean
+          manufacturer: string | null
+          max_stock_level: number | null
+          min_stock_level: number | null
+          name: string
+          product_code: string
+          sage_product_id: string | null
+          specifications: Json | null
+          stock_quantity: number | null
+          subcategory: string | null
+          tags: string[] | null
+          unit_of_measure: string
+          unit_price: number
+          updated_at: string
+          weight_kg: number | null
+        }
+        Insert: {
+          brand?: string | null
+          category: string
+          cost_price?: number | null
+          created_at?: string
+          currency?: string
+          description?: string | null
+          dimensions_cm?: string | null
+          id?: string
+          is_active?: boolean
+          manufacturer?: string | null
+          max_stock_level?: number | null
+          min_stock_level?: number | null
+          name: string
+          product_code: string
+          sage_product_id?: string | null
+          specifications?: Json | null
+          stock_quantity?: number | null
+          subcategory?: string | null
+          tags?: string[] | null
+          unit_of_measure?: string
+          unit_price: number
+          updated_at?: string
+          weight_kg?: number | null
+        }
+        Update: {
+          brand?: string | null
+          category?: string
+          cost_price?: number | null
+          created_at?: string
+          currency?: string
+          description?: string | null
+          dimensions_cm?: string | null
+          id?: string
+          is_active?: boolean
+          manufacturer?: string | null
+          max_stock_level?: number | null
+          min_stock_level?: number | null
+          name?: string
+          product_code?: string
+          sage_product_id?: string | null
+          specifications?: Json | null
+          stock_quantity?: number | null
+          subcategory?: string | null
+          tags?: string[] | null
+          unit_of_measure?: string
+          unit_price?: number
+          updated_at?: string
+          weight_kg?: number | null
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -2062,6 +3173,169 @@ export type Database = {
           title?: string
         }
         Relationships: []
+      }
+      quote_approval_workflows: {
+        Row: {
+          approved_at: string | null
+          approved_by: string | null
+          created_at: string
+          id: string
+          notes: string | null
+          quote_id: string
+          rejection_reason: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          approved_at?: string | null
+          approved_by?: string | null
+          created_at?: string
+          id?: string
+          notes?: string | null
+          quote_id: string
+          rejection_reason?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          approved_at?: string | null
+          approved_by?: string | null
+          created_at?: string
+          id?: string
+          notes?: string | null
+          quote_id?: string
+          rejection_reason?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "quote_approval_workflows_quote_id_fkey"
+            columns: ["quote_id"]
+            isOneToOne: false
+            referencedRelation: "quotes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      quote_items: {
+        Row: {
+          created_at: string
+          discount_percent: number | null
+          id: string
+          line_total: number
+          notes: string | null
+          product_description: string | null
+          product_id: string | null
+          product_name: string
+          quantity: number
+          quote_id: string
+          unit_price: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          discount_percent?: number | null
+          id?: string
+          line_total: number
+          notes?: string | null
+          product_description?: string | null
+          product_id?: string | null
+          product_name: string
+          quantity?: number
+          quote_id: string
+          unit_price: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          discount_percent?: number | null
+          id?: string
+          line_total?: number
+          notes?: string | null
+          product_description?: string | null
+          product_id?: string | null
+          product_name?: string
+          quantity?: number
+          quote_id?: string
+          unit_price?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "quote_items_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "quote_items_quote_id_fkey"
+            columns: ["quote_id"]
+            isOneToOne: false
+            referencedRelation: "quotes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      quotes: {
+        Row: {
+          amount: number
+          approval_threshold: number | null
+          created_at: string
+          currency: string
+          customer_id: string
+          description: string | null
+          id: string
+          notes: string | null
+          quote_number: string
+          requires_approval: boolean | null
+          status: string
+          title: string
+          updated_at: string
+          valid_until: string | null
+        }
+        Insert: {
+          amount?: number
+          approval_threshold?: number | null
+          created_at?: string
+          currency?: string
+          customer_id: string
+          description?: string | null
+          id?: string
+          notes?: string | null
+          quote_number: string
+          requires_approval?: boolean | null
+          status?: string
+          title: string
+          updated_at?: string
+          valid_until?: string | null
+        }
+        Update: {
+          amount?: number
+          approval_threshold?: number | null
+          created_at?: string
+          currency?: string
+          customer_id?: string
+          description?: string | null
+          id?: string
+          notes?: string | null
+          quote_number?: string
+          requires_approval?: boolean | null
+          status?: string
+          title?: string
+          updated_at?: string
+          valid_until?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "quotes_customer_id_fkey"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "customers"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       reminders: {
         Row: {
@@ -2264,6 +3538,59 @@ export type Database = {
           },
         ]
       }
+      sent_emails: {
+        Row: {
+          batch_id: string | null
+          booking_id: string | null
+          created_at: string | null
+          email_type: string
+          error_message: string | null
+          id: string
+          lessons_summary: Json | null
+          recipient_email: string
+          recipient_name: string | null
+          sent_at: string | null
+          status: string | null
+          subject: string
+        }
+        Insert: {
+          batch_id?: string | null
+          booking_id?: string | null
+          created_at?: string | null
+          email_type: string
+          error_message?: string | null
+          id?: string
+          lessons_summary?: Json | null
+          recipient_email: string
+          recipient_name?: string | null
+          sent_at?: string | null
+          status?: string | null
+          subject: string
+        }
+        Update: {
+          batch_id?: string | null
+          booking_id?: string | null
+          created_at?: string | null
+          email_type?: string
+          error_message?: string | null
+          id?: string
+          lessons_summary?: Json | null
+          recipient_email?: string
+          recipient_name?: string | null
+          sent_at?: string | null
+          status?: string | null
+          subject?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sent_emails_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: false
+            referencedRelation: "bookings"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       seo_settings: {
         Row: {
           created_at: string | null
@@ -2377,6 +3704,120 @@ export type Database = {
           name_it?: string | null
         }
         Relationships: []
+      }
+      swiss_insurance_types: {
+        Row: {
+          category: string
+          code: string
+          created_at: string
+          description: string | null
+          id: string
+          is_mandatory: boolean
+          name_english: string
+          name_german: string
+          updated_at: string
+        }
+        Insert: {
+          category: string
+          code: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_mandatory?: boolean
+          name_english: string
+          name_german: string
+          updated_at?: string
+        }
+        Update: {
+          category?: string
+          code?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_mandatory?: boolean
+          name_english?: string
+          name_german?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      tasks: {
+        Row: {
+          actual_hours: number | null
+          assigned_to: string | null
+          attachments: Json | null
+          completed_at: string | null
+          created_at: string
+          created_by: string | null
+          customer_id: string | null
+          description: string | null
+          due_date: string | null
+          estimated_hours: number | null
+          id: string
+          order_id: string | null
+          priority: string
+          status: string
+          tags: string[] | null
+          task_type: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          actual_hours?: number | null
+          assigned_to?: string | null
+          attachments?: Json | null
+          completed_at?: string | null
+          created_at?: string
+          created_by?: string | null
+          customer_id?: string | null
+          description?: string | null
+          due_date?: string | null
+          estimated_hours?: number | null
+          id?: string
+          order_id?: string | null
+          priority?: string
+          status?: string
+          tags?: string[] | null
+          task_type?: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          actual_hours?: number | null
+          assigned_to?: string | null
+          attachments?: Json | null
+          completed_at?: string | null
+          created_at?: string
+          created_by?: string | null
+          customer_id?: string | null
+          description?: string | null
+          due_date?: string | null
+          estimated_hours?: number | null
+          id?: string
+          order_id?: string | null
+          priority?: string
+          status?: string
+          tags?: string[] | null
+          task_type?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tasks_customer_id_fkey"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "customers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "tasks_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       time_entries: {
         Row: {
@@ -2615,6 +4056,124 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      vacation_records: {
+        Row: {
+          created_at: string
+          days_balance: number
+          days_carried_forward: number
+          days_earned: number
+          days_taken: number
+          employee_id: string
+          id: string
+          last_calculated_at: string
+          record_year: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          days_balance?: number
+          days_carried_forward?: number
+          days_earned?: number
+          days_taken?: number
+          employee_id: string
+          id?: string
+          last_calculated_at?: string
+          record_year: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          days_balance?: number
+          days_carried_forward?: number
+          days_earned?: number
+          days_taken?: number
+          employee_id?: string
+          id?: string
+          last_calculated_at?: string
+          record_year?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "vacation_records_employee_id_fkey"
+            columns: ["employee_id"]
+            isOneToOne: false
+            referencedRelation: "employee_roles_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "vacation_records_employee_id_fkey"
+            columns: ["employee_id"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      vacation_transactions: {
+        Row: {
+          approved_at: string | null
+          approved_by: string | null
+          created_at: string
+          days_amount: number
+          description: string | null
+          employee_id: string
+          id: string
+          reference_id: string | null
+          transaction_date: string
+          transaction_type: string
+          vacation_record_id: string
+        }
+        Insert: {
+          approved_at?: string | null
+          approved_by?: string | null
+          created_at?: string
+          days_amount: number
+          description?: string | null
+          employee_id: string
+          id?: string
+          reference_id?: string | null
+          transaction_date: string
+          transaction_type: string
+          vacation_record_id: string
+        }
+        Update: {
+          approved_at?: string | null
+          approved_by?: string | null
+          created_at?: string
+          days_amount?: number
+          description?: string | null
+          employee_id?: string
+          id?: string
+          reference_id?: string | null
+          transaction_date?: string
+          transaction_type?: string
+          vacation_record_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "vacation_transactions_employee_id_fkey"
+            columns: ["employee_id"]
+            isOneToOne: false
+            referencedRelation: "employee_roles_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "vacation_transactions_employee_id_fkey"
+            columns: ["employee_id"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "vacation_transactions_vacation_record_id_fkey"
+            columns: ["vacation_record_id"]
+            isOneToOne: false
+            referencedRelation: "vacation_records"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       website_backups: {
         Row: {
@@ -2857,39 +4416,32 @@ export type Database = {
       admin_login: {
         Args: {
           email_input: string
-          password_input: string
           ip_address_input?: unknown
+          password_input: string
           user_agent_input?: string
         }
         Returns: {
-          success: boolean
           message: string
-          user_data: Json
           session_token: string
+          success: boolean
+          user_data: Json
         }[]
       }
-      admin_logout: {
-        Args: { session_token_input: string }
-        Returns: boolean
-      }
+      admin_logout: { Args: { session_token_input: string }; Returns: boolean }
       calculate_lead_score: {
         Args: {
-          p_source: Database["public"]["Enums"]["lead_source"]
           p_budget_range: string
           p_company_name: string
           p_project_type: string
+          p_source: Database["public"]["Enums"]["lead_source"]
           p_timeline: string
         }
         Returns: number
       }
-      check_is_admin: {
-        Args: Record<PropertyKey, never>
-        Returns: boolean
-      }
-      cleanup_duplicate_available_sessions: {
-        Args: Record<PropertyKey, never>
-        Returns: number
-      }
+      check_is_admin: { Args: never; Returns: boolean }
+      check_is_any_admin: { Args: never; Returns: boolean }
+      check_is_department_admin: { Args: never; Returns: boolean }
+      cleanup_duplicate_available_sessions: { Args: never; Returns: number }
       create_admin_user: {
         Args: {
           email_input: string
@@ -2897,98 +4449,81 @@ export type Database = {
           role_input?: string
         }
         Returns: {
-          success: boolean
           message: string
+          success: boolean
           user_data: Json
         }[]
       }
       duplicate_website: {
         Args: {
-          source_website_id: string
           new_domain: string
           new_user_id: string
+          source_website_id: string
         }
         Returns: string
       }
+      generate_order_number: { Args: never; Returns: string }
+      generate_quote_number: { Args: never; Returns: string }
       get_available_roles: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: Database["public"]["Enums"]["user_role"][]
       }
-      get_current_employee: {
-        Args: Record<PropertyKey, never>
-        Returns: string
-      }
-      get_current_user_role: {
-        Args: Record<PropertyKey, never>
-        Returns: string
-      }
+      get_current_employee: { Args: never; Returns: string }
+      get_current_user_role: { Args: never; Returns: string }
       get_user_time_entries: {
         Args: { p_user_id: string }
         Returns: {
+          created_at: string
+          description: string
+          duration: number
+          end_time: string
+          hourly_rate: number
           id: string
           start_time: string
-          end_time: string
-          duration: number
-          description: string
-          created_at: string
           user_full_name: string
-          hourly_rate: number
         }[]
       }
       get_users_for_admin: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
-          id: string
-          email: string
           created_at: string
+          email: string
           full_name: string
+          id: string
           role: string
         }[]
       }
       get_users_with_roles: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
-          id: string
-          email: string
           created_at: string
+          email: string
+          id: string
           role: Database["public"]["Enums"]["user_role"]
         }[]
       }
-      is_admin: {
-        Args: { user_id: string }
+      is_admin: { Args: { target_user_id: string }; Returns: boolean }
+      is_admin_or_supervisor: { Args: never; Returns: boolean }
+      is_admin_or_supervisor_secure: { Args: never; Returns: boolean }
+      is_admin_user: { Args: never; Returns: boolean }
+      is_any_admin: { Args: { target_user_id: string }; Returns: boolean }
+      is_current_user_admin: { Args: never; Returns: boolean }
+      is_department_admin: {
+        Args: { target_user_id: string }
         Returns: boolean
       }
-      is_admin_or_supervisor: {
-        Args: Record<PropertyKey, never>
-        Returns: boolean
-      }
-      is_admin_or_supervisor_secure: {
-        Args: Record<PropertyKey, never>
-        Returns: boolean
-      }
-      is_admin_user: {
-        Args: Record<PropertyKey, never>
-        Returns: boolean
-      }
-      is_current_user_admin: {
-        Args: Record<PropertyKey, never>
-        Returns: boolean
-      }
-      is_user_admin: {
-        Args: { user_id: string }
-        Returns: boolean
-      }
+      is_user_admin: { Args: { user_id: string }; Returns: boolean }
       update_admin_user: {
         Args: {
-          user_id_input: string
           email_input?: string
+          is_active_input?: boolean
           password_input?: string
           role_input?: string
-          is_active_input?: boolean
+          user_id_input: string
         }
         Returns: {
-          success: boolean
           message: string
+          success: boolean
           user_data: Json
         }[]
       }
@@ -2998,22 +4533,26 @@ export type Database = {
       }
       update_user_role: {
         Args: {
-          target_user_id: string
           new_role: Database["public"]["Enums"]["user_role"]
+          target_user_id: string
+        }
+        Returns: boolean
+      }
+      update_user_role_admin: {
+        Args: {
+          new_role: Database["public"]["Enums"]["user_role"]
+          target_user_id: string
         }
         Returns: boolean
       }
       validate_admin_session: {
         Args: { session_token_input: string }
         Returns: {
-          valid: boolean
           user_data: Json
+          valid: boolean
         }[]
       }
-      validate_ahv_number: {
-        Args: { ahv_number: string }
-        Returns: boolean
-      }
+      validate_ahv_number: { Args: { ahv_number: string }; Returns: boolean }
       validate_swiss_postal_code: {
         Args: { postal_code: string }
         Returns: boolean
@@ -3049,7 +4588,7 @@ export type Database = {
         | "divorced"
         | "widowed"
         | "registered_partnership"
-      user_role: "admin" | "user"
+      user_role: "admin" | "user" | "department_admin"
       work_permit_type: "B" | "C" | "G" | "L" | "not_required"
     }
     CompositeTypes: {
@@ -3211,7 +4750,7 @@ export const Constants = {
         "widowed",
         "registered_partnership",
       ],
-      user_role: ["admin", "user"],
+      user_role: ["admin", "user", "department_admin"],
       work_permit_type: ["B", "C", "G", "L", "not_required"],
     },
   },
