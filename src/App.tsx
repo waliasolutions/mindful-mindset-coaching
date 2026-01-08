@@ -45,6 +45,9 @@ const AppContent = () => {
   useServiceWorker();
 
   useEffect(() => {
+    // Clear any dark mode preference to prevent random dark mode
+    localStorage.removeItem('theme');
+    
     // Preload critical resources
     preloadCriticalResources();
 
@@ -112,7 +115,7 @@ const AppContent = () => {
 
 const App = () => (
   <HelmetProvider>
-    <ThemeProvider attribute="class" defaultTheme="light">
+    <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false} forcedTheme="light">
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
           <TooltipProvider>
