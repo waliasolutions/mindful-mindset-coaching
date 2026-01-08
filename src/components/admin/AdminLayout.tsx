@@ -25,7 +25,7 @@ import { useAdminSession } from '@/hooks/useAdminSession';
 import { Button } from '@/components/ui/button';
 import { Separator } from "@/components/ui/separator"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { ModeToggle } from "@/components/ui/mode-toggle"
+
 import { Switch } from "@/components/ui/switch"
 import { Label } from "@/components/ui/label"
 import { Link } from 'react-router-dom';
@@ -161,7 +161,6 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({
           {/* Header */}
           <header className="flex items-center justify-end h-16 px-6 border-b dark:bg-gray-800 bg-white">
             <div className="flex items-center gap-4">
-              <ModeToggle />
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" size="icon" className="rounded-full">
