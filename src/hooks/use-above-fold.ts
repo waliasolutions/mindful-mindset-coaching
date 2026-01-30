@@ -1,4 +1,5 @@
 
+
 import { useState, useEffect } from 'react';
 
 export const useAboveFold = () => {
@@ -29,14 +30,16 @@ export const useAboveFold = () => {
         }
       });
       
-      if (window.scrollY > 100 && isAboveTheFold) {
+      // Once user scrolls past fold, set to false to trigger loading remaining sections
+      if (window.scrollY > 100) {
         setIsAboveTheFold(false);
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll();
     
+    // Fallback: load all sections after 3 seconds even without scroll
     const timeout = setTimeout(() => {
       setIsAboveTheFold(false);
     }, 3000);
@@ -45,7 +48,7 @@ export const useAboveFold = () => {
       window.removeEventListener('scroll', handleScroll);
       clearTimeout(timeout);
     };
-  }, [isAboveTheFold]);
+  }, []);
 
   return isAboveTheFold;
 };

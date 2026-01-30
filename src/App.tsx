@@ -3,40 +3,24 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "next-themes";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Routes, Route, useLocation } from "react-router-dom";
-import { useEffect } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import { AuthProvider } from "./contexts/AuthContext";
 import Index from "./pages/Index";
-import Admin from "./pages/Admin";
 import NotFound from "./pages/NotFound";
 import { HelmetProvider } from "react-helmet-async";
 import { toast } from "@/components/ui/use-toast";
 import { useServiceWorker } from "./hooks/useServiceWorker";
-import { preloadCriticalResources } from "./utils/performance";
-import { ga4Manager } from "./utils/ga4Manager";
 
-// Create a query client with error handling
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      retry: 1,
-      refetchOnWindowFocus: false,
-      staleTime: 5 * 60 * 1000,
-      gcTime: 10 * 60 * 1000, // Cache for 10 minutes
-    },
-    mutations: {
-      onError: (error) => {
-        console.error('Mutation error:', error);
-        toast({
-          title: "Error",
-          description: "Something went wrong. Please try again.",
-          variant: "destructive",
-        });
-      },
-    }
-  },
-});
+// Lazy load Admin page for better initial load performance
+const Admin = lazy(() => import('./pages/Admin'));
+
+// Loading fallback for Admin
+const AdminLoadingFallback = () => (
+  <div className="min-h-screen flex items-center justify-center bg-background">
+    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+  </div>
+);
 
 const AppContent = () => {
   const location = useLocation();
@@ -47,38 +31,6 @@ const AppContent = () => {
   useEffect(() => {
     // Clear any dark mode preference to prevent random dark mode
     localStorage.removeItem('theme');
-    
-    // Preload critical resources
-    preloadCriticalResources();
-
-    // Initialize GA4 on app startup
-    const initializeGA4 = () => {
-      const savedSeo = localStorage.getItem('seoSettings');
-      if (savedSeo) {
-        try {
-          const seoData = JSON.parse(savedSeo);
-          ga4Manager.initialize({
-            trackingId: seoData.gaTrackingId || 'G-CCD1ZR05L7',
-            enabled: seoData.enableGa !== false
-          });
-        } catch (error) {
-          console.error('Error initializing GA4 from localStorage:', error);
-          // Fallback to default
-          ga4Manager.initialize({
-            trackingId: 'G-CCD1ZR05L7',
-            enabled: true
-          });
-        }
-      } else {
-        // Initialize with defaults
-        ga4Manager.initialize({
-          trackingId: 'G-CCD1ZR05L7',
-          enabled: true
-        });
-      }
-    };
-
-    initializeGA4();
 
     // Update page metadata based on route
     const pathname = location.pathname;
@@ -107,7 +59,11 @@ const AppContent = () => {
   return (
     <Routes>
       <Route path="/" element={<Index />} />
-      <Route path="/dashboard-management-portal-9a7b2c3d" element={<Admin />} />
+      <Route path="/dashboard-management-portal-9a7b2c3d" element={
+        <Suspense fallback={<AdminLoadingFallback />}>
+          <Admin />
+        </Suspense>
+      } />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );
@@ -116,15 +72,13 @@ const AppContent = () => {
 const App = () => (
   <HelmetProvider>
     <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false} forcedTheme="light">
-      <QueryClientProvider client={queryClient}>
-        <AuthProvider>
-          <TooltipProvider>
-            <AppContent />
-            <Toaster />
-            <Sonner />
-          </TooltipProvider>
-        </AuthProvider>
-      </QueryClientProvider>
+      <AuthProvider>
+        <TooltipProvider>
+          <AppContent />
+          <Toaster />
+          <Sonner />
+        </TooltipProvider>
+      </AuthProvider>
     </ThemeProvider>
   </HelmetProvider>
 );

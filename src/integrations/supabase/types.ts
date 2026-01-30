@@ -4438,10 +4438,40 @@ export type Database = {
         }
         Returns: number
       }
+      check_booking_health: {
+        Args: never
+        Returns: {
+          issue_count: number
+          issue_date: string
+          issue_time: string
+          issue_type: string
+        }[]
+      }
+      check_email_idempotency: {
+        Args: {
+          p_batch_id?: string
+          p_booking_id?: string
+          p_email_type?: string
+          p_recipient_email?: string
+        }
+        Returns: boolean
+      }
       check_is_admin: { Args: never; Returns: boolean }
       check_is_any_admin: { Args: never; Returns: boolean }
       check_is_department_admin: { Args: never; Returns: boolean }
+      check_slot_health: {
+        Args: { p_date?: string }
+        Returns: {
+          booking_ids: string[]
+          issue_type: string
+          slot_count: number
+          slot_date: string
+          slot_time: string
+          statuses: string[]
+        }[]
+      }
       cleanup_duplicate_available_sessions: { Args: never; Returns: number }
+      cleanup_past_available_sessions: { Args: never; Returns: number }
       create_admin_user: {
         Args: {
           email_input: string
@@ -4513,6 +4543,18 @@ export type Database = {
         Returns: boolean
       }
       is_user_admin: { Args: { user_id: string }; Returns: boolean }
+      request_booking: {
+        Args: {
+          p_batch_id?: string
+          p_comment?: string
+          p_date: string
+          p_email: string
+          p_name: string
+          p_phone: string
+          p_time: string
+        }
+        Returns: string
+      }
       update_admin_user: {
         Args: {
           email_input?: string
