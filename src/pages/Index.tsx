@@ -114,7 +114,7 @@ const Index = () => {
         
         return Component ? (
           <Suspense key={section.id} fallback={<SectionLoader />}>
-            {(isAboveTheFold || index < 2) && (
+            {(!isAboveTheFold || index < 2) && (
               <Component 
                 settings={globalSettings}
                 onInView={() => handleSectionInView(section.component)}
