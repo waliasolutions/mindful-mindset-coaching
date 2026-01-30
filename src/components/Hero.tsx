@@ -1,4 +1,4 @@
-import { ArrowDown, Leaf, Shield } from 'lucide-react';
+import { ArrowDown, Shield } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { useIsMobile } from '../hooks/use-mobile';
 import { Badge } from '@/components/ui/badge';
@@ -54,7 +54,7 @@ const Hero = () => {
                 <span className="bg-gradient-to-r from-moss via-petrol to-forest bg-clip-text text-transparent">Mindset Coaching</span> für ein glückliches und erfülltes Leben
               </h1>
 
-              {/* Mobile image - optimized loading */}
+              {/* Single responsive image - shown on mobile only via CSS */}
               <div className="block lg:hidden mb-6 sm:mb-8 text-center">
                 <div className="relative w-full max-w-xs sm:max-w-sm md:max-w-md mx-auto">
                   <div className="aspect-[3/4] overflow-hidden shadow-xl transition-all duration-200 hover:shadow-2xl rounded-lg">
@@ -64,7 +64,7 @@ const Hero = () => {
                         alt="Martina Domeniconi - Mindset Coach" 
                         className="w-full h-full object-cover object-center" 
                         priority="high" 
-                        sizes="(max-width: 640px) 80vw, (max-width: 768px) 60vw, 50vw" 
+                        sizes="(max-width: 640px) 80vw, (max-width: 1024px) 60vw, 40vw" 
                         onLoad={() => setImageLoaded(true)} 
                       />
                       <div className="absolute inset-0 bg-forest/20 rounded-lg"></div>
@@ -97,7 +97,7 @@ const Hero = () => {
             </div>
           </div>
           
-          {/* Desktop image - high priority loading */}
+          {/* Desktop image - shown on lg+ screens only via CSS, uses same image source */}
           <div className="hidden lg:block relative w-full max-w-sm lg:max-w-md xl:max-w-lg 2xl:max-w-xl">
             <div className="aspect-[3/4] overflow-hidden shadow-xl transition-all duration-200 hover:shadow-2xl rounded-lg">
               <div className="image-reveal reveal w-full h-full relative">

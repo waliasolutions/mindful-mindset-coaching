@@ -2,88 +2,170 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import { usePerformanceMonitor } from '@/hooks/usePerformanceMonitor';
-import { TrendingUp, Clock, Zap, HardDrive } from 'lucide-react';
+import { useCoreWebVitals } from '@/hooks/useCoreWebVitals';
+import { TrendingUp, Clock, Zap, Activity, BarChart2 } from 'lucide-react';
 
 const PerformanceDashboard = () => {
-  const metrics = usePerformanceMonitor();
+  const { vitals, vitalsRatings, thresholds } = useCoreWebVitals();
 
-  const getLoadTimeStatus = (time: number) => {
-    if (time < 1000) return { status: 'Ausgezeichnet', color: 'bg-green-500', variant: 'default' as const };
-    if (time < 2000) return { status: 'Gut', color: 'bg-blue-500', variant: 'secondary' as const };
-    if (time < 3000) return { status: 'Durchschnittlich', color: 'bg-yellow-500', variant: 'outline' as const };
-    return { status: 'Schlecht', color: 'bg-red-500', variant: 'destructive' as const };
+  const getStatusBadge = (rating: 'good' | 'needs-improvement' | 'poor' | undefined) => {
+    switch (rating) {
+      case 'good':
+        return { status: 'Ausgezeichnet', variant: 'default' as const };
+      case 'needs-improvement':
+        return { status: 'Durchschnittlich', variant: 'outline' as const };
+      case 'poor':
+        return { status: 'Schlecht', variant: 'destructive' as const };
+      default:
+        return { status: 'Laden...', variant: 'secondary' as const };
+    }
   };
 
-  const loadTimeStatus = getLoadTimeStatus(metrics.loadTime);
+  const lcpStatus = getStatusBadge(vitalsRatings.lcp);
+  const clsStatus = getStatusBadge(vitalsRatings.cls);
+  const fidStatus = getStatusBadge(vitalsRatings.fid);
+  const fcpStatus = getStatusBadge(vitalsRatings.fcp);
+  const ttfbStatus = getStatusBadge(vitalsRatings.ttfb);
+
+  // Calculate overall score based on Core Web Vitals
+  const calculateOverallScore = () => {
+    let score = 100;
+    const ratings = Object.values(vitalsRatings);
+    ratings.forEach(rating => {
+      if (rating === 'needs-improvement') score -= 15;
+      if (rating === 'poor') score -= 30;
+    });
+    return Math.max(0, score);
+  };
+
+  const overallScore = calculateOverallScore();
 
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold">Leistungs-Dashboard</h2>
-        <Badge variant={loadTimeStatus.variant}>
-          {loadTimeStatus.status}
+        <h2 className="text-2xl font-bold">Core Web Vitals Dashboard</h2>
+        <Badge variant={overallScore >= 80 ? 'default' : overallScore >= 50 ? 'outline' : 'destructive'}>
+          Score: {overallScore}
         </Badge>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {/* LCP - Largest Contentful Paint */}
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Ladezeit</CardTitle>
+            <CardTitle className="text-sm font-medium">LCP (Largest Contentful Paint)</CardTitle>
             <Clock className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              {(metrics.loadTime / 1000).toFixed(2)}s
+              {vitals.lcp ? `${(vitals.lcp / 1000).toFixed(2)}s` : 'Laden...'}
             </div>
+            <Badge variant={lcpStatus.variant} className="mt-2">
+              {lcpStatus.status}
+            </Badge>
             <Progress 
-              value={Math.min((metrics.loadTime / 3000) * 100, 100)} 
+              value={vitals.lcp ? Math.min((vitals.lcp / thresholds.lcp.poor) * 100, 100) : 0} 
               className="mt-2"
             />
             <p className="text-xs text-muted-foreground mt-1">
-              Seitenladegeschwindigkeit
+              Ziel: &lt; {thresholds.lcp.good / 1000}s
             </p>
           </CardContent>
         </Card>
 
+        {/* FCP - First Contentful Paint */}
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Renderzeit</CardTitle>
+            <CardTitle className="text-sm font-medium">FCP (First Contentful Paint)</CardTitle>
             <Zap className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              {(metrics.renderTime / 1000).toFixed(2)}s
+              {vitals.fcp ? `${(vitals.fcp / 1000).toFixed(2)}s` : 'Laden...'}
             </div>
+            <Badge variant={fcpStatus.variant} className="mt-2">
+              {fcpStatus.status}
+            </Badge>
             <Progress 
-              value={Math.min((metrics.renderTime / 2000) * 100, 100)} 
+              value={vitals.fcp ? Math.min((vitals.fcp / thresholds.fcp.poor) * 100, 100) : 0} 
               className="mt-2"
             />
             <p className="text-xs text-muted-foreground mt-1">
-              Inhalts-Rendergeschwindigkeit
+              Ziel: &lt; {thresholds.fcp.good / 1000}s
             </p>
           </CardContent>
         </Card>
 
+        {/* CLS - Cumulative Layout Shift */}
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Speicherverbrauch</CardTitle>
-            <HardDrive className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-medium">CLS (Cumulative Layout Shift)</CardTitle>
+            <Activity className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              {metrics.memoryUsage.toFixed(1)} MB
+              {vitals.cls.toFixed(3)}
             </div>
+            <Badge variant={clsStatus.variant} className="mt-2">
+              {clsStatus.status}
+            </Badge>
             <Progress 
-              value={Math.min((metrics.memoryUsage / 50) * 100, 100)} 
+              value={Math.min((vitals.cls / thresholds.cls.poor) * 100, 100)} 
               className="mt-2"
             />
             <p className="text-xs text-muted-foreground mt-1">
-              JavaScript Heap-Größe
+              Ziel: &lt; {thresholds.cls.good}
             </p>
           </CardContent>
         </Card>
 
+        {/* FID - First Input Delay */}
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">FID (First Input Delay)</CardTitle>
+            <BarChart2 className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">
+              {vitals.fid ? `${vitals.fid.toFixed(0)}ms` : 'Warten auf Input...'}
+            </div>
+            <Badge variant={fidStatus.variant} className="mt-2">
+              {fidStatus.status}
+            </Badge>
+            <Progress 
+              value={vitals.fid ? Math.min((vitals.fid / thresholds.fid.poor) * 100, 100) : 0} 
+              className="mt-2"
+            />
+            <p className="text-xs text-muted-foreground mt-1">
+              Ziel: &lt; {thresholds.fid.good}ms
+            </p>
+          </CardContent>
+        </Card>
+
+        {/* TTFB - Time to First Byte */}
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">TTFB (Time to First Byte)</CardTitle>
+            <TrendingUp className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">
+              {vitals.ttfb ? `${vitals.ttfb.toFixed(0)}ms` : 'Laden...'}
+            </div>
+            <Badge variant={ttfbStatus.variant} className="mt-2">
+              {ttfbStatus.status}
+            </Badge>
+            <Progress 
+              value={vitals.ttfb ? Math.min((vitals.ttfb / thresholds.ttfb.poor) * 100, 100) : 0} 
+              className="mt-2"
+            />
+            <p className="text-xs text-muted-foreground mt-1">
+              Ziel: &lt; {thresholds.ttfb.good}ms
+            </p>
+          </CardContent>
+        </Card>
+
+        {/* Overall Score */}
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Gesamtbewertung</CardTitle>
@@ -91,54 +173,21 @@ const PerformanceDashboard = () => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              {metrics.loadTime > 0 ? Math.max(100 - Math.floor(metrics.loadTime / 30), 0) : 0}
+              {overallScore}
             </div>
+            <Badge variant={overallScore >= 80 ? 'default' : overallScore >= 50 ? 'outline' : 'destructive'} className="mt-2">
+              {overallScore >= 80 ? 'Ausgezeichnet' : overallScore >= 50 ? 'Durchschnittlich' : 'Verbesserungsbedarf'}
+            </Badge>
             <Progress 
-              value={metrics.loadTime > 0 ? Math.max(100 - Math.floor(metrics.loadTime / 30), 0) : 0} 
+              value={overallScore} 
               className="mt-2"
             />
             <p className="text-xs text-muted-foreground mt-1">
-              Leistungsbewertung
+              Basierend auf Core Web Vitals
             </p>
           </CardContent>
         </Card>
       </div>
-
-      {metrics.navigationTiming && (
-        <Card>
-          <CardHeader>
-            <CardTitle>Detaillierte Zeitmessung</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-              <div>
-                <p className="font-medium">DNS-Lookup</p>
-                <p className="text-muted-foreground">
-                  {metrics.navigationTiming.domainLookupEnd - metrics.navigationTiming.domainLookupStart}ms
-                </p>
-              </div>
-              <div>
-                <p className="font-medium">Server-Antwort</p>
-                <p className="text-muted-foreground">
-                  {metrics.navigationTiming.responseEnd - metrics.navigationTiming.requestStart}ms
-                </p>
-              </div>
-              <div>
-                <p className="font-medium">DOM-Verarbeitung</p>
-                <p className="text-muted-foreground">
-                  {metrics.navigationTiming.domComplete - metrics.navigationTiming.domContentLoadedEventStart}ms
-                </p>
-              </div>
-              <div>
-                <p className="font-medium">Ressourcen-Laden</p>
-                <p className="text-muted-foreground">
-                  {metrics.navigationTiming.loadEventEnd - metrics.navigationTiming.domContentLoadedEventEnd}ms
-                </p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      )}
     </div>
   );
 };

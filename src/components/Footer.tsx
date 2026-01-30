@@ -1,6 +1,4 @@
 
-import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { Instagram, Facebook, Mail, Phone, MapPin } from 'lucide-react';
 import { useGlobalSettings } from '../hooks/use-global-settings';
 import OptimizedImage from './OptimizedImage';
@@ -13,7 +11,6 @@ interface FooterProps {
 
 const Footer = ({ onTermsClick, onImpressumClick, onDatenschutzClick }: FooterProps) => {
   const globalSettings = useGlobalSettings();
-  const navigate = useNavigate();
   
   // Use global settings directly for all content
   const footerContent = {
@@ -24,19 +21,7 @@ const Footer = ({ onTermsClick, onImpressumClick, onDatenschutzClick }: FooterPr
     socialLinks: globalSettings.footer?.socialLinks || []
   };
   
-  // Add a hidden admin link that becomes visible when pressing Alt+Shift+A
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.altKey && e.shiftKey && e.key === 'A') {
-        navigate('/dashboard-management-portal-9a7b2c3d');
-      }
-    };
-    
-    window.addEventListener('keydown', handleKeyDown);
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [navigate]);
+  // Hotkey handler is in App.tsx - removed duplicate here
   
   const renderSocialIcon = (platform: string) => {
     switch (platform) {

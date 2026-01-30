@@ -7,7 +7,7 @@ import SectionLoader from '../components/SectionLoader';
 import { useSections } from '../hooks/use-sections';
 import { useGlobalSettings } from '../hooks/use-global-settings';
 import { useAboveFold } from '../hooks/use-above-fold';
-import { EnhancedSEO } from '../components/EnhancedSEO';
+import { SEO } from '../components/SEO';
 import { useCoreWebVitals } from '../hooks/useCoreWebVitals';
 import { usePWAOptimizations } from '../hooks/usePWAOptimizations';
 import { updateSitemapOnContentChange } from '../utils/dynamicSitemapGenerator';
@@ -114,7 +114,7 @@ const Index = () => {
         
         return Component ? (
           <Suspense key={section.id} fallback={<SectionLoader />}>
-            {(!isAboveTheFold || index < 2) && (
+            {(isAboveTheFold || index < 2) && (
               <Component 
                 settings={globalSettings}
                 onInView={() => handleSectionInView(section.component)}
@@ -127,7 +127,7 @@ const Index = () => {
 
   return (
     <>
-      <EnhancedSEO pageType={currentSection} />
+      <SEO pageType={currentSection} />
       <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
         <Navbar />
         <main>
