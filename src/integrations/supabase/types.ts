@@ -1613,6 +1613,7 @@ export type Database = {
           lastname: string | null
           marital_status: string | null
           monthly_salary: number | null
+          monthly_target_hours: number | null
           name: string
           nationality: string | null
           pension_fund_number: string | null
@@ -1666,6 +1667,7 @@ export type Database = {
           lastname?: string | null
           marital_status?: string | null
           monthly_salary?: number | null
+          monthly_target_hours?: number | null
           name: string
           nationality?: string | null
           pension_fund_number?: string | null
@@ -1719,6 +1721,7 @@ export type Database = {
           lastname?: string | null
           marital_status?: string | null
           monthly_salary?: number | null
+          monthly_target_hours?: number | null
           name?: string
           nationality?: string | null
           pension_fund_number?: string | null
@@ -4500,6 +4503,26 @@ export type Database = {
       }
       get_current_employee: { Args: never; Returns: string }
       get_current_user_role: { Args: never; Returns: string }
+      get_lohnausweis_data: {
+        Args: {
+          p_employee_id: string
+          p_end_date: string
+          p_start_date: string
+        }
+        Returns: {
+          ahv_total: number
+          alv_total: number
+          bvg_total: number
+          ktg_total: number
+          nbu_total: number
+          period_count: number
+          tax_total: number
+          total_deductions: number
+          total_gross: number
+          total_hours: number
+          total_net: number
+        }[]
+      }
       get_user_time_entries: {
         Args: { p_user_id: string }
         Returns: {
@@ -4532,6 +4555,7 @@ export type Database = {
           role: Database["public"]["Enums"]["user_role"]
         }[]
       }
+      is_active_admin_user: { Args: never; Returns: boolean }
       is_admin: { Args: { target_user_id: string }; Returns: boolean }
       is_admin_or_supervisor: { Args: never; Returns: boolean }
       is_admin_or_supervisor_secure: { Args: never; Returns: boolean }
