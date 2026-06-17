@@ -57,7 +57,7 @@ const Footer = ({ onTermsClick, onImpressumClick, onDatenschutzClick }: FooterPr
                 <Mail className="h-4 w-4" />
                 <span>{footerContent.contactEmail}</span>
               </a>
-              <a href={`tel:${footerContent.contactPhone}`} className="flex items-center gap-2 hover:text-beige transition-colors">
+              <a href={`tel:${footerContent.contactPhone?.replace(/\s/g, '').replace(/^(\+41)0/, '$1')}`} className="flex items-center gap-2 hover:text-beige transition-colors">
                 <Phone className="h-4 w-4" />
                 <span>{footerContent.contactPhone}</span>
               </a>

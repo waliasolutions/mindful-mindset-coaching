@@ -77,7 +77,7 @@ const Contact = () => {
                   </div>
                   <div>
                     <p className="font-medium mb-1">Telefon</p>
-                    <a href={`tel:+41${content.phone.replace(/\s/g, '')}`} className="text-forest/70 hover:text-forest transition-colors">
+                    <a href={`tel:+41${content.phone.replace(/\s/g, '').replace(/^0/, '')}`} className="text-forest/70 hover:text-forest transition-colors">
                       {content.phone}
                     </a>
                   </div>
@@ -119,7 +119,7 @@ const Contact = () => {
               </div>
 
               <div className="mt-8 pt-8 border-t border-moss/20 flex flex-col sm:flex-row gap-4">
-                <a href={`tel:+41${content.phone.replace(/\s/g, '')}`} className="flex items-center justify-center py-3 bg-forest text-white hover:bg-forest/90 transition-colors focus-ring text-center gap-2 font-medium flex-1 rounded-md">
+                <a href={`tel:+41${content.phone.replace(/\s/g, '').replace(/^0/, '')}`} className="flex items-center justify-center py-3 bg-forest text-white hover:bg-forest/90 transition-colors focus-ring text-center gap-2 font-medium flex-1 rounded-md">
                   <span>Jetzt anrufen</span>
                   <Phone size={16} />
                 </a>
